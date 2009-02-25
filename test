@@ -2,9 +2,15 @@ public class Hallo {
 
 	public static void main (String args[]) {
 		// Überflüssiger Comment.
+		// immer klammern setzten. den code da unten kann man fast nicht richtig lesen!
 		System.out.println("Hallo Wält");
 
-		// Todo: write return statement here...
+		while(false) {
+			this = this;
+			if (this.isempty())
+				return 42;
+		}
 
+		return;
 	}
 }

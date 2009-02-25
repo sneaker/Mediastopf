@@ -31,7 +31,7 @@ Datum		Version		Autor	Änderung
 23.02.09	0.2	DT		Let’s start… (RED =TODO)
 24.02.09	0.3	TK		Added more Information all over the place
 25.02.09	0.4	MS		Risk-Management gemäss UPedu
-25.02.09	0.4.1 DT	Einführung/Projekt Übersicht überarbeitet
+25.02.09	0.4.1 	DT		Einführung/Projekt Übersicht überarbeitet
 
 
 Einführung

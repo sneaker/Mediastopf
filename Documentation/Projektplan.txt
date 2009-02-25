@@ -1,0 +1,195 @@
+MediaStopf
+Software Engeneering 2 Projekt
+
+Projektplan
+
+Marco Birchler
+marco.birchler@hsr.ch
+
+Thomas Kallenberg
+thomas.kallenberg@hsr.ch
+
+Martin Schwab
+martin.schwab@hsr.ch
+
+David Tran
+david.tran@hsr.ch
+
+HSR Hochschule für Technik Rapperswil
+www.hsr.ch
+Studiengang Informatik
+www.i.hsr.ch
+
+
+25. Februar 2009
+
+Dokumentinformationen
+Änderungsgeschichte
+Datum
+Version
+Änderung
+Autor
+22.2.09
+0.1
+Erstellung
+Thomas Kallenberg
+23.2.09
+0.2
+Let’s start… (RED =TODO)
+David Tran
+24.2.09
+0.3
+Added more Information all over the place
+Thomas Kallenberg
+
+Einführung
+Zweck
+  Dieses Dokument beschreibt den Projektplan für das Projekt MediaStopf.
+
+Gültigkeitsbereich
+  Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und 	hat Gültigkeit über die gesamte Projektdauer.
+
+Definitionen und Abkürzungen
+  Siehe Documentation/Glossar.doc
+
+Referenzen
+
+  Martin Fowler – Refactoring
+  Gang of Four – Design Patterns
+  Craig Larman – Uml and Applied Patterns
+  Steve Eckel – Thinking in Java
+
+Übersicht
+	Die Folgenden Kaptiel geben Aufschluss über das Projekt Mediastopf. Im 	anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige 	Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete welche 	das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und 	Infrastruktur sind im letzten Teil dieses Dokumentes zu finden
+
+Projekt Übersicht
+   MediaStopf ist eine Client Server Applikation welche es erlaubt Medien automatisiert zu erfassen. In einem ersten Schritt wird MediaStopf für Audiodateien welche von CD's gelesen werden optimiert. Grundsätzlich sollte das Programm aber so generell wie möglich gehalten werden um zusätzliche Medienformate zu unterstützen. Das Programm bindet eine externe Auftragsdatenbank ein. Diese Datenbank hat enthält Informationen über den Status des Auftrags.
+
+Ziele
+
+Hauptziele:
+  Erlernte Theorien in SE1 und SE2 praktisch anwenden.
+  Selbsteinschätzung bei Teamarbeit, kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
+  Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server Anwendungen.
+  Besseres Zeitgefühl für Planung und Implementierung.
+
+Zweck
+  Automatisierung eines Medieneinlesesystems für Bilder, Musik und Videos. Die Idee des Projektes kommt von der Firma Brocit, welche in diesem Umfeld tätig ist. Eines der Teammitglieder arbeitet bei dieser Firma. Bei Brocit sind bereits viele Arbeitsschritte automatisiert. Mediastopf soll weitere bis an hin zeitaufwändige Schritte automatisieren. Das Projekt beinhaltet interessante Technologien, in welchen sich die Teammitglieder vertiefen wollen.
+  Annahmen und Einschränkungen
+  Von jedem Projektmitglied wird eine Arbeitszeit von acht Stunden in der Woche erwartet und bei unerwarteten Problemen auf max. 10 Stunden erhöht werden. Das Projekt ist Erweiterungsfähig, so dass die verlangte Projektzeit ohne weiteres eingehalten werden kann.
+  Sollten ein Projektmitglied länger Abwesend sein müssen, wird dies in der Projektplanung berücksichtigt und im Team diskutiert.
+
+Projektorganisation
+  Das Team besteht aus vier Studenten, jedes Mitglied hat eigene spezielle Aufgaben.
+
+Organisationsstruktur
+  Marco Birchler: Idea, Brain and Leader of this project. 
+  Thomas Kallenberg: Leader Network programming
+  Martin Schwab: Network programming, Overall Coder
+  David Tran: GUI programming, Overall Coder
+  
+Externe Schnittstellen
+  Projektbetreuer ist Prof. Hans Rudin.
+
+Management Abläufe
+
+Projekt Kostenvoranschlag
+  Projektzeit: 16.2.09 – 29.5.09
+  Abgabetermin: 29.5.09
+  Erwartete Arbeitszeit insgesamt: 120h (~8h pro Woche)
+
+Projektplan
+Zeitplan 
+  Siehe hierzu das Dokument Dokumentation/Projektplan.xls
+Iterationsplanung / Meilensteine
+
+  MS1. Projektplan: Review Projektplan mit Zeitplan und aktuellen Iterationsplänen SW03
+
+MS2. Anforderungen und Analyse: Review der Anforderungsspezifikation und der Domainanalyse SW03-SW06
+
+MS3. Ende Elaboration: Zwischenpräsentation mit Demo eines Architekturprototypen, Review SW06-SW08
+
+MS4. Architektur/ Design: Review von Architektur/ Design und Architekturdoku SW11
+
+MS5. Schlusspräsentation/-abgabe: Präsentation und Demo der Software SW14 (29.5.09 1700)
+
+Besprechungen
+Inception		Projektantrag			SW01/ SW02
+Elaboration 1	Projektplan				SW02
+
+Abgabe (Releases)
+<Beschreibung verschiedener Releases. Was ist alles realisiert? Wann sind die Realeases fertig? Typ (Prototyp, Beta, Finalversion) des Releases?>
+
+Risiko Management (Rist Management)
+<Tabelle mit Risiken oder auf separates Dokument verweisen (beinhaltet Risiken, Massnahmen, etc…)>
+<Begründungen zur Tabelle. Werden Reserven / Rückstellungen eingeplant? Wieso und wie viel>
+
+Arbeitspakete
+
+[Nummer
+Wie heisst das Arbeitspaket? 
+Was beinhaltet es? 
+Wer ist dafür Zuständig / Verantwortlich? 
+Wie viel Zeit wird dafür benötigt?
+Gibt es Abhängigkeiten zu anderen Arbeitspaketen?
+Gibt es spezielle Risiken oder Probleme, die man beachten muss?]
+
+Infrastruktur (Infrastructure)
+
+Räumlichkeiten
+  Arbeiten und Sitzungen an der HSR
+
+Hardware
+  Arbeiten mit privaten Laptops
+  Versionsverwaltung und Trac Serverbetrieb von Thomas Kallenberg (www.no-more-secrets.ch)
+
+Software
+
+Betriebssystem:
+  Microsoft Windows XP SP3
+  Microsoft Windows Vista SP1
+  Diverse Linuxdistributionen (Ubuntu, Debian, Arch)
+
+Programmiersprache:
+  Java 6
+
+Entwicklungsumgebung:
+  Eclipse 3.4 (Ganymede)
+  JUnit 4
+  Ant
+
+Versionsverwaltungssoftware:
+  Git
+
+Dokumentation:
+  Microsoft Office 2007
+  OpenOffice
+  Trac
+
+Backups
+  Das Projekt befindet sich in einem Revision Control System. Jeder Entwickler hat zudem eine aktuelle kopie auf seinem Computer. Zudem wird das Projekt im SCM vom Server nächtlich auf eine seperate Festplatte gesichert.
+
+Kommunikationmittel
+  E-Mail
+  Mobile
+  IM (Skype, MSN, ICQ)
+  Wiki (http://www.no-more-secrets.ch/trac/wiki)
+  Trac (http://www.no-more-secrets.ch/trac/)
+
+Qualitätsmassnahmen
+
+8.1.Besprechungsprotokolle
+  Bei den mehrmals wöchentlichen Besprechungen wird Protokoll geführt. Da ein Teammitglied nicht immer bei allen dabei sein kann muss dieses Zwingen geführt werden. Diese Protokolle werde so schnell wie möglich auf das Wiki hochgeladen.
+8.2.Codequalität
+  Der Master Tree im Revision Control System muss immer compilieren und sollte keinen ungetesteten und nicht funktionsfähigen Code enthalten.
+  Die einzelnen Teammitglieder haben seperate Trees welche sie mit einander austauschen und davon neuen Code erhalten können. Zudem läuft ein Ant Server der mehrmals täglich das Projekt im master tree compiliert und den Status per Email an die Mailinglist sendet falls es Fehler gibt.
+8.3.Tests
+  An kritischen Stellen sollte nach dem Test-Driven-Development gearbeitet werden. Besonders während der ersten Entwicklungsphasen soll nach diesem Modell entwickelt werden.
+8.4.Code Review
+  Zu jeder Besprechung sucht sich ein Teammitglied einen Codeteil eines anderen raus den er persöhnlich schlecht findet und lässt sich darüber aufklären warum dies so gemacht wurde und das Team berät darüber wie der Teil besser gemacht werden könnte. Somit steigt die Motivation sauberen Code zu schreiben.
+  -> Codingstyle, Codesmells,
+8.5.Dokumentation
+  Die Dokumentation wird hauptsächlich im Wiki gemacht. Es soll darauf geachtet werden dass alles immer gleich Dokumentiert wird und nichts länger als 2 Tage undokumentiert bleibt. Um den Code zu dokumentieren wird selbstverständlich auf Javadoc gesetzt.
+8.6.Sonstiges Review
+  Alles was an die Betreuer oder sonst per mail an Aussenstehende geht wird von mindestens einem anderen Teammitglied durchgelesen. Wenn er dies akzeptiert wird jede Mail mit cc an die Projekt MaillingList geschrieben.
+8.7.Weiteres.

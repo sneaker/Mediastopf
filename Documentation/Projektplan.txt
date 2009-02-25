@@ -29,18 +29,22 @@ Datum
 Version
 Änderung
 Autor
+
 22.2.09
 0.1
 Erstellung
 Thomas Kallenberg
+
 23.2.09
 0.2
 Let’s start… (RED =TODO)
 David Tran
+
 24.2.09
 0.3
 Added more Information all over the place
 Thomas Kallenberg
+
 
 Einführung
 Zweck
@@ -60,7 +64,7 @@ Referenzen
   Steve Eckel – Thinking in Java
 
 Übersicht
-	Die Folgenden Kaptiel geben Aufschluss über das Projekt Mediastopf. Im 	anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige 	Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete welche 	das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und 	Infrastruktur sind im letzten Teil dieses Dokumentes zu finden
+	Die Folgenden Kaptiel geben Aufschluss über das Projekt Mediastopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
 
 Projekt Übersicht
    MediaStopf ist eine Client Server Applikation welche es erlaubt Medien automatisiert zu erfassen. In einem ersten Schritt wird MediaStopf für Audiodateien welche von CD's gelesen werden optimiert. Grundsätzlich sollte das Programm aber so generell wie möglich gehalten werden um zusätzliche Medienformate zu unterstützen. Das Programm bindet eine externe Auftragsdatenbank ein. Diese Datenbank hat enthält Informationen über den Status des Auftrags.
@@ -69,15 +73,15 @@ Ziele
 
 Hauptziele:
   Erlernte Theorien in SE1 und SE2 praktisch anwenden.
-  Selbsteinschätzung bei Teamarbeit, kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
+  Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
   Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server Anwendungen.
   Besseres Zeitgefühl für Planung und Implementierung.
 
 Zweck
   Automatisierung eines Medieneinlesesystems für Bilder, Musik und Videos. Die Idee des Projektes kommt von der Firma Brocit, welche in diesem Umfeld tätig ist. Eines der Teammitglieder arbeitet bei dieser Firma. Bei Brocit sind bereits viele Arbeitsschritte automatisiert. Mediastopf soll weitere bis an hin zeitaufwändige Schritte automatisieren. Das Projekt beinhaltet interessante Technologien, in welchen sich die Teammitglieder vertiefen wollen.
   Annahmen und Einschränkungen
-  Von jedem Projektmitglied wird eine Arbeitszeit von acht Stunden in der Woche erwartet und bei unerwarteten Problemen auf max. 10 Stunden erhöht werden. Das Projekt ist Erweiterungsfähig, so dass die verlangte Projektzeit ohne weiteres eingehalten werden kann.
-  Sollten ein Projektmitglied länger Abwesend sein müssen, wird dies in der Projektplanung berücksichtigt und im Team diskutiert.
+  Von jedem Projektmitglied wird eine Arbeitszeit von acht Stunden in der Woche erwartet und bei unerwarteten Problemen auf max. 10 Stunden erhöht werden. Das Projekt ist erweiterungsfähig, so dass die verlangte Projektzeit ohne weiteres eingehalten werden kann.
+  Sollte ein Projektmitglied länger Abwesend sein müssen, wird dies in der Projektplanung berücksichtigt und im Team diskutiert.
 
 Projektorganisation
   Das Team besteht aus vier Studenten, jedes Mitglied hat eigene spezielle Aufgaben.
@@ -103,7 +107,7 @@ Zeitplan
   Siehe hierzu das Dokument Dokumentation/Projektplan.xls
 Iterationsplanung / Meilensteine
 
-  MS1. Projektplan: Review Projektplan mit Zeitplan und aktuellen Iterationsplänen SW03
+MS1. Projektplan: Review Projektplan mit Zeitplan und aktuellen Iterationsplänen SW03
 
 MS2. Anforderungen und Analyse: Review der Anforderungsspezifikation und der Domainanalyse SW03-SW06
 
@@ -123,6 +127,28 @@ Abgabe (Releases)
 Risiko Management (Rist Management)
 <Tabelle mit Risiken oder auf separates Dokument verweisen (beinhaltet Risiken, Massnahmen, etc…)>
 <Begründungen zur Tabelle. Werden Reserven / Rückstellungen eingeplant? Wieso und wie viel>
+
+Quelle: Tabellentitel kopiert aus Projekt ScrabbIT.
+TODO: Sortieren nach gewichtetem Schaden.
+
+Risiko-ID	Titel		Beschreibung	maximaler Schaden in h	Eintrittswahrscheinlichkeit	gewichteter Schaden	Massnahmen			Vorgehen bei Eintreffen
+
+R01		Versionskontrolle	Fehlerhafte Manipulation von GIT erfordern zeitaufwendige Restores.	15h	10%	1%	Regelmässige, kleine Commits verhindern grössere Konflikte.
+
+R02		Hardware-Fehler	Hardware des Servers/eines Teammitgliedes oder Laptop-Diebstahl.	10h	5%	1%	Ersatz-Hardware steht zur Verfügung.	Ausweichen auf HSR-Infrastruktur (SVN, Workstations)
+
+R03		HSR-Testumgebung	HSR-Computer lassen aus technischen Gründen keine Tests zu (Netzwerk-Pakete geblockt, Fehlende Benutzerrechte für Installationen oder HW-Zugriff)	10h	5%	2%	System portabel halten, damit Tests auch auf eigenen Laptops funktionieren.	Testing und Demos auf eigenen Laptops mit Hilfe eines Hubs.
+
+R04		Java-Limits	Features nicht implementierbar mit Java oder zu komplex (z.B. HW-Zugriff, Netzwerk)	20h	10%	2%	HW-Zugriff möglichst auf Drittsysteme auslagern.	Separate Dienstprogramme laufen lassen, Resultate abholen.
+
+R05		Vorkenntnisse	Ungenügende Kenntnisse aus dem letzten Semester verlangsamen oder verunmöglichen Projektmanagement.	150h	20%	20%	Schwerpunkt auf Startphase legen, für gute Grundlage.	Projekt abbrechen und Vorlesung erneut belegen nächstes Semester.
+
+R06		Lizenzrecht	Verletzung des Lizenzrechtes der Urheber durch das geplante Vorgehen.	2h	2%	1%	Erhaltung der Generizität, damit statt Musik auf Dia-/Bildimport gewechselt werden kann.	System nur für Schulzwecke verwenden.
+
+R06		Angst vor Ende	Teammitglied fürchtet Scheitern des Projektes und steigt aus.	120h	15%	15%	Regelmässige Meetings. Voller Einsatz in der Startphase, damit Unsicherheiten vermindert werden. Sehr klare Definition eines Minimalsystemes.	Skalierung des Projektes.
+
+R07		Krankheit	Teammitglied fällt aus unvorhersehbaren Gründen für den Rest der Projektzeit aus.	120h	2%	15%	Skalierung des Projektes.
+
 
 Arbeitspakete
 

@@ -5,12 +5,22 @@ public class Hallo {
 		// immer klammern setzten. den code da unten kann man fast nicht richtig lesen!
 		System.out.println("Hallo Wält");
 
-		while(false) {
+		while(true) {
 			this = this;
-			if (this.isempty())
-				return 42;
+			if (this.isempty()) {
+				System.out.println("whatever");
+				break;
+			} else {
+				continue; // :-)
+			}
 		}
 
-		return;
+		person thomas = new person(PERSON.SMOKER)
+
+		thomas.go_smoke()
+
+		while(thomas.issmoking()) {
+			sleep 1;
+		}
 	}
 }

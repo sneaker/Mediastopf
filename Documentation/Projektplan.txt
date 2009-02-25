@@ -186,7 +186,7 @@ Qualitätsmassnahmen
 8.3.Tests
   An kritischen Stellen sollte nach dem Test-Driven-Development gearbeitet werden. Besonders während der ersten Entwicklungsphasen soll nach diesem Modell entwickelt werden.
 8.4.Code Review
-  Zu jeder Besprechung sucht sich ein Teammitglied einen Codeteil eines anderen raus den er persöhnlich schlecht findet und lässt sich darüber aufklären warum dies so gemacht wurde und das Team berät darüber wie der Teil besser gemacht werden könnte. Somit steigt die Motivation sauberen Code zu schreiben.
+  Zu jeder Besprechung sucht sich ein Teammitglied einen Codeteil eines anderen aus, den er persöhnlich schlecht findet und lässt sich darüber aufklären warum dies so gemacht wurde und das Team berät darüber wie der Teil besser gemacht werden könnte. Somit steigt die Motivation sauberen Code zu schreiben.
   -> Codingstyle, Codesmells,
 8.5.Dokumentation
   Die Dokumentation wird hauptsächlich im Wiki gemacht. Es soll darauf geachtet werden dass alles immer gleich Dokumentiert wird und nichts länger als 2 Tage undokumentiert bleibt. Um den Code zu dokumentieren wird selbstverständlich auf Javadoc gesetzt.

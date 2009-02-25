@@ -24,26 +24,13 @@ www.i.hsr.ch
 25. Februar 2009
 
 Dokumentinformationen
+
 Änderungsgeschichte
-Datum
-Version
-Änderung
-Autor
-
-22.2.09
-0.1
-Erstellung
-Thomas Kallenberg
-
-23.2.09
-0.2
-Let’s start… (RED =TODO)
-David Tran
-
-24.2.09
-0.3
-Added more Information all over the place
-Thomas Kallenberg
+Datum		Version	Autor	Änderung
+22.02.09	0.1	TK	Erstellung
+23.02.09	0.2	DT	Let’s start… (RED =TODO)
+24.02.09	0.3	TK	Added more Information all over the place
+25.02.09	0.4	MS	Risk-Management gemäss UPedu
 
 
 Einführung
@@ -124,30 +111,42 @@ Elaboration 1	Projektplan				SW02
 Abgabe (Releases)
 <Beschreibung verschiedener Releases. Was ist alles realisiert? Wann sind die Realeases fertig? Typ (Prototyp, Beta, Finalversion) des Releases?>
 
-Risiko Management (Rist Management)
-<Tabelle mit Risiken oder auf separates Dokument verweisen (beinhaltet Risiken, Massnahmen, etc…)>
-<Begründungen zur Tabelle. Werden Reserven / Rückstellungen eingeplant? Wieso und wie viel>
 
-Quelle: Tabellentitel kopiert aus Projekt ScrabbIT.
-TODO: Sortieren nach gewichtetem Schaden.
+Risiko Management (Risk Management)
 
-Risiko-ID	Titel		Beschreibung	maximaler Schaden in h	Eintrittswahrscheinlichkeit	gewichteter Schaden	Massnahmen			Vorgehen bei Eintreffen
+TODO: Formatierung gemäss der Tabelle auf http://www.upedu.org/upedu/process/artifact/tmpl_cs/webtmpl/PM/upedu_rskls.htm
 
-R01		Versionskontrolle	Fehlerhafte Manipulation von GIT erfordern zeitaufwendige Restores.	15h	10%	1%	Regelmässige, kleine Commits verhindern grössere Konflikte.
+R01 - Angst vor Versagen
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+gross	Teammitglied fürchtet Scheitern des Projektes und steigt aus.	Schlechte Stimmung, Kettenreaktion	Teammitglied trägt nichts mehr bei und meldet sich nur auf Anfrage.	Regelmässige Meetings, Zufriedenheit prüfen als Traktandum. Voller Einsatz in der Startphase, damit Unsicherheiten vermindert werden. Klare Definition eines Minimalsystemes, damit erstes Ziel in greifbarer Nähe. Ggf. Skalierung des Projektes.
 
-R02		Hardware-Fehler	Hardware des Servers/eines Teammitgliedes oder Laptop-Diebstahl.	10h	5%	1%	Ersatz-Hardware steht zur Verfügung.	Ausweichen auf HSR-Infrastruktur (SVN, Workstations)
+R02 - Vorkenntnisse
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+gross	Ungenügende Kenntnisse aus dem letzten Semester verlangsamen oder verunmöglichen Projektmanagement.	Projektmanagement misslingt	Verfehlte Termine, verwirrte Teammitglieder ohne klare Aufgabe.	Schwerpunkt auf Startphase legen und besser System skalieren als Planungsmassnahmen über Bord werfen. Im Worst Case Projekt abbrechen und Vorlesung erneut belegen nächstes Semester.
 
-R03		HSR-Testumgebung	HSR-Computer lassen aus technischen Gründen keine Tests zu (Netzwerk-Pakete geblockt, Fehlende Benutzerrechte für Installationen oder HW-Zugriff)	10h	5%	2%	System portabel halten, damit Tests auch auf eigenen Laptops funktionieren.	Testing und Demos auf eigenen Laptops mit Hilfe eines Hubs.
+R03 - Java-Limits
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+mittel	Features nicht implementierbar mit Java oder zu komplex (z.B. HW-Zugriff, Netzwerk)	System verfehlt Zweck	Massiver Einsatz des JNI.	Heikle Operationen wie HW-Zugriff möglichst auf Drittsysteme auslagern. Viel Zeit einplanen für Tests / Hacks. Separate Dienstprogramme laufen lassen und Resultate abholen.
 
-R04		Java-Limits	Features nicht implementierbar mit Java oder zu komplex (z.B. HW-Zugriff, Netzwerk)	20h	10%	2%	HW-Zugriff möglichst auf Drittsysteme auslagern.	Separate Dienstprogramme laufen lassen, Resultate abholen.
+R04 - HSR-Testumgebung
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+mittel	HSR-Computer lassen aus technischen Gründen keine Tests und damit keine Demos zu (Netzwerk-Pakete geblockt, Fehlende Benutzerrechte für Installationen oder HW-Zugriff).	Präsentation schwieriger	Wird beim Testing auffallen.	System portabel halten, damit Tests auch auf eigenen Laptops funktionieren. Testing und Demos auf eigenen Laptops mit Hilfe eines Hubs.
 
-R05		Vorkenntnisse	Ungenügende Kenntnisse aus dem letzten Semester verlangsamen oder verunmöglichen Projektmanagement.	150h	20%	20%	Schwerpunkt auf Startphase legen, für gute Grundlage.	Projekt abbrechen und Vorlesung erneut belegen nächstes Semester.
+R05 - Krankheit
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+mittel	Teammitglied fällt aus unvorhersehbaren Gründen für den Rest der Projektzeit aus.	Verzögerung, verpasste Termine	nicht vorhersehbar	Skalierung des Projektes.
 
-R06		Lizenzrecht	Verletzung des Lizenzrechtes der Urheber durch das geplante Vorgehen.	2h	2%	1%	Erhaltung der Generizität, damit statt Musik auf Dia-/Bildimport gewechselt werden kann.	System nur für Schulzwecke verwenden.
+R06 - Versionskontrolle
+Ausmass	Beschreibung		Folgen 		Indikatoren	Gegenmassnahmen / Alternativen
+klein	Fehlerhafte Manipulationen von GIT erfordern zeitaufwendige Restores.	Verzögerungen.	keine	Regelmässige, kleine Commits verhindern grössere Konflikte. Separate Branches als Sandkasten verwenden.
 
-R06		Angst vor Ende	Teammitglied fürchtet Scheitern des Projektes und steigt aus.	120h	15%	15%	Regelmässige Meetings. Voller Einsatz in der Startphase, damit Unsicherheiten vermindert werden. Sehr klare Definition eines Minimalsystemes.	Skalierung des Projektes.
+R07 - Hardware-Fehler
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+klein	Hardware des Servers / eines Teammitgliedes fällt aus oder Laptop-Diebstahl.	Verzögerung.	keine	Ersatz-Hardware steht zur Verfügung. Ausweichen auf HSR-Infrastruktur (SVN, Workstations).
 
-R07		Krankheit	Teammitglied fällt aus unvorhersehbaren Gründen für den Rest der Projektzeit aus.	120h	2%	15%	Skalierung des Projektes.
+R08 - Lizenzrecht
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+klein	Verletzung des Lizenzrechtes der Urheber durch das geplante Vorgehen.	Keine Musik-Kopien möglich.	Würde auch andere betreffen und in den Medien erscheinen.	Erhaltung der Generizität, damit statt Musik auf Dia-/Bildimport gewechselt werden kann. Kann eliminiert werden durch genaue Abklärung. Ggf. System nur für Schulzwecke verwenden.
 
 
 Arbeitspakete

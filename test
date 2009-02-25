@@ -1,14 +1,10 @@
+public class Hallo {
 
+	public static void main (String args[]) {
+		// Überflüssiger Comment.
+		System.out.println("Hallo Wält");
 
+		// Todo: write return statement here...
 
-Hehe, eine böse Änderungen mit Umlauten :-).
-
-fkjdsl
-fjlkfjdslkf
-
-
-
-martinmartinmartin
-
-indisches klohpapier
-japanisches pissoir
+	}
+}

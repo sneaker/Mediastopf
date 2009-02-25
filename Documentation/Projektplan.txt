@@ -54,7 +54,8 @@ Gültigkeitsbereich
   Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und hat Gültigkeit über die gesamte Projektdauer.
 
 Definitionen und Abkürzungen
-  Siehe Documentation/Glossar.doc
+	DAL	Data Abstrac Layer	Wie sieht die Datenstruktur aus welche die Informatinen beinhaltet
+	git	Revision Control System
 
 Referenzen
 
@@ -152,13 +153,42 @@ R07		Krankheit	Teammitglied fällt aus unvorhersehbaren Gründen für den Rest d
 
 Arbeitspakete
 
-[Nummer
-Wie heisst das Arbeitspaket? 
-Was beinhaltet es? 
-Wer ist dafür Zuständig / Verantwortlich? 
-Wie viel Zeit wird dafür benötigt?
-Gibt es Abhängigkeiten zu anderen Arbeitspaketen?
-Gibt es spezielle Risiken oder Probleme, die man beachten muss?]
+<Nummer, Wie heisst das Arbeitspaket?, Was beinhaltet es?, Wer ist dafür Zuständig / Verantwortlich? , Wie viel Zeit wird dafür benötigt? , Gibt es Abhängigkeiten zu anderen Arbeitspaketen?, Gibt es spezielle Risiken oder Probleme, die man beachten muss?>
+
+projektplan 	Schreiben des Projektplans 					* 	möglichst Vollständig
+vision		Schreiben der Vision vom Mediastopf				marco	übereinstimmung mit Projektplan
+dal		Analyse und Design des DAL					*	mögliche änderungen später
+uc_brief	Liste mit UC							*	-
+10uc_full	10 % of the most important Use Cases fully dressed		*	richtiger ablauf?
+domainmodels	Erstellung der Domainmodelle					*	-
+ssd		Erstellung Systemsequence Diagramme				*	-
+nfr		Nicht funktionale Anforderungen spezifizieren			*	-
+unit		Unit Test Schreiben						*	Korrekt?
+impl_dal	Data Abstract Layer entwerfen					?	Richtige Vererbung? überhaupt vererbung?
+impl_client	Client implementieren						?	-
+client_gui	Client Gui entwerfen						david	-
+prot_client	Prototyp des Clients zusammenfügen				david	-
+stability	Stabilität des Programms testen					?	-
+speed		Geschwindigkeit des Programms testen				?	-
+optimisation	Optimierung anhand der Ergebnisse von 12 und 13			?	-
+3rd_apps	Ansteuerung der Drittprogramme					?	möglich?
+30uc_full	30 % der Use Cases were written fully dressed			?	-
+design_net	Netzwerkdesing erstellen					thomas	?
+impl_net	Netzwerkarchitektur implementieren				thomas	? 
+impl_server	Server Implementieren						?	?
+gui_server	Gui für den Server erstellen					david	?
+prot_server	Prototyp für den Server zusammenbauen				david	?
+70uc_full	70% aller Use Cases in fully dressed geschrieben		thomas	?
+database	Datenbankanbindung realisieren					marco	?
+p2p		Server lookup with p2p						thomas	extension
+imdb		Implementieren der imdb Abfrage					?	?
+cover		Coversuche im Internet (Google?)				?	rechtlich ok?
+filter		Bildfilter programmieren					?	extension
+100uc_full	100% der Use Cases geschrieben					?	?
+customer_inst	Installation beim Kunden					?	?
+customer_test	Test beim Kunden						*	?
+customer_meet	Schlussbesprechung des Kunden					?	?
+presentation	Schlusspresentation						*	?
 
 Infrastruktur (Infrastructure)
 

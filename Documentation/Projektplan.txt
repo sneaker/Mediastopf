@@ -179,7 +179,7 @@ Kommunikationmittel
 Qualitätsmassnahmen
 
 8.1.Besprechungsprotokolle
-  Bei den mehrmals wöchentlichen Besprechungen wird Protokoll geführt. Da ein Teammitglied nicht immer bei allen dabei sein kann muss dieses Zwingen geführt werden. Diese Protokolle werde so schnell wie möglich auf das Wiki hochgeladen.
+  Bei den mehrmals wöchentlichen Besprechungen wird Protokoll geführt. Da ein Teammitglied nicht immer bei allen dabei sein kann, muss dieses zwingend geführt werden. Diese Protokolle werden so schnell wie möglich auf das Wiki hochgeladen.
 8.2.Codequalität
   Der Master Tree im Revision Control System muss immer compilieren und sollte keinen ungetesteten und nicht funktionsfähigen Code enthalten.
   Die einzelnen Teammitglieder haben seperate Trees welche sie mit einander austauschen und davon neuen Code erhalten können. Zudem läuft ein Ant Server der mehrmals täglich das Projekt im master tree compiliert und den Status per Email an die Mailinglist sendet falls es Fehler gibt.

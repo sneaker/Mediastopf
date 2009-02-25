@@ -41,7 +41,8 @@ Gültigkeitsbereich
   Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und hat Gültigkeit über die gesamte Projektdauer.
 
 Definitionen und Abkürzungen
-  Siehe Documentation/Glossar.doc
+	DAL	Data Abstrac Layer	Wie sieht die Datenstruktur aus welche die Informatinen beinhaltet
+	git	Revision Control System
 
 Referenzen
 
@@ -151,13 +152,42 @@ klein	Verletzung des Lizenzrechtes der Urheber durch das geplante Vorgehen.	Kein
 
 Arbeitspakete
 
-[Nummer
-Wie heisst das Arbeitspaket? 
-Was beinhaltet es? 
-Wer ist dafür Zuständig / Verantwortlich? 
-Wie viel Zeit wird dafür benötigt?
-Gibt es Abhängigkeiten zu anderen Arbeitspaketen?
-Gibt es spezielle Risiken oder Probleme, die man beachten muss?]
+<Nummer, Wie heisst das Arbeitspaket?, Was beinhaltet es?, Wer ist dafür Zuständig / Verantwortlich? , Wie viel Zeit wird dafür benötigt? , Gibt es Abhängigkeiten zu anderen Arbeitspaketen?, Gibt es spezielle Risiken oder Probleme, die man beachten muss?>
+
+projektplan 	Schreiben des Projektplans 					* 	möglichst Vollständig
+vision		Schreiben der Vision vom Mediastopf				marco	übereinstimmung mit Projektplan
+dal		Analyse und Design des DAL					*	mögliche änderungen später
+uc_brief	Liste mit UC							*	-
+10uc_full	10 % of the most important Use Cases fully dressed		*	richtiger ablauf?
+domainmodels	Erstellung der Domainmodelle					*	-
+ssd		Erstellung Systemsequence Diagramme				*	-
+nfr		Nicht funktionale Anforderungen spezifizieren			*	-
+unit		Unit Test Schreiben						*	Korrekt?
+impl_dal	Data Abstract Layer entwerfen					?	Richtige Vererbung? überhaupt vererbung?
+impl_client	Client implementieren						?	-
+client_gui	Client Gui entwerfen						david	-
+prot_client	Prototyp des Clients zusammenfügen				david	-
+stability	Stabilität des Programms testen					?	-
+speed		Geschwindigkeit des Programms testen				?	-
+optimisation	Optimierung anhand der Ergebnisse von 12 und 13			?	-
+3rd_apps	Ansteuerung der Drittprogramme					?	möglich?
+30uc_full	30 % der Use Cases were written fully dressed			?	-
+design_net	Netzwerkdesing erstellen					thomas	?
+impl_net	Netzwerkarchitektur implementieren				thomas	? 
+impl_server	Server Implementieren						?	?
+gui_server	Gui für den Server erstellen					david	?
+prot_server	Prototyp für den Server zusammenbauen				david	?
+70uc_full	70% aller Use Cases in fully dressed geschrieben		thomas	?
+database	Datenbankanbindung realisieren					marco	?
+p2p		Server lookup with p2p						thomas	extension
+imdb		Implementieren der imdb Abfrage					?	?
+cover		Coversuche im Internet (Google?)				?	rechtlich ok?
+filter		Bildfilter programmieren					?	extension
+100uc_full	100% der Use Cases geschrieben					?	?
+customer_inst	Installation beim Kunden					?	?
+customer_test	Test beim Kunden						*	?
+customer_meet	Schlussbesprechung des Kunden					?	?
+presentation	Schlusspresentation						*	?
 
 Infrastruktur (Infrastructure)
 
@@ -206,15 +236,21 @@ Qualitätsmassnahmen
 8.1.Besprechungsprotokolle
   Bei den mehrmals wöchentlichen Besprechungen wird Protokoll geführt. Da ein Teammitglied nicht immer bei allen dabei sein kann, muss dieses zwingend geführt werden. Diese Protokolle werden so schnell wie möglich auf das Wiki hochgeladen.
 8.2.Codequalität
-  Der Master Tree im Revision Control System muss immer compilieren und sollte keinen ungetesteten und nicht funktionsfähigen Code enthalten.
-  Die einzelnen Teammitglieder haben seperate Trees welche sie mit einander austauschen und davon neuen Code erhalten können. Zudem läuft ein Ant Server der mehrmals täglich das Projekt im master tree compiliert und den Status per Email an die Mailinglist sendet falls es Fehler gibt.
+8.2.1 Codequalität im Revision Control
+	Der Master Tree im Revision Control System muss immer compilieren und sollte keinen ungetesteten und nicht funktionsfähigen Code enthalten.
+	Die einzelnen Teammitglieder haben seperate Trees welche sie mit einander austauschen und davon neuen Code erhalten können. Zudem läuft ein Ant Server der mehrmals täglich das Projekt im master tree compiliert und den Status per Email an die Mailinglist sendet falls es Fehler gibt. Am Ende jeder Woche sollten alle Trees der Teammitglieder dem des Master Tree entsprechen.
+8.2.2 Codequalität allgemein
+	Nicht nur im Revision Control System sollte der Code gut sein. TODO:more 
 8.3.Tests
-  An kritischen Stellen sollte nach dem Test-Driven-Development gearbeitet werden. Besonders während der ersten Entwicklungsphasen soll nach diesem Modell entwickelt werden.
+	An kritischen Stellen sollte nach dem Test-Driven-Development gearbeitet werden. Besonders während der ersten Entwicklungsphasen soll nach Möglichkeit nach diesem Modell entwickelt werden. Zudem werden an kritischen und hoch veränderlichen Teilen Unit Test eingeführt um korrekte Ergebnisse zu garantieren.
+	Zudem werden Systemtests durchgeführt um allfällige Fehler aufzuspüren.
+	Da eines unserer Teammitglieder auch Kunde ist werden Ergebnisse von Usability Tests sehr schnell ihre Wege in das Programm finden.
 8.4.Code Review
-  Zu jeder Besprechung sucht sich ein Teammitglied einen Codeteil eines anderen aus, den er persöhnlich schlecht findet und lässt sich darüber aufklären warum dies so gemacht wurde und das Team berät darüber wie der Teil besser gemacht werden könnte. Somit steigt die Motivation sauberen Code zu schreiben.
-  -> Codingstyle, Codesmells,
-8.5.Dokumentation
-  Die Dokumentation wird hauptsächlich im Wiki gemacht. Es soll darauf geachtet werden dass alles immer gleich Dokumentiert wird und nichts länger als 2 Tage undokumentiert bleibt. Um den Code zu dokumentieren wird selbstverständlich auf Javadoc gesetzt.
+  Zu jeder Besprechung sucht sich ein Teammitglied einen Codeteil eines anderen aus, den er persöhnlich schlecht findet. Natürlich anhand von den erlernten Codesmells nach Martin Fowler und lässt sich darüber aufklären warum der Code so geschrieben wurde. Das Team soll dann darüber beraten wie der Code verbessert werden kann. Somit steigt die Motivation sauberen Code zu schreiben. Im Dokument Codingstyle.doc sind spezielle Styles vermerkt welche vereinbart worden sind.
 8.6.Sonstiges Review
   Alles was an die Betreuer oder sonst per mail an Aussenstehende geht wird von mindestens einem anderen Teammitglied durchgelesen. Wenn er dies akzeptiert wird jede Mail mit cc an die Projekt MaillingList geschrieben.
-8.7.Weiteres.
+8.5.Dokumentation
+	8.5.1 Dokumentation des Codes
+		Die Dokumentation des Codes erfolgt über Javadoc. Daraus können später weitere Dokumentationen einfach erstellt werden. Dadurch können auch allfällige Fragen bei der Verwendung von Funktionen beantwortet werden.
+	8.5.2 Dokumentation allgemein
+		Für Allgemeine Dokumentationen wird die folgende Technik angewandt. Die Dokumentation wird in Text Dateien geschrieben und bei bedarf von einer Person in ein Word Dokument umgewandelt und Formatiert. Dies gibt uns die Möglichkeit auch an der Dokumentation parallel mit dem Revision Control System zu arbeiten und Änderungen einfacher zu integrieren.

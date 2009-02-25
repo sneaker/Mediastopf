@@ -26,16 +26,17 @@ www.i.hsr.ch
 Dokumentinformationen
 
 Änderungsgeschichte
-Datum		Version	Autor	Änderung
-22.02.09	0.1	TK	Erstellung
-23.02.09	0.2	DT	Let’s start… (RED =TODO)
-24.02.09	0.3	TK	Added more Information all over the place
-25.02.09	0.4	MS	Risk-Management gemäss UPedu
+Datum		Version		Autor	Änderung
+22.02.09	0.1	TK		Erstellung
+23.02.09	0.2	DT		Let’s start… (RED =TODO)
+24.02.09	0.3	TK		Added more Information all over the place
+25.02.09	0.4	MS		Risk-Management gemäss UPedu
+25.02.09	0.4.1 DT	Einführung/Projekt Übersicht überarbeitet
 
 
 Einführung
 Zweck
-  Dieses Dokument beschreibt den Projektplan für das Projekt MediaStopf.
+  Dieses Dokument beinhaltet den detailierten Projektplan für das Projekt MediaStopf.
 
 Gültigkeitsbereich
   Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und hat Gültigkeit über die gesamte Projektdauer.
@@ -51,24 +52,35 @@ Referenzen
   Craig Larman – Uml and Applied Patterns
   Steve Eckel – Thinking in Java
 
-Übersicht
-	Die Folgenden Kaptiel geben Aufschluss über das Projekt Mediastopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
+Übersicht	
+	Die Folgenden Kapitel geben Aufschluss über das Projekt Mediastopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
 
 Projekt Übersicht
-   MediaStopf ist eine Client Server Applikation welche es erlaubt Medien automatisiert zu erfassen. In einem ersten Schritt wird MediaStopf für Audiodateien welche von CD's gelesen werden optimiert. Grundsätzlich sollte das Programm aber so generell wie möglich gehalten werden um zusätzliche Medienformate zu unterstützen. Das Programm bindet eine externe Auftragsdatenbank ein. Diese Datenbank hat enthält Informationen über den Status des Auftrags.
+   MediaStopf ist ein Softwaresystem welches Medien wie Dias, Fotos, Musik oder Videos automatisiert erfasst und auf ein Endmedium schreibt.
+   In einem ersten Schritt wird MediaStopf für AudioCDs optimiert, grundsätzlich sollte MediaStopf aber eine generische Struktur erhalten um auch zusätzliche Medienformate zu unterstützen. Über CDDB/ IMDB werden die benötigten Medieninformationen geladen und zugeordnet. Sollte keine Informationen gefunden, kann diese manuell eingegeben werden.
+   Um MediaStopf effizienter nutzen zu können, besteht MediaStopf aus einem Server, welche alle Mediendaten zentral sammelt und Clients von denen die Medien, nach Bedarf auch parallel an einem System, eingelesen werden.
+   MediaStopf bindet zudem eine externe Auftragsdatenbank ein. Diese Datenbank hat enthält Informationen über den Status des Auftrags/ der Aufträge.
+   
+Ausbaufähigkeit
+	- Filterung und Nachbearbeitung (z.B. bei Bildern schwarze Ränder abschneiden, gerade drehen).
+	- Verschiedene Qualitätsabstufungen der Daten (Auflösung, Bitrate etc.).
+	- Vorschau der digitalisierten Medien.
+	- Andere Medientypen.
+	- Client-Server-System mittels P2P.
+	- Musikstücke mit ID3 taggen.
+	- Covers selbständig über Suchmaschine finden.
 
 Ziele
-
-Hauptziele:
-  Erlernte Theorien in SE1 und SE2 praktisch anwenden.
-  Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
-  Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server Anwendungen.
-  Besseres Zeitgefühl für Planung und Implementierung.
+  - Erlernte Theorien in SE1 und SE2 praktisch anwenden.
+  - Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
+  - Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server Anwendungen.
+  - Besseres Zeitgefühl für Planung und Implementierung.
 
 Zweck
   Automatisierung eines Medieneinlesesystems für Bilder, Musik und Videos. Die Idee des Projektes kommt von der Firma Brocit, welche in diesem Umfeld tätig ist. Eines der Teammitglieder arbeitet bei dieser Firma. Bei Brocit sind bereits viele Arbeitsschritte automatisiert. Mediastopf soll weitere bis an hin zeitaufwändige Schritte automatisieren. Das Projekt beinhaltet interessante Technologien, in welchen sich die Teammitglieder vertiefen wollen.
-  Annahmen und Einschränkungen
-  Von jedem Projektmitglied wird eine Arbeitszeit von acht Stunden in der Woche erwartet und bei unerwarteten Problemen auf max. 10 Stunden erhöht werden. Das Projekt ist erweiterungsfähig, so dass die verlangte Projektzeit ohne weiteres eingehalten werden kann.
+
+Annahmen und Einschränkungen
+  Von jedem Projektmitglied wird eine Arbeitszeit von acht Stunden in der Woche erwartet und kann bei unerwarteten Problemen auf max. 10 Stunden erhöht werden. Das Projekt ist erweiterungsfähig, so dass die verlangte Projektzeit ohne weiteres eingehalten werden kann.
   Sollte ein Projektmitglied länger Abwesend sein müssen, wird dies in der Projektplanung berücksichtigt und im Team diskutiert.
 
 Projektorganisation

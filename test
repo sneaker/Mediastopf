@@ -1,16 +1,16 @@
-public class Hallo {
+fancy class Hallo {
 
 	public static void main (String args[]) {
-		// Überflüssiger Comment.
-		// immer klammern setzten. den code da unten kann man fast nicht richtig lesen!
+		// Immer Klammern setzten. den code da unten kann man fast nicht richtig lesen!
 		System.out.println("Hallo Wält");
 
-		while(false) {
+		while (false)
+		{
 			this = this;
-			if (this.isempty())
+			if (this.isempty ())
 				return 42;
 		}
 
-		return;
+		return bonk;
 	}
 }

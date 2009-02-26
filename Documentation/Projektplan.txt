@@ -38,9 +38,9 @@ Datum		Version		Autor	Änderung
 26.02.09	0.5.3   DT              Projektorganisation / Management-Abläufe überarbeitet
 
 
-Einführung
+1. Einführung
 Zweck
-  Dieses Dokument beinhaltet den detaillierten Projektplan für das Projekt MediaStopf.
+  Dieser Projektplan stellt ein Hilfsmittel für Mediastopf-Team dar und wird laufend ergänzt. Er schafft Transparenz und ermöglicht den Betreuern, auf Planungsfehler hinzuweisen.
 
 Gültigkeitsbereich
   Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und hat Gültigkeit über die gesamte Projektdauer.
@@ -48,6 +48,7 @@ Gültigkeitsbereich
 Definitionen und Abkürzungen
 	DAL	Data Abstract Layer	Wie sieht die Datenstruktur aus welche die Informationen beinhaltet
 	git	Versionsverwaltungs Programm
+	trac				Verwaltungs-Plattform mit Wiki und Source-Browsing.
 
 Referenzen
 
@@ -57,9 +58,9 @@ Referenzen
   Steve Eckel – Thinking in Java
 
 Übersicht	
-	Die folgenden Kapitel geben Aufschluss über das Projekt MediaStopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risiko-Management und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitsschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
+  Das zweite Kapitel erläutert die Vision von MediaStopf. Im dritten Teil werden administrative Fragen geklärt und der Rest des Dokumentes beschäftigt sich mit der Arbeitsaufteilung und den Risiken. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil des Dokumentes zu finden.
 
-Projekt Übersicht
+2. Projekt-Übersicht
    MediaStopf ist ein Softwaresystem welches Medien wie Dias, Fotos, Musik oder Videos automatisiert erfasst und auf ein Endmedium schreibt.
    In einem ersten Schritt wird MediaStopf für Audio-CDs optimiert, grundsätzlich sollte MediaStopf aber eine generische Struktur erhalten um auch zusätzliche Medienformate zu unterstützen. Über CDDB/ IMDB werden die benötigten Medieninformationen geladen und zugeordnet. Sollte keine Informationen gefunden, kann diese manuell eingegeben werden.
    Um MediaStopf effizienter nutzen zu können, besteht MediaStopf aus einem Server, welche alle Mediendaten zentral sammelt und Clients von denen die Medien, nach Bedarf auch parallel an einem System, eingelesen werden.
@@ -88,7 +89,8 @@ Annahmen und Einschränkungen
   Von jedem Projektmitglied wird eine Arbeitszeit von acht Stunden in der Woche erwartet und kann bei unerwarteten Problemen auf max. 10 Stunden erhöht werden. Das Projekt ist erweiterungsfähig, so dass die verlangte Projektzeit ohne weiteres eingehalten werden kann.
   Sollte ein Projektmitglied länger Abwesend sein müssen, wird dies in der Projektplanung berücksichtigt und im Team diskutiert.
 
-Projektorganisation
+
+3. Projektorganisation
   Das Team besteht aus vier Studenten, jedes Mitglied hat eigene spezielle Aufgaben. Für Besprechungen trifft sich das Team mindestens zweimal in der Woche. Herr Prof. Rudin ist über die gesamte Projektzeit unser Betreuer und steht für offene Fragen zur Verfügung.
 
 Organisationsstruktur
@@ -100,7 +102,8 @@ Organisationsstruktur
 Externe Schnittstellen
   Projektbetreuer ist Prof. Hans Rudin.
 
-Management Abläufe
+
+4. Management Abläufe
 
 Projekt Kostenvoranschlag
   Projektzeit: 16.2.09 – 29.5.09

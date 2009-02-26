@@ -34,7 +34,7 @@ Datum		Version		Autor	Änderung
 25.02.09	0.4.1 	DT		Einführung/Projekt Übersicht überarbeitet
 25.02.09	0.5	TK		Arbeitspakete eingefügt
 26.02.09	0.5.1	MS		Risiko-Management ergänzt und kleinere Änderungen überall
-
+26.02.09	0.5.2	TK		Rechtschreibung überprüft
 
 Einführung
 Zweck
@@ -49,13 +49,13 @@ Definitionen und Abkürzungen
 
 Referenzen
 
+  Craig Larman – Uml and Applied Patterns
   Martin Fowler – Refactoring
   Gang of Four – Design Patterns
-  Craig Larman – Uml and Applied Patterns
   Steve Eckel – Thinking in Java
 
 Übersicht	
-	Die Folgenden Kapitel geben Aufschluss über das Projekt MediaStopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risiko-Management und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitsschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
+	Die folgenden Kapitel geben Aufschluss über das Projekt MediaStopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risiko-Management und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitsschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
 
 Projekt Übersicht
    MediaStopf ist ein Softwaresystem welches Medien wie Dias, Fotos, Musik oder Videos automatisiert erfasst und auf ein Endmedium schreibt.
@@ -74,10 +74,10 @@ Ausbaufähigkeit
 
 Ziele
   - Erlernte Theorien in SE1 und SE2 praktisch anwenden.
-  - Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
-  - Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server Anwendungen.
-  - Besseres Zeitgefühl für Planung und Implementierung.
-  - Fehler machen und sammeln, damit sie später bei "scharfen" Projekten in der Berufswelt vermieden werden können.
+  - Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen.
+  - Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server-Anwendungen.
+  - Zeitgefühl entwickeln für Planung und Implementierung.
+  - Fehler machen und sammeln, damit sie später bei "scharfen" Projekten in der Berufswelt vermieden werden können. 
 
 Zweck
   Automatisierung eines Medieneinlesesystems für Bilder, Musik und Videos. Die Idee des Projektes kommt von der Firma Brocit, welche in diesem Umfeld tätig ist. Eines der Teammitglieder arbeitet bei dieser Firma. Bei Brocit sind bereits viele Arbeitsschritte automatisiert. MediaStopf soll weitere bis an hin zeitaufwändige Schritte automatisieren. Das Projekt beinhaltet interessante Technologien, in welchen sich die Teammitglieder vertiefen wollen.
@@ -103,7 +103,7 @@ Management Abläufe
 Projekt Kostenvoranschlag
   Projektzeit: 16.2.09 – 29.5.09
   Abgabetermin: 29.5.09
-  Erwartete Arbeitszeit insgesamt: 120h (~8h pro Woche) * 4 Personen = 480h
+  Erwartete Arbeitszeit insgesamt: 120h (~8h pro Woche) * 4 Personen = 480h 
 
 Projektplan
 
@@ -150,13 +150,13 @@ R04 - HSR-Testumgebung
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
 mittel	HSR-Computer lassen aus technischen Gründen keine Tests und damit keine Demos zu (Netzwerk-Pakete blockiert, Fehlende Benutzerrechte für Installationen oder HW-Zugriff).	Präsentation schwieriger	Wird beim Testen auffallen.	System portabel halten, damit Tests auch auf eigenen Laptops funktionieren. Testen und Demos auf eigenen Laptops mit Hilfe eines Hubs.
 
+R09 - Unbekannte Quellen 
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen 
+mittel  Quellen, die für die Projektplanung oder für die Implementation benutzt wurden, sind nicht angegeben. Empfindlicher Abzug bei der Benotung.   Deutsche Doppel-S im Text und stilistisch hochstehende Sätze.  Wer Versionen mergt, prüft kurz auf Quellen-"Smells". 
+
 R05 - Krankheit
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
 mittel	Teammitglied fällt aus unvorhersehbaren Gründen für den Rest der Projektzeit aus.	Verzögerung, verpasste Termine	nicht vorhersehbar	Skalierung des Projektes.
-
-R09 - Unbekannte Quellen
-Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
-mittel	Quellen, die für die Projektplanung oder für die Implementation benutzt wurden, sind nicht angegeben.	Empfindlicher Abzug bei der Benotung.	Deutsche Doppel-S im Text und stilistisch hochstehende Sätze.	Wer Versionen mergt, prüft kurz nach Quellen-"Smells".
 
 R06 - Versionskontrolle
 Ausmass	Beschreibung		Folgen 		Indikatoren	Gegenmassnahmen / Alternativen
@@ -285,9 +285,3 @@ Qualitätsmassnahmen
 
 TODO: Von anderen Projekten kopiert? Websites konsultiert? Bitte ALLE Quellen hier einfügen.
 Ziel: Kein besonderer Satz aus dem Projektplan landet bei Google einen Treffer, der nicht hier erwähnt ist.
-
-
-
-
-
-

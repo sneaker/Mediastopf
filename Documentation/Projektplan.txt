@@ -32,7 +32,8 @@ Datum		Version		Autor	Änderung
 24.02.09	0.3	TK		Added more Information all over the place
 25.02.09	0.4	MS		Risk-Management gemäss UPedu
 25.02.09	0.4.1 	DT		Einführung/Projekt Übersicht überarbeitet
-
+25.02.09        0.5     TK              Arbeitspakete eingefügt
+26.02.09        0.5.1   MS              Risk-Management ergänzt + kleinere Änderungen überall 
 
 Einführung
 Zweck
@@ -42,7 +43,7 @@ Gültigkeitsbereich
   Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und hat Gültigkeit über die gesamte Projektdauer.
 
 Definitionen und Abkürzungen
-	DAL	Data Abstrac Layer	Wie sieht die Datenstruktur aus welche die Informatinen beinhaltet
+	DAL	Data Abstract Layer	Wie sieht die Datenstruktur aus welche die Informatinen beinhaltet
 	git	Revision Control System
 
 Referenzen
@@ -73,8 +74,9 @@ Ausbaufähigkeit
 Ziele
   - Erlernte Theorien in SE1 und SE2 praktisch anwenden.
   - Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
-  - Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server Anwendungen.
-  - Besseres Zeitgefühl für Planung und Implementierung.
+  - Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server-Anwendungen.
+  - Zeitgefühl entwickeln für Planung und Implementierung.
+  - Fehler machen und sammeln, damit sie später bei "scharfen" Projekten in der Berufswelt vermieden werden können. 
 
 Zweck
   Automatisierung eines Medieneinlesesystems für Bilder, Musik und Videos. Die Idee des Projektes kommt von der Firma Brocit, welche in diesem Umfeld tätig ist. Eines der Teammitglieder arbeitet bei dieser Firma. Bei Brocit sind bereits viele Arbeitsschritte automatisiert. Mediastopf soll weitere bis an hin zeitaufwändige Schritte automatisieren. Das Projekt beinhaltet interessante Technologien, in welchen sich die Teammitglieder vertiefen wollen.
@@ -100,7 +102,7 @@ Management Abläufe
 Projekt Kostenvoranschlag
   Projektzeit: 16.2.09 – 29.5.09
   Abgabetermin: 29.5.09
-  Erwartete Arbeitszeit insgesamt: 120h (~8h pro Woche)
+  Erwartete Arbeitszeit insgesamt: 120h (~8h pro Woche) * 4 Personen = 480h 
 
 Projektplan
 Zeitplan 
@@ -144,6 +146,10 @@ mittel	Features nicht implementierbar mit Java oder zu komplex (z.B. HW-Zugriff,
 R04 - HSR-Testumgebung
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
 mittel	HSR-Computer lassen aus technischen Gründen keine Tests und damit keine Demos zu (Netzwerk-Pakete geblockt, Fehlende Benutzerrechte für Installationen oder HW-Zugriff).	Präsentation schwieriger	Wird beim Testing auffallen.	System portabel halten, damit Tests auch auf eigenen Laptops funktionieren. Testing und Demos auf eigenen Laptops mit Hilfe eines Hubs.
+
+R09 - Unbekannte Quellen 
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen 
+mittel  Quellen, die für die Projektplanung oder für die Implementation benutzt wurden, sind nicht angegeben. Empfindlicher Abzug bei der Benotung.   Deutsche Doppel-S im Text und stilistisch hochstehende Sätze.  Wer Versionen mergt, prüft kurz auf Quellen-"Smells". 
 
 R05 - Krankheit
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
@@ -237,7 +243,7 @@ Backups
   Das Projekt befindet sich in einem Revision Control System. Jeder Entwickler hat zudem eine aktuelle kopie auf seinem Computer. Zudem wird das Projekt im SCM vom Server nächtlich auf eine seperate Festplatte gesichert.
 
 Kommunikationmittel
-  E-Mail
+  E-Mail (Mailingliste: se2projekt@no-more-secrets.ch)
   Mobile
   IM (Skype, MSN, ICQ)
   Wiki (http://www.no-more-secrets.ch/trac/wiki)
@@ -266,3 +272,9 @@ Qualitätsmassnahmen
 		Die Dokumentation des Codes erfolgt über Javadoc. Daraus können später weitere Dokumentationen einfach erstellt werden. Dadurch können auch allfällige Fragen bei der Verwendung von Funktionen beantwortet werden.
 	8.5.2 Dokumentation allgemein
 		Für Allgemeine Dokumentationen wird die folgende Technik angewandt. Die Dokumentation wird in Text Dateien geschrieben und bei bedarf von einer Person in ein Word Dokument umgewandelt und Formatiert. Dies gibt uns die Möglichkeit auch an der Dokumentation parallel mit dem Revision Control System zu arbeiten und Änderungen einfacher zu integrieren.
+
+
+9. Quellen 
+TODO: Von anderen Projekten kopiert? Websites konsultiert? Bitte ALLE Quellen hier einfügen. 
+Ziel: Kein besonderer Satz aus dem Projektplan landet bei Google einen Treffer, der nicht hier erwähnt ist. 
+

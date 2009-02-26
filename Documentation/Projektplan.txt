@@ -28,7 +28,7 @@ Dokumentinformationen
 Änderungsgeschichte
 Datum		Version		Autor	Änderung
 22.02.09	0.1	TK		Erstellung
-23.02.09	0.2	DT		Let’s start… (RED =TODO)
+23.02.09	0.2	DT		Let’s start...
 24.02.09	0.3	TK		Added more Information all over the place
 25.02.09	0.4	MS		Risk-Management gemäss UPedu
 25.02.09	0.4.1 	DT		Einführung/Projekt Übersicht überarbeitet
@@ -43,18 +43,18 @@ Gültigkeitsbereich
   Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und hat Gültigkeit über die gesamte Projektdauer.
 
 Definitionen und Abkürzungen
-	DAL	Data Abstract Layer	Wie sieht die Datenstruktur aus welche die Informatinen beinhaltet
+	DAL	Data Abstract Layer	Wie sieht die Datenstruktur aus, welche die Informatinen beinhaltet
 	git	Revision Control System
 
 Referenzen
 
+  Craig Larman – Uml and Applied Patterns
   Martin Fowler – Refactoring
   Gang of Four – Design Patterns
-  Craig Larman – Uml and Applied Patterns
   Steve Eckel – Thinking in Java
 
 Übersicht	
-	Die Folgenden Kapitel geben Aufschluss über das Projekt Mediastopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
+	Die folgenden Kapitel geben Aufschluss über das Projekt Mediastopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
 
 Projekt Übersicht
    MediaStopf ist ein Softwaresystem welches Medien wie Dias, Fotos, Musik oder Videos automatisiert erfasst und auf ein Endmedium schreibt.
@@ -73,7 +73,7 @@ Ausbaufähigkeit
 
 Ziele
   - Erlernte Theorien in SE1 und SE2 praktisch anwenden.
-  - Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen, Erfahrungen für die Zukunft sammeln.
+  - Selbsteinschätzung bei Teamarbeit, Kompromisse eingehen.
   - Vertiefung in Netzwerkprogrammierung und Implementierung von Client/Server-Anwendungen.
   - Zeitgefühl entwickeln für Planung und Implementierung.
   - Fehler machen und sammeln, damit sie später bei "scharfen" Projekten in der Berufswelt vermieden werden können. 
@@ -137,7 +137,7 @@ gross	Teammitglied fürchtet Scheitern des Projektes und steigt aus.	Schlechte S
 
 R02 - Vorkenntnisse
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
-gross	Ungenügende Kenntnisse aus dem letzten Semester verlangsamen oder verunmöglichen Projektmanagement.	Projektmanagement misslingt	Verfehlte Termine, verwirrte Teammitglieder ohne klare Aufgabe.	Schwerpunkt auf Startphase legen und besser System skalieren als Planungsmassnahmen über Bord werfen. Im Worst Case Projekt abbrechen und Vorlesung erneut belegen nächstes Semester.
+gross	Ungenügende Kenntnisse aus dem letzten Semester verlangsamen oder verunmöglichen Projektmanagement.	Projekt erleidet massive Verzögerungen.	Verfehlte Termine, verwirrte Teammitglieder ohne klare Aufgabe.	Schwerpunkt auf Startphase legen und besser System skalieren als Planungsmassnahmen über Bord werfen. Im Worst Case Projekt abbrechen und Vorlesung erneut belegen nächstes Semester.
 
 R03 - Java-Limits
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen

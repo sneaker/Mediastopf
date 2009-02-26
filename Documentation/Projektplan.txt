@@ -293,6 +293,7 @@ Qualitätsmassnahmen
 		Für Allgemeine Dokumentationen wird die folgende Technik angewandt. Die Dokumentation wird in Text Dateien geschrieben und bei bedarf von einer Person in ein Word Dokument umgewandelt und Formatiert. Dies gibt uns die Möglichkeit auch an der Dokumentation parallel mit dem Revision Control System zu arbeiten und Änderungen einfacher zu integrieren.
 
 9. Quellen
+ Marco's Brain
 
 TODO: Von anderen Projekten kopiert? Websites konsultiert? Bitte ALLE Quellen hier einfügen.
 Ziel: Kein besonderer Satz aus dem Projektplan landet bei Google einen Treffer, der nicht hier erwähnt ist.

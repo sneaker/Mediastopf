@@ -21,7 +21,7 @@ Studiengang Informatik
 www.i.hsr.ch
 
 
-24. Februar 2009
+23. Februar 2009
 
 Dokumentinformationen
 
@@ -122,7 +122,7 @@ MS3. Ende Elaboration: Zwischenpräsentation mit Demo eines Architekturprototype
 
 MS4. Architektur/ Design: Review von Architektur/ Design und Architekturdoku SW11
 
-MS5. Schlusspräsentation/-abgabe: Präsentation und Demo der Software SW14 (29.5.09 1700)
+MS5. Schlusspräsentation/-abgabe: Präsentation und Demo der Software SW14 (29.5.09 17:00)
 
 
 Iterationen

@@ -168,6 +168,9 @@ R08 - Lizenzrecht
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
 klein	Verletzung des Lizenzrechtes der Urheber durch das geplante Vorgehen.	Keine Musik-Kopien möglich.	Würde auch andere betreffen und in den Medien erscheinen.	Erhaltung der Generizität, damit statt Musik auf Dia-/Bildimport gewechselt werden kann. Kann eliminiert werden durch genaue Abklärung. Ggf. System nur für Schulzwecke verwenden.
 
+R09 - Änderungen nicht gespeichert
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+mittel	Teammiglied arbeitet einen ganzen Tag am Projekt und vergisst Änderungen zu speichern oder hat Versionskontrolle nicht im Griff.	Arbeitsaufwand war umsonst, Änderungen sind weg.	Änderungen sind nicht auffindbar. 	Dateien in der Versionskontrolle lassen. Immer mit Versionskontrolle nachschauen ob die letzte Änderung der aktuellen entspricht./Automatisches Speichern.
 
 Arbeitspakete
 

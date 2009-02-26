@@ -21,7 +21,7 @@ Studiengang Informatik
 www.i.hsr.ch
 
 
-27. Februar 2009
+23. Februar 2009
 
 Dokumentinformationen
 
@@ -35,6 +35,8 @@ Datum		Version		Autor	Änderung
 25.02.09	0.5	TK		Arbeitspakete eingefügt
 26.02.09	0.5.1	MS		Risiko-Management ergänzt und kleinere Änderungen überall
 26.02.09	0.5.2	TK		Rechtschreibung überprüft
+26.02.09	0.5.3   DT              Projektorganisation / Management-Abläufe überarbeitet
+
 
 Einführung
 Zweck
@@ -87,7 +89,7 @@ Annahmen und Einschränkungen
   Sollte ein Projektmitglied länger Abwesend sein müssen, wird dies in der Projektplanung berücksichtigt und im Team diskutiert.
 
 Projektorganisation
-  Das Team besteht aus vier Studenten, jedes Mitglied hat eigene spezielle Aufgaben.
+  Das Team besteht aus vier Studenten, jedes Mitglied hat eigene spezielle Aufgaben. Für Besprechungen trifft sich das Team mindestens zweimal in der Woche. Herr Prof. Rudin ist über die gesamte Projektzeit unser Betreuer und steht für offene Fragen zur Verfügung.
 
 Organisationsstruktur
   Marco Birchler: Idee, Projektleiter
@@ -120,11 +122,20 @@ MS3. Ende Elaboration: Zwischenpräsentation mit Demo eines Architekturprototype
 
 MS4. Architektur/ Design: Review von Architektur/ Design und Architekturdoku SW11
 
-MS5. Schlusspräsentation/-abgabe: Präsentation und Demo der Software SW14 (29.5.09 1700)
+MS5. Schlusspräsentation/-abgabe: Präsentation und Demo der Software SW14 (29.5.09 17:00)
+
+
+Iterationen
+Inception               Projektantrag, Vision									SW01/ SW02
+Elaboration 1           Projektplan (Zeitplan, Risiko Management, Arbeitspakete, Qualitätsmassnahmen),		SW02/ SW03
+                        Domainmodell, UseCases, Sequenzdiagramme, Externes Design.
 
 Besprechungen
-Inception		Projektantrag			SW01/ SW02
-Elaboration 1	Projektplan				SW02
+Das Team trifft sich zwei mal wöchentlich, um den aktuellen Stand der Entwicklung sowie aufgetauchte Probleme zu diskutieren.
+Weiter werden die nächsten Arbeitschritte und ein neuer Sitzungtermin festgelegt.
+
+Der genauere Aublauf der Besprechungen ist in den Qualitätsmassnahmen festgelegt.
+
 
 Abgabe (Releases)
 <Beschreibung verschiedener Releases. Was ist alles realisiert? Wann sind die Realeases fertig? Typ (Prototyp, Beta, Finale Version) des Releases?>

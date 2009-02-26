@@ -1,4 +1,4 @@
-MediaStopf
+﻿MediaStopf
 Software Engeneering 2 Projekt
 
 Projektplan
@@ -28,24 +28,26 @@ Dokumentinformationen
 Änderungsgeschichte
 Datum		Version		Autor	Änderung
 22.02.09	0.1	TK		Erstellung
-23.02.09	0.2	DT		Let’s start...
-24.02.09	0.3	TK		Added more Information all over the place
-25.02.09	0.4	MS		Risk-Management gemäss UPedu
+23.02.09	0.2	DT		Anfangen mit Inhalt einfügen
+24.02.09	0.3	TK		Änderungen und neuer Inhalt im ganzen Dokument
+25.02.09	0.4	MS		Risiko-Management gemäss UPedu
 25.02.09	0.4.1 	DT		Einführung/Projekt Übersicht überarbeitet
-25.02.09        0.5     TK              Arbeitspakete eingefügt
-26.02.09        0.5.1   MS              Risk-Management ergänzt + kleinere Änderungen überall 
-26.02.09	0.5.2   DT              Projektorganisation / Management-Abläufe überarbeitet
+25.02.09	0.5	TK		Arbeitspakete eingefügt
+26.02.09	0.5.1	MS		Risiko-Management ergänzt und kleinere Änderungen überall
+26.02.09	0.5.2	TK		Rechtschreibung überprüft
+26.02.09	0.5.3   DT              Projektorganisation / Management-Abläufe überarbeitet
+
 
 Einführung
 Zweck
-  Dieses Dokument beinhaltet den detailierten Projektplan für das Projekt MediaStopf.
+  Dieses Dokument beinhaltet den detaillierten Projektplan für das Projekt MediaStopf.
 
 Gültigkeitsbereich
   Dieses Dokument gilt als Grundlage für das ganze Projekt MediaStopf und hat Gültigkeit über die gesamte Projektdauer.
 
 Definitionen und Abkürzungen
-	DAL	Data Abstract Layer	Wie sieht die Datenstruktur aus, welche die Informatinen beinhaltet
-	git	Revision Control System
+	DAL	Data Abstract Layer	Wie sieht die Datenstruktur aus welche die Informationen beinhaltet
+	git	Versionsverwaltungs Programm
 
 Referenzen
 
@@ -55,11 +57,11 @@ Referenzen
   Steve Eckel – Thinking in Java
 
 Übersicht	
-	Die folgenden Kapitel geben Aufschluss über das Projekt Mediastopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risikomanagement und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
+	Die folgenden Kapitel geben Aufschluss über das Projekt MediaStopf. Im anschliessenden Kapitel geht es um Ziele und Zweck des Projektes. Wichtige Punkte sind Kapitel 5 Risiko-Management und Kapitel 6 Arbeitspakete, welche das Projekt in einzelne Arbeitsschritte unterteilt. Qualitätsmassnahmen und Infrastruktur sind im letzten Teil dieses Dokumentes zu finden.
 
 Projekt Übersicht
    MediaStopf ist ein Softwaresystem welches Medien wie Dias, Fotos, Musik oder Videos automatisiert erfasst und auf ein Endmedium schreibt.
-   In einem ersten Schritt wird MediaStopf für AudioCDs optimiert, grundsätzlich sollte MediaStopf aber eine generische Struktur erhalten um auch zusätzliche Medienformate zu unterstützen. Über CDDB/ IMDB werden die benötigten Medieninformationen geladen und zugeordnet. Sollte keine Informationen gefunden, kann diese manuell eingegeben werden.
+   In einem ersten Schritt wird MediaStopf für Audio-CDs optimiert, grundsätzlich sollte MediaStopf aber eine generische Struktur erhalten um auch zusätzliche Medienformate zu unterstützen. Über CDDB/ IMDB werden die benötigten Medieninformationen geladen und zugeordnet. Sollte keine Informationen gefunden, kann diese manuell eingegeben werden.
    Um MediaStopf effizienter nutzen zu können, besteht MediaStopf aus einem Server, welche alle Mediendaten zentral sammelt und Clients von denen die Medien, nach Bedarf auch parallel an einem System, eingelesen werden.
    MediaStopf bindet zudem eine externe Auftragsdatenbank ein. Diese Datenbank hat enthält Informationen über den Status des Auftrags/ der Aufträge.
    
@@ -69,7 +71,7 @@ Ausbaufähigkeit
 	- Vorschau der digitalisierten Medien.
 	- Andere Medientypen.
 	- Client-Server-System mittels P2P.
-	- Musikstücke mit ID3 taggen.
+	- Musikstücke mit ID3 versehen.
 	- Covers selbständig über Suchmaschine finden.
 
 Ziele
@@ -80,7 +82,7 @@ Ziele
   - Fehler machen und sammeln, damit sie später bei "scharfen" Projekten in der Berufswelt vermieden werden können. 
 
 Zweck
-  Automatisierung eines Medieneinlesesystems für Bilder, Musik und Videos. Die Idee des Projektes kommt von der Firma Brocit, welche in diesem Umfeld tätig ist. Eines der Teammitglieder arbeitet bei dieser Firma. Bei Brocit sind bereits viele Arbeitsschritte automatisiert. Mediastopf soll weitere bis an hin zeitaufwändige Schritte automatisieren. Das Projekt beinhaltet interessante Technologien, in welchen sich die Teammitglieder vertiefen wollen.
+  Automatisierung eines Medieneinlesesystems für Bilder, Musik und Videos. Die Idee des Projektes kommt von der Firma Brocit, welche in diesem Umfeld tätig ist. Eines der Teammitglieder arbeitet bei dieser Firma. Bei Brocit sind bereits viele Arbeitsschritte automatisiert. MediaStopf soll weitere bis an hin zeitaufwändige Schritte automatisieren. Das Projekt beinhaltet interessante Technologien, in welchen sich die Teammitglieder vertiefen wollen.
 
 Annahmen und Einschränkungen
   Von jedem Projektmitglied wird eine Arbeitszeit von acht Stunden in der Woche erwartet und kann bei unerwarteten Problemen auf max. 10 Stunden erhöht werden. Das Projekt ist erweiterungsfähig, so dass die verlangte Projektzeit ohne weiteres eingehalten werden kann.
@@ -90,10 +92,10 @@ Projektorganisation
   Das Team besteht aus vier Studenten, jedes Mitglied hat eigene spezielle Aufgaben. Für Besprechungen trifft sich das Team mindestens zweimal in der Woche. Herr Prof. Rudin ist über die gesamte Projektzeit unser Betreuer und steht für offene Fragen zur Verfügung.
 
 Organisationsstruktur
-  Marco Birchler: Idea, Brain and Leader of this project. 
-  Thomas Kallenberg: Leader Network programming
-  Martin Schwab: Network programming, Overall Coder
-  David Tran: GUI programming, Overall Coder
+  Marco Birchler: Idee, Projektleiter
+  Thomas Kallenberg: Leiter Netzwerk Programmierung 
+  Martin Schwab: Netzwerk Programmierung, Sonstige Programmierung
+  David Tran: GUI Programmierung, Sonstige Programmierung
   
 Externe Schnittstellen
   Projektbetreuer ist Prof. Hans Rudin.
@@ -106,8 +108,10 @@ Projekt Kostenvoranschlag
   Erwartete Arbeitszeit insgesamt: 120h (~8h pro Woche) * 4 Personen = 480h 
 
 Projektplan
+
 Zeitplan 
   Siehe hierzu das Dokument Dokumentation/Projektplan.xls
+
 Iterationsplanung / Meilensteine
 
 MS1. Projektplan: Review Projektplan mit Zeitplan und aktuellen Iterationsplänen SW03
@@ -134,10 +138,10 @@ Der genauere Aublauf der Besprechungen ist in den Qualitätsmassnahmen festgeleg
 
 
 Abgabe (Releases)
-<Beschreibung verschiedener Releases. Was ist alles realisiert? Wann sind die Realeases fertig? Typ (Prototyp, Beta, Finalversion) des Releases?>
+<Beschreibung verschiedener Releases. Was ist alles realisiert? Wann sind die Realeases fertig? Typ (Prototyp, Beta, Finale Version) des Releases?>
 
 
-Risiko Management (Risk Management)
+Risiko-Management
 
 TODO: Formatierung gemäss der Tabelle auf http://www.upedu.org/upedu/process/artifact/tmpl_cs/webtmpl/PM/upedu_rskls.htm
 
@@ -147,7 +151,7 @@ gross	Teammitglied fürchtet Scheitern des Projektes und steigt aus.	Schlechte S
 
 R02 - Vorkenntnisse
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
-gross	Ungenügende Kenntnisse aus dem letzten Semester verlangsamen oder verunmöglichen Projektmanagement.	Projekt erleidet massive Verzögerungen.	Verfehlte Termine, verwirrte Teammitglieder ohne klare Aufgabe.	Schwerpunkt auf Startphase legen und besser System skalieren als Planungsmassnahmen über Bord werfen. Im Worst Case Projekt abbrechen und Vorlesung erneut belegen nächstes Semester.
+gross	Ungenügende Kenntnisse aus dem letzten Semester verlangsamen oder verunmöglichen Projektmanagement.	Projekt erleidet massive Verzögerungen	Verfehlte Termine, verwirrte Teammitglieder ohne klare Aufgabe.	Schwerpunkt auf Startphase legen und besser System skalieren als Planungsmassnahmen über Bord werfen. Im schlimmsten Fall, Projekt abbrechen und Vorlesung erneut belegen nächstes Semester.
 
 R03 - Java-Limits
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
@@ -155,7 +159,7 @@ mittel	Features nicht implementierbar mit Java oder zu komplex (z.B. HW-Zugriff,
 
 R04 - HSR-Testumgebung
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
-mittel	HSR-Computer lassen aus technischen Gründen keine Tests und damit keine Demos zu (Netzwerk-Pakete geblockt, Fehlende Benutzerrechte für Installationen oder HW-Zugriff).	Präsentation schwieriger	Wird beim Testing auffallen.	System portabel halten, damit Tests auch auf eigenen Laptops funktionieren. Testing und Demos auf eigenen Laptops mit Hilfe eines Hubs.
+mittel	HSR-Computer lassen aus technischen Gründen keine Tests und damit keine Demos zu (Netzwerk-Pakete blockiert, Fehlende Benutzerrechte für Installationen oder HW-Zugriff).	Präsentation schwieriger	Wird beim Testen auffallen.	System portabel halten, damit Tests auch auf eigenen Laptops funktionieren. Testen und Demos auf eigenen Laptops mit Hilfe eines Hubs.
 
 R09 - Unbekannte Quellen 
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen 
@@ -167,15 +171,20 @@ mittel	Teammitglied fällt aus unvorhersehbaren Gründen für den Rest der Proje
 
 R06 - Versionskontrolle
 Ausmass	Beschreibung		Folgen 		Indikatoren	Gegenmassnahmen / Alternativen
-klein	Fehlerhafte Manipulationen von GIT erfordern zeitaufwendige Restores.	Verzögerungen.	keine	Regelmässige, kleine Commits verhindern grössere Konflikte. Separate Branches als Sandkasten verwenden.
+klein	Fehlerhafte Manipulationen von GIT erfordern zeitaufwendige Restores. Verzögerungen.	keine	Regelmässige, kleine Commits verhindern grössere Konflikte. Separate Branches als Sandkasten verwenden.
 
-R07 - Hardware-Fehler
+R07 - Änderungen nicht gespeichert
+Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
+mittel	Teammiglied arbeitet einen ganzen Tag am Projekt und vergisst Änderungen zu speichern oder hat Versionskontrolle nicht im Griff.	Arbeitsaufwand war umsonst, Änderungen sind weg.	Änderungen sind nicht auffindbar. 	Dateien in der Versionskontrolle lassen. Immer mit Versionskontrolle kontrollieren ob die letzte Änderung der aktuellen entspricht./Automatisches Speichern.
+
+R08 - Hardware-Fehler
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
 klein	Hardware des Servers / eines Teammitgliedes fällt aus oder Laptop-Diebstahl.	Verzögerung.	keine	Ersatz-Hardware steht zur Verfügung. Ausweichen auf HSR-Infrastruktur (SVN, Workstations).
 
-R08 - Lizenzrecht
+R09 - Lizenzrecht
 Ausmass Beschreibung            Folgen          Indikatoren     Gegenmassnahmen / Alternativen
 klein	Verletzung des Lizenzrechtes der Urheber durch das geplante Vorgehen.	Keine Musik-Kopien möglich.	Würde auch andere betreffen und in den Medien erscheinen.	Erhaltung der Generizität, damit statt Musik auf Dia-/Bildimport gewechselt werden kann. Kann eliminiert werden durch genaue Abklärung. Ggf. System nur für Schulzwecke verwenden.
+
 
 
 Arbeitspakete
@@ -183,15 +192,15 @@ Arbeitspakete
 <Nummer, Wie heisst das Arbeitspaket?, Was beinhaltet es?, Wer ist dafür Zuständig / Verantwortlich? , Wie viel Zeit wird dafür benötigt? , Gibt es Abhängigkeiten zu anderen Arbeitspaketen?, Gibt es spezielle Risiken oder Probleme, die man beachten muss?>
 
 projektplan 	Schreiben des Projektplans 					* 	möglichst Vollständig
-vision		Schreiben der Vision vom Mediastopf				marco	übereinstimmung mit Projektplan
+vision		Schreiben der Vision vom MediaStopf				marco	Übereinstimmung mit Projektplan
 dal		Analyse und Design des DAL					*	mögliche änderungen später
 uc_brief	Liste mit UC							*	-
-10uc_full	10 % of the most important Use Cases fully dressed		*	richtiger ablauf?
+10uc_full	10 % der meisten Use Cases wurden geschrieben			*	richtiger ablauf?
 domainmodels	Erstellung der Domainmodelle					*	-
 ssd		Erstellung Systemsequence Diagramme				*	-
 nfr		Nicht funktionale Anforderungen spezifizieren			*	-
 unit		Unit Test Schreiben						*	Korrekt?
-impl_dal	Data Abstract Layer entwerfen					?	Richtige Vererbung? überhaupt vererbung?
+impl_dal	Data Abstract Layer entwerfen					?	Richtige Vererbung? überhaupt Vererbung?
 impl_client	Client implementieren						?	-
 client_gui	Client Gui entwerfen						david	-
 prot_client	Prototyp des Clients zusammenfügen				david	-
@@ -199,25 +208,25 @@ stability	Stabilität des Programms testen					?	-
 speed		Geschwindigkeit des Programms testen				?	-
 optimisation	Optimierung anhand der Ergebnisse von 12 und 13			?	-
 3rd_apps	Ansteuerung der Drittprogramme					?	möglich?
-30uc_full	30 % der Use Cases were written fully dressed			?	-
-design_net	Netzwerkdesing erstellen					thomas	?
+30uc_full	30 % der Use Cases sind Fully Dressed geschrieben		?	-
+design_net	Netzwerkdesign erstellen					thomas	?
 impl_net	Netzwerkarchitektur implementieren				thomas	? 
 impl_server	Server Implementieren						?	?
 gui_server	Gui für den Server erstellen					david	?
 prot_server	Prototyp für den Server zusammenbauen				david	?
 70uc_full	70% aller Use Cases in fully dressed geschrieben		thomas	?
 database	Datenbankanbindung realisieren					marco	?
-p2p		Server lookup with p2p						thomas	extension
-imdb		Implementieren der imdb Abfrage					?	?
+p2p		Server wird mit p2p gefunden					thomas	extension
+imdb		Implementieren der IMDB Abfrage					?	?
 cover		Coversuche im Internet (Google?)				?	rechtlich ok?
 filter		Bildfilter programmieren					?	extension
 100uc_full	100% der Use Cases geschrieben					?	?
 customer_inst	Installation beim Kunden					?	?
 customer_test	Test beim Kunden						*	?
 customer_meet	Schlussbesprechung des Kunden					?	?
-presentation	Schlusspresentation						*	?
+presentation	Schlusspräsentation						*	?
 
-Infrastruktur (Infrastructure)
+Infrastruktur
 
 Räumlichkeiten
   Arbeiten und Sitzungen an der HSR
@@ -250,7 +259,7 @@ Dokumentation:
   Trac
 
 Backups
-  Das Projekt befindet sich in einem Revision Control System. Jeder Entwickler hat zudem eine aktuelle kopie auf seinem Computer. Zudem wird das Projekt im SCM vom Server nächtlich auf eine seperate Festplatte gesichert.
+  Das Projekt befindet sich in einem Revision Control System. Jeder Entwickler hat zudem eine aktuelle Kopie auf seinem Computer. Zudem wird das Projekt im SCM vom Server nächtlich auf eine separate Festplatte gesichert.
 
 Kommunikationmittel
   E-Mail (Mailingliste: se2projekt@no-more-secrets.ch)
@@ -266,7 +275,7 @@ Qualitätsmassnahmen
 8.2.Codequalität
 8.2.1 Codequalität im Revision Control
 	Der Master Tree im Revision Control System muss immer compilieren und sollte keinen ungetesteten und nicht funktionsfähigen Code enthalten.
-	Die einzelnen Teammitglieder haben seperate Trees welche sie mit einander austauschen und davon neuen Code erhalten können. Zudem läuft ein Ant Server der mehrmals täglich das Projekt im master tree compiliert und den Status per Email an die Mailinglist sendet falls es Fehler gibt. Am Ende jeder Woche sollten alle Trees der Teammitglieder dem des Master Tree entsprechen.
+	Die einzelnen Teammitglieder haben separate Trees welche sie mit einander austauschen und davon neuen Code erhalten können. Zudem läuft ein Ant Server der mehrmals täglich das Projekt im Masterbranch compiliert und den Status per Email an die Mailingliste sendet falls es Fehler gibt. Am Ende jeder Woche sollten alle Branches der Teammitglieder dem des Masterbranch entsprechen.
 8.2.2 Codequalität allgemein
 	Nicht nur im Revision Control System sollte der Code gut sein. TODO:more 
 8.3.Tests
@@ -274,17 +283,16 @@ Qualitätsmassnahmen
 	Zudem werden Systemtests durchgeführt um allfällige Fehler aufzuspüren.
 	Da eines unserer Teammitglieder auch Kunde ist werden Ergebnisse von Usability Tests sehr schnell ihre Wege in das Programm finden.
 8.4.Code Review
-  Zu jeder Besprechung sucht sich ein Teammitglied einen Codeteil eines anderen aus, den er persöhnlich schlecht findet. Natürlich anhand von den erlernten Codesmells nach Martin Fowler und lässt sich darüber aufklären warum der Code so geschrieben wurde. Das Team soll dann darüber beraten wie der Code verbessert werden kann. Somit steigt die Motivation sauberen Code zu schreiben. Im Dokument Codingstyle.doc sind spezielle Styles vermerkt welche vereinbart worden sind.
+  Zu jeder Besprechung sucht sich ein Teammitglied einen Codeteil eines anderen aus, den er persönlich schlecht findet. Natürlich anhand von den erlernten Codesmells nach Martin Fowler und lässt sich darüber aufklären warum der Code so geschrieben wurde. Das Team soll dann darüber beraten wie der Code verbessert werden kann. Somit steigt die Motivation sauberen Code zu schreiben. Im Dokument Codingstyle.doc sind spezielle Styles vermerkt welche vereinbart worden sind.
 8.6.Sonstiges Review
-  Alles was an die Betreuer oder sonst per mail an Aussenstehende geht wird von mindestens einem anderen Teammitglied durchgelesen. Wenn er dies akzeptiert wird jede Mail mit cc an die Projekt MaillingList geschrieben.
+  Alles was an die Betreuer oder sonst per Mail an Aussenstehende geht wird von mindestens einem anderen Teammitglied durchgelesen. Wenn er dies akzeptiert wird jede Mail mit Kopie an die Projekt Mailingliste geschrieben.
 8.5.Dokumentation
 	8.5.1 Dokumentation des Codes
 		Die Dokumentation des Codes erfolgt über Javadoc. Daraus können später weitere Dokumentationen einfach erstellt werden. Dadurch können auch allfällige Fragen bei der Verwendung von Funktionen beantwortet werden.
 	8.5.2 Dokumentation allgemein
 		Für Allgemeine Dokumentationen wird die folgende Technik angewandt. Die Dokumentation wird in Text Dateien geschrieben und bei bedarf von einer Person in ein Word Dokument umgewandelt und Formatiert. Dies gibt uns die Möglichkeit auch an der Dokumentation parallel mit dem Revision Control System zu arbeiten und Änderungen einfacher zu integrieren.
 
+9. Quellen
 
-9. Quellen 
-TODO: Von anderen Projekten kopiert? Websites konsultiert? Bitte ALLE Quellen hier einfügen. 
-Ziel: Kein besonderer Satz aus dem Projektplan landet bei Google einen Treffer, der nicht hier erwähnt ist. 
-
+TODO: Von anderen Projekten kopiert? Websites konsultiert? Bitte ALLE Quellen hier einfügen.
+Ziel: Kein besonderer Satz aus dem Projektplan landet bei Google einen Treffer, der nicht hier erwähnt ist.

@@ -5,7 +5,7 @@ import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
 
 public class StartClient {
 	
-	private static final String SPLASHPIC = MediaStopf.UIIMAGELOCATION + "splash.jpg";
+	private static final String SPLASHIMAGE = MediaStopf.UIIMAGELOCATION + "splash.jpg";
 
 	/**
 	 * Start Client
@@ -19,7 +19,7 @@ public class StartClient {
 			mediastopf.setTitle("-- Debug Modus --");
 		} else {
 			MediaStopf mediastopf = new MediaStopf();
-			new SplashScreen(SPLASHPIC);
+			new SplashScreen(SPLASHIMAGE);
 			mediastopf.setVisible(true);
 		}
 	}

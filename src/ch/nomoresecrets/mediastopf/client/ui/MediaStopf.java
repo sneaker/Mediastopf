@@ -26,7 +26,7 @@ public class MediaStopf extends JFrame {
 		initGUI();
 	}
 	
-	public void initGUI() {
+	private void initGUI() {
 		setTitle(PROGRAM);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
@@ -47,10 +47,9 @@ public class MediaStopf extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		final String file = "Datei", help = "Hilfe";
 		final String[] menuItems = { file, help };
-		int[] keyEvent;
-		keyEvent = new int[] { KeyEvent.VK_D, KeyEvent.VK_H };
+		int[] keyEvent = new int[] { KeyEvent.VK_D, KeyEvent.VK_H };
 		for (int i = 0; i < menuItems.length; i++) {
-			final JMenu menu = new JMenu(menuItems[i]);
+			JMenu menu = new JMenu(menuItems[i]);
 			menu.setMnemonic(keyEvent[i]);
 			if (menuItems[i] == file) {
 				addFileItems(menu);
@@ -89,9 +88,6 @@ public class MediaStopf extends JFrame {
 		final String[] fileTitles = { exit };
 		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK) };
 		for (int i = 0; i < fileTitles.length; i++) {
-			if (i == 1) {
-				fileMenu.addSeparator();
-			}
 			JMenuItem fileItem = new JMenuItem();
 			fileItem.setText(fileTitles[i]);
 			fileItem.setAccelerator(keyStrokes[i]);

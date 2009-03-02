@@ -29,16 +29,16 @@ public class SplashScreen extends JWindow implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	String splash;
+	private String image;
 
 	public SplashScreen(String splash) {
-		this.splash = splash;
+		this.image = splash;
 		new Thread(this).start();
 	}
 
 	@Override
 	public void run() {
-		JLabel label = new JLabel(new ImageIcon(getClass().getResource(splash)));
+		JLabel label = new JLabel(new ImageIcon(getClass().getResource(image)));
 		add(label);
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

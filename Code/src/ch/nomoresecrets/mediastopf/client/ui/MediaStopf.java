@@ -88,7 +88,6 @@ public class MediaStopf extends JFrame {
 		final String[] fileTitles = { exit };
 		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q,
 				KeyEvent.CTRL_DOWN_MASK) };
-		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK) };
 		for (int i = 0; i < fileTitles.length; i++) {
 			JMenuItem fileItem = new JMenuItem();
 			fileItem.setText(fileTitles[i]);

@@ -13,31 +13,33 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 public class MediaStopf extends JFrame {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String PROGRAM = "MediaStopf";
 	public static final String UIIMAGELOCATION = "/ch/nomoresecrets/mediastopf/client/ui/images/";
-	
+
 	public MediaStopf() {
 		initGUI();
 	}
-	
+
 	private void initGUI() {
 		setTitle(PROGRAM);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setMinimumSize(new Dimension(800, 600));
 		setSize(800, 600);
-//		setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.gif")).getImage());
+		// setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION +
+		// "icon.gif")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		setLocation((dim.width - getWidth()) / 2,
+				(dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 	}
-	
+
 	/**
 	 * MenuBar
 	 * 
@@ -67,12 +69,12 @@ public class MediaStopf extends JFrame {
 	 * @param helpMenu
 	 */
 	private void addHelpItems(JMenu helpMenu) {
-		JMenuItem aboutItem = new JMenuItem("Über...");
+		JMenuItem aboutItem = new JMenuItem("ï¿½ber...");
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		helpMenu.add(aboutItem);
@@ -81,12 +83,14 @@ public class MediaStopf extends JFrame {
 	/**
 	 * filemenu items
 	 * 
-	 * @param fileMenu JMenu
+	 * @param fileMenu
+	 *            JMenu
 	 */
 	private void addFileItems(JMenu fileMenu) {
 		final String exit = "Beenden";
 		final String[] fileTitles = { exit };
-		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK) };
+		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+				KeyEvent.CTRL_DOWN_MASK) };
 		for (int i = 0; i < fileTitles.length; i++) {
 			JMenuItem fileItem = new JMenuItem();
 			fileItem.setText(fileTitles[i]);
@@ -94,7 +98,7 @@ public class MediaStopf extends JFrame {
 			fileItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == exit){
+					if (e.getActionCommand() == exit) {
 						System.exit(0);
 					}
 				}

@@ -2,11 +2,14 @@ package ch.nomoresecrets.mediastopf.server.networking;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+public class NetworkServer {
 
-public class NetworkServer implements Runnable {
-
-	public NetworkServer(int port) {
+	private ServerSocket mediastop_ServerSocket;
+	
+	public NetworkServer(int port, int thread_count) {
 		try {
 			mediastop_ServerSocket = new ServerSocket(port);
 		} catch (IOException e) {
@@ -14,25 +17,17 @@ public class NetworkServer implements Runnable {
 			System.err.println("Exiting...");
 			System.exit(-1);
 		}
-	}
-	
-	@Override
-	public void run() {	
-		//TODO: Is there a better exit condition ??
-		while(true) {
+		
+		ExecutorService exec = Executors.newFixedThreadPool(thread_count);
+		
+		while(mediastop_ServerSocket.isBound()) {	
 			try {
-				Socket clientSocket = mediastop_ServerSocket.accept();
-				NetworkProcess clientRequest = new NetworkProcess(clientSocket);
-				clientRequest.run();
-				clientSocket.close();
+				exec.execute(new NetworkServerThread(mediastop_ServerSocket.accept()));
 			} catch (IOException e) {
-				System.out.println("Error: Server could not accept connection on port: " + mediastop_ServerSocket.getLocalPort());
+				System.out.println("Error on accepting connection");
+				e.printStackTrace();
 			}
 		}
-		//mediastop_ServerSocket.close();
+		exec.shutdown();
 	}
-
-	private ServerSocket mediastop_ServerSocket;
-	
-	
 }

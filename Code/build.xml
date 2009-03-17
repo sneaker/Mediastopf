@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="release" name="MediaStopf" basedir=".">
+
+	<!-- ================================= 
+	      Properties              
+	     ================================= -->
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="build" />
+	<property name="doc.dir" location="javadoc" />
+	<property name="lib.dir" location="lib" />
+	<property name="filename" value="mediastopf" />
+	<property name="file.client" value="${filename}_client.jar" />
+	<property name="file.server" value="${filename}_server.jar" />
+	<property name="main.class.client" value="ch.nomoresecrets.mediastopf.client.StartClient" />
+	<property name="main.class.server" value="ch.nomoresecrets.mediastopf.server.StartServer" />
+	<property name="version" value="0.1" />
+
+	<!-- ================================= 
+          target: build              
+         ================================= -->
+	<target name="build" description="create the JAR file">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" optimize="true" debug="true" fork="true" />
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<jar jarfile="${file}" basedir="${build.dir}" level="9">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+			<zipfileset excludes="META-INF/*.SF" src="lib/swingx-0.9.5.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/ibxm-alpha51.jar"/>
+		</jar>
+	</target>
+
+	<!-- ================================= 
+          target: javadoc              
+         ================================= -->
+	<target name="javadoc" description="generate Javadoc" >
+		<mkdir dir="${doc.dir}" />
+		<javadoc destdir="${doc.dir}" package="true">
+			<sourcepath>
+				<pathelement location="${src.dir}" />
+			</sourcepath>
+		</javadoc>
+	</target>
+
+	<!-- ================================= 
+          target: clean              
+         ================================= -->
+	<target name="clean" description="clean up" >
+		<delete dir="${build.dir}" />
+		<delete dir="${doc.dir}" />
+	</target>
+
+	<!-- ================================= 
+          target: release              
+         ================================= -->
+	<target name="release" depends="build, javadoc" description="pack in a zip file" >
+		<zip file="${filename}_${version}.zip" level="9">
+			<zipfileset dir=".">
+				<exclude name="**/.*" />
+				<include name="${file}" />
+				<include name="mediastopf_client.sh" />
+				<include name="mediastopf_server.sh" />
+				<include name="javadoc/**" />
+				<include name="lib/**" />
+				<include name="src/**" />
+				<include name="build.xml" />
+				<include name="Documentation/**" />
+			</zipfileset>
+		</zip>
+	</target>
+</project>

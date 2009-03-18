@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,30 +34,32 @@ public class WatchDirectoryTest {
 	public void tearDown() throws Exception {
 	}
 
-	class FileListener$1 implements ActionListener {
-		public void actionPerformed(final ActionEvent event) {
-			System.out.println("Juheeee! Ne neue Datei :-)");
+	class FileListener$1 implements Observer {
+		public void update(Observable who, Object arg1) {
+			System.out.println("Yeah, received update!");
 		}
 	}
 
-	@Test(timeout=10000)
+	@Test(timeout = 10000)
 	public void testSubscription() throws IOException, InterruptedException {
-		WatchDirectory d = new WatchDirectory("/tmp");
-		makeFilesystemChange ();
-		//assertEquals (true, d.hasChanged());
-
-		while (true) {
-			for (int i = 0; i < 999999999; i++)
-				System.out.print("");
-		}
+		// WatchDirectory d = new WatchDirectory("/tmp");
+		// observeDirectoryChange ();
+		// //assertEquals (true, d.hasChanged());
+		//
+		// while (true) {
+		// for (int i = 0; i < 999999999; i++)
+		// System.out.print("");
+		// }
 	}
 
-	private void makeFilesystemChange() throws IOException {
-		File f = new File("/tmp/testx");
-		if (f.exists()) 
-			f.delete();
-		else
-			f.createNewFile();
+	@Test
+	public void observeDirectoryChange() throws IOException {
+		WatchDirectory w = new WatchDirectory("/tmp");
+		assertFalse("No Filesystem changes should have been done yet", w
+				.hasChanged());
+		new FileChangeTest().run(FileChangeTest.Action.toggleExistence);
+		assertTrue("Add/Remove of file should have been detected", w
+				.hasChanged());
 	}
 
 }

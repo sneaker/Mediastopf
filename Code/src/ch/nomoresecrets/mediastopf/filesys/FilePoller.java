@@ -1,49 +1,49 @@
 package ch.nomoresecrets.mediastopf.filesys;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.Observable;
 
 class FilePoller extends Thread {
+
+	private static final int POLLING_INTERVAL = 300;
+	private File _observedDirectory;
+	private File[] _lastDirectorySnapshot;
+	private Observable _caller;
+
+	FilePoller(Observable caller) {
+		_observedDirectory = new File("/tmp");
+		_caller = caller;
+		takeDirectorySnapshot();
+	}
+
 	public void run() {
-		File file = new File("/tmp");
-		File[] lastList = null;
-		lastList = file.listFiles();
 		for (int i = 0; i < 10; i++) {
 			try {
-				sleep(2000);
-
-				if (sameFiles(lastList, file.listFiles()))
-					System.out.println("samesize");
-				else
-					System.out.println("NNNNNNNEEEEEEEEEEUUUUUUUU");
-				lastList = file.listFiles();
-				if (i == 2)
-					makeFilesystemChange();
-
+				sleep(POLLING_INTERVAL);
+				poll();
 			} catch (InterruptedException e) {
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			System.out.println("Polling");
 		}
-
 	}
 
-	private void makeFilesystemChange() throws IOException {
-		File f = new File("/tmp/testjlkjx");
-		if (f.exists())
-			f.delete();
-		else
-			f.createNewFile();
+	private void poll() {
+		if (directoryChanged(_observedDirectory.listFiles()))
+			_caller.notifyAll();
+
+		takeDirectorySnapshot();
 	}
 
-	private boolean sameFiles(File[] a, File[] b) {
-		for (int i = 0; i < a.length; i++) {
-			if (!a[i].getName().equals(b[i].getName()))
-				return false;
+	private void takeDirectorySnapshot() {
+		_lastDirectorySnapshot = _observedDirectory.listFiles();
+	}
+
+	private boolean directoryChanged(File[] newFileList) {
+		for (int i = 0; i < _lastDirectorySnapshot.length; i++) {
+			if (!_lastDirectorySnapshot[i].getName().equals(
+					newFileList[i].getName()))
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 }

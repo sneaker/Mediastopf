@@ -14,15 +14,19 @@ public class TestConnect {
 			
 			ServerConnection conn = null;
 			try {
-				conn = new ServerConnection("warbird", 1337);
+				conn = new ServerConnection("localhost", 1337);
 			} catch (UnknownHostException e) {
 				System.err.println("Unknown host");
 			} catch (IOException e) {
 				System.err.println("Could not get I/O for connection to Server");
 			}
 			
-			conn.Send(aMessage);
-			System.out.println(conn.Receive());
+			conn.sendMessage(aMessage);
+			if (aMessage.equals("TRANSFER")) {
+				conn.sendFile("/home/thomas/test.txt");
+				System.out.println(conn.receiveMessage());
+			}
+			System.out.println(conn.receiveMessage());
 		}
 
 	}
@@ -34,10 +38,6 @@ public class TestConnect {
 		try {
 			System.out.println("Message to Server:");
 			message = UserInput.readLine();
-			if (message.equals("exit")) {
-				System.out.println("Exiting Mediastopf...");
-				System.exit(0);
-			}
 		} catch (IOException e) {
 			System.out.println("Error: Cannot get Message from Keyboard");
 			e.printStackTrace();

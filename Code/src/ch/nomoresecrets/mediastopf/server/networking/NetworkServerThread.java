@@ -20,7 +20,7 @@ public class NetworkServerThread implements Runnable {
 		String receivedMessage = null;
 
 		try {
-			receivedMessage = receive();
+			receivedMessage = receiveMessage();
 		} catch (IOException e) {
 			System.out.println("Cannot read from receiver");
 			e.printStackTrace();
@@ -30,14 +30,39 @@ public class NetworkServerThread implements Runnable {
 		System.out.println("The reply would be: " + reply);
 
 		try {
-			send(reply);
+			sendMessage(reply);
+			if (receivedMessage.equals("TRANSFER"))
+				receiveFile();
 		} catch (IOException e) {
 			System.out.println("cannot write to sender");
 			e.printStackTrace();
 		}
 	}
+	
+	private void receiveFile() throws IOException {
+		System.out.println("Waiting for Filetransfer...");
+		final int FILESIZE = 19812;
+		int bytesread = 0;
+		int current = 0;
+		byte[] filebuffer = new byte[FILESIZE];
+		InputStream reader = clientSocket.getInputStream();
+		FileOutputStream writer = new FileOutputStream("a_filename");
+		BufferedOutputStream bos = new BufferedOutputStream(writer);
+		bytesread = reader.read(filebuffer, 0, filebuffer.length);
+		current = bytesread;
+		
+		while(bytesread > -1) {
+			bytesread = reader.read(filebuffer, 0, filebuffer.length);
+			if (bytesread >= -1)
+				current += bytesread;
+		}
+		
+		bos.write(filebuffer, 0, current);
+		bos.flush();
+		bos.close();
+	}
 
-	private String receive() throws IOException {
+	private String receiveMessage() throws IOException {
 		try {
 			receiver = new BufferedReader(new InputStreamReader(clientSocket
 					.getInputStream()));
@@ -55,7 +80,7 @@ public class NetworkServerThread implements Runnable {
 		return receivedMessage;
 	}
 
-	private void send(String reply) throws IOException {
+	private void sendMessage(String reply) throws IOException {
 		try {
 			sender = new PrintWriter(new OutputStreamWriter(clientSocket
 					.getOutputStream()), true);

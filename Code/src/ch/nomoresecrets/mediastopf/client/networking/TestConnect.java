@@ -22,10 +22,11 @@ public class TestConnect {
 			}
 			
 			conn.sendMessage(aMessage);
+			
 			if (aMessage.equals("TRANSFER")) {
 				conn.sendFile("/home/thomas/test.txt");
-				System.out.println(conn.receiveMessage());
 			}
+			
 			System.out.println(conn.receiveMessage());
 		}
 

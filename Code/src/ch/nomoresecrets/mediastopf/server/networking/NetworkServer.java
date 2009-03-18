@@ -18,7 +18,12 @@ public class NetworkServer {
 			System.exit(-1);
 		}
 		
-		ExecutorService exec = Executors.newFixedThreadPool(thread_count);
+		ExecutorService exec = null;
+		
+		for (int i = 0; i < 5; ++i) {
+			exec = Executors.newFixedThreadPool(thread_count);
+		}
+		
 		
 		while(mediastop_ServerSocket.isBound()) {	
 			try {

@@ -8,9 +8,9 @@ class FilePoller extends Thread {
 	private static final int POLLING_INTERVAL = 300;
 	private File _observedDirectory;
 	private File[] _lastDirectorySnapshot;
-	private Observable _caller;
+	private WatchDirectory _caller;
 
-	FilePoller(Observable caller) {
+	FilePoller(WatchDirectory caller) {
 		_observedDirectory = new File("/tmp");
 		_caller = caller;
 		takeDirectorySnapshot();

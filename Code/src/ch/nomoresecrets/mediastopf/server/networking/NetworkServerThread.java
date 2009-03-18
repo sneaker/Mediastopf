@@ -15,7 +15,6 @@ public class NetworkServerThread implements Runnable {
 		this.clientSocket = clientSocket;
 	}
 
-	@Override
 	public void run() {
 		String receivedMessage = null;
 

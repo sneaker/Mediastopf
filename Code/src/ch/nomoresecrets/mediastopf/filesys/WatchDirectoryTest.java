@@ -55,11 +55,19 @@ public class WatchDirectoryTest {
 	@Test
 	public void observeDirectoryChange() throws IOException {
 		WatchDirectory w = new WatchDirectory("/tmp");
-		assertFalse("No Filesystem changes should have been done yet", w
-				.hasChanged());
+		w.addObserver(new Observer() {
+			public void update(Observable o, Object arg) {
+				System.out
+						.println("Haha, ich wurde über das Update informiert :-)))");
+			}
+		});
+		assertFalse("Should not find filesystem changes", w.hasChanged());
 		new FileChangeTest().run(FileChangeTest.Action.toggleExistence);
-		assertTrue("Add/Remove of file should have been detected", w
-				.hasChanged());
+		//while (true) {
+			for (int i = 0; i < 999999999; i++)
+				System.out.print("");
+		//}
+		assertTrue("Add/Remove of file not detected", w.hasChanged());
 	}
 
 }

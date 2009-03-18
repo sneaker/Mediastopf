@@ -67,10 +67,9 @@ public class MediaStopf extends JFrame {
 	 * @param helpMenu
 	 */
 	private void addHelpItems(JMenu helpMenu) {
-		JMenuItem aboutItem = new JMenuItem("Über...");
+		JMenuItem aboutItem = new JMenuItem("ï¿½ber...");
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 			}
@@ -92,7 +91,6 @@ public class MediaStopf extends JFrame {
 			fileItem.setText(fileTitles[i]);
 			fileItem.setAccelerator(keyStrokes[i]);
 			fileItem.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == exit){
 						System.exit(0);

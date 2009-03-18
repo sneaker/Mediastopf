@@ -1,5 +1,8 @@
 package ch.nomoresecrets.mediastopf.client;
 
+import java.io.IOException;
+
+import ch.nomoresecrets.mediastopf.client.networking.TestConnect;
 import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
 import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
 
@@ -21,6 +24,12 @@ public class StartClient {
 			MediaStopf mediastopf = new MediaStopf();
 			new SplashScreen(SPLASHIMAGE);
 			mediastopf.setVisible(true);
+		}
+		try {
+			TestConnect connect = new TestConnect();
+		} catch (IOException e) {
+			System.out.println("Error in TestConnect");
+			e.printStackTrace();
 		}
 	}
 }

@@ -13,7 +13,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 public class MediaStopf extends JFrame {
-	
 	/**
 	 * 
 	 */
@@ -32,12 +31,14 @@ public class MediaStopf extends JFrame {
 		setLayout(null);
 		setMinimumSize(new Dimension(800, 600));
 		setSize(800, 600);
-//		setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.gif")).getImage());
+		// setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION +
+		// "icon.gif")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		setLocation((dim.width - getWidth()) / 2,
+				(dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 	}
-	
+
 	/**
 	 * MenuBar
 	 * 
@@ -71,7 +72,6 @@ public class MediaStopf extends JFrame {
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 			}
 		});
 		helpMenu.add(aboutItem);
@@ -85,7 +85,8 @@ public class MediaStopf extends JFrame {
 	private void addFileItems(JMenu fileMenu) {
 		final String exit = "Beenden";
 		final String[] fileTitles = { exit };
-		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK) };
+		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+				KeyEvent.CTRL_DOWN_MASK) };
 		for (int i = 0; i < fileTitles.length; i++) {
 			JMenuItem fileItem = new JMenuItem();
 			fileItem.setText(fileTitles[i]);

@@ -2,15 +2,16 @@ package ch.nomoresecrets.mediastopf.filesys;
 
 import java.io.File;
 import java.util.Observable;
+import java.util.Observer;
 
 class FilePoller extends Thread {
 
 	private static final int POLLING_INTERVAL = 300;
 	private File _observedDirectory;
 	private File[] _lastDirectorySnapshot;
-	private WatchDirectory _caller;
+	private Observer _caller;
 
-	FilePoller(WatchDirectory caller) {
+	FilePoller(Observer caller) {
 		_observedDirectory = new File("/tmp");
 		_caller = caller;
 		takeDirectorySnapshot();
@@ -28,7 +29,7 @@ class FilePoller extends Thread {
 
 	private void poll() {
 		if (directoryChanged(_observedDirectory.listFiles()))
-			_caller.notifyAll();
+			_caller.update(null, null);
 
 		takeDirectorySnapshot();
 	}

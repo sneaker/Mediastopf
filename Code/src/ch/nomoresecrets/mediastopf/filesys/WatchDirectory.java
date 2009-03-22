@@ -20,17 +20,15 @@ public class WatchDirectory extends Observable {
 	public WatchDirectory(String directoryPath) {
 		this._directoryPath = directoryPath;
 		this._lastScan = Calendar.getInstance();
-		new FilePoller(this).start();
+		//new FilePoller(this).start();
 	}
 
-	public void foundChange() {
-		hasChanged();
-	}
+
 	//	
-//		// TODO Auto-generated method stub
-//		System.out.println("Hat sich was geändert?");
-//		return false;
-//	}
+	// // TODO Auto-generated method stub
+	// System.out.println("Hat sich was geändert?");
+	// return false;
+	// }
 
 	// public List<File> newFiles() {
 	// return null;

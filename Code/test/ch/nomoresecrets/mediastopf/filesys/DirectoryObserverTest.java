@@ -16,10 +16,12 @@ import org.junit.Test;
 public class DirectoryObserverTest {
 
 	private DirectoryObserver changeScanner;
-	private UpdateDetectorTest notifyTester;
+	private UpdateDetector notifyTester;
 
-	class UpdateDetectorTest implements Observer {
+	class UpdateDetector implements Observer {
 		public boolean hasBeenUpdated = false;
+		
+		UpdateDetector () {}
 
 		public void update(Observable o, Object arg) {
 			hasBeenUpdated = true;
@@ -29,7 +31,7 @@ public class DirectoryObserverTest {
 	@Before
 	public void setUp() {
 		changeScanner = new DirectoryObserver("/tmp");
-		notifyTester = new UpdateDetectorTest();
+		notifyTester = new UpdateDetector();
 	}
 
 	@After

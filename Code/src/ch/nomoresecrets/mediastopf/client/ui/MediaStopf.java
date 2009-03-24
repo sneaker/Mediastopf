@@ -71,7 +71,6 @@ public class MediaStopf extends JFrame {
 		JMenuItem aboutItem = new JMenuItem("�ber...");
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -93,7 +92,6 @@ public class MediaStopf extends JFrame {
 			fileItem.setText(fileTitles[i]);
 			fileItem.setAccelerator(keyStrokes[i]);
 			fileItem.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == exit){
 						System.exit(0);

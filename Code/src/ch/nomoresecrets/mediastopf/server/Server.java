@@ -11,10 +11,17 @@ import ch.nomoresecrets.mediastopf.domain.*;
 
 public class Server {
 
+	private final int MAX_SERVER_THREADS = 10;
+	
 	public Server(int port) {
+<<<<<<< HEAD:Code/src/ch/nomoresecrets/mediastopf/server/Server.java
 		
 		loadData();
 		NetworkServer testserver = new NetworkServer(port);
+=======
+		NetworkServer netserver = new NetworkServer(port, MAX_SERVER_THREADS);
+		loadData();
+>>>>>>> thomas:Code/src/ch/nomoresecrets/mediastopf/server/Server.java
 		testserver.run();
 		
 	}

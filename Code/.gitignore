@@ -1,8 +1,3 @@
-<<<<<<< HEAD:Code/.gitignore
-a_filename
-=======
 bin/*
->>>>>>> thomas:Code/.gitignore
-*.classpath
 *.project
 a_filename

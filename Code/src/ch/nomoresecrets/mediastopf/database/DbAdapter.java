@@ -33,15 +33,15 @@ public class DbAdapter {
 		return connection;
 	}
 
-	public static List<Order> getOrderList() {
-		List<Order> resultlist = new ArrayList<Order>();
+	public static List<Auftrag> getOrderList() {
+		List<Auftrag> resultlist = new ArrayList<Auftrag>();
 		Connection conn;
 		try {
 			conn = getConnection();
 			Statement stat = conn.createStatement();
 			ResultSet res = stat.executeQuery("select * from Auftrag");
 			while (res.next()) {
-				resultlist.add(new Order(res));
+				resultlist.add(new Auftrag(res));
 			}
 			stat.close();
 		} catch (SQLException e) {

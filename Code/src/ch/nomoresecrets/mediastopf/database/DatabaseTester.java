@@ -4,7 +4,7 @@ import java.util.List;
 
 import ch.nomoresecrets.mediastopf.database.*;
 import ch.nomoresecrets.mediastopf.domain.*;
-import com.antelmann.cddb.*;
+
 
 public class DatabaseTester {
 

@@ -12,6 +12,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import ch.nomoresecrets.mediastopf.client.ui.dialogs.AboutDialog;
+
 public class MediaStopf extends JFrame {
 	/**
 	 * 
@@ -31,11 +33,9 @@ public class MediaStopf extends JFrame {
 		setLayout(null);
 		setMinimumSize(new Dimension(800, 600));
 		setSize(800, 600);
-		// setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION +
-		// "icon.gif")).getImage());
+		// setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.gif")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2,
-				(dim.height - getHeight()) / 2);
+		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 	}
 
@@ -46,9 +46,10 @@ public class MediaStopf extends JFrame {
 	 */
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		final String file = "Datei", help = "Hilfe";
+		final String file = "File", help = "Help";
 		final String[] menuItems = { file, help };
-		int[] keyEvent = new int[] { KeyEvent.VK_D, KeyEvent.VK_H };
+		final int fileMnemonic = KeyEvent.VK_F, helpMnemonic = KeyEvent.VK_H;
+		final int[] keyEvent = new int[] { fileMnemonic, helpMnemonic };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenu menu = new JMenu(menuItems[i]);
 			menu.setMnemonic(keyEvent[i]);
@@ -68,10 +69,12 @@ public class MediaStopf extends JFrame {
 	 * @param helpMenu
 	 */
 	private void addHelpItems(JMenu helpMenu) {
-		JMenuItem aboutItem = new JMenuItem("�ber...");
+		JMenuItem aboutItem = new JMenuItem("About...");
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				AboutDialog about = new AboutDialog();
+				about.setVisible(true);
 			}
 		});
 		helpMenu.add(aboutItem);
@@ -83,17 +86,20 @@ public class MediaStopf extends JFrame {
 	 * @param fileMenu JMenu
 	 */
 	private void addFileItems(JMenu fileMenu) {
-		final String exit = "Beenden";
-		final String[] fileTitles = { exit };
-		final KeyStroke[] keyStrokes = { KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				KeyEvent.CTRL_DOWN_MASK) };
+		final String log = "Log", exit = "Exit";
+		final String[] fileTitles = { log, exit };
+		final KeyStroke logAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK);
+		final KeyStroke exitAccelerator = null;
+		final KeyStroke[] keyStrokes = { logAccelerator,  exitAccelerator };
 		for (int i = 0; i < fileTitles.length; i++) {
 			JMenuItem fileItem = new JMenuItem();
 			fileItem.setText(fileTitles[i]);
 			fileItem.setAccelerator(keyStrokes[i]);
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == exit){
+					if (e.getActionCommand() == log) {
+						
+					} else if (e.getActionCommand() == exit){
 						System.exit(0);
 					}
 				}

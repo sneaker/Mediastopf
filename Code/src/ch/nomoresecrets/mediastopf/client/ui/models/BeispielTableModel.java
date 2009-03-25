@@ -28,18 +28,22 @@ public class BeispielTableModel extends AbstractTableModel implements Observer {
 		return columns[column];
 	}
 
+	@Override
 	public int getColumnCount() {
 		return columns.length;
 	}
 
+	@Override
 	public int getRowCount() {
 		return liste.size();
 	}
 	
+	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return true;
 	}
 
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object o = liste.get(rowIndex);
 		switch (columnIndex) {
@@ -57,6 +61,7 @@ public class BeispielTableModel extends AbstractTableModel implements Observer {
 		}
 	}
 	
+	@Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
 		Object o = liste.get(rowIndex);
 		switch(columnIndex) {
@@ -75,6 +80,7 @@ public class BeispielTableModel extends AbstractTableModel implements Observer {
 		}
     }
 	
+	@Override
 	public void update(Observable arg0, Object arg1) {
 		fireTableDataChanged();
 	}

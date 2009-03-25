@@ -27,7 +27,7 @@ public class RotateImageTest {
 	        data[i++] = (red << 16) | (green << 8) | blue;
 	      }
 	    }
-		image = new BufferedImage(width, 200, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		image.setRGB(0, 0, width, height, data, 0, width);
 	}
 

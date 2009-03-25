@@ -1,3 +1,5 @@
+Documentation/Praesentationen/*
+!Documentation/Praesentationen/*.tex
 Code/release
 Code/javadoc
 Code/test.bin

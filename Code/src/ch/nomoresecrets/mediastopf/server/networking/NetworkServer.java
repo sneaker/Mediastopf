@@ -5,27 +5,31 @@ import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class NetworkServer {
+public class NetworkServer implements Runnable {
 
 	private ServerSocket mediastop_ServerSocket;
+	private int THREADCOUNT;
 	
 	public NetworkServer(int port, int thread_count) {
 		try {
 			mediastop_ServerSocket = new ServerSocket(port);
+			THREADCOUNT = thread_count;
 		} catch (IOException e) {
 			System.err.println("Error: MediaStopf cannot bind to port: " + port);
 			System.err.println("Exiting...");
 			System.exit(-1);
 		}
-		
+	}
+
+	@Override
+	public void run() {
 		ExecutorService exec = null;
-		
+
 		for (int i = 0; i < 5; ++i) {
-			exec = Executors.newFixedThreadPool(thread_count);
+			exec = Executors.newFixedThreadPool(THREADCOUNT);
 		}
-		
-		
-		while(mediastop_ServerSocket.isBound()) {	
+
+		while (mediastop_ServerSocket.isBound()) {
 			try {
 				exec.execute(new NetworkServerThread(mediastop_ServerSocket.accept()));
 			} catch (IOException e) {

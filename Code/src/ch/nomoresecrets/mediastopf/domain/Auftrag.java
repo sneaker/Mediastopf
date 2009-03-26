@@ -102,7 +102,7 @@ public class Auftrag implements ActiveRecord {
 
 	@Override
 	public String toString() {
-		String myStr = "Auftrag-ID: " + id + " Name: " + name + " Medientyp: " + medientyp + " Anzahl: " + anzahlMedienSammlung + "\nenthält volgende Mediensammlungen:\n";
+		String myStr = "Auftrag-ID: " + id + " Name: " + name + " Medientyp: " + medientyp + " Anzahl: " + anzahlMedienSammlung + "\nenthaelt volgende Mediensammlungen:\n";
 		List<Mediensammlung> lp = ActiveRecordManager.getObjectList("select * from Mediensammlung where fk_Auftrag = " + id, Mediensammlung.class);
 		for (Mediensammlung Sammlung: lp) myStr = myStr + " " + Sammlung.toString() + "\n";
 		return myStr;

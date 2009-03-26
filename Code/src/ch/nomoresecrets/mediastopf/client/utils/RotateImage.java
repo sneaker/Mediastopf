@@ -16,7 +16,7 @@ public class RotateImage {
 	
 	/**
 	 * 2D image rotation with angle in deegree around the imagecenter.
-	 * y-axis = 0°
+	 * y-axis = 0 (Grad)
 	 * clockwise = positiv rotation
 	 * 
 	 * @param image BufferedImage

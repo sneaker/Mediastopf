@@ -11,7 +11,7 @@ import java.util.Vector;
  * 
  * @author MS
  */
-class DirectoryObserver extends Thread {
+public class DirectoryObserver extends Thread {
 
 	private static final int POLLING_INTERVAL = 2000;
 	private File _observedDirectory;
@@ -22,7 +22,7 @@ class DirectoryObserver extends Thread {
 	 * @param directory
 	 *            Chose the directory that should be observed.
 	 */
-	DirectoryObserver(String directory) {
+	public DirectoryObserver(String directory) {
 		_observedDirectory = new File(directory);
 		takeDirectorySnapshot();
 		_observers = new Vector<Observer>();

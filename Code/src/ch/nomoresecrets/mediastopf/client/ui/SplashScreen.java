@@ -36,7 +36,6 @@ public class SplashScreen extends JWindow implements Runnable {
 		new Thread(this).start();
 	}
 
-	@Override
 	public void run() {
 		JLabel label = new JLabel(new ImageIcon(getClass().getResource(image)));
 		add(label);

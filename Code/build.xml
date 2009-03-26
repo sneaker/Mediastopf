@@ -2,6 +2,7 @@
 
 <project default="release" name="MediaStopf" basedir=".">
 
+	<!-- FIXME: build separately for client/server, by Martin, 24.3.09 until 27.03.09 -->
 	<!-- One entry for each directory -->
 	<property name="src.dir" location="src" />
 	<property name="build.dir" location="bin" />

@@ -1,0 +1,56 @@
+% Install the following packages: beamer, xcolor and pgm
+
+\documentclass[]{beamer}
+\mode<presentation>{
+ \usetheme{Rochester}			% schlichtes, blaues theme
+ \setbeamercovered{transparent}		% Schattieren des verborgenen Textes
+}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}		% Support german umlauts
+\usepackage[ngerman]{babel}		% Print german date
+%\usepackage{pgfpages}			% Ausdruck auf mehrere Seiten
+%\pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=5mm]
+%\usepackage{graphicx}			% Graphiken benutzen
+
+\title{MediaStopf -- Review Milestone 3}
+\author{David Tran, Marco Birchler, \\ Thomas Kallenberg, Martin Schwab}
+\institute{HSR Hochschule Rapperswil}
+\date{ \today }
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Erster Titel}
+
+\begin{itemize}[<+->]
+\item Idee
+\item Programmierung
+\item Planung 
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Zweiter Titel}
+ein bisserl text
+\uncover<2->{Ab zweitem Klick anzeigen}
+\invisible<1>{das ist versteckt} 
+das ist sehr \alert{<1,3>wichtig}
+\begin{theorem}
+Das ist besonders interessant
+\end{theorem}
+
+\begin{enumerate}
+\item Reputationsverlust wird ignoriert.
+\item Unternehmen beziehen das Kundenverhalten mit ein.
+\item Unternehmen sind technisch noch nicht in Lage.
+\end{enumerate}
+
+% \minipage \includegraphics 10cm
+% \includegraphics[scale=0.3]{bild}
+
+\end{frame}
+
+\end{document}
+

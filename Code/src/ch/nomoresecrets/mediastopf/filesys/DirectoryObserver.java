@@ -22,7 +22,7 @@ class DirectoryObserver extends Thread {
 	 * @param directory
 	 *            Chose the directory that should be observed.
 	 */
-	DirectoryObserver(String directory) {
+	public DirectoryObserver(String directory) {
 		_observedDirectory = new File(directory);
 		takeDirectorySnapshot();
 		_observers = new Vector<Observer>();
@@ -79,11 +79,9 @@ class DirectoryObserver extends Thread {
 
 	private boolean directoryChanged(File[] newFileList) {
 		for (int i = 0; i < _lastDirectorySnapshot.length; i++) {
-			if (!_lastDirectorySnapshot[i].getName().equals(
-					newFileList[i].getName()))
+			if (!_lastDirectorySnapshot[i].getName().equalsIgnoreCase(newFileList[i].getName()))
 				return true;
 		}
 		return false;
 	}
-
 }

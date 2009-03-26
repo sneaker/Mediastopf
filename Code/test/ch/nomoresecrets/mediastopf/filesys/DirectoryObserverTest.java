@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,6 +14,8 @@ import org.junit.Test;
 
 public class DirectoryObserverTest {
 
+	private static final String TEMPDIR = System.getProperty("java.io.tmpdir");
+	
 	private DirectoryObserver changeScanner;
 	private UpdateDetector notifyTester;
 
@@ -30,18 +31,16 @@ public class DirectoryObserverTest {
 
 	@Before
 	public void setUp() {
-		changeScanner = new DirectoryObserver("/tmp");
+		changeScanner = new DirectoryObserver(TEMPDIR);
 		notifyTester = new UpdateDetector();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		File f = new File("/tmp");
+		File f = new File(TEMPDIR);
 		File[] list = f.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
-				if (pathname.getName().startsWith("newlyCreated"))
-					return true;
-				return false;
+				return (pathname.getName().startsWith("newlyCreated"));
 			}
 		});
 		for (int i = 0; i < list.length; i++)
@@ -49,31 +48,27 @@ public class DirectoryObserverTest {
 	}
 
 	@Test
-	public void observeDirectoryChange() throws IOException {
+	public void observeDirectoryChange() {
 		changeScanner.subscribe(notifyTester);
 		changeScanner.start();
 
-		assertFalse("Should not find filesystem changes",
-				notifyTester.hasBeenUpdated);
+		assertFalse("Should not find filesystem changes", notifyTester.hasBeenUpdated);
 
-		new DirectoryObserverTestHelper("/tmp").createFile();
+		new DirectoryObserverTestHelper(TEMPDIR).createFile();
 
 		changeScanner.poll();
 
-		assertTrue("Should detect filesystem changes",
-				notifyTester.hasBeenUpdated);
+		assertTrue("Should detect filesystem changes", notifyTester.hasBeenUpdated);
 	}
 
 	@Test
-	public void testSubscriptionMechanism() throws IOException {
+	public void testSubscriptionMechanism() {
 		changeScanner.subscribe(notifyTester);
 		changeScanner.unsubscribe(notifyTester);
 
 		changeScanner.start();
 
-		new DirectoryObserverTestHelper("/tmp").createFile();
-		assertFalse("Should not find filesystem changes",
-				notifyTester.hasBeenUpdated);
-
+		new DirectoryObserverTestHelper(TEMPDIR).createFile();
+		assertFalse("Should not find filesystem changes", notifyTester.hasBeenUpdated);
 	}
 }

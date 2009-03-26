@@ -7,36 +7,45 @@ import java.io.PrintStream;
 
 public class DirectoryObserverTestHelper {
 
-	private static String testDirectory;
+	private String testDirectory;
 
 	public DirectoryObserverTestHelper(String directory) {
-		testDirectory = directory;
+		testDirectory = directory + File.separator + "newlyCreated";
 	}
 
-	public void changeFile() throws IOException {
-		File f = new File(testDirectory + "/newlyCreated");
+	public void changeFile() {
+		File f = new File(testDirectory);
 		FileOutputStream fos;
 
 		if (!f.exists())
-			f.createNewFile();
-
-		fos = new FileOutputStream(testDirectory + "/newlyChanged");
-		new PrintStream(fos).println("Einige Ã„nderungen...");
-		fos.close();
+			try {
+				f.createNewFile();
+				fos = new FileOutputStream(testDirectory);
+				new PrintStream(fos).println("Einige Änderungen...");
+				fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 
-	public void toggleFileExistence() throws IOException {
-		File f = new File(testDirectory + "/newlyCreated");
+	public void toggleFileExistence() {
+		File f = new File(testDirectory);
 		if (f.exists())
 			f.delete();
 		else
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+
+	public void createFile() {
+		File f = new File(testDirectory + (int) (Math.random() * 1000));
+		try {
 			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-
-	public void createFile() throws IOException {
-		File f = new File(testDirectory + "/newlyCreated"
-				+ (int) (Math.random() * 1000));
-		f.createNewFile();
-	}
-
 }

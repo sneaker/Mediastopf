@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
  */
 public class RotateImage {
 	
+	private static double ANGLE = 0;
+	
 	/**
 	 * 2D image rotation with angle in deegree around the imagecenter.
 	 * y-axis = 0°
@@ -23,16 +25,16 @@ public class RotateImage {
 	 * @return BufferedImage
 	 */
 	public static BufferedImage rotate(BufferedImage image, double angle) {
-		angle = -angle;
-		while (360 < angle) {
-			angle -= 360;
+		ANGLE = -angle;
+		while (360 < ANGLE) {
+			ANGLE -= 360;
 		}
-		while (angle < 0) {
-			angle += 360;
+		while (ANGLE < 0) {
+			ANGLE += 360;
 		}
 		AffineTransform at = new AffineTransform();
-		at.rotate(Math.toRadians(angle), image.getWidth() / 2, image.getHeight() / 2);
-		at.preConcatenate(translate(at, image, angle));
+		at.rotate(Math.toRadians(ANGLE), image.getWidth() / 2, image.getHeight() / 2);
+		at.preConcatenate(translate(at, image));
 		AffineTransformOp ato = new AffineTransformOp(at, null);
 		return ato.filter(image, null);
 	}
@@ -46,29 +48,36 @@ public class RotateImage {
 	 * 
 	 * @return att Translate AffineTransform
 	 */
-	private static AffineTransform translate(AffineTransform at, BufferedImage bi, double angle) {
+	private static AffineTransform translate(AffineTransform at, BufferedImage bi) {
 		double ytrans = 0;
 		double xtrans = 0;
-		if (0 <= angle && angle < 90) {
-			ytrans = transform_point(0.0, 0.0, at).getY();
-			xtrans = transform_point(0.0, bi.getHeight(), at).getX();
-		} else if (90 <= angle && angle < 180) {
-			ytrans = transform_point(0.0, bi.getHeight(), at).getY();
-			xtrans = transform_point(bi.getWidth(), bi.getHeight(), at).getX();
-		} else if (180 <= angle && angle < 270) {
-			ytrans = transform_point(bi.getWidth(), bi.getHeight(), at).getY();
-			xtrans = transform_point(bi.getWidth(), 0.0, at).getX();
-		} else if (270 <= angle && angle < 360) {
-			ytrans = transform_point(bi.getWidth(), 0.0, at).getY();
-			xtrans = transform_point(0.0, 0.0, at).getX();
+		if (isAngleBetween(0, 90)) {
+			ytrans = transformPointY(0.0, 0.0, at);
+			xtrans = transformPointX(0.0, bi.getHeight(), at);
+		} else if (isAngleBetween(90, 180)) {
+			ytrans = transformPointY(0.0, bi.getHeight(), at);
+			xtrans = transformPointX(bi.getWidth(), bi.getHeight(), at);
+		} else if (isAngleBetween(180, 270)) {
+			ytrans = transformPointY(bi.getWidth(), bi.getHeight(), at);
+			xtrans = transformPointX(bi.getWidth(), 0.0, at);
+		} else if (isAngleBetween(270, 360)) {
+			ytrans = transformPointY(bi.getWidth(), 0.0, at);
+			xtrans = transformPointX(0.0, 0.0, at);
 		}
 		AffineTransform att = new AffineTransform();
 		att.translate(-xtrans, -ytrans);
 		return att;
 	}
 	
-	private static Point2D transform_point(double x, double y, AffineTransform at) {
-		Point2D p2d = new Point2D.Double(x, y);
-		return at.transform(p2d, null);
+	private static boolean isAngleBetween(int lower, int upper) {
+		return lower <= ANGLE && ANGLE < upper;
+	}
+	
+	private static double transformPointY(double x, double y, AffineTransform at) {
+		return at.transform(new Point2D.Double(x, y), null).getY();
+	}
+	
+	private static double transformPointX(double x, double y, AffineTransform at) {
+		return at.transform(new Point2D.Double(x, y), null).getX();
 	}
 }

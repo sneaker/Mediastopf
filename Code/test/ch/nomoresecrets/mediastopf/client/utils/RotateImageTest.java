@@ -3,18 +3,22 @@ package ch.nomoresecrets.mediastopf.client.utils;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * RotateImage Test Class
+ * 
+ * @author DT
+ */
 public class RotateImageTest {
 	
 	private BufferedImage image;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception { 
 	    int width = 100;
 	    int height = 200;
 	    int[] data = new int[width * height];
@@ -37,7 +41,7 @@ public class RotateImageTest {
 	}
 
 	@Test
-	public void testRotateByAngle() throws IOException {
+	public void testRotateByAngle() {
 		BufferedImage rotImage = RotateImage.rotate(image, 0);
 		assertEquals("Width", rotImage.getWidth(), 100);
 		assertEquals("Height", rotImage.getHeight(), 200);
@@ -45,6 +49,10 @@ public class RotateImageTest {
 		rotImage = RotateImage.rotate(image, 45);
 		assertEquals("Width", rotImage.getWidth(), 213);
 		assertEquals("Height", rotImage.getHeight(), 213);
+		
+		rotImage = RotateImage.rotate(image, 89);
+		assertEquals("Width", rotImage.getWidth(), 202);
+		assertEquals("Height", rotImage.getHeight(), 104);
 		
 		rotImage = RotateImage.rotate(image, 90);
 		assertEquals("Width", rotImage.getWidth(), 200);
@@ -54,6 +62,10 @@ public class RotateImageTest {
 		assertEquals("Width", rotImage.getWidth(), 213);
 		assertEquals("Height", rotImage.getHeight(), 213);
 		
+		rotImage = RotateImage.rotate(image, 179);
+		assertEquals("Width", rotImage.getWidth(), 104);
+		assertEquals("Height", rotImage.getHeight(), 202);
+		
 		rotImage = RotateImage.rotate(image, 180);
 		assertEquals("Width", rotImage.getWidth(), 100);
 		assertEquals("Height", rotImage.getHeight(), 200);
@@ -62,6 +74,10 @@ public class RotateImageTest {
 		assertEquals("Width", rotImage.getWidth(), 213);
 		assertEquals("Height", rotImage.getHeight(), 213);
 		
+		rotImage = RotateImage.rotate(image, 269);
+		assertEquals("Width", rotImage.getWidth(), 202);
+		assertEquals("Height", rotImage.getHeight(), 104);
+		
 		rotImage = RotateImage.rotate(image, 270);
 		assertEquals("Width", rotImage.getWidth(), 200);
 		assertEquals("Height", rotImage.getHeight(), 100);
@@ -69,6 +85,10 @@ public class RotateImageTest {
 		rotImage = RotateImage.rotate(image, 315);
 		assertEquals("Width", rotImage.getWidth(), 213);
 		assertEquals("Height", rotImage.getHeight(), 213);
+		
+		rotImage = RotateImage.rotate(image, 359);
+		assertEquals("Width", rotImage.getWidth(), 104);
+		assertEquals("Height", rotImage.getHeight(), 202);
 		
 		rotImage = RotateImage.rotate(image, 360);
 		assertEquals("Width", rotImage.getWidth(), 100);

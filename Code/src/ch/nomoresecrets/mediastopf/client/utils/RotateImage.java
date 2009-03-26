@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * rotate a 2D image with an angle in deegree around the imagecenter.
+ * NOT a lossless rotation
  * 
  * @author DT
  */

@@ -15,13 +15,11 @@ public class DirectoryObserverTestHelper {
 
 	public void changeFile() {
 		File f = new File(testDirectory);
-		FileOutputStream fos;
-
 		if (!f.exists())
 			try {
 				f.createNewFile();
-				fos = new FileOutputStream(testDirectory);
-				new PrintStream(fos).println("Einige Änderungen...");
+				FileOutputStream fos = new FileOutputStream(testDirectory);
+				new PrintStream(fos).println("Some Changes...");
 				fos.close();
 			} catch (IOException e) {
 				e.printStackTrace();

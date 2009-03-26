@@ -19,16 +19,6 @@ public class DirectoryObserverTest {
 	private DirectoryObserver changeScanner;
 	private UpdateDetector notifyTester;
 
-	class UpdateDetector implements Observer {
-		public boolean hasBeenUpdated = false;
-		
-		UpdateDetector () {}
-
-		public void update(Observable o, Object arg) {
-			hasBeenUpdated = true;
-		}
-	}
-
 	@Before
 	public void setUp() {
 		changeScanner = new DirectoryObserver(TEMPDIR);
@@ -52,13 +42,13 @@ public class DirectoryObserverTest {
 		changeScanner.subscribe(notifyTester);
 		changeScanner.start();
 
-		assertFalse("Should not find filesystem changes", notifyTester.hasBeenUpdated);
+		assertFalse("Should not find filesystem changes", notifyTester.isUpdated);
 
 		new DirectoryObserverTestHelper(TEMPDIR).createFile();
 
 		changeScanner.poll();
 
-		assertTrue("Should detect filesystem changes", notifyTester.hasBeenUpdated);
+		assertTrue("Should detect filesystem changes", notifyTester.isUpdated);
 	}
 
 	@Test
@@ -69,6 +59,14 @@ public class DirectoryObserverTest {
 		changeScanner.start();
 
 		new DirectoryObserverTestHelper(TEMPDIR).createFile();
-		assertFalse("Should not find filesystem changes", notifyTester.hasBeenUpdated);
+		assertFalse("Should not find filesystem changes", notifyTester.isUpdated);
+	}
+	
+	private class UpdateDetector implements Observer {
+		public boolean isUpdated = false;
+		
+		public void update(Observable o, Object arg) {
+			isUpdated = true;
+		}
 	}
 }

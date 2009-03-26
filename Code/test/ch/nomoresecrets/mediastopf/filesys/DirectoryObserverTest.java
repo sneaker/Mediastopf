@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
+
 public class DirectoryObserverTest {
 
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir");

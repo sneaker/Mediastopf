@@ -11,7 +11,7 @@ import java.util.Vector;
  * 
  * @author MS
  */
-class DirectoryObserver extends Thread {
+public class DirectoryObserver extends Thread {
 
 	private static final int POLLING_INTERVAL = 2000;
 	private File _observedDirectory;

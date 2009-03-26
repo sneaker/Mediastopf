@@ -14,9 +14,6 @@ public class Auftrag implements ActiveRecord {
 	private int anzahlMedienSammlung, anzahlCompletedSammlung;
 	private int id = NOTINDB;
 	private List<Mediensammlung> mediensammlunglist;
-	
-	
-	
 
 	public Auftrag(String name, String medientyp, int anzahl) {
 		this.name = name;
@@ -125,7 +122,4 @@ public class Auftrag implements ActiveRecord {
 			return res.get(0);
 		}
 	}
-
-	
-
 }

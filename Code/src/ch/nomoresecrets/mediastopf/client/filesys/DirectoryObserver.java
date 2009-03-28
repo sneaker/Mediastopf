@@ -60,7 +60,7 @@ public class DirectoryObserver extends Thread {
 		}
 	}
 
-	protected void poll() {
+	public void poll() {
 		if (directoryChanged(_observedDirectory.listFiles()))
 			updateAll();
 

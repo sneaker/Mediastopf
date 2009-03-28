@@ -1,4 +1,4 @@
-package ch.nomoresecrets.mediastopf.client.logic;
+package ch.nomoresecrets.mediastopf.server.logic;
 
 import java.util.ArrayList;
 import java.util.Observable;

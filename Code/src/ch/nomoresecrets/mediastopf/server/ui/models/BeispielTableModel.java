@@ -1,11 +1,11 @@
-package ch.nomoresecrets.mediastopf.client.ui.models;
+package ch.nomoresecrets.mediastopf.server.ui.models;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
-import ch.nomoresecrets.mediastopf.client.logic.BeispielListe;
+import ch.nomoresecrets.mediastopf.client.logic.TaskRunningList;
 
 public class BeispielTableModel extends AbstractTableModel implements Observer {
 
@@ -16,9 +16,9 @@ public class BeispielTableModel extends AbstractTableModel implements Observer {
 	
 	private static final String[] columns = { "ID", "Produkt", "Preis (CHF)", "Anzahl" };
 	
-	private BeispielListe liste;
+	private TaskRunningList liste;
 	
-	public BeispielTableModel(BeispielListe liste) {
+	public BeispielTableModel(TaskRunningList liste) {
 		this.liste = liste;
 		liste.addObserver(this);
 	}

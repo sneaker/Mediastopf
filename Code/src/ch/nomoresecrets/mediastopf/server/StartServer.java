@@ -1,6 +1,17 @@
 package ch.nomoresecrets.mediastopf.server;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
+import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
+import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
+
 public class StartServer {
+	
+	public static boolean DEBUG = false;
+	
+	private static final String SPLASHIMAGE = MediaStopfServer.UIIMAGELOCATION + "splash.jpg";
 
 	/**
 	 * Start Server
@@ -8,6 +19,27 @@ public class StartServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
+		
+		MediaStopfServer mediastopf = new MediaStopfServer();
+		if (0 < args.length && args[0].equalsIgnoreCase("-debug")) {
+			DEBUG = true;
+			mediastopf.setTitle(MediaStopf.PROGRAM + " - Debug");
+		} else {
+			new SplashScreen(SPLASHIMAGE);
+		}
+		mediastopf.setVisible(true);
+		
 		int port = 1337;
 		if (0 < args.length && args[0].equalsIgnoreCase("-port")) {
 			port = Integer.valueOf(args[1]);

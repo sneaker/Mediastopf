@@ -6,11 +6,14 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -18,9 +21,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileFilter;
 
 import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
@@ -33,6 +40,8 @@ public class LogDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	private JTextArea textArea;
+	private JScrollPane scrollArea;
+	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private final String save = "Save as TXT", close = "Close";
 	private boolean suspendThread = false;
@@ -56,22 +65,47 @@ public class LogDialog extends JDialog {
 		addRefreshBox();
 		addTextArea();
 		addLogListener();
+		
+		addComponentListener(new ComponentAdapter() {
+			private boolean isShown = false;
+			@Override
+		    public void componentResized(ComponentEvent e) {
+				if(isShown) {
+					scrollArea.setSize(getWidth()-15, getHeight()-80);
+					scrollArea.revalidate();
+					box.setLocation(10, getHeight()-60);
+					buttonMap.get(save).setLocation(getWidth()-250, getHeight()-65);
+					buttonMap.get(close).setLocation(getWidth()-140, getHeight()-65);
+				}
+			}
+			@Override
+		    public void componentShown(ComponentEvent e) {
+				isShown = true;
+			}
+			@Override
+		    public void componentHidden(ComponentEvent e) {
+				suspendListener();
+			}
+		});
 	}
 
 	private void addTextArea() {
 		textArea = new JTextArea("test");
 		textArea.setEditable(false);
-		textArea.setBounds(5, 5, 485, 350);
 		textArea.setBorder(LineBorder.createBlackLineBorder());
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		scrollArea = new JScrollPane(textArea);
+		scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollArea.setBounds(5, 5, 485, 350);
 
-		add(textArea);
+		add(scrollArea);
 	}
 
 	private void addRefreshBox() {
-		final JCheckBox box = new JCheckBox("Auto Refresh");
+		box = new JCheckBox("Auto Refresh");
 		box.setSelected(true);
 		box.setBounds(10, 370, 100, 20);
 		box.addActionListener(new ActionListener() {
@@ -155,7 +189,7 @@ public class LogDialog extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
-
+						saveAsTXT();
 					} else if (e.getActionCommand() == close) {
 						close();
 					}
@@ -164,6 +198,76 @@ public class LogDialog extends JDialog {
 			add(button);
 			buttonMap.put(buttonText[i], button);
 		}
+	}
+	
+	private void saveAsTXT() {
+		JFileChooser fileChooser = getFileChooser();
+		fileFilter(fileChooser);
+
+		int returnVal = fileChooser.showSaveDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			String filename = fileChooser.getSelectedFile().getName();
+			String path = fileChooser.getCurrentDirectory().toString();
+			
+			String file = path + File.separator + filename;
+			if(!filename.endsWith("txt")) {
+				file += ".txt";
+			}
+			writeFile(file);
+		}
+	}
+
+	private void writeFile(String file) {
+		try {
+			FileWriter fw = new FileWriter(new File(file));
+			fw.write(textArea.getText().trim());
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private JFileChooser getFileChooser() {
+		JFileChooser fileChooser = new JFileChooser() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+            public void approveSelection() {
+                File f = getSelectedFile();
+                if(f.exists() && getDialogType() == SAVE_DIALOG) {
+                    int result = JOptionPane.showConfirmDialog(getTopLevelAncestor(),
+                            "The selected file already exists. " +
+                            "Do you want to overwrite it?",
+                            "The file already exists",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+                    switch(result)  {
+                    case JOptionPane.YES_OPTION:
+                        super.approveSelection();
+                        return;
+                    case JOptionPane.NO_OPTION:
+                        return;
+                    case JOptionPane.CANCEL_OPTION:
+                        cancelSelection();
+                        return;
+                    }
+                }
+                super.approveSelection();
+            }
+		};
+		return fileChooser;
+	}
+
+	private void fileFilter(JFileChooser fileChooser) {
+		fileChooser.setFileFilter(new FileFilter() {
+			public boolean accept(File file) {
+				return file.getName().toLowerCase().endsWith(".txt") || file.isDirectory();
+			}
+			public String getDescription() {
+				return "*.txt";
+			}
+		});
 	}
 
 	/**

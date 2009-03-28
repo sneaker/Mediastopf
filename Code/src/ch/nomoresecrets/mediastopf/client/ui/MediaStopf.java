@@ -326,6 +326,9 @@ public class MediaStopf extends JFrame {
 		final KeyStroke exitAccelerator = null;
 		final KeyStroke[] keyStrokes = { configAccelerator, exitAccelerator };
 		for (int i = 0; i < fileTitles.length; i++) {
+			if(i == 1) {
+				fileMenu.addSeparator();
+			}
 			JMenuItem fileItem = new JMenuItem();
 			fileItem.setText(fileTitles[i]);
 			fileItem.setAccelerator(keyStrokes[i]);

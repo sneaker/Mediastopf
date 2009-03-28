@@ -10,7 +10,7 @@ public class ImportRunningList extends Observable {
 	private ArrayList<Task> list = new ArrayList<Task>();
 	
 	public ImportRunningList() {
-		if(!StartServer.DEBUG) {
+		if(StartServer.DEBUG) {
 			for(int i=0; i < 10; i++) {
 				add(new Task(i, "Test"));
 			}

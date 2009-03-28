@@ -6,9 +6,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.apache.log4j.Level;
+
 import ch.nomoresecrets.mediastopf.client.networking.TestConnect;
 import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
 import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
+import ch.nomoresecrets.mediastopf.server.log.Log;
 
 public class StartClient {
 
@@ -23,6 +26,9 @@ public class StartClient {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		Log log = new Log();
+		log.setLevel(Level.ALL);
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {
@@ -36,11 +42,13 @@ public class StartClient {
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MediaStopf mediastopf = new MediaStopf();
+				MediaStopf mediastopf;
 				if (0 < args.length && args[0].equalsIgnoreCase("-debug")) {
 					DEBUG = true;
+					mediastopf = new MediaStopf();
 					mediastopf.setTitle(MediaStopf.PROGRAM + " - Debug");
 				} else {
+					mediastopf = new MediaStopf();
 					new SplashScreen(SPLASHIMAGE);
 				}
 				mediastopf.setVisible(true);

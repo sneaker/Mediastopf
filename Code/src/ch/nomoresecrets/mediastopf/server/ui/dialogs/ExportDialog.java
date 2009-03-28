@@ -77,7 +77,7 @@ public class ExportDialog extends JDialog {
 		exportTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
-				openDefaultFolderFileChooser();
+				openExportFileChooser();
 			}
 		});
 		JLabel iconLabel = createLabel("export.png", new Rectangle(12, 30, 40, 40));
@@ -85,7 +85,7 @@ public class ExportDialog extends JDialog {
 		openIcon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				openDefaultFolderFileChooser();
+				openExportFileChooser();
 			}
 		});
 
@@ -217,7 +217,7 @@ public class ExportDialog extends JDialog {
 			exportTextField.setText(prop.getProperty(export));
 	}
 	
-	private void openDefaultFolderFileChooser() {
+	private void openExportFileChooser() {
 		JFileChooser dirChooser = new JFileChooser();
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);

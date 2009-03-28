@@ -11,7 +11,7 @@ import org.apache.log4j.PatternLayout;
 
 public class Log {
 	
-	private static final String SERVERLOG = "server.log";
+	private static final String LOGFILE = "mediastopfserver.log";
 	private static Logger logger = Logger.getRootLogger();
 
 	public Log() {
@@ -27,7 +27,18 @@ public class Log {
 	}
 
 	private void fileLogger(PatternLayout layout) {
-		File f = new File("server.log");
+		createFile();
+		FileAppender fileAppender = null;
+		try {
+			fileAppender = new FileAppender(layout, LOGFILE, false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		logger.addAppender(fileAppender);
+	}
+
+	private void createFile() {
+		File f = new File(LOGFILE);
 		if(!f.exists()) {
 			try {
 				f.createNewFile();
@@ -35,13 +46,6 @@ public class Log {
 				e.printStackTrace();
 			}
 		}
-		FileAppender fileAppender = null;
-		try {
-			fileAppender = new FileAppender(layout, SERVERLOG, false);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		logger.addAppender(fileAppender);
 	}
 	
 	/**
@@ -69,6 +73,6 @@ public class Log {
 	 * @return String
 	 */
 	public static String getServerLog() {
-		return SERVERLOG;
+		return LOGFILE;
 	}
 }

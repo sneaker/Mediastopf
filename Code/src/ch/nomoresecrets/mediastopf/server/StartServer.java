@@ -5,6 +5,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
@@ -23,7 +24,7 @@ public class StartServer {
 	 */
 	public static void main(final String[] args) {
 		Log log = new Log();
-		log.setLevel(Level.DEBUG);
+		log.setLevel(Level.ALL);
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -38,11 +39,13 @@ public class StartServer {
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MediaStopfServer mediastopf = new MediaStopfServer();
+				MediaStopfServer mediastopf;
 				if (0 < args.length && args[0].equalsIgnoreCase("-debug")) {
 					DEBUG = true;
+					mediastopf = new MediaStopfServer();
 					mediastopf.setTitle(MediaStopfServer.PROGRAM + " - Debug");
 				} else {
+					mediastopf = new MediaStopfServer();
 					new SplashScreen(SPLASHIMAGE);
 				}
 				mediastopf.setVisible(true);
@@ -50,21 +53,24 @@ public class StartServer {
 		});
 		
 		
-//		int port = 1337;
-//		if (0 < args.length && args[0].equalsIgnoreCase("-port")) {
-//			port = Integer.valueOf(args[1]);
-//		}
-//		
-//		// TODO: ANPASSEN!
-//		System.out.println("MediaStopf - Ein Softwaresystem zum Lieb haben ;)");
-//		System.out.println("===============================================================");
-//		System.out.println("Copyright (C)2009");
-//		System.out.println("Powered by NoMoreSecrets");
-//		System.out.println("www.no-more-secrets.ch");
-//		System.out.println("University of Applied Science Rapperswil");
-//		System.out.println("www.hsr.ch");
-//		System.out.println("");
-//
-//		new Server(port);
+		int port = 1337;
+		if (0 < args.length && args[0].equalsIgnoreCase("-port")) {
+			port = Integer.valueOf(args[1]);
+		}
+		
+		// TODO: ANPASSEN!
+		Logger logger = Log.getLogger();
+		logger.info("=======================================================");
+		logger.info("MediaStopf - Ein Softwaresystem zum Lieb haben ;)");
+		logger.info("=======================================================");
+		logger.info("Copyright (C)2009");
+		logger.info("Powered by NoMoreSecrets");
+		logger.info("www.no-more-secrets.ch");
+		logger.info("University of Applied Science Rapperswil");
+		logger.info("www.hsr.ch");
+		logger.info("=======================================================");
+		logger.info("Server started (Port: " + port + ")");
+
+		new Server(port);
 	}
 }

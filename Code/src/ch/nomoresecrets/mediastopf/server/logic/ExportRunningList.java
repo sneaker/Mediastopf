@@ -10,7 +10,7 @@ public class ExportRunningList extends Observable {
 	private ArrayList<Task> list = new ArrayList<Task>();
 	
 	public ExportRunningList() {
-		if(!StartServer.DEBUG) {
+		if(StartServer.DEBUG) {
 			for(int i=10; i < 20; i++) {
 				add(new Task(i, "Test"));
 			}

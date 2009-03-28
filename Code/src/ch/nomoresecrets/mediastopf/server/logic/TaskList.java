@@ -10,7 +10,7 @@ public class TaskList extends Observable {
 	private ArrayList<String> list = new ArrayList<String>();
 	
 	public TaskList() {
-		if(!StartServer.DEBUG) {
+		if(StartServer.DEBUG) {
 			for(int i=0; i < 10; i++) {
 				add("test" + i);
 			}

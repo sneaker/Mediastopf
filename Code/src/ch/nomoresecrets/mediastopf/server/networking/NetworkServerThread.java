@@ -10,6 +10,10 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.client.log.Log;
+
 public class NetworkServerThread implements Runnable {
 
 	private Socket clientSocket;
@@ -17,6 +21,7 @@ public class NetworkServerThread implements Runnable {
 	private BufferedReader receiver = null;
 
 	private PrintWriter sender = null;
+	private Logger logger = Log.getLogger();
 
 	public NetworkServerThread(Socket clientSocket) {
 		this.clientSocket = clientSocket;
@@ -28,7 +33,7 @@ public class NetworkServerThread implements Runnable {
 		try {
 			receivedMessage = receiveMessage();
 		} catch (IOException e) {
-			System.out.println("Cannot read from receiver");
+			logger.error("Cannot read from receiver");
 			e.printStackTrace();
 		}
 		
@@ -40,13 +45,13 @@ public class NetworkServerThread implements Runnable {
 			if (receivedMessage.equals("TRANSFER"))
 				receiveFile();
 		} catch (IOException e) {
-			System.out.println("cannot write to sender");
+			logger.error("cannot write to sender");
 			e.printStackTrace();
 		}
 	}
 	
 	private void receiveFile() throws IOException {
-		System.out.println("Waiting for Filetransfer...");
+		logger.info("Waiting for Filetransfer...");
 		final int FILESIZE = 21319002;
 		int bytesread = 0;
 		byte[] filebuffer = new byte[FILESIZE];
@@ -55,13 +60,13 @@ public class NetworkServerThread implements Runnable {
 		BufferedOutputStream bos = new BufferedOutputStream(writer);
 
 		while((bytesread += reader.read(filebuffer, 0, filebuffer.length)) != -1) {
-			System.out.println("reading...");
-			System.out.println(bytesread);
-			System.out.println("filebuffer: " + filebuffer);
+			logger.info("reading...");
+			logger.info(bytesread);
+			logger.info("filebuffer: " + filebuffer);
 			if (bytesread >= FILESIZE)
 				break;
 		}
-		System.out.println("Transfer Server finished");
+		logger.info("Transfer Server finished");
 		
 		bos.write(filebuffer, 0, FILESIZE);
 		bos.flush();
@@ -73,15 +78,15 @@ public class NetworkServerThread implements Runnable {
 			receiver = new BufferedReader(new InputStreamReader(clientSocket
 					.getInputStream()));
 		} catch (IOException e) {
-			System.out.println("Error: Cannot get InputStream");
+			logger.error("Error: Cannot get InputStream");
 			e.printStackTrace();
 		}
 		String receivedMessage;
 
 		receivedMessage = receiver.readLine();
 
-		System.out.println("A message from a client: ");
-		System.out.println(receivedMessage);
+		logger.info("A message from a client: ");
+		logger.info(receivedMessage);
 
 		return receivedMessage;
 	}
@@ -91,10 +96,10 @@ public class NetworkServerThread implements Runnable {
 			sender = new PrintWriter(new OutputStreamWriter(clientSocket
 					.getOutputStream()), true);
 		} catch (IOException e) {
-			System.out.println("Error: Cannot get OutputStream");
+			logger.error("Error: Cannot get OutputStream");
 		}
 		
 		sender.println(reply);
-		System.out.println("The Reply: " + reply);
+		logger.info("The Reply: " + reply);
 	}
 }

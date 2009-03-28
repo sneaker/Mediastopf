@@ -22,6 +22,7 @@ public class DatabaseTester {
 		List<Auftrag> lp = ActiveRecordManager.getObjectList(sql, Auftrag.class);
 		for (Auftrag name: lp) System.out.println(name.toString());
 
+		
 		//Get data from DB via adapter class
 		lp = DbAdapter.getOrderList();
 		for (Auftrag name: lp) System.out.println(name.toString());

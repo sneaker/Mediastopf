@@ -45,6 +45,7 @@ public class AboutDialog extends JDialog {
 		setResizable(false);
 		setModal(true);
 		setSize(400, 250);
+		setIconImage(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
 		

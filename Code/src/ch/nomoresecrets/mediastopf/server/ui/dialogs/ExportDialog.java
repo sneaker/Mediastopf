@@ -1,4 +1,4 @@
-package ch.nomoresecrets.mediastopf.client.ui.dialogs;
+package ch.nomoresecrets.mediastopf.server.ui.dialogs;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -19,19 +19,19 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileFilter;
 
-import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
+import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
 
-public class ConfigDialog extends JFrame {
+public class ExportDialog extends JDialog {
 
-	private static final String CONFIGFILE = "MediaStopf.cfg";
+	private static final String CONFIGFILE = "MediaStopfServer.cfg";
 
 	/**
 	 * 
@@ -39,10 +39,13 @@ public class ConfigDialog extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private Properties prop = new Properties();
-	private JTextField ripperTextField, folderTextField;
-	private String audioripper = "audioripper", defaultfolder = "defaultfolder";
+	private JTextField exportTextField;
+	private String export = "exportfolder";
+	private String tasknum;
 
-	public ConfigDialog() {
+	public ExportDialog(String tasknum) {
+		this.tasknum = tasknum;
+		
 		initGUI();
 	}
 
@@ -50,34 +53,34 @@ public class ConfigDialog extends JFrame {
 	 * init GUI
 	 */
 	private void initGUI() {
-		setTitle(MediaStopf.PROGRAM + " - Config");
+		setTitle(MediaStopfServer.PROGRAM + " - Export");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
 		setResizable(false);
-		setSize(400, 230);
-		setIconImage(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "icon.png")).getImage());
+		setSize(400, 150);
+		setModal(true);
+		setIconImage(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 
 		addButtons();
 		addDefaultFolderPanel();
-		addAudioRipper();
 		
 		loadProperties();
 	}
 
 	private void addDefaultFolderPanel() {
-		JPanel panel = createPanel("Default Folder");
+		JPanel panel = createPanel("Export Storage");
 		panel.setBounds(0, 10, 395, 70);
-		folderTextField = createTextField();
-		folderTextField.setLocation(60, 40);
-		folderTextField.addMouseListener(new MouseAdapter() {
+		exportTextField = createTextField();
+		exportTextField.setLocation(60, 40);
+		exportTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
 				openDefaultFolderFileChooser();
 			}
 		});
-		JLabel iconLabel = createLabel("defaultfolder.png", new Rectangle(12, 30, 40, 40));
+		JLabel iconLabel = createLabel("export.png", new Rectangle(12, 30, 40, 40));
 		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
 		openIcon.addActionListener(new ActionListener() {
 			@Override
@@ -86,33 +89,7 @@ public class ConfigDialog extends JFrame {
 			}
 		});
 
-		JComponent[] comp = { panel, folderTextField, iconLabel, openIcon };
-		for(JComponent c: comp) {
-			add(c);
-		}
-	}
-
-	private void addAudioRipper() {
-		JPanel panel = createPanel("AudioRipper");
-		panel.setBounds(0, 85, 395, 70);
-		ripperTextField = createTextField();
-		ripperTextField.setLocation(60, 115);
-		ripperTextField.addMouseListener(new MouseAdapter() {
-			@Override
-			 public void mousePressed(MouseEvent e) {
-				openAudioRipperDirChooser();
-			}
-		});
-		JLabel iconLabel = createLabel("audioripper.png", new Rectangle(12, 105, 40, 40));
-		JButton openIcon = createOpenButton(new Rectangle(355, 115, 22, 22));
-		openIcon.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openAudioRipperDirChooser();
-			}
-		});
-
-		JComponent[] comp = { panel, ripperTextField, iconLabel, openIcon };
+		JComponent[] comp = { panel, exportTextField, iconLabel, openIcon };
 		for(JComponent c: comp) {
 			add(c);
 		}
@@ -120,7 +97,7 @@ public class ConfigDialog extends JFrame {
 	
 	private JButton createOpenButton(Rectangle rec) {
 		JButton button = new JButton();
-		button.setIcon(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "open.png")));
+		button.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "open.png")));
 		button.setBounds(rec);
 		button.setToolTipText("Choose Directory");
 		return button;
@@ -128,7 +105,7 @@ public class ConfigDialog extends JFrame {
 
 	private JLabel createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + icon)));
 		label.setBounds(rec);
 		label.setBorder(LineBorder.createBlackLineBorder());
 		return label;
@@ -160,11 +137,11 @@ public class ConfigDialog extends JFrame {
 	 */
 	private void addButtons() {
 		int x = 150;
-		int y = 170;
+		int y = 90;
 		int width = 100;
 		int height = 25;
-		final String ok = "OK", close = "Close";
-		final String[] buttonText = { ok, close };
+		final String export = "Export", close = "Close";
+		final String[] buttonText = { export, close };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
@@ -178,16 +155,21 @@ public class ConfigDialog extends JFrame {
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == ok) {
-						saveProperties();
-						close();
+					if (e.getActionCommand() == export) {
+						export();
 					} else if (e.getActionCommand() == close) {
+						saveProperties();
 						close();
 					}
 				}
 			});
 			add(button);
 		}
+	}
+	
+	private void export() {
+		// TODO
+		MessageDialog.info("Export " + tasknum, "export to " + exportTextField.getText().trim());
 	}
 	
 	/**
@@ -202,10 +184,8 @@ public class ConfigDialog extends JFrame {
 	 * save properties.
 	 */
 	void saveProperties() {
-		if(!ripperTextField.getText().isEmpty())
-			prop.setProperty(audioripper, ripperTextField.getText());
-		if(!folderTextField.getText().isEmpty())
-			prop.setProperty(defaultfolder, folderTextField.getText());
+		if(!exportTextField.getText().isEmpty())
+			prop.setProperty(export, exportTextField.getText().trim());
 		try {
 			prop.store(new FileWriter(CONFIGFILE), "MediaStopf Config");
 		} catch (IOException e) {
@@ -233,23 +213,15 @@ public class ConfigDialog extends JFrame {
 		} catch (IOException e) {
 			System.out.println(e);
 		}
-		if(prop.containsKey(audioripper))
-			ripperTextField.setText(prop.getProperty(audioripper).trim());
-		if(prop.containsKey(defaultfolder))
-			folderTextField.setText(prop.getProperty(defaultfolder).trim());
+		if(prop.containsKey(export))
+			exportTextField.setText(prop.getProperty(export));
 	}
 	
 	private void openDefaultFolderFileChooser() {
-		JFileChooser fileChooser = new JFileChooser();
-		fileFilter(fileChooser);
-		openDialog(fileChooser, folderTextField);
-	}
-	
-	private void openAudioRipperDirChooser() {
 		JFileChooser dirChooser = new JFileChooser();
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
-		openDialog(dirChooser, ripperTextField);
+		openDialog(dirChooser, exportTextField);
 	}
 
 	private void openDialog(JFileChooser dirChooser, JTextField textField) {
@@ -257,20 +229,7 @@ public class ConfigDialog extends JFrame {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = dirChooser.getSelectedFile().getName();
 			String path = dirChooser.getCurrentDirectory().toString();
-			textField.setText(path + File.separator + filename);
-		}
-	}
-
-	private void fileFilter(JFileChooser fileChooser) {
-		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-			fileChooser.setFileFilter(new FileFilter() {
-				public boolean accept(File file) {
-					return file.getName().toLowerCase().endsWith(".exe") || file.isDirectory();
-				}
-				public String getDescription() {
-					return "*.exe";
-				}
-			});
+			textField.setText(path + File.separator + filename + File.separator);
 		}
 	}
 }

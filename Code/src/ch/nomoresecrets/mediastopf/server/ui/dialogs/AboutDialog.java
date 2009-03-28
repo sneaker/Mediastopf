@@ -9,8 +9,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,8 +21,8 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
-import ch.nomoresecrets.mediastopf.client.utils.BrowserControl;
+import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
+import ch.nomoresecrets.mediastopf.server.utils.BrowserControl;
 
 public class AboutDialog extends JDialog {
 
@@ -32,7 +30,7 @@ public class AboutDialog extends JDialog {
 	
 	private static final String URL = "www.no-more-secrets.ch";
 	private static final String URLEXT = "powered by No More Secrets";
-	private static final String BACKGROUNDIMAGE = MediaStopf.UIIMAGELOCATION + "about.jpg";
+	private static final String BACKGROUNDIMAGE = MediaStopfServer.UIIMAGELOCATION + "about.jpg";
 	
 	public AboutDialog() {
 		initGUI();
@@ -42,16 +40,18 @@ public class AboutDialog extends JDialog {
 	 * create and set gui components
 	 */
 	private void initGUI() {
-		setTitle(MediaStopf.PROGRAM + " - About...");
+		setTitle(MediaStopfServer.PROGRAM + " - About...");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setModal(true);
 		setSize(400, 250);
+		setIconImage(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
 		
 		addESCListener();
 		addCloseButton();
+		addWebsiteButton();
 		addURL();
 		drawBackgroundImage();
 	}
@@ -70,6 +70,18 @@ public class AboutDialog extends JDialog {
 		});
 		add(button_close);
 	}
+	
+	private void addWebsiteButton() {
+		JButton button_website = new JButton();
+		button_website.setText("Website");
+		button_website.setBounds(175, 190, 100, 20);
+		button_website.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BrowserControl.displayURL(URL);
+			}
+		});
+		add(button_website);
+	}
 
 	/**
 	 * draw background image
@@ -85,12 +97,6 @@ public class AboutDialog extends JDialog {
 		};
 		panel.setOpaque(false);
 		panel.setLayout(null);
-		panel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				BrowserControl.displayURL(URL);
-			}
-		});
 		add(panel);
 	}
 	
@@ -121,7 +127,7 @@ public class AboutDialog extends JDialog {
 	private void addURL() {
 		JTextField textField = new JTextField(URL);
 		textField.setHorizontalAlignment(JTextField.CENTER);
-		textField.setBounds(new Rectangle(10, 190, 265, 20));
+		textField.setBounds(new Rectangle(10, 190, 155, 20));
 		textField.setEditable(false);
 		textField.setOpaque(false);
 		textField.setToolTipText(URLEXT);

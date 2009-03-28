@@ -5,22 +5,23 @@ import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
-import ch.nomoresecrets.mediastopf.client.logic.TaskRunningList;
+import ch.nomoresecrets.mediastopf.server.logic.Task;
+import ch.nomoresecrets.mediastopf.server.logic.ExportRunningList;
 
-public class BeispielTableModel extends AbstractTableModel implements Observer {
+public class ExportTableModel extends AbstractTableModel implements Observer {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final String[] columns = { "ID", "Produkt", "Preis (CHF)", "Anzahl" };
+	private static final String[] columns = { "Task", "Status", "" };
 	
-	private TaskRunningList liste;
+	private ExportRunningList list;
 	
-	public BeispielTableModel(TaskRunningList liste) {
-		this.liste = liste;
-		liste.addObserver(this);
+	public ExportTableModel(ExportRunningList list) {
+		this.list = list;
+		list.addObserver(this);
 	}
 
 	@Override
@@ -35,47 +36,39 @@ public class BeispielTableModel extends AbstractTableModel implements Observer {
 
 	@Override
 	public int getRowCount() {
-		return liste.size();
+		return list.size();
 	}
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return true;
+		return false;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Object o = liste.get(rowIndex);
+		Task task = list.get(rowIndex);
 		switch (columnIndex) {
-		// TODO
 		case 0:
-			return null;
+			return task.getTasknum();
 		case 1:
-			return null;
-		case 2:
-			return null;
-		case 3:
-			return null;
+			return task.getStatus();
 		default:
-			return null;
+			return "";
 		}
 	}
 	
 	@Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		Object o = liste.get(rowIndex);
+		Task task = list.get(rowIndex);
 		switch(columnIndex) {
 		case 1:
-			// TODO
+			String aValue = (String) value;
+			task.setTasknum(Integer.valueOf(aValue));
 			break;
 		case 2:
-			// TODO
-			break;
-		case 3:
-			// TODO
+			task.setStatus((String) value);
 			break;
 		default:
-			// TODO
 			break;
 		}
     }

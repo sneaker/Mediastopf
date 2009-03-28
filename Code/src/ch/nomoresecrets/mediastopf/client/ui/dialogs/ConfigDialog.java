@@ -22,7 +22,6 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -242,13 +241,13 @@ public class ConfigDialog extends JFrame {
 	}
 	
 	private void openDefaultFolderFileChooser() {
-		JFileChooser fileChooser = openFileChooser();
+		JFileChooser fileChooser = new JFileChooser();
 		fileFilter(fileChooser);
 		openDialog(fileChooser, folderTextField);
 	}
 	
 	private void openAudioRipperDirChooser() {
-		JFileChooser dirChooser = openFileChooser();
+		JFileChooser dirChooser = new JFileChooser();
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
 		openDialog(dirChooser, ripperTextField);
@@ -263,38 +262,6 @@ public class ConfigDialog extends JFrame {
 		}
 	}
 
-	private JFileChooser openFileChooser() {
-		JFileChooser fileChooser = new JFileChooser() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-            public void approveSelection() {
-                File f = getSelectedFile();
-                if(f.exists() && getDialogType() == SAVE_DIALOG) {
-                    int result = JOptionPane.showConfirmDialog(getTopLevelAncestor(),
-                            "The selected file already exists. " +
-                            "Do you want to overwrite it?",
-                            "The file already exists",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                    switch(result)  {
-                    case JOptionPane.YES_OPTION:
-                        super.approveSelection();
-                        return;
-                    case JOptionPane.NO_OPTION:
-                        return;
-                    case JOptionPane.CANCEL_OPTION:
-                        cancelSelection();
-                        return;
-                    }
-                }
-                super.approveSelection();
-            }
-		};
-		return fileChooser;
-	}
-	
 	private void fileFilter(JFileChooser fileChooser) {
 		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
 			fileChooser.setFileFilter(new FileFilter() {

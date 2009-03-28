@@ -9,8 +9,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -52,6 +50,7 @@ public class AboutDialog extends JDialog {
 		
 		addESCListener();
 		addCloseButton();
+		addWebsiteButton();
 		addURL();
 		drawBackgroundImage();
 	}
@@ -70,6 +69,18 @@ public class AboutDialog extends JDialog {
 		});
 		add(button_close);
 	}
+	
+	private void addWebsiteButton() {
+		JButton button_website = new JButton();
+		button_website.setText("Website");
+		button_website.setBounds(175, 190, 100, 20);
+		button_website.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BrowserControl.displayURL(URL);
+			}
+		});
+		add(button_website);
+	}
 
 	/**
 	 * draw background image
@@ -85,12 +96,6 @@ public class AboutDialog extends JDialog {
 		};
 		panel.setOpaque(false);
 		panel.setLayout(null);
-		panel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				BrowserControl.displayURL(URL);
-			}
-		});
 		add(panel);
 	}
 	
@@ -121,7 +126,7 @@ public class AboutDialog extends JDialog {
 	private void addURL() {
 		JTextField textField = new JTextField(URL);
 		textField.setHorizontalAlignment(JTextField.CENTER);
-		textField.setBounds(new Rectangle(10, 190, 265, 20));
+		textField.setBounds(new Rectangle(10, 190, 155, 20));
 		textField.setEditable(false);
 		textField.setOpaque(false);
 		textField.setToolTipText(URLEXT);

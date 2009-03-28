@@ -48,15 +48,18 @@ public class MediaStopf extends JFrame {
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
 	private JTextField statusBar;
+	private TaskTable taskTable;
+	private TaskList taskList;
+	private TaskRunningList runningList;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = "Run", send = "Send", cancel = "Cancel",
 			runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
 
 	public MediaStopf() {
-		TaskList taskList = new TaskList();
+		taskList = new TaskList();
 		boxModel = new TaskComboBoxModel(taskList);
-		TaskRunningList runningList = new TaskRunningList();
+		runningList = new TaskRunningList();
 		tableModel = new TaskTableModel(runningList);
 
 		initGUI();
@@ -185,12 +188,17 @@ public class MediaStopf extends JFrame {
 		runButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO:
-				MessageDialog.info("todo..", "todo..");
+				runSelectedItem();
 			}
 		});
 		buttonMap.put(run, runButton);
 		return runButton;
+	}
+	
+	private void runSelectedItem() {
+		// TODO:
+		String tasknum = (String)taskComboBox.getSelectedItem();
+		MessageDialog.info("Task", "Run " + tasknum);
 	}
 
 	/**
@@ -219,7 +227,7 @@ public class MediaStopf extends JFrame {
 		tablePanel.setBounds(5, 15, 385, 200);
 		tablePanel.setLayout(null);
 
-		TaskTable taskTable = new TaskTable(tableModel);
+		taskTable = new TaskTable(tableModel);
 		tableScrollPane = new JScrollPane(taskTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel
 				.getHeight());
@@ -252,11 +260,10 @@ public class MediaStopf extends JFrame {
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO:
 					if (e.getActionCommand() == send) {
-						MessageDialog.info("todo..", "todo..");
+						taskTable.send();
 					} else if (e.getActionCommand() == cancel) {
-						MessageDialog.info("todo..", "todo..");
+						taskTable.cancel();
 					}
 				}
 			});

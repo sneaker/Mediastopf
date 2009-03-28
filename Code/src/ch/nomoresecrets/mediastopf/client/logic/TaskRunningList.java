@@ -11,6 +11,9 @@ public class TaskRunningList extends Observable {
 	
 	public TaskRunningList() {
 		if(!StartClient.DEBUG) {
+			for(int i=0; i < 10; i++) {
+				add(new Task(i, "Test"));
+			}
 			add(new Task(1111, "Waiting"));
 			add(new Task(2222, "Ready"));
 			add(new Task(3333, "Sending"));

@@ -49,16 +49,47 @@ public class TaskTable extends JXTable {
 			menuItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
-					//TODO:
 					if (event.getActionCommand() == send) {
-						MessageDialog.info("todo..", "todo..");
+						send();
 					} else if (event.getActionCommand() == cancel) {
-						MessageDialog.info("todo..", "todo..");
+						cancel();
 					}
 				}
 			});
 			popupMenu.add(menuItem);
 		}
 		return popupMenu;
+	}
+	
+	/**
+	 * send files to server
+	 */
+	//TODO
+	public void send() {
+		int row = getSelectedRow();
+		if (row < 0) {
+			MessageDialog.noneSelectedDialog();
+			return;
+		}
+		int tasknum = (Integer) getValueAt(row, 0);
+		String status = (String) getValueAt(row, 1);
+		
+		MessageDialog.info("Sending Tasknr: " + tasknum + " - with status: " + status, "Not sending anything, just a test");
+	}
+	
+	/**
+	 * cancel send transaction
+	 */
+	// TODO
+	public void cancel() {
+		int row = getSelectedRow();
+		if (row < 0) {
+			MessageDialog.noneSelectedDialog();
+			return;
+		}
+		int tasknum = (Integer) getValueAt(row, 0);
+		String status = (String) getValueAt(row, 1);
+		
+		MessageDialog.info("Canceling Tasknr: " + tasknum + " - with status: " + status, "Not sending anything, just a test");
 	}
 }

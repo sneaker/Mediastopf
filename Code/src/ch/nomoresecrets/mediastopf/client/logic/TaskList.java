@@ -11,9 +11,9 @@ public class TaskList extends Observable {
 	
 	public TaskList() {
 		if(!StartClient.DEBUG) {
-			add("test");
-			add("test2");
-			add("test3");
+			for(int i=0; i < 10; i++) {
+				add("test" + i);
+			}
 		}
 	}
 	

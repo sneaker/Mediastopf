@@ -30,6 +30,7 @@ import ch.nomoresecrets.mediastopf.server.logic.ImportRunningList;
 import ch.nomoresecrets.mediastopf.server.logic.TaskList;
 import ch.nomoresecrets.mediastopf.server.ui.dialogs.AboutDialog;
 import ch.nomoresecrets.mediastopf.server.ui.dialogs.ExportDialog;
+import ch.nomoresecrets.mediastopf.server.ui.dialogs.LogDialog;
 import ch.nomoresecrets.mediastopf.server.ui.models.ExportTableModel;
 import ch.nomoresecrets.mediastopf.server.ui.models.ImportTableModel;
 import ch.nomoresecrets.mediastopf.server.ui.models.TaskComboBoxModel;
@@ -334,7 +335,8 @@ public class MediaStopfServer extends JFrame {
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == log) {
-						//TODO
+						LogDialog ld = new LogDialog();
+						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
 						System.exit(0);
 					}

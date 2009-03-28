@@ -4,8 +4,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import ch.nomoresecrets.mediastopf.server.ui.SplashScreen;
+import org.apache.log4j.Level;
+
+import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
+import ch.nomoresecrets.mediastopf.server.ui.SplashScreen;
 
 public class StartServer {
 	
@@ -19,6 +22,9 @@ public class StartServer {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		Log log = new Log();
+		log.setLevel(Level.DEBUG);
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {

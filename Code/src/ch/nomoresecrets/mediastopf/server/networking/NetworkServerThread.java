@@ -74,8 +74,7 @@ public class NetworkServerThread implements Runnable {
 
 	private String receiveMessage() throws IOException {
 		try {
-			receiver = new BufferedReader(new InputStreamReader(clientSocket
-					.getInputStream()));
+			receiver = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (IOException e) {
 			logger.error("Error: Cannot get InputStream");
 			e.printStackTrace();

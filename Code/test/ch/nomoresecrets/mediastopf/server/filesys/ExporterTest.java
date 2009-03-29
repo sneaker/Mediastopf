@@ -27,7 +27,7 @@ public class ExporterTest {
 	@Test
 	public void testFileListCount() {
 		File[] srclist = src.listFiles();
-		Exporter.exportTo(srclist, dest);
+		Exporter.export(srclist, dest);
 		File[] destlist = dest.listFiles();
 		assertEquals(srclist.length, destlist.length);
 	}
@@ -35,7 +35,7 @@ public class ExporterTest {
 	@Test
 	public void testFileList() {
 		File[] srclist = src.listFiles();
-		Exporter.exportTo(srclist, dest);
+		Exporter.export(srclist, dest);
 		File[] destlist = dest.listFiles();
 		for(int i=0; i < srclist.length; i++) {
 			assertEquals(srclist[i].getName(), destlist[i].getName());

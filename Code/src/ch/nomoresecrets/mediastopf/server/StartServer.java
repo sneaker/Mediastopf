@@ -23,9 +23,40 @@ public class StartServer {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		loadLog();
+		setLookAndFeel();
+		loadUI(args);
+		
+		int port = 1337;
+		if (0 < args.length && args[0].equalsIgnoreCase("-port")) {
+			port = Integer.valueOf(args[1]);
+		}
+		
+		serverStartInfo();
+
+		new Server(port);
+	}
+
+	private static void loadLog() {
 		Log log = new Log();
 		log.setLevel(Level.ALL);
-		
+	}
+
+	private static void serverStartInfo() {
+		// TODO: ANPASSEN!
+		Logger logger = Log.getLogger();
+		logger.info("=======================================================");
+		logger.info("MediaStopf - Ein Softwaresystem zum Lieb haben ;)");
+		logger.info("=======================================================");
+		logger.info("Copyright (C)2009");
+		logger.info("Powered by NoMoreSecrets");
+		logger.info("www.no-more-secrets.ch");
+		logger.info("University of Applied Science Rapperswil");
+		logger.info("www.hsr.ch");
+		logger.info("=======================================================");
+	}
+
+	private static void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {
@@ -37,6 +68,9 @@ public class StartServer {
 		} catch (UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	private static void loadUI(final String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MediaStopfServer mediastopf;
@@ -51,25 +85,5 @@ public class StartServer {
 				mediastopf.setVisible(true);
 			}
 		});
-		
-		
-		int port = 1337;
-		if (0 < args.length && args[0].equalsIgnoreCase("-port")) {
-			port = Integer.valueOf(args[1]);
-		}
-		
-		// TODO: ANPASSEN!
-		Logger logger = Log.getLogger();
-		logger.info("=======================================================");
-		logger.info("MediaStopf - Ein Softwaresystem zum Lieb haben ;)");
-		logger.info("=======================================================");
-		logger.info("Copyright (C)2009");
-		logger.info("Powered by NoMoreSecrets");
-		logger.info("www.no-more-secrets.ch");
-		logger.info("University of Applied Science Rapperswil");
-		logger.info("www.hsr.ch");
-		logger.info("=======================================================");
-
-		new Server(port);
 	}
 }

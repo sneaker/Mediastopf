@@ -74,6 +74,10 @@ public class LogDialog extends JDialog implements Runnable {
 		addLogListener();
 		addESCListener();
 
+		componentListener();
+	}
+
+	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
 

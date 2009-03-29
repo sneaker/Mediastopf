@@ -29,8 +29,7 @@ public class StartClient {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		Log log = new Log();
-		log.setLevel(Level.ALL);
+		loadLog();
 		try {
 			connection = new ServerConnection("localhost", 1337);
 		} catch (UnknownHostException e) {
@@ -39,18 +38,11 @@ public class StartClient {
 			logger.error("Could not get I/O for connection to Server");
 		}
 		
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
-			e1.printStackTrace();
-		}
-		
+		setLookAndFeel();
+		loadUI(args);
+	}
+
+	private static void loadUI(final String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MediaStopf mediastopf;
@@ -65,5 +57,24 @@ public class StartClient {
 				mediastopf.setVisible(true);
 			}
 		});
+	}
+
+	private static void loadLog() {
+		Log log = new Log();
+		log.setLevel(Level.ALL);
+	}
+
+	private static void setLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

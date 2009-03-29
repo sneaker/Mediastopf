@@ -175,7 +175,7 @@ public class ExportDialog extends JDialog {
 	private void export() {
 		String exportFolder = exportTextField.getText().trim();
 		File file = new File(tasknum);
-		boolean done = Exporter.exportTo(file.listFiles(), new File(exportFolder));
+		boolean done = Exporter.export(file.listFiles(), new File(exportFolder));
 		if(done) {
 			MessageDialog.info("Export done", "Exported Files to " + exportFolder);
 		}

@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 
 public class Exporter {
 	
-	public static boolean exportTo(File[] srcList, File destDir) {
+	public static boolean export(File[] srcList, File destDir) {
 		destDir.mkdirs();
 		
         FileInputStream source;

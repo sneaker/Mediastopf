@@ -102,8 +102,12 @@ public class MediaStopfServer extends JFrame {
 		addTaskTable();
 		addTaskPanel();
 		addRunningTaskPanel();
-		componentListener();
 		
+		componentListener();
+		windowListener();
+	}
+
+	private void windowListener() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {

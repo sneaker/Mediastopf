@@ -65,21 +65,25 @@ public class SystemTrayIcon {
 						LogDialog ld = new LogDialog();
 						ld.setVisible(true);
 					} else if(e.getActionCommand() == exit){
-						int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
-						switch(result) {
-						case JOptionPane.YES_OPTION:
-							System.exit(0);
-							break;
-						case JOptionPane.NO_OPTION:
-							return;
-						default:
-							return;
-						}
+						exit();
 					}
 				}
 			});
 			menu.add(item);
 		}
 		return menu;
+	}
+	
+	private void exit() {
+		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
+		switch(result) {
+		case JOptionPane.YES_OPTION:
+			System.exit(0);
+			break;
+		case JOptionPane.NO_OPTION:
+			return;
+		default:
+			return;
+		}
 	}
 }

@@ -31,10 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Logger;
-
 import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
-import ch.nomoresecrets.mediastopf.client.log.Log;
 import ch.nomoresecrets.mediastopf.client.logic.TaskList;
 import ch.nomoresecrets.mediastopf.client.logic.TaskRunningList;
 import ch.nomoresecrets.mediastopf.client.networking.ServerConnection;
@@ -101,8 +98,12 @@ public class MediaStopf extends JFrame {
 		addTaskTable();
 		addTaskPanel();
 		addRunningTaskPanel();
-		componentListener();
 		
+		componentListener();
+		windowListener();
+	}
+
+	private void windowListener() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -114,7 +115,6 @@ public class MediaStopf extends JFrame {
 	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
-
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
@@ -138,7 +138,6 @@ public class MediaStopf extends JFrame {
 					statusBar.setSize(status.getWidth(), status.getHeight());
 				}
 			}
-
 			@Override
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
@@ -237,6 +236,7 @@ public class MediaStopf extends JFrame {
 //		ApplicationLauncher.open(program);
 	}
 	
+	//TODO
 	private void dirObserver(final String taskID) {
 		DirectoryObserver dirObserver = new DirectoryObserver(taskID);
 		dirObserver.subscribe(new Observer() {

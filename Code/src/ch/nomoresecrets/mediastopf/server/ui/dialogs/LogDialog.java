@@ -74,9 +74,12 @@ public class LogDialog extends JDialog implements Runnable {
 		addLogListener();
 		addESCListener();
 
+		componentListener();
+	}
+
+	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
-
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
@@ -89,12 +92,10 @@ public class LogDialog extends JDialog implements Runnable {
 							getHeight() - 65);
 				}
 			}
-
 			@Override
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
 			}
-
 			@Override
 			public void componentHidden(ComponentEvent e) {
 				suspendListener();

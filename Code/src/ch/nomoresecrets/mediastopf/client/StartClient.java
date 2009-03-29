@@ -1,6 +1,8 @@
 package ch.nomoresecrets.mediastopf.client;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -12,13 +14,13 @@ import ch.nomoresecrets.mediastopf.client.networking.TestConnect;
 import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
 import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
 import ch.nomoresecrets.mediastopf.server.log.Log;
+import ch.nomoresecrets.mediastopf.filesys.DirectoryObserver;
 
 public class StartClient {
 
 	public static boolean DEBUG = false;
 
-	private static final String SPLASHIMAGE = MediaStopf.UIIMAGELOCATION
-			+ "splash.jpg";
+	private static final String SPLASHIMAGE = MediaStopf.UIIMAGELOCATION	+ "splash.jpg";
 
 	/**
 	 * Start Client
@@ -62,4 +64,20 @@ public class StartClient {
 			e.printStackTrace();
 		}
 	}
+	
+	/*
+	private void testwatcher() {
+		System.out.println("Starting directory watcher service...");
+		DirectoryObserver dserver = new DirectoryObserver("/tmp/");
+		
+		dserver.subscribe(new Observer(){
+			public void update(Observable o, Object arg) {
+				System.out.println("Change Detected!");
+			}
+		});
+		
+		dserver.start();
+		dserver.run();
+	}
+	*/
 }

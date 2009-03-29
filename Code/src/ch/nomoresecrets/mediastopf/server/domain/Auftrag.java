@@ -16,12 +16,10 @@ public class Auftrag implements ActiveRecord {
 	private List<Mediensammlung> mediensammlunglist;
 	
 	
-	
-
 	public Auftrag(String name, String medientyp, int anzahl) {
 		this.name = name;
 		this.medientyp = medientyp;
-		this.anzahlMedienSammlung = anzahl;
+		this.setAnzahlMedienSammlung(anzahl);
 		
 	}
 
@@ -33,13 +31,39 @@ public class Auftrag implements ActiveRecord {
 	}
 
 	
-	
-	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getMedientyp() {
+		return medientyp;
+	}
+
+	public void setMedientyp(String medientyp) {
+		this.medientyp = medientyp;
+	}
+
+	public void setID(int id) {
+		this.id = id;
+	}
 
 	@Override
 	public int getID() {
 		return id;
 	}
+	
+	public void setAnzahlMedienSammlung(int anzahlMedienSammlung) {
+		this.anzahlMedienSammlung = anzahlMedienSammlung;
+	}
+
+	public int getAnzahlMedienSammlung() {
+		return anzahlMedienSammlung;
+	}
+
 
 	/**
 	 * returns false if saving the {@link Auftrag} was not successful.
@@ -50,11 +74,11 @@ public class Auftrag implements ActiveRecord {
 			if (!isInDB())
 				id = ActiveRecordManager.executeInsert(
 								"insert into Auftrag (name,medientyp,anzahl) values (?,?,?)",
-								name, medientyp, Integer.toString(anzahlMedienSammlung));
+								name, medientyp, Integer.toString(getAnzahlMedienSammlung()));
 			else {
 				ActiveRecordManager.execute(
 						"UPDATE Auftrag SET name = ?, medientyp = ?, anzahl = ? WHERE id = ?",
-						name, medientyp, Integer.toString(anzahlMedienSammlung), Integer.toString(id));
+						name, medientyp, Integer.toString(getAnzahlMedienSammlung()), Integer.toString(id));
 			}
 			
 		} catch (SQLException e) {
@@ -94,7 +118,7 @@ public class Auftrag implements ActiveRecord {
 				return id == myOrder.getID();
 			}
 			else{
-				return name.equals(myOrder.name) && medientyp.equals(myOrder.medientyp) && this.anzahlMedienSammlung == myOrder.anzahlMedienSammlung;
+				return name.equals(myOrder.name) && medientyp.equals(myOrder.medientyp) && this.getAnzahlMedienSammlung() == myOrder.getAnzahlMedienSammlung();
 			}
 		}
 		return false;
@@ -102,7 +126,7 @@ public class Auftrag implements ActiveRecord {
 
 	@Override
 	public String toString() {
-		String myStr = "Auftrag-ID: " + id + " Name: " + name + " Medientyp: " + medientyp + " Anzahl: " + anzahlMedienSammlung + "\nenthält volgende Mediensammlungen:\n";
+		String myStr = "Auftrag-ID: " + id + " Name: " + name + " Medientyp: " + medientyp + " Anzahl: " + getAnzahlMedienSammlung() + "\nenthält volgende Mediensammlungen:\n";
 		List<Mediensammlung> lp = ActiveRecordManager.getObjectList("select * from Mediensammlung where fk_Auftrag = " + id, Mediensammlung.class);
 		for (Mediensammlung Sammlung: lp) myStr = myStr + " " + Sammlung.toString() + "\n";
 		return myStr;
@@ -125,7 +149,4 @@ public class Auftrag implements ActiveRecord {
 			return res.get(0);
 		}
 	}
-
-	
-
 }

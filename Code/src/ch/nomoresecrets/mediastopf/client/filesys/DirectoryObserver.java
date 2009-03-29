@@ -49,7 +49,8 @@ public class DirectoryObserver extends Thread {
 	public void unsubscribe(Observer subscriber) {
 		_observers.remove(subscriber);
 	}
-
+	
+	@Override
 	public void run() {
 		while (true) {
 			try {

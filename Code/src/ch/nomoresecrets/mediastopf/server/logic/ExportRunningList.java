@@ -4,29 +4,27 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import ch.nomoresecrets.mediastopf.server.StartServer;
+import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
 
 public class ExportRunningList extends Observable {
 	
-	private ArrayList<Task> list = new ArrayList<Task>();
+	private ArrayList<Auftrag> list = new ArrayList<Auftrag>();
 	
 	public ExportRunningList() {
 		if(StartServer.DEBUG) {
 			for(int i=10; i < 20; i++) {
-				add(new Task(i, "Test"));
+				add(new Auftrag("test", "CD", i));
 			}
-			add(new Task(1111, "Waiting"));
-			add(new Task(2222, "Ready"));
-			add(new Task(3333, "Sending"));
 		}
 	}
 	
-	public void add(Task o) {
+	public void add(Auftrag o) {
 		list.add(o);
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void remove(Task o) {
+	public void remove(Auftrag o) {
 		list.remove(o);
 		setChanged();
 		notifyObservers();
@@ -38,7 +36,7 @@ public class ExportRunningList extends Observable {
 		notifyObservers();
 	}
 	
-	public Task get(int index) {
+	public Auftrag get(int index) {
 		return list.get(index);
 	}
 	

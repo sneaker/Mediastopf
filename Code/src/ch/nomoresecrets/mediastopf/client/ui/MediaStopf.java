@@ -9,7 +9,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,11 +22,16 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
+import ch.nomoresecrets.mediastopf.client.log.Log;
 import ch.nomoresecrets.mediastopf.client.logic.TaskList;
 import ch.nomoresecrets.mediastopf.client.logic.TaskRunningList;
 import ch.nomoresecrets.mediastopf.client.ui.dialogs.AboutDialog;
@@ -55,6 +63,7 @@ public class MediaStopf extends JFrame {
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = "Run", send = "Send", cancel = "Cancel",
 			runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
+	private Logger logger = Log.getLogger();
 
 	public MediaStopf() {
 		taskList = new TaskList();
@@ -167,13 +176,6 @@ public class MediaStopf extends JFrame {
 				arrowButton.setBounds(0, 0, 0, 0);
 			}
 		});
-		// for (Component component : taskComboBox.getComponents()) {
-		// if (component instanceof AbstractButton) {
-		// if (component.isVisible()) {
-		// component.setVisible(false);
-		// }
-		// }
-		// }
 	}
 
 	/**
@@ -196,9 +198,32 @@ public class MediaStopf extends JFrame {
 	}
 	
 	private void runSelectedItem() {
-		// TODO:
-		String tasknum = (String)taskComboBox.getSelectedItem();
-		MessageDialog.info("Task", "Run " + tasknum);
+		String taskID = (String)taskComboBox.getSelectedItem();
+		File task = new File(taskID);
+		if(!task.isDirectory()) {
+			MessageDialog.info("Not a Directory", taskID + " is not a directory.");
+			return;
+		}
+		dirObserver(taskID);
+		logger.info("Observing directory: " + taskID);
+		
+		//TODO
+//		ApplicationLauncher.open(program);
+	}
+
+	private void dirObserver(String taskID) {
+		DirectoryObserver dirObserver = new DirectoryObserver(taskID);
+		UpdateDetector notifyTester = new UpdateDetector();
+		dirObserver.subscribe(notifyTester);
+		dirObserver.start();
+	}
+	
+	private class UpdateDetector implements Observer {
+		public boolean isUpdated = false;
+		
+		public void update(Observable o, Object arg) {
+			isUpdated = true;
+		}
 	}
 
 	/**
@@ -338,7 +363,16 @@ public class MediaStopf extends JFrame {
 						ConfigDialog cd = new ConfigDialog();
 						cd.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
-						System.exit(0);
+						int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
+						switch(result) {
+						case JOptionPane.YES_OPTION:
+							System.exit(0);
+							break;
+						case JOptionPane.NO_OPTION:
+							return;
+						default:
+							return;
+						}
 					}
 				}
 			});

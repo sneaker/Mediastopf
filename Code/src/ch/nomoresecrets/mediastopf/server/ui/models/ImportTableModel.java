@@ -5,7 +5,7 @@ import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
-import ch.nomoresecrets.mediastopf.server.logic.Task;
+import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
 import ch.nomoresecrets.mediastopf.server.logic.ImportRunningList;
 
 public class ImportTableModel extends AbstractTableModel implements Observer {
@@ -46,32 +46,16 @@ public class ImportTableModel extends AbstractTableModel implements Observer {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Task task = list.get(rowIndex);
+		Auftrag task = list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return task.getTasknum();
+			return task.getAnzahlMedienSammlung();
 		case 1:
-			return task.getStatus();
+			return "";
 		default:
 			return "";
 		}
 	}
-	
-	@Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		Task task = list.get(rowIndex);
-		switch(columnIndex) {
-		case 1:
-			String aValue = (String) value;
-			task.setTasknum(Integer.valueOf(aValue));
-			break;
-		case 2:
-			task.setStatus((String) value);
-			break;
-		default:
-			break;
-		}
-    }
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {

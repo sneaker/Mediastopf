@@ -7,9 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-import ch.nomoresecrets.mediastopf.server.domain.*;
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.client.log.Log;
+import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
 
 public class DbAdapter {
 	
@@ -17,25 +19,24 @@ public class DbAdapter {
 	static private String database = "jdbc:sqlite:Code/db/db.sqlite";
 	
 	public static Connection getConnection() throws SQLException {
+		Logger logger = Log.getLogger();
 		try {
 			if (connection == null || connection.isClosed()) {
 				Class.forName("org.sqlite.JDBC");
 				connection = DriverManager.getConnection(database);
 				DatabaseMetaData metaData = connection.getMetaData();
-				System.out.println("sqlite driver mode: "
-						+ metaData.getDriverVersion());
-				System.out.println("database driver: "
-						+ metaData.getDriverName());
+				logger.info("sqlite driver mode: " + metaData.getDriverVersion());
+				logger.info("database driver: " + metaData.getDriverName());
 			}
 		} catch (ClassNotFoundException e) {
-			System.err.println("JDBC Driver nof found");
+			logger.fatal("JDBC Driver nof found");
 			e.printStackTrace();
 		}
 		return connection;
 	}
 
-	public static List<Auftrag> getOrderList() {
-		List<Auftrag> resultlist = new ArrayList<Auftrag>();
+	public static ArrayList<Auftrag> getOrderList() {
+		ArrayList<Auftrag> resultlist = new ArrayList<Auftrag>();
 		Connection conn;
 		try {
 			conn = getConnection();

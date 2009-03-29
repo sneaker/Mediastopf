@@ -11,7 +11,7 @@ import org.apache.log4j.PatternLayout;
 
 public class Log {
 	
-	private static final String LOGFILE = "mediastopfserver.log";
+	private static final String LOGFILE = "MediaStopfServer.log";
 	private static Logger logger = Logger.getRootLogger();
 
 	public Log() {

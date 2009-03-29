@@ -9,6 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -19,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -31,6 +37,7 @@ import ch.nomoresecrets.mediastopf.server.logic.TaskList;
 import ch.nomoresecrets.mediastopf.server.ui.dialogs.AboutDialog;
 import ch.nomoresecrets.mediastopf.server.ui.dialogs.ExportDialog;
 import ch.nomoresecrets.mediastopf.server.ui.dialogs.LogDialog;
+import ch.nomoresecrets.mediastopf.server.ui.dialogs.MessageDialog;
 import ch.nomoresecrets.mediastopf.server.ui.models.ExportTableModel;
 import ch.nomoresecrets.mediastopf.server.ui.models.ImportTableModel;
 import ch.nomoresecrets.mediastopf.server.ui.models.TaskComboBoxModel;
@@ -78,7 +85,7 @@ public class MediaStopfServer extends JFrame {
 	 */
 	private void initGUI() {
 		setTitle(PROGRAM);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLayout(null);
 		setMinimumSize(new Dimension(400, 450));
 		setSize(400, 450);
@@ -89,11 +96,23 @@ public class MediaStopfServer extends JFrame {
 				(dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 
+		addTrayIcon();
 		addStatusBar();
 		addTaskComboBox();
 		addTaskTable();
 		addTaskPanel();
 		addRunningTaskPanel();
+		componentListener();
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+			}
+		});
+	}
+
+	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
 
@@ -124,6 +143,10 @@ public class MediaStopfServer extends JFrame {
 				isShown = true;
 			}
 		});
+	}
+	
+	private void addTrayIcon() {
+		new SystemTrayIcon(this);
 	}
 	
 	private void addStatusBar() {
@@ -195,8 +218,12 @@ public class MediaStopfServer extends JFrame {
 	}
 	
 	private void exportSelectedItem() {
-		// TODO:
 		String tasknum = (String)taskComboBox.getSelectedItem();
+		File file = new File(tasknum);
+		if(!file.isDirectory()) {
+			MessageDialog.info("Not found", "No directory of " + tasknum + " found");
+			return;
+		}
 		ExportDialog ed = new ExportDialog(tasknum);
 		ed.setVisible(true);
 	}
@@ -234,6 +261,15 @@ public class MediaStopfServer extends JFrame {
 		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight());
 		tabPane.addTab("Import", new JScrollPane(importTable));
 		tabPane.addTab("Export", new JScrollPane(exportTable));
+		tabPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (tabPane.getSelectedIndex() == 0)
+					buttonMap.get(cancel).setEnabled(false);
+				else
+					buttonMap.get(cancel).setEnabled(true);
+			}
+		});
 
 		tablePanel.add(tabPane);
 	}
@@ -249,30 +285,21 @@ public class MediaStopfServer extends JFrame {
 		int y = 230;
 		int width = 100;
 		int height = 25;
-		final String[] buttonText = { cancel };
-		final Rectangle cancelBounds = new Rectangle(x, y, width, height);
-		final Rectangle[] bounds = { cancelBounds };
-		final int cancelAcc = KeyEvent.VK_C;
-		final int[] mnemonic = { cancelAcc };
-		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == cancel) {
-						if(tabPane.getSelectedIndex() == 0)
-							importTable.cancel();
-						else
-							exportTable.cancel();
-					}
+		JButton button = new JButton();
+		button.setBounds(new Rectangle(x, y, width, height));
+		button.setText(cancel);
+		button.setMnemonic(KeyEvent.VK_C);
+		button.setEnabled(false);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getActionCommand() == cancel) {
+					exportTable.cancel();
 				}
-			});
-			panel.add(button);
-			buttonMap.put(buttonText[i], button);
-		}
+			}
+		});
+		panel.add(button);
+		buttonMap.put(cancel, button);
 	}
 
 	/**
@@ -341,7 +368,16 @@ public class MediaStopfServer extends JFrame {
 						LogDialog ld = new LogDialog();
 						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
-						System.exit(0);
+						int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
+						switch(result) {
+						case JOptionPane.YES_OPTION:
+							System.exit(0);
+							break;
+						case JOptionPane.NO_OPTION:
+							return;
+						default:
+							return;
+						}
 					}
 				}
 			});

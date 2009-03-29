@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 
+import ch.nomoresecrets.mediastopf.server.filesys.Exporter;
 import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
 
 public class ExportDialog extends JDialog {
@@ -80,7 +81,8 @@ public class ExportDialog extends JDialog {
 		exportTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
-				openExportFileChooser();
+				if((e.getButton() == MouseEvent.BUTTON1) && (e.getClickCount() == 2))
+					openExportFileChooser();
 			}
 		});
 		JLabel iconLabel = createLabel("export.png", new Rectangle(12, 30, 40, 40));
@@ -160,8 +162,8 @@ public class ExportDialog extends JDialog {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == export) {
 						export();
+						close();
 					} else if (e.getActionCommand() == close) {
-						saveProperties();
 						close();
 					}
 				}
@@ -170,10 +172,13 @@ public class ExportDialog extends JDialog {
 		}
 	}
 	
-	
 	private void export() {
-		// TODO
-		MessageDialog.info("Export " + tasknum, "export to " + exportTextField.getText().trim());
+		String exportFolder = exportTextField.getText().trim();
+		File file = new File(tasknum);
+		boolean done = Exporter.exportTo(file.listFiles(), new File(exportFolder));
+		if(done) {
+			MessageDialog.info("Export done", "Exported Files to " + exportFolder);
+		}
 	}
 	
 	/**
@@ -193,6 +198,7 @@ public class ExportDialog extends JDialog {
 	 * close
 	 */
 	private void close() {
+		saveProperties();
 		setVisible(false);
 		dispose();
 	}
@@ -242,11 +248,12 @@ public class ExportDialog extends JDialog {
 	}
 
 	private void openDialog(JFileChooser dirChooser, JTextField textField) {
+		if(!textField.getText().isEmpty()) {
+			dirChooser.setCurrentDirectory(new File(textField.getText()));
+		}
 		int returnVal = dirChooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = dirChooser.getSelectedFile().getName();
-			String path = dirChooser.getCurrentDirectory().toString();
-			textField.setText(path + File.separator + filename + File.separator);
+			textField.setText(dirChooser.getSelectedFile().getAbsolutePath().trim());
 		}
 	}
 }

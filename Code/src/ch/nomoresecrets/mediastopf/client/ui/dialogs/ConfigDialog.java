@@ -74,7 +74,8 @@ public class ConfigDialog extends JFrame {
 		folderTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
-				openDefaultFolderFileChooser();
+				if((e.getButton() == MouseEvent.BUTTON1) && (e.getClickCount() == 2))
+					openDefaultFolderFileChooser();
 			}
 		});
 		JLabel iconLabel = createLabel("defaultfolder.png", new Rectangle(12, 30, 40, 40));
@@ -100,7 +101,8 @@ public class ConfigDialog extends JFrame {
 		ripperTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
-				openAudioRipperDirChooser();
+				if((e.getButton() == MouseEvent.BUTTON1) && (e.getClickCount() == 2))
+					openAudioRipperDirChooser();
 			}
 		});
 		JLabel iconLabel = createLabel("audioripper.png", new Rectangle(12, 105, 40, 40));
@@ -239,25 +241,26 @@ public class ConfigDialog extends JFrame {
 			folderTextField.setText(prop.getProperty(defaultfolder).trim());
 	}
 	
-	private void openDefaultFolderFileChooser() {
+	private void openAudioRipperDirChooser() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileFilter(fileChooser);
-		openDialog(fileChooser, folderTextField);
+		openDialog(fileChooser, ripperTextField);
 	}
 	
-	private void openAudioRipperDirChooser() {
+	private void openDefaultFolderFileChooser() {
 		JFileChooser dirChooser = new JFileChooser();
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
-		openDialog(dirChooser, ripperTextField);
+		openDialog(dirChooser, folderTextField);
 	}
 
-	private void openDialog(JFileChooser dirChooser, JTextField textField) {
-		int returnVal = dirChooser.showOpenDialog(null);
+	private void openDialog(JFileChooser fileChooser, JTextField textField) {
+		if(!textField.getText().isEmpty()) {
+			fileChooser.setCurrentDirectory(new File(textField.getText()));
+		}
+		int returnVal = fileChooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = dirChooser.getSelectedFile().getName();
-			String path = dirChooser.getCurrentDirectory().toString();
-			textField.setText(path + File.separator + filename);
+			textField.setText(fileChooser.getSelectedFile().getAbsolutePath().trim());
 		}
 	}
 

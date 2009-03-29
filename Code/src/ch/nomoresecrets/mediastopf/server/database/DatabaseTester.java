@@ -1,9 +1,9 @@
-package ch.nomoresecrets.mediastopf.database;
+package ch.nomoresecrets.mediastopf.server.database;
 
 import java.util.List;
 
-import ch.nomoresecrets.mediastopf.database.*;
-import ch.nomoresecrets.mediastopf.domain.*;
+import ch.nomoresecrets.mediastopf.server.database.*;
+import ch.nomoresecrets.mediastopf.server.domain.*;
 
 
 public class DatabaseTester {

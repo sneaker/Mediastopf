@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ch.nomoresecrets.mediastopf.server.database.ActiveRecordManager;
+import ch.nomoresecrets.mediastopf.server.database.DbAdapter;
+import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
 import ch.nomoresecrets.mediastopf.server.networking.NetworkServer;
-
-import ch.nomoresecrets.mediastopf.database.*;
-import ch.nomoresecrets.mediastopf.domain.*;
 
 public class Server {
 

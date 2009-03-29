@@ -1,11 +1,11 @@
-package ch.nomoresecrets.mediastopf.domain;
+package ch.nomoresecrets.mediastopf.server.domain;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 
-import ch.nomoresecrets.mediastopf.database.*;
+import ch.nomoresecrets.mediastopf.server.database.*;
 
 
 public class Auftrag implements ActiveRecord {

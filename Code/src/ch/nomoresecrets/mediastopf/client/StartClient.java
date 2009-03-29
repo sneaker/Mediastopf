@@ -10,17 +10,18 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Level;
 
+import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
+import ch.nomoresecrets.mediastopf.client.log.Log;
 import ch.nomoresecrets.mediastopf.client.networking.TestConnect;
 import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
 import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
-import ch.nomoresecrets.mediastopf.server.log.Log;
-import ch.nomoresecrets.mediastopf.filesys.DirectoryObserver;
 
 public class StartClient {
 
 	public static boolean DEBUG = false;
 
 	private static final String SPLASHIMAGE = MediaStopf.UIIMAGELOCATION	+ "splash.jpg";
+	private static final String TEMPDIR = System.getProperty("java.io.tmpdir");
 
 	/**
 	 * Start Client
@@ -65,10 +66,9 @@ public class StartClient {
 		}
 	}
 	
-	/*
 	private void testwatcher() {
 		System.out.println("Starting directory watcher service...");
-		DirectoryObserver dserver = new DirectoryObserver("/tmp/");
+		DirectoryObserver dserver = new DirectoryObserver(TEMPDIR);
 		
 		dserver.subscribe(new Observer(){
 			public void update(Observable o, Object arg) {
@@ -79,5 +79,4 @@ public class StartClient {
 		dserver.start();
 		dserver.run();
 	}
-	*/
 }

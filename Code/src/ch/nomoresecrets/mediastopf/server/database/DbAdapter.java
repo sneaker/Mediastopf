@@ -1,4 +1,4 @@
-package ch.nomoresecrets.mediastopf.database;
+package ch.nomoresecrets.mediastopf.server.database;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import ch.nomoresecrets.mediastopf.domain.*;
+
+import ch.nomoresecrets.mediastopf.server.domain.*;
 
 public class DbAdapter {
 	

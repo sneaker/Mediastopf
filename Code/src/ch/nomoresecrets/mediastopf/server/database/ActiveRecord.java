@@ -1,4 +1,4 @@
-package ch.nomoresecrets.mediastopf.database;
+package ch.nomoresecrets.mediastopf.server.database;
 
 public interface ActiveRecord{
 	

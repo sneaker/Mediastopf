@@ -20,21 +20,24 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
 import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
 
-public class LogDialog extends JDialog {
+public class LogDialog extends JDialog implements Runnable {
 
 	/**
 	 * 
@@ -69,6 +72,7 @@ public class LogDialog extends JDialog {
 		addRefreshBox();
 		addTextArea();
 		addLogListener();
+		addESCListener();
 
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
@@ -134,39 +138,7 @@ public class LogDialog extends JDialog {
 	}
 
 	private void addLogListener() {
-		Thread logListener = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					readLogContent();
-					Thread.sleep(2000);
-					synchronized (this) {
-						while (suspendThread) {
-							wait();
-						}
-					}
-				} catch (InterruptedException e) {
-				}
-			}
-
-			private void readLogContent() {
-				BufferedReader br;
-				String readLine, logContent = "";
-				try {
-					br = new BufferedReader(new FileReader(new File(Log
-							.getServerLog())));
-					while ((readLine = br.readLine()) != null) {
-						logContent += readLine + "\n";
-					}
-					br.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				textArea.setText(logContent);
-			}
-		});
+		Thread logListener = new Thread(this);
 		logListener.start();
 	}
 
@@ -293,6 +265,19 @@ public class LogDialog extends JDialog {
 		setVisible(false);
 		dispose();
 	}
+	
+	/**
+	 * esc = close dialog
+	 */
+	private void addESCListener() {
+		ActionListener cancelListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		};
+		JRootPane rootPane = getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+	}
 
 	/**
 	 * PopupMenu
@@ -319,5 +304,42 @@ public class LogDialog extends JDialog {
 			popupMenu.add(copyMenuItem);
 		}
 		return popupMenu;
+	}
+
+	@Override
+	/**
+	 * thread reads serverlog content and displays in a textarea.
+	 * if auto refresh is off thread status changes to wait.
+	 */
+	public void run() {
+		while(true) {
+			try {
+				readLogContent();
+				Thread.sleep(2000);
+				synchronized (this) {
+					while (suspendThread) {
+						wait();
+					}
+				}
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+	private void readLogContent() {
+		BufferedReader br;
+		String readLine, logContent = "";
+		try {
+			br = new BufferedReader(new FileReader(new File(Log.getServerLog())));
+			while ((readLine = br.readLine()) != null) {
+				logContent += readLine + "\n";
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		textArea.setText(logContent);
 	}
 }

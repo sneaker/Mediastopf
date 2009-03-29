@@ -24,7 +24,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 
 import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
@@ -65,6 +67,7 @@ public class ExportDialog extends JDialog {
 
 		addButtons();
 		addDefaultFolderPanel();
+		addESCListener();
 		
 		loadProperties();
 	}
@@ -167,9 +170,23 @@ public class ExportDialog extends JDialog {
 		}
 	}
 	
+	
 	private void export() {
 		// TODO
 		MessageDialog.info("Export " + tasknum, "export to " + exportTextField.getText().trim());
+	}
+	
+	/**
+	 * esc = close dialog
+	 */
+	private void addESCListener() {
+		ActionListener cancelListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		};
+		JRootPane rootPane = getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 	
 	/**

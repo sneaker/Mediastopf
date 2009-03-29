@@ -22,7 +22,7 @@ public class StartClient {
 			mediastopf.setTitle("-- Debug Modus --");
 		} else {
 			MediaStopf mediastopf = new MediaStopf();
-			new SplashScreen(SPLASHIMAGE);
+			//new SplashScreen(SPLASHIMAGE);
 			mediastopf.setVisible(true);
 		}
 		try {

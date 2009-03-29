@@ -5,27 +5,34 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.table.TableModel;
+
+import ch.nomoresecrets.mediastopf.client.logic.AuftragsListe;
+import ch.nomoresecrets.mediastopf.client.ui.models.AuftragsTableModel;
 
 public class MediaStopf extends JFrame {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String PROGRAM = "MediaStopf";
 	public static final String UIIMAGELOCATION = "/ch/nomoresecrets/mediastopf/client/ui/images/";
-	
+
 	public MediaStopf() {
 		initGUI();
 	}
-	
+
 	private void initGUI() {
+		createAuftragsTable();
+
 		setTitle(PROGRAM);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
@@ -37,6 +44,27 @@ public class MediaStopf extends JFrame {
 		setLocation((dim.width - getWidth()) / 2,
 				(dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
+
+	}
+
+	private void createAuftragsTable() {
+		// FIXME by Martin remove this block of test code until So, 29.3.09
+		// Achtung RaceCondition. Table wird manchmal angezeigt, manchmal
+		// nicht!!!
+		AuftragsListe auftragsListe = new AuftragsListe();
+		auftragsListe.add("fjdksl");
+		auftragsListe.add("faaaaaaaaa");
+		TableModel dataModel = new AuftragsTableModel(auftragsListe);
+		JTable table = new JTable(dataModel);
+		table.setVisible(true);
+		JScrollPane scrollpane = new JScrollPane(table);
+		scrollpane.setVisible(true);
+
+		this.add(scrollpane);
+		this.setVisible(true);
+		getContentPane().setVisible(true);
+		this.setBounds(0, 0, 400, 300);
+		// this.repaisnt();
 	}
 
 	/**
@@ -80,7 +108,8 @@ public class MediaStopf extends JFrame {
 	/**
 	 * filemenu items
 	 * 
-	 * @param fileMenu JMenu
+	 * @param fileMenu
+	 *            JMenu
 	 */
 	private void addFileItems(JMenu fileMenu) {
 		final String exit = "Beenden";
@@ -93,7 +122,7 @@ public class MediaStopf extends JFrame {
 			fileItem.setAccelerator(keyStrokes[i]);
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == exit){
+					if (e.getActionCommand() == exit) {
 						System.exit(0);
 					}
 				}

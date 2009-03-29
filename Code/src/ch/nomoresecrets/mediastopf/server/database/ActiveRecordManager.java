@@ -14,7 +14,7 @@ import java.util.List;
 public class ActiveRecordManager {
 
 	static private Connection connection;
-	static private String database = "jdbc:sqlite:db/db.sqlite";
+	static private String database = "jdbc:sqlite:Code/db/db.sqlite";
 
 	public static void setDatabase(String jdbcName) {
 		database = jdbcName;

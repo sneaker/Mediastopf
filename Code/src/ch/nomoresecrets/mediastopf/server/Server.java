@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.client.log.Log;
 import ch.nomoresecrets.mediastopf.server.database.ActiveRecordManager;
 import ch.nomoresecrets.mediastopf.server.database.DbAdapter;
 import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
@@ -15,11 +18,12 @@ public class Server {
 
 	public Server(int port) {
 		startServer(port);
-		loadData();
+//		loadData();
 	}
 
 	private void startServer(int port) {
-		System.out.println("Starting network server...");
+		Logger logger = Log.getLogger();
+		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
 		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
 	}

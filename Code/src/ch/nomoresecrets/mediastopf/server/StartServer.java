@@ -69,7 +69,6 @@ public class StartServer {
 		logger.info("University of Applied Science Rapperswil");
 		logger.info("www.hsr.ch");
 		logger.info("=======================================================");
-		logger.info("Server started (Port: " + port + ")");
 
 		new Server(port);
 	}

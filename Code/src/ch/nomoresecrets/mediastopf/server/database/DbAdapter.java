@@ -14,7 +14,7 @@ import ch.nomoresecrets.mediastopf.server.domain.*;
 public class DbAdapter {
 	
 	static private Connection connection;
-	static private String database = "jdbc:sqlite:db/db.sqlite";
+	static private String database = "jdbc:sqlite:Code/db/db.sqlite";
 	
 	public static Connection getConnection() throws SQLException {
 		try {

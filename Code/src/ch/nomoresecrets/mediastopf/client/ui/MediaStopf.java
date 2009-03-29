@@ -9,7 +9,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -34,8 +37,10 @@ import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
 import ch.nomoresecrets.mediastopf.client.log.Log;
 import ch.nomoresecrets.mediastopf.client.logic.TaskList;
 import ch.nomoresecrets.mediastopf.client.logic.TaskRunningList;
+import ch.nomoresecrets.mediastopf.client.networking.ServerConnection;
 import ch.nomoresecrets.mediastopf.client.ui.dialogs.AboutDialog;
 import ch.nomoresecrets.mediastopf.client.ui.dialogs.ConfigDialog;
+import ch.nomoresecrets.mediastopf.client.ui.dialogs.LogDialog;
 import ch.nomoresecrets.mediastopf.client.ui.dialogs.MessageDialog;
 import ch.nomoresecrets.mediastopf.client.ui.models.TaskComboBoxModel;
 import ch.nomoresecrets.mediastopf.client.ui.models.TaskTableModel;
@@ -63,9 +68,10 @@ public class MediaStopf extends JFrame {
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = "Run", send = "Send", cancel = "Cancel",
 			runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
-	private Logger logger = Log.getLogger();
+	private ServerConnection connection;
 
-	public MediaStopf() {
+	public MediaStopf(ServerConnection connection) {
+		this.connection = connection;
 		taskList = new TaskList();
 		boxModel = new TaskComboBoxModel(taskList);
 		runningList = new TaskRunningList();
@@ -95,6 +101,17 @@ public class MediaStopf extends JFrame {
 		addTaskTable();
 		addTaskPanel();
 		addRunningTaskPanel();
+		componentListener();
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				exit();
+			}
+		});
+	}
+
+	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
 
@@ -204,25 +221,42 @@ public class MediaStopf extends JFrame {
 			MessageDialog.info("Not a Directory", taskID + " is not a directory.");
 			return;
 		}
-		dirObserver(taskID);
-		logger.info("Observing directory: " + taskID);
+		
+//		sendFiles(taskID);
+		try {
+			connection.sendFile("asdf.log");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		dirObserver(taskID);
+//		logger.info("Observing directory: " + taskID);
+		
 		
 		//TODO
 //		ApplicationLauncher.open(program);
 	}
-
-	private void dirObserver(String taskID) {
+	
+	private void dirObserver(final String taskID) {
 		DirectoryObserver dirObserver = new DirectoryObserver(taskID);
-		UpdateDetector notifyTester = new UpdateDetector();
-		dirObserver.subscribe(notifyTester);
+		dirObserver.subscribe(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				sendFiles(taskID);
+			}
+		});
 		dirObserver.start();
 	}
 	
-	private class UpdateDetector implements Observer {
-		public boolean isUpdated = false;
-		
-		public void update(Observable o, Object arg) {
-			isUpdated = true;
+	private void sendFiles(String taskID) {
+		File task = new File(taskID);
+		String[] fileList = task.list();
+		for(String f: fileList) {
+			try {
+				connection.sendFile(taskID + File.separator + f);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -296,6 +330,19 @@ public class MediaStopf extends JFrame {
 			buttonMap.put(buttonText[i], button);
 		}
 	}
+	
+	private void exit() {
+		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
+		switch(result) {
+		case JOptionPane.YES_OPTION:
+			System.exit(0);
+			break;
+		case JOptionPane.NO_OPTION:
+			return;
+		default:
+			return;
+		}
+	}
 
 	/**
 	 * MenuBar
@@ -337,7 +384,7 @@ public class MediaStopf extends JFrame {
 		});
 		helpMenu.add(aboutItem);
 	}
-
+	
 	/**
 	 * filemenu items
 	 * 
@@ -345,13 +392,14 @@ public class MediaStopf extends JFrame {
 	 *            JMenu
 	 */
 	private void addFileItems(JMenu fileMenu) {
-		final String config = "Config", exit = "Exit";
-		final String[] fileTitles = { config, exit };
+		final String config = "Config", log = "Log", exit = "Exit";
+		final String[] fileTitles = { config, log, exit };
 		final KeyStroke configAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
+		final KeyStroke logAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK);
 		final KeyStroke exitAccelerator = null;
-		final KeyStroke[] keyStrokes = { configAccelerator, exitAccelerator };
+		final KeyStroke[] keyStrokes = { configAccelerator, logAccelerator, exitAccelerator };
 		for (int i = 0; i < fileTitles.length; i++) {
-			if(i == 1) {
+			if(i == 2) {
 				fileMenu.addSeparator();
 			}
 			JMenuItem fileItem = new JMenuItem();
@@ -362,17 +410,11 @@ public class MediaStopf extends JFrame {
 					if (e.getActionCommand() == config) {
 						ConfigDialog cd = new ConfigDialog();
 						cd.setVisible(true);
+					} else if(e.getActionCommand() == log) {
+						LogDialog ld = new LogDialog();
+						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
-						int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
-						switch(result) {
-						case JOptionPane.YES_OPTION:
-							System.exit(0);
-							break;
-						case JOptionPane.NO_OPTION:
-							return;
-						default:
-							return;
-						}
+						exit();
 					}
 				}
 			});

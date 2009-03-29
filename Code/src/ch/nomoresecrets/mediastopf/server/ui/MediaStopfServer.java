@@ -301,6 +301,20 @@ public class MediaStopfServer extends JFrame {
 		panel.add(button);
 		buttonMap.put(cancel, button);
 	}
+	
+	private void exit() {
+		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
+		switch(result) {
+		case JOptionPane.YES_OPTION:
+			System.exit(0);
+			break;
+		case JOptionPane.NO_OPTION:
+			return;
+		default:
+			return;
+		}
+	}
+
 
 	/**
 	 * MenuBar
@@ -368,16 +382,7 @@ public class MediaStopfServer extends JFrame {
 						LogDialog ld = new LogDialog();
 						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
-						int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
-						switch(result) {
-						case JOptionPane.YES_OPTION:
-							System.exit(0);
-							break;
-						case JOptionPane.NO_OPTION:
-							return;
-						default:
-							return;
-						}
+						exit();
 					}
 				}
 			});

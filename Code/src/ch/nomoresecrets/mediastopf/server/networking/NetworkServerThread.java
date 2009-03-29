@@ -58,7 +58,6 @@ public class NetworkServerThread implements Runnable {
 		InputStream reader = clientSocket.getInputStream();
 		FileOutputStream writer = new FileOutputStream("a_filename");
 		BufferedOutputStream bos = new BufferedOutputStream(writer);
-
 		while((bytesread += reader.read(filebuffer, 0, filebuffer.length)) != -1) {
 			logger.info("reading...");
 			logger.info(bytesread);

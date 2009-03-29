@@ -1,18 +1,17 @@
 package ch.nomoresecrets.mediastopf.client;
 
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
+import java.net.UnknownHostException;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
 import ch.nomoresecrets.mediastopf.client.log.Log;
-import ch.nomoresecrets.mediastopf.client.networking.TestConnect;
+import ch.nomoresecrets.mediastopf.client.networking.ServerConnection;
 import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
 import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
 
@@ -21,7 +20,8 @@ public class StartClient {
 	public static boolean DEBUG = false;
 
 	private static final String SPLASHIMAGE = MediaStopf.UIIMAGELOCATION	+ "splash.jpg";
-	private static final String TEMPDIR = System.getProperty("java.io.tmpdir");
+	private static Logger logger = Log.getLogger();
+	private static ServerConnection connection;
 
 	/**
 	 * Start Client
@@ -31,6 +31,13 @@ public class StartClient {
 	public static void main(final String[] args) {
 		Log log = new Log();
 		log.setLevel(Level.ALL);
+		try {
+			connection = new ServerConnection("localhost", 1337);
+		} catch (UnknownHostException e) {
+			logger.fatal("Unknown host");
+		} catch (IOException e) {
+			logger.error("Could not get I/O for connection to Server");
+		}
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -43,40 +50,20 @@ public class StartClient {
 		} catch (UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MediaStopf mediastopf;
 				if (0 < args.length && args[0].equalsIgnoreCase("-debug")) {
 					DEBUG = true;
-					mediastopf = new MediaStopf();
+					mediastopf = new MediaStopf(connection);
 					mediastopf.setTitle(MediaStopf.PROGRAM + " - Debug");
 				} else {
-					mediastopf = new MediaStopf();
+					mediastopf = new MediaStopf(connection);
 					new SplashScreen(SPLASHIMAGE);
 				}
 				mediastopf.setVisible(true);
 			}
 		});
-
-		try {
-			TestConnect connect = new TestConnect();
-		} catch (IOException e) {
-			System.out.println("Error in TestConnect");
-			e.printStackTrace();
-		}
-	}
-	
-	private void testwatcher() {
-		System.out.println("Starting directory watcher service...");
-		DirectoryObserver dserver = new DirectoryObserver(TEMPDIR);
-		
-		dserver.subscribe(new Observer(){
-			public void update(Observable o, Object arg) {
-				System.out.println("Change Detected!");
-			}
-		});
-		
-		dserver.start();
-		dserver.run();
 	}
 }

@@ -145,7 +145,6 @@ public class AboutDialog extends JDialog {
 		JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem copyMenuItem = new JMenuItem("Copy");
 		copyMenuItem.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				textField.copy();
 			}

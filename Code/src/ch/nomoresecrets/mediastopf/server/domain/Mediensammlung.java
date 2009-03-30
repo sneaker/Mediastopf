@@ -33,7 +33,6 @@ public class Mediensammlung implements ActiveRecord {
 	
 	
 
-	@Override
 	public int getID() {
 		return id;
 	}
@@ -41,7 +40,6 @@ public class Mediensammlung implements ActiveRecord {
 	/**
 	 * returns false if saving the {@link Mediensammlung} was not successful.
 	 */
-	@Override
 	public boolean save() {
 		try {
 			if (!isInDB())
@@ -64,7 +62,6 @@ public class Mediensammlung implements ActiveRecord {
 	/**
 	 * returns false if deleting the {@link Mediensammlung} was not successful.
 	 */
-	@Override
 	public boolean delete() {
 		try {
 			if (isInDB())
@@ -77,7 +74,6 @@ public class Mediensammlung implements ActiveRecord {
 		return true;
 	}
 
-	@Override
 	public boolean isInDB() {
 		return id > NOTINDB;
 	}

@@ -85,7 +85,6 @@ public class ConfigDialog extends JFrame {
 		
 		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
 		openIcon.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				openDefaultFolderFileChooser();
 			}
@@ -107,7 +106,6 @@ public class ConfigDialog extends JFrame {
 		
 		JButton openIcon = createOpenButton(new Rectangle(355, 115, 22, 22));
 		openIcon.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				openAudioRipperDirChooser();
 			}
@@ -176,7 +174,6 @@ public class ConfigDialog extends JFrame {
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
 			button.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == ok) {
 						saveProperties();

@@ -26,7 +26,6 @@ public class NetworkServer implements Runnable {
 		}
 	}
 
-	@Override
 	public void run() {
 		ExecutorService exec = null;
 

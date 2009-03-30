@@ -51,7 +51,6 @@ public class Auftrag implements ActiveRecord {
 		this.id = id;
 	}
 
-	@Override
 	public int getID() {
 		return id;
 	}
@@ -68,7 +67,6 @@ public class Auftrag implements ActiveRecord {
 	/**
 	 * returns false if saving the {@link Auftrag} was not successful.
 	 */
-	@Override
 	public boolean save() {
 		try {
 			if (!isInDB())
@@ -91,7 +89,6 @@ public class Auftrag implements ActiveRecord {
 	/**
 	 * returns false if deleting the {@link Auftrag} was not successful.
 	 */
-	@Override
 	public boolean delete() {
 		try {
 			if (isInDB())
@@ -104,7 +101,6 @@ public class Auftrag implements ActiveRecord {
 		return true;
 	}
 
-	@Override
 	public boolean isInDB() {
 		return id > NOTINDB;
 	}
@@ -126,7 +122,7 @@ public class Auftrag implements ActiveRecord {
 
 	@Override
 	public String toString() {
-		String myStr = "Auftrag-ID: " + id + " Name: " + name + " Medientyp: " + medientyp + " Anzahl: " + getAnzahlMedienSammlung() + "\nenthält volgende Mediensammlungen:\n";
+		String myStr = "Auftrag-ID: " + id + " Name: " + name + " Medientyp: " + medientyp + " Anzahl: " + getAnzahlMedienSammlung() + "\nenthï¿½lt volgende Mediensammlungen:\n";
 		List<Mediensammlung> lp = ActiveRecordManager.getObjectList("select * from Mediensammlung where fk_Auftrag = " + id, Mediensammlung.class);
 		for (Mediensammlung Sammlung: lp) myStr = myStr + " " + Sammlung.toString() + "\n";
 		return myStr;

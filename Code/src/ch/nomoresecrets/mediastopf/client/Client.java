@@ -46,7 +46,6 @@ public class Client implements ClientHandler {
 		}
 	}
 	
-	@Override
 	/**
 	 * start directory observer
 	 * 
@@ -55,7 +54,6 @@ public class Client implements ClientHandler {
 	public void observeDir(final String folder) {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
 		dirObserver.subscribe(new Observer() {
-			@Override
 			public void update(Observable o, Object arg) {
 				sendFiles(folder);
 			}
@@ -65,12 +63,6 @@ public class Client implements ClientHandler {
 		logger.info("Directory Observer started in " + folder);
 	}
 	
-	@Override
-	/**
-	 * send files from folder
-	 * 
-	 * @param folder with files
-	 */
 	public void sendFiles(String folder) {
 		File task = new File(folder);
 		String[] fileList = task.list();
@@ -84,7 +76,6 @@ public class Client implements ClientHandler {
 	}
 	
 
-	@Override
 	/**
 	 * send objects
 	 * 
@@ -94,7 +85,6 @@ public class Client implements ClientHandler {
 		//TODO
 	}
 	
-	@Override
 	/**
 	 * get received objects
 	 */
@@ -103,7 +93,6 @@ public class Client implements ClientHandler {
 		return null;
 	}
 	
-	@Override
 	/**
 	 * cancel running job
 	 */

@@ -1,7 +1,6 @@
 package ch.nomoresecrets.mediastopf.client;
 
 
-
 public class StartClient {
 	
 	public static boolean DEBUG = false;

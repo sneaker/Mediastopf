@@ -12,7 +12,6 @@ public class ApplicationLauncher {
 
 	public static void open(final String program) {
 		Thread t = new Thread(new Runnable() {
-			@Override
 			public void run() {
 				try {
 					Runtime runtime = Runtime.getRuntime();

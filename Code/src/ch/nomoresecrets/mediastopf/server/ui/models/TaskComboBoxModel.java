@@ -23,12 +23,10 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 		list.addObserver(this);
 	}
 
-	@Override
 	public Object getSelectedItem() {
 		return tasknum;
 	}
 
-	@Override
 	public void setSelectedItem(Object anItem) {
 		tasknum = (String)anItem;
 	}
@@ -37,12 +35,10 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	public void addListDataListener(ListDataListener l) {
 	}
 
-	@Override
 	public Object getElementAt(int index) {
 		return list.get(index);
 	}
 
-	@Override
 	public int getSize() {
 		return list.size();
 	}
@@ -51,7 +47,6 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	public void removeListDataListener(ListDataListener l) {
 	}
 
-	@Override
 	public void update(Observable o, Object arg) {
 		fireContentsChanged(this, 0, list.size());
 	}

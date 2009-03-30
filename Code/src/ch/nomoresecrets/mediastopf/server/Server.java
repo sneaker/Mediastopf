@@ -52,30 +52,14 @@ public class Server implements ServerHandler {
 		for (Auftrag name: lp) System.out.println(name.toString());
 	}
 	
-	@Override
-	/**
-	 * get entries from a database
-	 * 
-	 * @return ArrayList
-	 */
 	public ArrayList<Auftrag> getDataBase() {
 		return DbAdapter.getOrderList();
 	}
 	
-	@Override
-	/**
-	 * send objects
-	 * 
-	 * @param Object
-	 */
 	public void sendObject(Object o) {
 		//TODO
 	}
 	
-	@Override
-	/**
-	 * get received objects
-	 */
 	public Object getObject() {
 		//TODO
 		return null;

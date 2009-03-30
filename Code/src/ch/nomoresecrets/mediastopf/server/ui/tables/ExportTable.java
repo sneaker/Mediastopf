@@ -44,7 +44,6 @@ public class ExportTable extends JXTable {
 		final String cancel = "Cancel";
 		JMenuItem menuItem = new JMenuItem(cancel);
 		menuItem.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (event.getActionCommand() == cancel) {
 					cancel();

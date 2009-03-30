@@ -120,7 +120,6 @@ public class LogDialog extends JDialog implements Runnable {
 		box.setSelected(true);
 		box.setBounds(10, 370, 100, 20);
 		box.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (box.isSelected()) {
 					resumeListener();
@@ -166,7 +165,6 @@ public class LogDialog extends JDialog implements Runnable {
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
 			button.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
 						saveAsTXT();
@@ -281,7 +279,6 @@ public class LogDialog extends JDialog implements Runnable {
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenuItem copyMenuItem = new JMenuItem(menuItems[i]);
 			copyMenuItem.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(e.getActionCommand() == copy) {
 						textArea.copy();
@@ -295,11 +292,6 @@ public class LogDialog extends JDialog implements Runnable {
 		return popupMenu;
 	}
 
-	@Override
-	/**
-	 * thread reads serverlog content and displays in a textarea.
-	 * if auto refresh is off thread status changes to wait.
-	 */
 	public void run() {
 		while(true) {
 			try {

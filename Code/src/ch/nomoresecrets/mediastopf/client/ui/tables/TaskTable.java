@@ -47,7 +47,6 @@ public class TaskTable extends JXTable {
 		for (int i = 0; i < itemLabel.length; i++) {
 			JMenuItem menuItem = new JMenuItem(itemLabel[i]);
 			menuItem.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent event) {
 					if (event.getActionCommand() == send) {
 						send();

@@ -29,12 +29,10 @@ public class ImportTableModel extends AbstractTableModel implements Observer {
 		return columns[column];
 	}
 
-	@Override
 	public int getColumnCount() {
 		return columns.length;
 	}
 
-	@Override
 	public int getRowCount() {
 		return list.size();
 	}
@@ -44,7 +42,6 @@ public class ImportTableModel extends AbstractTableModel implements Observer {
 		return false;
 	}
 
-	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Auftrag task = list.get(rowIndex);
 		switch (columnIndex) {
@@ -57,7 +54,6 @@ public class ImportTableModel extends AbstractTableModel implements Observer {
 		}
 	}
 	
-	@Override
 	public void update(Observable arg0, Object arg1) {
 		fireTableDataChanged();
 	}

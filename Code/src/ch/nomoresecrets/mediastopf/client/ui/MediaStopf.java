@@ -25,12 +25,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.table.TableModel;
-
-import ch.nomoresecrets.mediastopf.client.logic.AuftragsListe;
-import ch.nomoresecrets.mediastopf.client.ui.models.AuftragsTableModel;
 
 import ch.nomoresecrets.mediastopf.client.Client;
 import ch.nomoresecrets.mediastopf.client.logic.TaskList;
@@ -42,6 +40,7 @@ import ch.nomoresecrets.mediastopf.client.ui.dialogs.MessageDialog;
 import ch.nomoresecrets.mediastopf.client.ui.models.TaskComboBoxModel;
 import ch.nomoresecrets.mediastopf.client.ui.models.TaskTableModel;
 import ch.nomoresecrets.mediastopf.client.ui.tables.TaskTable;
+import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
 
 public class MediaStopf extends JFrame {
 	/**
@@ -64,8 +63,9 @@ public class MediaStopf extends JFrame {
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = "Run", send = "Send", cancel = "Cancel",
-			runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
-	
+			runningTask = "Running Tasks", tasks = "Tasks",
+			statusbar = "StatusBar";
+
 	private Client client;
 
 	public MediaStopf(Client client) {
@@ -82,16 +82,18 @@ public class MediaStopf extends JFrame {
 	 * init GUI Components
 	 */
 	private void initGUI() {
-		//createAuftragsTable();
+		// createAuftragsTable();
 
 		setTitle(PROGRAM);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setMinimumSize(new Dimension(400, 450));
 		setSize(400, 450);
-		setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(
+				UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		setLocation((dim.width - getWidth()) / 2,
+				(dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 
 		addStatusBar();
@@ -99,29 +101,29 @@ public class MediaStopf extends JFrame {
 		addTaskTable();
 		addTaskPanel();
 		addRunningTaskPanel();
-		
+
 		componentListener();
 		windowListener();
 	}
 
 	private void createAuftragsTable() {
-// FIXME by Martin remove this block of test code until So, 29.3.09
-// Achtung RaceCondition. Table wird manchmal angezeigt, manchmal
-// nicht!!!
-AuftragsListe auftragsListe = new AuftragsListe();
-auftragsListe.add("fjdksl");
-auftragsListe.add("faaaaaaaaa");
-TableModel dataModel = new AuftragsTableModel(auftragsListe);
-JTable table = new JTable(dataModel);
-table.setVisible(true);
-JScrollPane scrollpane = new JScrollPane(table);
-scrollpane.setVisible(true);
+		// FIXME by Martin remove this block of test code until So, 29.3.09
+		// Achtung RaceCondition. Table wird manchmal angezeigt, manchmal
+		// nicht!!!
+//		TaskList testList = new TaskList();
+//		testList.add("myTask"); //new Auftrag("Franz Muster", "DVD", 5));
+//		//TableModel dataModel = new TaskTableModel(testList);
+//		JTable table = new JTable(dataModel);
+//		table.setVisible(true);
+//		JScrollPane scrollpane = new JScrollPane(table);
+//		scrollpane.setVisible(true);
+//
+//		this.add(scrollpane);
+//		this.setVisible(true);
+//		getContentPane().setVisible(true);
+//		this.setBounds(0, 0, 400, 300);
 
-this.add(scrollpane);
-this.setVisible(true);
-getContentPane().setVisible(true);
-this.setBounds(0, 0, 400, 300);
-// this.repaisnt();
+	}
 
 	private void windowListener() {
 		addWindowListener(new WindowAdapter() {
@@ -135,32 +137,37 @@ this.setBounds(0, 0, 400, 300);
 	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
+
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
 					int width = getWidth();
 					int height = getHeight();
-					
+
 					JPanel runtaskPanel = panelMap.get(runningTask);
 					runtaskPanel.setSize(width - 5, height - 180);
 					JPanel taskPanel = panelMap.get(tasks);
 					taskPanel.setSize(width - 5, taskPanel.getHeight());
 					JPanel statusPanel = panelMap.get(statusbar);
-					statusPanel.setBounds(0, height - 70, width - 5, statusPanel.getHeight());
+					statusPanel.setBounds(0, height - 70, width - 5,
+							statusPanel.getHeight());
 
 					updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
 				}
 			}
+
 			@Override
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
 			}
 		});
 	}
-	
-	private void updateComponentBounds(JPanel runtaskPanel, JPanel taskPanel, JPanel statusPanel) {
-		buttonMap.get(run).setLocation(taskPanel.getWidth() - 135,taskPanel.getHeight() - 40);
-		
+
+	private void updateComponentBounds(JPanel runtaskPanel, JPanel taskPanel,
+			JPanel statusPanel) {
+		buttonMap.get(run).setLocation(taskPanel.getWidth() - 135,
+				taskPanel.getHeight() - 40);
+
 		int width = runtaskPanel.getWidth() - 10;
 		int height = runtaskPanel.getHeight();
 		buttonMap.get(send).setLocation(width - 235, height + 40);
@@ -171,22 +178,22 @@ this.setBounds(0, 0, 400, 300);
 		tablePanel.setSize(width, height + 10);
 		tableScrollPane.setSize(width, height);
 		tableScrollPane.revalidate();
-		
+
 		statusBar.setSize(statusPanel.getWidth(), statusPanel.getHeight());
 	}
-	
+
 	private void addStatusBar() {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBounds(0, 380, 450, 20);
 		panel.setBorder(BorderFactory.createTitledBorder(statusbar));
 		panelMap.put(statusbar, panel);
-		
+
 		statusBar = new JTextField("(C)2009 MediaStopf");
 		statusBar.setBounds(0, 0, panel.getWidth(), panel.getHeight());
 		statusBar.setEditable(false);
 		statusBar.setFocusable(false);
-		
+
 		panel.add(statusBar);
 		add(panel);
 	}
@@ -213,7 +220,7 @@ this.setBounds(0, 0, 400, 300);
 	private void addTaskComboBox() {
 		taskComboBox = new JComboBox(boxModel);
 		taskComboBox.setBounds(10, 20, 365, 20);
-		if(0<taskComboBox.getItemCount())
+		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
 			public void layoutComboBox(Container parent,
@@ -234,7 +241,6 @@ this.setBounds(0, 0, 400, 300);
 		runButton.setBounds(260, 50, 100, 25);
 		runButton.setText(run);
 		runButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				runSelectedItem();
 			}
@@ -242,22 +248,23 @@ this.setBounds(0, 0, 400, 300);
 		buttonMap.put(run, runButton);
 		return runButton;
 	}
-	
+
 	private void runSelectedItem() {
-		String taskID = (String)taskComboBox.getSelectedItem();
+		String taskID = (String) taskComboBox.getSelectedItem();
 		File task = new File(taskID);
-		if(!task.isDirectory()) {
-			MessageDialog.info("Not a Directory", taskID + " is not a directory.");
+		if (!task.isDirectory()) {
+			MessageDialog.info("Not a Directory", taskID
+					+ " is not a directory.");
 			return;
 		}
-		
+
 		client.sendFiles(taskID);
 		client.observeDir(taskID);
-		
-		//TODO
-//		ApplicationLauncher.open(program);
+
+		// TODO
+		// ApplicationLauncher.open(program);
 	}
-	
+
 	/**
 	 * add running task panel
 	 */
@@ -315,7 +322,6 @@ this.setBounds(0, 0, 400, 300);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
 			button.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == send) {
 						taskTable.send();
@@ -328,10 +334,11 @@ this.setBounds(0, 0, 400, 300);
 			buttonMap.put(buttonText[i], button);
 		}
 	}
-	
+
 	private void exit() {
-		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
-		switch(result) {
+		int result = MessageDialog.yesNoDialog("Exit",
+				"Do your really want to Quit?");
+		switch (result) {
 		case JOptionPane.YES_OPTION:
 			System.exit(0);
 			break;
@@ -382,7 +389,7 @@ this.setBounds(0, 0, 400, 300);
 		});
 		helpMenu.add(aboutItem);
 	}
-	
+
 	/**
 	 * filemenu items
 	 * 
@@ -392,12 +399,15 @@ this.setBounds(0, 0, 400, 300);
 	private void addFileItems(JMenu fileMenu) {
 		final String config = "Config", log = "Log", exit = "Exit";
 		final String[] fileTitles = { config, log, exit };
-		final KeyStroke configAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
-		final KeyStroke logAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK);
+		final KeyStroke configAccelerator = KeyStroke.getKeyStroke(
+				KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
+		final KeyStroke logAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_L,
+				KeyEvent.CTRL_DOWN_MASK);
 		final KeyStroke exitAccelerator = null;
-		final KeyStroke[] keyStrokes = { configAccelerator, logAccelerator, exitAccelerator };
+		final KeyStroke[] keyStrokes = { configAccelerator, logAccelerator,
+				exitAccelerator };
 		for (int i = 0; i < fileTitles.length; i++) {
-			if(i == 2) {
+			if (i == 2) {
 				fileMenu.addSeparator();
 			}
 			JMenuItem fileItem = new JMenuItem();
@@ -408,7 +418,7 @@ this.setBounds(0, 0, 400, 300);
 					if (e.getActionCommand() == config) {
 						ConfigDialog cd = new ConfigDialog();
 						cd.setVisible(true);
-					} else if(e.getActionCommand() == log) {
+					} else if (e.getActionCommand() == log) {
 						LogDialog ld = new LogDialog();
 						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {

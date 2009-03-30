@@ -220,7 +220,6 @@ public class MediaStopfServer extends JFrame {
 		exportButton.setBounds(260, 50, 100, 25);
 		exportButton.setText(export);
 		exportButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				exportSelectedItem();
 			}
@@ -303,7 +302,6 @@ public class MediaStopfServer extends JFrame {
 		button.setMnemonic(KeyEvent.VK_C);
 		button.setEnabled(false);
 		button.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getActionCommand() == cancel) {
 					exportTable.cancel();

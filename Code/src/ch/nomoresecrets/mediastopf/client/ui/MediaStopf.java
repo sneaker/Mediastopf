@@ -227,7 +227,7 @@ public class MediaStopf extends JFrame {
 		}
 		
 		client.sendFiles(taskID);
-		client.dirObserver(taskID);
+		client.observeDir(taskID);
 		
 		//TODO
 //		ApplicationLauncher.open(program);

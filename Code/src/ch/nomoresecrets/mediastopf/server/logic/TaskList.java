@@ -3,26 +3,29 @@ package ch.nomoresecrets.mediastopf.server.logic;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import ch.nomoresecrets.mediastopf.server.Server;
 import ch.nomoresecrets.mediastopf.server.StartServer;
-import ch.nomoresecrets.mediastopf.server.database.DbAdapter;
 import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
 
 public class TaskList extends Observable {
 	
 	private ArrayList<String> list = new ArrayList<String>();
+	private Server server;
 	
-	public TaskList() {
+	public TaskList(Server server) {
+		this.server = server;
+		
 		if(StartServer.DEBUG) {
 			for(int i=10; i < 20; i++) {
 				add(i + "");
 			}
 		} else {
-			updateFromDB();
+			updateList();
 		}
 	}
 
-	private void updateFromDB() {
-		ArrayList<Auftrag> tasklist = DbAdapter.getOrderList();
+	private void updateList() {
+		ArrayList<Auftrag> tasklist = server.getDataBase();
 		for(Auftrag a: tasklist) {
 			String mediatype = "Unknown";
 			if(a.getMedientyp() != null) {

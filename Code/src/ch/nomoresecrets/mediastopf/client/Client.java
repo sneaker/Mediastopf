@@ -50,7 +50,7 @@ public class Client {
 	 * 
 	 * @param folder to Observer
 	 */
-	public void dirObserver(final String folder) {
+	public void observeDir(final String folder) {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
 		dirObserver.subscribe(new Observer() {
 			@Override

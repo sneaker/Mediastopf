@@ -31,6 +31,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import ch.nomoresecrets.mediastopf.server.Server;
 import ch.nomoresecrets.mediastopf.server.logic.ExportRunningList;
 import ch.nomoresecrets.mediastopf.server.logic.ImportRunningList;
 import ch.nomoresecrets.mediastopf.server.logic.TaskList;
@@ -68,9 +69,9 @@ public class MediaStopfServer extends JFrame {
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String export = "Export", cancel = "Cancel", runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
-
-	public MediaStopfServer() {
-		taskList = new TaskList();
+	
+	public MediaStopfServer(Server server) {
+		taskList = new TaskList(server);
 		boxModel = new TaskComboBoxModel(taskList);
 		importRunningList = new ImportRunningList();
 		exportRunningList = new ExportRunningList();

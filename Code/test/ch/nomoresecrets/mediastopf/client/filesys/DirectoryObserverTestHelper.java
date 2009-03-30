@@ -1,4 +1,4 @@
-package ch.nomoresecrets.mediastopf.filesys;
+package ch.nomoresecrets.mediastopf.client.filesys;
 
 import java.io.File;
 import java.io.FileOutputStream;

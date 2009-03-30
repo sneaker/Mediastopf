@@ -1,4 +1,4 @@
-package ch.nomoresecrets.mediastopf.filesys;
+package ch.nomoresecrets.mediastopf.client.filesys;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

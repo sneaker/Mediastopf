@@ -22,6 +22,8 @@ public class ExporterTest {
 
 	@After
 	public void tearDown() throws Exception {
+		delSrcDir();
+		delDestDir();
 	}
 
 	@Test
@@ -58,5 +60,23 @@ public class ExporterTest {
 		dest = new File(TEMPDIR + "mediastopftestdest");
 		src.mkdirs();
 		dest.mkdirs();
+	}
+	
+	private void delSrcDir() {
+		delDir(src);
+	}
+	
+	private void delDestDir() {
+		delDir(dest);
+	}
+	
+	private void delDir(File file) {
+		if(file.isDirectory()) {
+			File[] fileList = file.listFiles();
+			for(File f: fileList) {
+				f.delete();
+			}
+		}
+		file.delete();
 	}
 }

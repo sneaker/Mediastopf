@@ -1,9 +1,17 @@
 package ch.nomoresecrets.mediastopf.client.networking;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.client.log.Log;
+
 public class TestConnect {
+	
+	private Logger logger = Log.getLogger();
 
 	public TestConnect() throws IOException {
 		
@@ -16,31 +24,29 @@ public class TestConnect {
 			try {
 				conn = new ServerConnection("localhost", 1337);
 			} catch (UnknownHostException e) {
-				System.err.println("Unknown host");
+				logger.fatal("Unknown host");
 			} catch (IOException e) {
-				System.err.println("Could not get I/O for connection to Server");
+				logger.error("Could not get I/O for connection to Server");
 			}
 			
 			conn.sendMessage(aMessage);
 			
 			if (aMessage.equals("TRANSFER")) {
-				conn.sendFile("/home/thomas/test.txt");
+				conn.sendFile("asdf.log");
 			}
 			
-			System.out.println(conn.receiveMessage());
+			logger.info(conn.receiveMessage());
 		}
-
 	}
 
 	public String getMessage() {
-		BufferedReader UserInput = new BufferedReader(new InputStreamReader(
-				System.in));
+		BufferedReader UserInput = new BufferedReader(new InputStreamReader(System.in));
 		String message = null;
 		try {
-			System.out.println("Message to Server:");
+			logger.info("Message to Server:");
 			message = UserInput.readLine();
 		} catch (IOException e) {
-			System.out.println("Error: Cannot get Message from Keyboard");
+			logger.error("Error: Cannot get Message from Keyboard");
 			e.printStackTrace();
 		}
 

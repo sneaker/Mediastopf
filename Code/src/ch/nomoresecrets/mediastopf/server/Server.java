@@ -1,32 +1,138 @@
 package ch.nomoresecrets.mediastopf.server;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.server.database.ActiveRecordManager;
+import ch.nomoresecrets.mediastopf.server.database.DbAdapter;
+import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
+import ch.nomoresecrets.mediastopf.server.interfaces.ServerHandler;
+import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.networking.NetworkServer;
-//import ch.nomoresecrets.mediastopf.database.*;
-//import ch.nomoresecrets.mediastopf.domain.*;
+import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
+import ch.nomoresecrets.mediastopf.server.ui.SplashScreen;
 
-
-
-public class Server {
-
-	private final int MAX_SERVER_THREADS = 10;
+public class Server implements ServerHandler {
 	
+	private static final String SPLASHIMAGE = MediaStopfServer.UIIMAGELOCATION + "splash.jpg";
+	private static final int MAX_SERVER_THREADS = 10;
+
 	public Server(int port) {
-		NetworkServer netserver = new NetworkServer(port, MAX_SERVER_THREADS);
-		loadData();
+		loadLog();
+		serverStartInfo();
+		startServer(port);
+		loadUI();
+//		loadData();
+	}
+
+	private void startServer(int port) {
+		Logger logger = Log.getLogger();
+		logger.info("Starting network server...");
+		ExecutorService exec = Executors.newSingleThreadExecutor();
+		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
+	}
+
+	private void loadData() {
+		// Get data from DB direct via domain object and activerecord
+		String sql = "select * from Auftrag";
+		List<Auftrag> lp = ActiveRecordManager.getObjectList(sql, Auftrag.class);
+		for (Auftrag name: lp) System.out.println(name.toString());
+
+		// Get data from DB via adapter class
+		lp = DbAdapter.getOrderList();
+		for (Auftrag name: lp) System.out.println(name.toString());
 	}
 	
-	private void loadData() {
-		//Get data from DB direct via domain object and activerecord
-		String sql = "select * from Auftrag";
-//		List<Order> lp = ActiveRecordManager.getObjectList(sql, Order.class);
-//		for (Order name: lp) System.out.println(name.toString());
+	@Override
+	/**
+	 * get entries from a database
+	 * 
+	 * @return ArrayList
+	 */
+	public ArrayList<Auftrag> getDataBase() {
+		return DbAdapter.getOrderList();
+	}
+	
+	@Override
+	/**
+	 * send objects
+	 * 
+	 * @param Object
+	 */
+	public void sendObject(Object o) {
+		//TODO
+	}
+	
+	@Override
+	/**
+	 * get received objects
+	 */
+	public Object getObject() {
+		//TODO
+		return null;
+	}
+	
+	/**
+	 * cancel running job
+	 */
+	public void cancelJob() {
+		//TODO
+	}
+	
+	private void loadLog() {
+		Log log = new Log();
+		log.setLevel(Level.ALL);
+	}
 
-		//Get data from DB via adapter class
-//		lp = DbAdapter.getOrderList();
-//		for (Order name: lp) System.out.println(name.toString());
-		
+	private void serverStartInfo() {
+		// TODO: ANPASSEN!
+		Logger logger = Log.getLogger();
+		logger.info("=======================================================");
+		logger.info("MediaStopf - Ein Softwaresystem zum Lieb haben ;)");
+		logger.info("=======================================================");
+		logger.info("Copyright (C)2009");
+		logger.info("Powered by NoMoreSecrets");
+		logger.info("www.no-more-secrets.ch");
+		logger.info("University of Applied Science Rapperswil");
+		logger.info("www.hsr.ch");
+		logger.info("=======================================================");
+	}
+
+	private void setLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void loadUI() {
+		setLookAndFeel();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				MediaStopfServer mediastopf = new MediaStopfServer(Server.this);
+				if (StartServer.DEBUG) {
+					mediastopf.setTitle(MediaStopfServer.PROGRAM + " - Debug");
+				} else {
+					new SplashScreen(SPLASHIMAGE);
+				}
+				mediastopf.setVisible(true);
+			}
+		});
 	}
 }

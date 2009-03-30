@@ -1,6 +1,9 @@
-Documentation/Praesentationen/*
-!Documentation/Praesentationen/*.tex
-Code/release
 Code/javadoc
 Code/test.bin
 .~lock.*
+*.classpath
+!Documentation/Praesentation/*.tex
+!Documentation/Praesentation/*.pdf
+Code/release/
+Code/resources/
+.gitignore

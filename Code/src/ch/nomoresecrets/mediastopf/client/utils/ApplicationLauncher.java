@@ -2,14 +2,30 @@ package ch.nomoresecrets.mediastopf.client.utils;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.client.log.Log;
+
 public class ApplicationLauncher {
 
-		public ApplicationLauncher(String program) {
-			try {
-				Runtime.getRuntime().exec(program);
-			} catch (IOException e) {
-				System.err.println("Error: Cannot start application: " + program);
-				e.printStackTrace();
+	private static Logger logger = Log.getLogger();
+
+	public static void open(final String program) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Runtime runtime = Runtime.getRuntime();
+					Process process = runtime.exec(program);
+					process.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (IOException e1) {
+					logger.error("Error: Cannot start application: " + program);
+					e1.printStackTrace();
+				}
 			}
-		}
+		});
+		t.start();
+	}
 }

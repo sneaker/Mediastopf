@@ -1,35 +1,44 @@
 package ch.nomoresecrets.mediastopf.server.networking;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class NetworkServer {
+import org.apache.log4j.Logger;
+
+import ch.nomoresecrets.mediastopf.server.log.Log;
+
+public class NetworkServer implements Runnable {
 
 	private ServerSocket mediastop_ServerSocket;
+	private Logger logger = Log.getLogger();
+	private int THREADCOUNT;
 	
 	public NetworkServer(int port, int thread_count) {
 		try {
 			mediastop_ServerSocket = new ServerSocket(port);
+			THREADCOUNT = thread_count;
 		} catch (IOException e) {
-			System.err.println("Error: MediaStopf cannot bind to port: " + port);
-			System.err.println("Exiting...");
+			logger.fatal("Error: MediaStopf cannot bind to port: " + port);
+			logger.info("Exiting...");
 			System.exit(-1);
 		}
-		
+	}
+
+	@Override
+	public void run() {
 		ExecutorService exec = null;
-		
+
 		for (int i = 0; i < 5; ++i) {
-			exec = Executors.newFixedThreadPool(thread_count);
+			exec = Executors.newFixedThreadPool(THREADCOUNT);
 		}
-		
-		
-		while(mediastop_ServerSocket.isBound()) {	
+
+		while (mediastop_ServerSocket.isBound()) {
 			try {
 				exec.execute(new NetworkServerThread(mediastop_ServerSocket.accept()));
 			} catch (IOException e) {
-				System.out.println("Error on accepting connection");
+				logger.error("Error on accepting connection");
 				e.printStackTrace();
 			}
 		}

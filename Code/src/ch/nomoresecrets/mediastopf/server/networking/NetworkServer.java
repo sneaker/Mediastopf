@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 
-import ch.nomoresecrets.mediastopf.client.log.Log;
+import ch.nomoresecrets.mediastopf.server.log.Log;
 
 public class NetworkServer implements Runnable {
 

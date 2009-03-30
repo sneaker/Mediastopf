@@ -1,6 +1,7 @@
 package ch.nomoresecrets.mediastopf.client.ui.dialogs;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -70,10 +71,10 @@ public class ConfigDialog extends JFrame {
 	}
 
 	private void addDefaultFolderPanel() {
-		JPanel panel = createPanel("Default Folder");
-		panel.setBounds(0, 10, 395, 70);
-		folderTextField = createTextField();
-		folderTextField.setLocation(60, 40);
+		createBorder("Default Folder", new Rectangle(0, 10, 395, 70));
+		createLabel("defaultfolder.png", new Rectangle(12, 30, 40, 40));
+		
+		folderTextField = createTextField(new Point(60, 40));
 		folderTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -81,7 +82,7 @@ public class ConfigDialog extends JFrame {
 					openDefaultFolderFileChooser();
 			}
 		});
-		JLabel iconLabel = createLabel("defaultfolder.png", new Rectangle(12, 30, 40, 40));
+		
 		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
 		openIcon.addActionListener(new ActionListener() {
 			@Override
@@ -89,18 +90,13 @@ public class ConfigDialog extends JFrame {
 				openDefaultFolderFileChooser();
 			}
 		});
-
-		JComponent[] comp = { panel, folderTextField, iconLabel, openIcon };
-		for(JComponent c: comp) {
-			add(c);
-		}
 	}
 
 	private void addAudioRipper() {
-		JPanel panel = createPanel("AudioRipper");
-		panel.setBounds(0, 85, 395, 70);
-		ripperTextField = createTextField();
-		ripperTextField.setLocation(60, 115);
+		createBorder("AudioRipper", new Rectangle(0, 85, 395, 70));
+		createLabel("audioripper.png", new Rectangle(12, 105, 40, 40));
+		
+		ripperTextField = createTextField(new Point(60, 115));
 		ripperTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -108,7 +104,7 @@ public class ConfigDialog extends JFrame {
 					openAudioRipperDirChooser();
 			}
 		});
-		JLabel iconLabel = createLabel("audioripper.png", new Rectangle(12, 105, 40, 40));
+		
 		JButton openIcon = createOpenButton(new Rectangle(355, 115, 22, 22));
 		openIcon.addActionListener(new ActionListener() {
 			@Override
@@ -116,11 +112,6 @@ public class ConfigDialog extends JFrame {
 				openAudioRipperDirChooser();
 			}
 		});
-
-		JComponent[] comp = { panel, ripperTextField, iconLabel, openIcon };
-		for(JComponent c: comp) {
-			add(c);
-		}
 	}
 	
 	private JButton createOpenButton(Rectangle rec) {
@@ -128,28 +119,31 @@ public class ConfigDialog extends JFrame {
 		button.setIcon(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "open.png")));
 		button.setBounds(rec);
 		button.setToolTipText("Choose Directory");
+		add(button);
 		return button;
 	}
 
-	private JLabel createLabel(String icon, Rectangle rec) {
+	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + icon)));
 		label.setBounds(rec);
 		label.setBorder(LineBorder.createBlackLineBorder());
-		return label;
+		add(label);
 	}
 
-	private JPanel createPanel(String border) {
+	private void createBorder(String border, Rectangle rec) {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBorder(BorderFactory.createTitledBorder(border));
 		panel.setOpaque(false);
-		return panel;
+		panel.setBounds(rec);
+		add(panel);
 	}
 
-	private JTextField createTextField() {
+	private JTextField createTextField(Point p) {
 		final JTextField textField = new JTextField();
 		textField.setSize(290, 22);
+		textField.setLocation(p);
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -157,6 +151,7 @@ public class ConfigDialog extends JFrame {
 				textField.selectAll();
 			}
 		});
+		add(textField);
 		return textField;
 	}
 
@@ -235,8 +230,7 @@ public class ConfigDialog extends JFrame {
 	 * load properties.
 	 */
 	void loadProperties() {
-		String configfile = CONFIGFILE;
-		File config = new File(configfile);
+		File config = new File(CONFIGFILE);
 		if(!config.exists()) {
 			try {
 				config.createNewFile();
@@ -245,7 +239,7 @@ public class ConfigDialog extends JFrame {
 			}
 		}
 		try {
-			prop.load(new FileReader(configfile));
+			prop.load(new FileReader(CONFIGFILE));
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		} catch (IOException e) {

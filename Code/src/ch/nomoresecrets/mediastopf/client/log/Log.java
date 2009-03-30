@@ -72,7 +72,7 @@ public class Log {
 	 * 
 	 * @return String
 	 */
-	public static String getServerLog() {
+	public static String getLog() {
 		return LOGFILE;
 	}
 }

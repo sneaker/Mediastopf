@@ -12,7 +12,7 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-import ch.nomoresecrets.mediastopf.client.log.Log;
+import ch.nomoresecrets.mediastopf.server.log.Log;
 
 public class NetworkServerThread implements Runnable {
 

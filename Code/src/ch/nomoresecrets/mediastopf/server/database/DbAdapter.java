@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import ch.nomoresecrets.mediastopf.client.log.Log;
+import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
 
 public class DbAdapter {

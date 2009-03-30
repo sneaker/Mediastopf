@@ -1,6 +1,7 @@
 package ch.nomoresecrets.mediastopf.server.ui.dialogs;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -74,10 +75,10 @@ public class ExportDialog extends JDialog {
 	}
 
 	private void addDefaultFolderPanel() {
-		JPanel panel = createPanel("Export Storage");
-		panel.setBounds(0, 10, 395, 70);
-		exportTextField = createTextField();
-		exportTextField.setLocation(60, 40);
+		createBorder("Export Storage", new Rectangle(0, 10, 395, 70));
+		createLabel("export.png", new Rectangle(12, 30, 40, 40));
+		
+		exportTextField = createTextField(new Point(60, 40));
 		exportTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -85,7 +86,6 @@ public class ExportDialog extends JDialog {
 					openExportFileChooser();
 			}
 		});
-		JLabel iconLabel = createLabel("export.png", new Rectangle(12, 30, 40, 40));
 		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
 		openIcon.addActionListener(new ActionListener() {
 			@Override
@@ -93,11 +93,6 @@ public class ExportDialog extends JDialog {
 				openExportFileChooser();
 			}
 		});
-
-		JComponent[] comp = { panel, exportTextField, iconLabel, openIcon };
-		for(JComponent c: comp) {
-			add(c);
-		}
 	}
 	
 	private JButton createOpenButton(Rectangle rec) {
@@ -105,28 +100,31 @@ public class ExportDialog extends JDialog {
 		button.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "open.png")));
 		button.setBounds(rec);
 		button.setToolTipText("Choose Directory");
+		add(button);
 		return button;
 	}
 
-	private JLabel createLabel(String icon, Rectangle rec) {
+	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + icon)));
 		label.setBounds(rec);
 		label.setBorder(LineBorder.createBlackLineBorder());
-		return label;
+		add(label);
 	}
 
-	private JPanel createPanel(String border) {
+	private void createBorder(String borderTitle, Rectangle rec) {
 		JPanel panel = new JPanel();
+		panel.setBounds(rec);
 		panel.setLayout(null);
-		panel.setBorder(BorderFactory.createTitledBorder(border));
+		panel.setBorder(BorderFactory.createTitledBorder(borderTitle));
 		panel.setOpaque(false);
-		return panel;
+		add(panel);
 	}
 
-	private JTextField createTextField() {
+	private JTextField createTextField(Point p) {
 		final JTextField textField = new JTextField();
 		textField.setSize(290, 22);
+		textField.setLocation(p);
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -134,6 +132,7 @@ public class ExportDialog extends JDialog {
 				textField.selectAll();
 			}
 		});
+		add(textField);
 		return textField;
 	}
 

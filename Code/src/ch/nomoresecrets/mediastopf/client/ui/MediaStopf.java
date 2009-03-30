@@ -12,10 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,10 +28,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
+import ch.nomoresecrets.mediastopf.client.Client;
 import ch.nomoresecrets.mediastopf.client.logic.TaskList;
 import ch.nomoresecrets.mediastopf.client.logic.TaskRunningList;
-import ch.nomoresecrets.mediastopf.client.networking.ServerConnection;
 import ch.nomoresecrets.mediastopf.client.ui.dialogs.AboutDialog;
 import ch.nomoresecrets.mediastopf.client.ui.dialogs.ConfigDialog;
 import ch.nomoresecrets.mediastopf.client.ui.dialogs.LogDialog;
@@ -65,10 +61,11 @@ public class MediaStopf extends JFrame {
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = "Run", send = "Send", cancel = "Cancel",
 			runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
-	private ServerConnection connection;
+	
+	private Client client;
 
-	public MediaStopf(ServerConnection connection) {
-		this.connection = connection;
+	public MediaStopf(Client client) {
+		this.client = client;
 		taskList = new TaskList();
 		boxModel = new TaskComboBoxModel(taskList);
 		runningList = new TaskRunningList();
@@ -86,11 +83,9 @@ public class MediaStopf extends JFrame {
 		setLayout(null);
 		setMinimumSize(new Dimension(400, 450));
 		setSize(400, 450);
-		setIconImage(new ImageIcon(getClass().getResource(
-				UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2,
-				(dim.height - getHeight()) / 2);
+		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 
 		addStatusBar();
@@ -118,24 +113,17 @@ public class MediaStopf extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
-					JPanel runtask = panelMap.get(runningTask);
-					runtask.setSize(getWidth() - 5, getHeight() - 180);
-					JPanel task = panelMap.get(tasks);
-					task.setSize(getWidth() - 5, task.getHeight());
-					JPanel status = panelMap.get(statusbar);
-					status.setBounds(0, getHeight() - 70, getWidth() - 5, status.getHeight());
-
-					buttonMap.get(run).setLocation(task.getWidth() - 135,task.getHeight() - 40);
-					buttonMap.get(send).setLocation(runtask.getWidth() - 245,runtask.getHeight() - 40);
-					buttonMap.get(cancel).setLocation(runtask.getWidth() - 135,	runtask.getHeight() - 40);
-
-					taskComboBox.setSize(task.getWidth() - 30, 20);
-
-					tablePanel.setSize(runtask.getWidth() - 10, runtask.getHeight() - 70);
-					tableScrollPane.setSize(runtask.getWidth() - 10, runtask.getHeight());
-					tableScrollPane.revalidate();
+					int width = getWidth();
+					int height = getHeight();
 					
-					statusBar.setSize(status.getWidth(), status.getHeight());
+					JPanel runtaskPanel = panelMap.get(runningTask);
+					runtaskPanel.setSize(width - 5, height - 180);
+					JPanel taskPanel = panelMap.get(tasks);
+					taskPanel.setSize(width - 5, taskPanel.getHeight());
+					JPanel statusPanel = panelMap.get(statusbar);
+					statusPanel.setBounds(0, height - 70, width - 5, statusPanel.getHeight());
+
+					updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
 				}
 			}
 			@Override
@@ -143,6 +131,23 @@ public class MediaStopf extends JFrame {
 				isShown = true;
 			}
 		});
+	}
+	
+	private void updateComponentBounds(JPanel runtaskPanel, JPanel taskPanel, JPanel statusPanel) {
+		buttonMap.get(run).setLocation(taskPanel.getWidth() - 135,taskPanel.getHeight() - 40);
+		
+		int width = runtaskPanel.getWidth() - 10;
+		int height = runtaskPanel.getHeight();
+		buttonMap.get(send).setLocation(width - 235, height + 40);
+		buttonMap.get(cancel).setLocation(width - 125, height + 40);
+
+		taskComboBox.setSize(taskPanel.getWidth() - 30, 20);
+
+		tablePanel.setSize(width, height + 10);
+		tableScrollPane.setSize(width, height);
+		tableScrollPane.revalidate();
+		
+		statusBar.setSize(statusPanel.getWidth(), statusPanel.getHeight());
 	}
 	
 	private void addStatusBar() {
@@ -221,45 +226,13 @@ public class MediaStopf extends JFrame {
 			return;
 		}
 		
-//		sendFiles(taskID);
-		try {
-			connection.sendFile("asdf.log");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		dirObserver(taskID);
-//		logger.info("Observing directory: " + taskID);
-		
+		client.sendFiles(taskID);
+		client.dirObserver(taskID);
 		
 		//TODO
 //		ApplicationLauncher.open(program);
 	}
 	
-	//TODO
-	private void dirObserver(final String taskID) {
-		DirectoryObserver dirObserver = new DirectoryObserver(taskID);
-		dirObserver.subscribe(new Observer() {
-			@Override
-			public void update(Observable o, Object arg) {
-				sendFiles(taskID);
-			}
-		});
-		dirObserver.start();
-	}
-	
-	private void sendFiles(String taskID) {
-		File task = new File(taskID);
-		String[] fileList = task.list();
-		for(String f: fileList) {
-			try {
-				connection.sendFile(taskID + File.separator + f);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	/**
 	 * add running task panel
 	 */

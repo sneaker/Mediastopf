@@ -89,11 +89,9 @@ public class MediaStopfServer extends JFrame {
 		setLayout(null);
 		setMinimumSize(new Dimension(400, 450));
 		setSize(400, 450);
-		setIconImage(new ImageIcon(getClass().getResource(
-				UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2,
-				(dim.height - getHeight()) / 2);
+		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 
 		addTrayIcon();
@@ -123,22 +121,17 @@ public class MediaStopfServer extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
-					JPanel runtask = panelMap.get(runningTask);
-					runtask.setSize(getWidth() - 5, getHeight() - 180);
-					JPanel task = panelMap.get(tasks);
-					task.setSize(getWidth() - 5, task.getHeight());
-					JPanel status = panelMap.get(statusbar);
-					status.setBounds(0, getHeight() - 70, getWidth() - 5, status.getHeight());
-
-					buttonMap.get(export).setLocation(task.getWidth() - 135,task.getHeight() - 40);
-					buttonMap.get(cancel).setLocation(runtask.getWidth() - 135,	runtask.getHeight() - 40);
-
-					taskComboBox.setSize(task.getWidth() - 30, 20);
-
-					tablePanel.setSize(runtask.getWidth() - 10, runtask.getHeight() - 70);
-					tabPane.setSize(tablePanel.getWidth(), tablePanel.getHeight());
+					int width = getWidth() - 5;
+					int height = getHeight() - 70;
 					
-					statusBar.setSize(status.getWidth(), status.getHeight());
+					JPanel runtaskPanel = panelMap.get(runningTask);
+					runtaskPanel.setSize(width, height - 110);
+					JPanel taskPanel = panelMap.get(tasks);
+					taskPanel.setSize(width, taskPanel.getHeight());
+					JPanel statusPanel = panelMap.get(statusbar);
+					statusPanel.setBounds(0, height, width, statusPanel.getHeight());
+
+					updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
 				}
 			}
 
@@ -147,6 +140,21 @@ public class MediaStopfServer extends JFrame {
 				isShown = true;
 			}
 		});
+	}
+	
+	private void updateComponentBounds(JPanel runtask, JPanel task, JPanel status) {
+		buttonMap.get(export).setLocation(task.getWidth() - 135,task.getHeight() - 40);
+		
+		int width = runtask.getWidth() - 10;
+		int height = runtask.getHeight() - 40;
+		buttonMap.get(cancel).setLocation(width - 125, height);
+		tablePanel.setSize(width, height - 30);
+		
+		taskComboBox.setSize(task.getWidth() - 30, 20);
+
+		tabPane.setSize(tablePanel.getWidth(), tablePanel.getHeight());
+		
+		statusBar.setSize(status.getWidth(), status.getHeight());
 	}
 	
 	private void addTrayIcon() {
@@ -194,8 +202,7 @@ public class MediaStopfServer extends JFrame {
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
-			public void layoutComboBox(Container parent,
-					MetalComboBoxLayoutManager manager) {
+			public void layoutComboBox(Container parent, MetalComboBoxLayoutManager manager) {
 				super.layoutComboBox(parent, manager);
 				arrowButton.setBounds(0, 0, 0, 0);
 			}

@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 
-import ch.nomoresecrets.mediastopf.client.log.Log;
+import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.database.ActiveRecordManager;
 import ch.nomoresecrets.mediastopf.server.database.DbAdapter;
 import ch.nomoresecrets.mediastopf.server.domain.Auftrag;

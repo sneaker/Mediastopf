@@ -30,8 +30,7 @@ public class ExportTable extends JXTable {
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setComponentPopupMenu(createPopupMenu());
 		setSortOrder(0, SortOrder.ASCENDING);
-		setHighlighters(HighlighterFactory
-				.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
+		setHighlighters(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
 	}
 
 	/**

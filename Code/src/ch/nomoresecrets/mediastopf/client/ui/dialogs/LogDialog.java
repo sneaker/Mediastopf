@@ -9,12 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -34,6 +29,7 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
+import ch.nomoresecrets.mediastopf.client.filesys.FileIO;
 import ch.nomoresecrets.mediastopf.client.log.Log;
 import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
 
@@ -62,11 +58,9 @@ public class LogDialog extends JDialog implements Runnable {
 		setMinimumSize(new Dimension(500, 430));
 		setSize(500, 430);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(
-				MediaStopf.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2,
-				(dim.height - getHeight()) / 2);
+		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 
 		addButtons();
 		addRefreshBox();
@@ -80,25 +74,24 @@ public class LogDialog extends JDialog implements Runnable {
 	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
-
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
-					scrollArea.setSize(getWidth() - 15, getHeight() - 80);
+					int width = getWidth() - 15;
+					int height = getHeight() - 65;
+					scrollArea.setSize(width , height - 15);
 					scrollArea.revalidate();
-					box.setLocation(10, getHeight() - 60);
-					buttonMap.get(save).setLocation(getWidth() - 250,
-							getHeight() - 65);
-					buttonMap.get(close).setLocation(getWidth() - 140,
-							getHeight() - 65);
+					
+					box.setLocation(10, height - 60);
+					
+					buttonMap.get(save).setLocation(width - 235, height);
+					buttonMap.get(close).setLocation(width - 115, height);
 				}
 			}
-
 			@Override
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
 			}
-
 			@Override
 			public void componentHidden(ComponentEvent e) {
 				suspendListener();
@@ -107,7 +100,7 @@ public class LogDialog extends JDialog implements Runnable {
 	}
 
 	private void addTextArea() {
-		textArea = new JTextArea("test");
+		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setBorder(LineBorder.createBlackLineBorder());
 		textArea.setWrapStyleWord(true);
@@ -115,10 +108,8 @@ public class LogDialog extends JDialog implements Runnable {
 		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		textArea.setComponentPopupMenu(getPopUpMenu(textArea));
 		scrollArea = new JScrollPane(textArea);
-		scrollArea
-				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollArea
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollArea.setBounds(5, 5, 485, 350);
 
 		add(scrollArea);
@@ -197,23 +188,17 @@ public class LogDialog extends JDialog implements Runnable {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
-
-			String file = path + File.separator + filename;
-			if (!filename.endsWith("txt")) {
-				file += ".txt";
-			}
-			writeFile(file);
+			String file = addTXTPostfix(filename, path);
+			FileIO.write(file, textArea.getText().trim());
 		}
 	}
 
-	private void writeFile(String file) {
-		try {
-			FileWriter fw = new FileWriter(new File(file));
-			fw.write(textArea.getText().trim());
-			fw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+	private String addTXTPostfix(String filename, String path) {
+		String file = path + File.separator + filename;
+		if (!filename.endsWith("txt")) {
+			file += ".txt";
 		}
+		return file;
 	}
 
 	private JFileChooser getFileChooser() {
@@ -331,19 +316,7 @@ public class LogDialog extends JDialog implements Runnable {
 	}
 
 	private void readLogContent() {
-		BufferedReader br;
-		String readLine, logContent = "";
-		try {
-			br = new BufferedReader(new FileReader(new File(Log.getServerLog())));
-			while ((readLine = br.readLine()) != null) {
-				logContent += readLine + "\n";
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String logContent = FileIO.read(Log.getLog());
 		textArea.setText(logContent);
 	}
 }

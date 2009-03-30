@@ -1,0 +1,24 @@
+package ch.nomoresecrets.mediastopf.server.interfaces;
+
+import java.util.ArrayList;
+
+import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
+
+public interface ServerHandler {
+	/**
+	 * get entries from a database
+	 * 
+	 * @return ArrayList
+	 */
+	public ArrayList<Auftrag> getDataBase();
+	/**
+	 * send objects
+	 * 
+	 * @param Object
+	 */
+	public void sendObject(Object o);
+	/**
+	 * get received objects
+	 */
+	public Object getObject();
+}

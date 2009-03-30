@@ -15,12 +15,13 @@ import org.apache.log4j.Logger;
 import ch.nomoresecrets.mediastopf.server.database.ActiveRecordManager;
 import ch.nomoresecrets.mediastopf.server.database.DbAdapter;
 import ch.nomoresecrets.mediastopf.server.domain.Auftrag;
+import ch.nomoresecrets.mediastopf.server.interfaces.ServerHandler;
 import ch.nomoresecrets.mediastopf.server.log.Log;
 import ch.nomoresecrets.mediastopf.server.networking.NetworkServer;
 import ch.nomoresecrets.mediastopf.server.ui.MediaStopfServer;
 import ch.nomoresecrets.mediastopf.server.ui.SplashScreen;
 
-public class Server {
+public class Server implements ServerHandler {
 	
 	private static final String SPLASHIMAGE = MediaStopfServer.UIIMAGELOCATION + "splash.jpg";
 	private static final int MAX_SERVER_THREADS = 10;
@@ -51,6 +52,7 @@ public class Server {
 		for (Auftrag name: lp) System.out.println(name.toString());
 	}
 	
+	@Override
 	/**
 	 * get entries from a database
 	 * 
@@ -58,6 +60,25 @@ public class Server {
 	 */
 	public ArrayList<Auftrag> getDataBase() {
 		return DbAdapter.getOrderList();
+	}
+	
+	@Override
+	/**
+	 * send objects
+	 * 
+	 * @param Object
+	 */
+	public void sendObject(Object o) {
+		//TODO
+	}
+	
+	@Override
+	/**
+	 * get receiverd objects
+	 */
+	public Object getObject() {
+		//TODO
+		return null;
 	}
 	
 	private void loadLog() {

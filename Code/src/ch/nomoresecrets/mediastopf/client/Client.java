@@ -14,12 +14,13 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import ch.nomoresecrets.mediastopf.client.filesys.DirectoryObserver;
+import ch.nomoresecrets.mediastopf.client.interfaces.ClientHandler;
 import ch.nomoresecrets.mediastopf.client.log.Log;
 import ch.nomoresecrets.mediastopf.client.networking.ServerConnection;
 import ch.nomoresecrets.mediastopf.client.ui.MediaStopf;
 import ch.nomoresecrets.mediastopf.client.ui.SplashScreen;
 
-public class Client {
+public class Client implements ClientHandler {
 	
 	private static final String SPLASHIMAGE = MediaStopf.UIIMAGELOCATION + "splash.jpg";
 	private static final String HOST = "localhost";
@@ -45,6 +46,7 @@ public class Client {
 		}
 	}
 	
+	@Override
 	/**
 	 * start directory observer
 	 * 
@@ -63,6 +65,7 @@ public class Client {
 		logger.info("Directory Observer started in " + folder);
 	}
 	
+	@Override
 	/**
 	 * send files from folder
 	 * 
@@ -78,6 +81,34 @@ public class Client {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+
+	@Override
+	/**
+	 * send objects
+	 * 
+	 * @param Object
+	 */
+	public void sendObject(Object o) {
+		//TODO
+	}
+	
+	@Override
+	/**
+	 * get receiverd objects
+	 */
+	public Object getObject() {
+		//TODO
+		return null;
+	}
+	
+	@Override
+	/**
+	 * cancel running job
+	 */
+	public void cancelJob() {
+		//TODO
 	}
 	
 	private void loadUI() {

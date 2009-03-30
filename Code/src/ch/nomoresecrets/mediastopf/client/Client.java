@@ -96,7 +96,7 @@ public class Client implements ClientHandler {
 	
 	@Override
 	/**
-	 * get receiverd objects
+	 * get received objects
 	 */
 	public Object getObject() {
 		//TODO

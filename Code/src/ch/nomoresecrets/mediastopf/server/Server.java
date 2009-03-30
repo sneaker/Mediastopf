@@ -74,11 +74,18 @@ public class Server implements ServerHandler {
 	
 	@Override
 	/**
-	 * get receiverd objects
+	 * get received objects
 	 */
 	public Object getObject() {
 		//TODO
 		return null;
+	}
+	
+	/**
+	 * cancel running job
+	 */
+	public void cancelJob() {
+		//TODO
 	}
 	
 	private void loadLog() {

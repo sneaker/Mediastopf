@@ -21,4 +21,8 @@ public interface ServerHandler {
 	 * get received objects
 	 */
 	public Object getObject();
+	/**
+	 * cancel running job
+	 */
+	public void cancelJob();
 }

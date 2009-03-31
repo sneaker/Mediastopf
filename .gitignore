@@ -1,7 +1,2 @@
-Code/javadoc
-Code/test.bin
-.~lock.*
-!Documentation/Praesentation/*.tex
-!Documentation/Praesentation/*.pdf
-Code/release/
-Code/resources/
+.classpath
+.project

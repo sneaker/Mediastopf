@@ -42,7 +42,6 @@ import ms.client.ui.models.TaskTableModel;
 import ms.client.ui.tables.TaskTable;
 import ms.server.domain.Auftrag;
 
-
 public class MediaStopf extends JFrame {
 	/**
 	 * 

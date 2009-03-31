@@ -17,8 +17,8 @@
 	<property name="file.client" value="${filename}_client.jar" />
 	<property name="file.server" value="${filename}_server.jar" />
 	
-	<property name="main.class.client" value="ch.nomoresecrets.mediastopf.client.StartClient" />
-	<property name="main.class.server" value="ch.nomoresecrets.mediastopf.server.StartServer" />
+	<property name="main.class.client" value="ms.client.StartClient" />
+	<property name="main.class.server" value="ms.server.StartServer" />
 	
 	
 	<path id="project.classpath">

@@ -50,7 +50,6 @@ public class DirectoryObserver extends Thread {
 		_observers.remove(subscriber);
 	}
 	
-	@Override
 	public void run() {
 		while (true) {
 			try {

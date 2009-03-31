@@ -4,18 +4,19 @@ import java.util.List;
 
 
 import ch.nomoresecrets.mediastopf.server.networking.NetworkServer;
-import ch.nomoresecrets.mediastopf.database.*;
-import ch.nomoresecrets.mediastopf.domain.*;
+//import ch.nomoresecrets.mediastopf.database.*;
+//import ch.nomoresecrets.mediastopf.domain.*;
 
 
 
 public class Server {
 
+	private final int MAX_SERVER_THREADS = 10;
+	
 	public Server(int port) {
 		NetworkServer testserver = new NetworkServer(port);
 		testserver.run();
 		
 	}
-	
 	
 }

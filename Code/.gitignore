@@ -1,2 +1,4 @@
-*.classpath
+bin/*
 *.project
+a_filename
+*.class

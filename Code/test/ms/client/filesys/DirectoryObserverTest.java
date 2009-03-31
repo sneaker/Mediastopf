@@ -8,7 +8,7 @@ import java.io.FileFilter;
 import java.util.Observable;
 import java.util.Observer;
 
-import ms.client.filesys.DirectoryObserver;
+import ms.client.filesys.DirectoryObserverTestHelper;
 
 import org.junit.After;
 import org.junit.Before;

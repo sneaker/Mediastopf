@@ -24,14 +24,15 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.border.LineBorder;
 
 import ms.server.filesys.Exporter;
-import ms.server.ui.MediaStopfServer;
+import ms.server.ui.MainView;
 
 
 public class ExportDialog extends JDialog {
@@ -58,13 +59,13 @@ public class ExportDialog extends JDialog {
 	 * init GUI
 	 */
 	private void initGUI() {
-		setTitle(MediaStopfServer.PROGRAM + " - Export");
+		setTitle(MainView.PROGRAM + " - Export");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
 		setResizable(false);
 		setSize(400, 150);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 
@@ -76,8 +77,8 @@ public class ExportDialog extends JDialog {
 	}
 
 	private void addDefaultFolderPanel() {
-		createBorder("Export Storage", new Rectangle(0, 10, 395, 70));
-		createLabel("export.png", new Rectangle(12, 30, 40, 40));
+		createBorder("External Storage", new Rectangle(0, 10, 395, 70));
+		createLabel("usbstick.png", new Rectangle(12, 30, 40, 40));
 		
 		exportTextField = createTextField(new Point(60, 40));
 		exportTextField.addMouseListener(new MouseAdapter() {
@@ -97,7 +98,7 @@ public class ExportDialog extends JDialog {
 	
 	private JButton createOpenButton(Rectangle rec) {
 		JButton button = new JButton();
-		button.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "open.png")));
+		button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "open.png")));
 		button.setBounds(rec);
 		button.setToolTipText("Choose Directory");
 		add(button);
@@ -106,9 +107,8 @@ public class ExportDialog extends JDialog {
 
 	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icon)));
 		label.setBounds(rec);
-		label.setBorder(LineBorder.createBlackLineBorder());
 		add(label);
 	}
 
@@ -125,6 +125,7 @@ public class ExportDialog extends JDialog {
 		final JTextField textField = new JTextField();
 		textField.setSize(290, 22);
 		textField.setLocation(p);
+		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -253,5 +254,41 @@ public class ExportDialog extends JDialog {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			textField.setText(dirChooser.getSelectedFile().getAbsolutePath().trim());
 		}
+	}
+	
+	/**
+	 * PopupMenu
+	 * 
+	 * @param textField
+	 * @return JPopupMenu
+	 */
+	private JPopupMenu addPopUpMenu(final JTextField textField) {
+		JPopupMenu popupMenu = new JPopupMenu();
+		final String clear = "Clear", cut = "Cut", copy = "Copy", paste = "Paste", selectAll = "Select All"; 
+		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
+		for (int i = 0; i < menuItems.length; i++) {
+			JMenuItem menuItem = new JMenuItem(menuItems[i]);
+			if (i == 1 || i == 4) {
+				popupMenu.addSeparator();
+			}
+			menuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					if (event.getActionCommand() == cut) {
+						textField.cut();
+					} else if (event.getActionCommand() == copy) {
+						textField.copy();
+					} else if (event.getActionCommand() == paste) {
+						textField.paste();
+					} else if (event.getActionCommand() == clear) {
+						textField.setText("");
+					} else {
+						textField.selectAll();
+					}
+				}
+			});
+			popupMenu.add(menuItem);
+		}
+		return popupMenu;
 	}
 }

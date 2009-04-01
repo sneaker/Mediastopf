@@ -23,14 +23,15 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.client.ui.MediaStopf;
+import ms.client.ui.MainView;
 
 
 public class ConfigDialog extends JFrame {
@@ -54,12 +55,12 @@ public class ConfigDialog extends JFrame {
 	 * init GUI
 	 */
 	private void initGUI() {
-		setTitle(MediaStopf.PROGRAM + " - Config");
+		setTitle(MainView.PROGRAM + " - Config");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
 		setResizable(false);
 		setSize(400, 230);
-		setIconImage(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 
@@ -115,7 +116,7 @@ public class ConfigDialog extends JFrame {
 	
 	private JButton createOpenButton(Rectangle rec) {
 		JButton button = new JButton();
-		button.setIcon(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "open.png")));
+		button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "open.png")));
 		button.setBounds(rec);
 		button.setToolTipText("Choose Directory");
 		add(button);
@@ -124,9 +125,8 @@ public class ConfigDialog extends JFrame {
 
 	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icon)));
 		label.setBounds(rec);
-		label.setBorder(LineBorder.createBlackLineBorder());
 		add(label);
 	}
 
@@ -143,6 +143,7 @@ public class ConfigDialog extends JFrame {
 		final JTextField textField = new JTextField();
 		textField.setSize(290, 22);
 		textField.setLocation(p);
+		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -162,12 +163,12 @@ public class ConfigDialog extends JFrame {
 		int y = 170;
 		int width = 100;
 		int height = 25;
-		final String ok = "OK", close = "Close";
+		final String ok = "Save", close = "Close";
 		final String[] buttonText = { ok, close };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int okMnemonic = KeyEvent.VK_O, cancelMnemonic = KeyEvent.VK_C;
+		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
@@ -283,5 +284,41 @@ public class ConfigDialog extends JFrame {
 				}
 			});
 		}
+	}
+	
+	/**
+	 * PopupMenu
+	 * 
+	 * @param textField
+	 * @return JPopupMenu
+	 */
+	private JPopupMenu addPopUpMenu(final JTextField textField) {
+		JPopupMenu popupMenu = new JPopupMenu();
+		final String clear = "Clear", cut = "Cut", copy = "Copy", paste = "Paste", selectAll = "Select All"; 
+		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
+		for (int i = 0; i < menuItems.length; i++) {
+			JMenuItem menuItem = new JMenuItem(menuItems[i]);
+			if (i == 1 || i == 4) {
+				popupMenu.addSeparator();
+			}
+			menuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					if (event.getActionCommand() == cut) {
+						textField.cut();
+					} else if (event.getActionCommand() == copy) {
+						textField.copy();
+					} else if (event.getActionCommand() == paste) {
+						textField.paste();
+					} else if (event.getActionCommand() == clear) {
+						textField.setText("");
+					} else {
+						textField.selectAll();
+					}
+				}
+			});
+			popupMenu.add(menuItem);
+		}
+		return popupMenu;
 	}
 }

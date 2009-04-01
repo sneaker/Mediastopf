@@ -21,7 +21,7 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.server.ui.MediaStopfServer;
+import ms.server.ui.MainView;
 import ms.server.utils.BrowserControl;
 
 
@@ -31,7 +31,7 @@ public class AboutDialog extends JDialog {
 	
 	private static final String URL = "www.no-more-secrets.ch";
 	private static final String URLEXT = "powered by No More Secrets";
-	private static final String BACKGROUNDIMAGE = MediaStopfServer.UIIMAGELOCATION + "about.jpg";
+	private static final String BACKGROUNDIMAGE = MainView.UIIMAGELOCATION + "about.jpg";
 	
 	public AboutDialog() {
 		initGUI();
@@ -41,12 +41,12 @@ public class AboutDialog extends JDialog {
 	 * create and set gui components
 	 */
 	private void initGUI() {
-		setTitle(MediaStopfServer.PROGRAM + " - About...");
+		setTitle(MainView.PROGRAM + " - About...");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setModal(true);
 		setSize(400, 250);
-		setIconImage(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
 		

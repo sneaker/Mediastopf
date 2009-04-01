@@ -31,7 +31,7 @@ import javax.swing.filechooser.FileFilter;
 
 import ms.server.filesys.FileIO;
 import ms.server.log.Log;
-import ms.server.ui.MediaStopfServer;
+import ms.server.ui.MainView;
 
 
 public class LogDialog extends JDialog implements Runnable {
@@ -45,7 +45,7 @@ public class LogDialog extends JDialog implements Runnable {
 	private JScrollPane scrollArea;
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
-	private final String save = "Save as TXT", close = "Close";
+	private final String save = "Save Log", close = "Close";
 	private boolean suspendThread = false;
 
 	public LogDialog() {
@@ -53,13 +53,13 @@ public class LogDialog extends JDialog implements Runnable {
 	}
 
 	private void initGUI() {
-		setTitle(MediaStopfServer.PROGRAM + " - Log");
+		setTitle(MainView.PROGRAM + " - Log");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
 		setMinimumSize(new Dimension(500, 430));
 		setSize(500, 430);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 

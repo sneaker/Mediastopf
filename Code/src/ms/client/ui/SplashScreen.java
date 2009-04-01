@@ -20,21 +20,32 @@ public class SplashScreen extends JWindow implements Runnable {
 	}
 
 	public void run() {
-		JLabel label = new JLabel(new ImageIcon(getClass().getResource(image)));
-		label.setBorder(LineBorder.createBlackLineBorder());
-		add(label);
-		pack();
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((screenSize.width - label.getWidth()) / 2, (screenSize.height - label.getHeight()) / 2);
-		setAlwaysOnTop(true);
-		setVisible(true);
+		initWindow(setSplashImage());
 		try {
 			Thread.sleep(1600);
 		} catch (InterruptedException e) {
 			System.out.println(e);
 		}
+		close();
+	}
+
+	private void close() {
 		setVisible(false);
 		dispose();
+	}
+
+	private JLabel setSplashImage() {
+		JLabel label = new JLabel(new ImageIcon(getClass().getResource(image)));
+		label.setBorder(LineBorder.createBlackLineBorder());
+		add(label);
+		pack();
+		return label;
+	}
+
+	private void initWindow(JLabel label) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((screenSize.width - label.getWidth()) / 2, (screenSize.height - label.getHeight()) / 2);
+		setAlwaysOnTop(true);
+		setVisible(true);
 	}
 }

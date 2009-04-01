@@ -18,9 +18,9 @@ import ms.server.ui.dialogs.MessageDialog;
 
 public class SystemTrayIcon {
 	
-	private MediaStopfServer server;
+	private MainView server;
 
-	public SystemTrayIcon(MediaStopfServer server) {
+	public SystemTrayIcon(MainView server) {
 		if (!SystemTray.isSupported()) {
 			return;
 		}
@@ -35,7 +35,7 @@ public class SystemTrayIcon {
 	}
 
 	private TrayIcon getIcon(SystemTray tray) {
-		Image image = new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage();
+		Image image = new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage();
 		TrayIcon trayIcon = new TrayIcon(image, "MediaStopf Server", addPopUpMenu(tray));
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {

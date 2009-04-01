@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.server.filesys.Exporter;
-import ms.server.ui.MainView;
+import ms.server.ui.MainViewServer;
 
 
 public class ExportDialog extends JDialog {
@@ -59,13 +59,13 @@ public class ExportDialog extends JDialog {
 	 * init GUI
 	 */
 	private void initGUI() {
-		setTitle(MainView.PROGRAM + " - Export");
+		setTitle(MainViewServer.PROGRAM + " - Export");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
 		setResizable(false);
 		setSize(400, 150);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 
@@ -98,7 +98,7 @@ public class ExportDialog extends JDialog {
 	
 	private JButton createOpenButton(Rectangle rec) {
 		JButton button = new JButton();
-		button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "open.png")));
+		button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "open.png")));
 		button.setBounds(rec);
 		button.setToolTipText("Choose Directory");
 		add(button);
@@ -107,7 +107,7 @@ public class ExportDialog extends JDialog {
 
 	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icon)));
 		label.setBounds(rec);
 		add(label);
 	}

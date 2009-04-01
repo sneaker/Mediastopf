@@ -46,7 +46,7 @@ import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.ImportTable;
 
 
-public class MainView extends JFrame {
+public class MainViewServer extends JFrame {
 	/**
 	 * 
 	 */
@@ -71,7 +71,7 @@ public class MainView extends JFrame {
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String export = "Export", cancel = "Cancel", runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
 	
-	public MainView(Server server) {
+	public MainViewServer(Server server) {
 		taskList = new TaskList(server);
 		boxModel = new TaskComboBoxModel(taskList);
 		importRunningList = new ImportRunningList();

@@ -15,7 +15,7 @@ import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
 import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
-import ms.server.ui.MediaStopfServer;
+import ms.server.ui.MainViewServer;
 import ms.server.ui.SplashScreen;
 
 import org.apache.log4j.Level;
@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 
 public class Server implements ServerHandler {
 	
-	private static final String SPLASHIMAGE = MediaStopfServer.UIIMAGELOCATION + "splash.jpg";
+	private static final String SPLASHIMAGE = MainViewServer.UIIMAGELOCATION + "splash.jpg";
 	private static final int MAX_SERVER_THREADS = 10;
 
 	public Server(int port) {
@@ -110,9 +110,9 @@ public class Server implements ServerHandler {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MediaStopfServer mediastopf = new MediaStopfServer(Server.this);
+				MainViewServer mediastopf = new MainViewServer(Server.this);
 				if (StartServer.DEBUG) {
-					mediastopf.setTitle(MediaStopfServer.PROGRAM + " - Debug");
+					mediastopf.setTitle(MainViewServer.PROGRAM + " - Debug");
 				} else {
 					new SplashScreen(SPLASHIMAGE);
 				}

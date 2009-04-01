@@ -17,7 +17,7 @@ import ms.client.interfaces.ClientHandler;
 import ms.client.log.Log;
 import ms.client.networking.NetworkClient;
 import ms.client.networking.NetworkClientTester;
-import ms.client.ui.MediaStopf;
+import ms.client.ui.MainView;
 import ms.client.ui.SplashScreen;
 
 import org.apache.log4j.Level;
@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 
 public class Client implements ClientHandler {
 	
-	private static final String SPLASHIMAGE = MediaStopf.UIIMAGELOCATION + "splash.jpg";
+	private static final String SPLASHIMAGE = MainView.UIIMAGELOCATION + "splash.jpg";
 	private static final String HOST = "localhost";
 	private static final int PORT = 1337;
 	
@@ -113,9 +113,9 @@ public class Client implements ClientHandler {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MediaStopf mediastopf = new MediaStopf(Client.this);
+				MainView mediastopf = new MainView(Client.this);
 				if (StartClient.DEBUG) {
-					mediastopf.setTitle(MediaStopf.PROGRAM + " - Debug");
+					mediastopf.setTitle(MainView.PROGRAM + " - Debug");
 				} else {
 					new SplashScreen(SPLASHIMAGE);
 				}

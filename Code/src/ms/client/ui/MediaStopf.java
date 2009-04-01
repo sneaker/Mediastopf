@@ -89,8 +89,8 @@ public class MediaStopf extends JFrame {
 		setLayout(null);
 		setMinimumSize(new Dimension(400, 450));
 		setSize(400, 450);
-		setIconImage(new ImageIcon(getClass().getResource(
-				UIIMAGELOCATION + "icon.png")).getImage());
+		//setIconImage(new ImageIcon(getClass().getResource(
+		//		UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2,
 				(dim.height - getHeight()) / 2);

@@ -9,7 +9,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
+import ms.server.database.DbAdapter;
+import ms.server.domain.Auftrag;
 import ms.server.log.Log;
 
 import org.apache.log4j.Logger;
@@ -38,37 +41,69 @@ public class NetworkServerThread implements Runnable {
 			e.printStackTrace();
 		}
 		
-		String reply = MediaStopfProtocol.ProccessRequest(receivedMessage);
-		
+		if (receivedMessage.equals("INFO")) {
+				sendTaskList();
+		}
 
+		if (receivedMessage.equals("TRANSFER")) {
+			try {
+				sendMessage("TRANSFER READY");
+				
+				String namemsg = receiveMessage();
+				sendMessage("TRANSFER NAME OK");
+				
+				String sizemsg = receiveMessage();
+				int size = Integer.parseInt(sizemsg);
+				sendMessage("TRANSFER SIZE OK");
+				
+				receiveFile(namemsg, size);
+				sendMessage("ENDTRANSFER");
+				
+			} catch (IOException e) {
+				logger.error("cannot write to sender");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void sendTaskList() {
+		List <Auftrag> lp = DbAdapter.getOrderList();
+		
+		for(Auftrag name: lp) {
+			try {
+				sendMessage(name.toString());
+				if (!receiveMessage().equals("OK"))
+					logger.fatal("Error in Network protocol");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		try {
-			sendMessage(reply);
-			if (receivedMessage.equals("TRANSFER"))
-				receiveFile();
+			sendMessage("ENDINFO");
 		} catch (IOException e) {
-			logger.error("cannot write to sender");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	private void receiveFile() throws IOException {
+	private void receiveFile(String name, int size) throws IOException {
 		logger.info("Waiting for Filetransfer...");
-		final int FILESIZE = 21319002;
 		int bytesread = 0;
-		byte[] filebuffer = new byte[FILESIZE];
+		byte[] filebuffer = new byte[size];
 		InputStream reader = clientSocket.getInputStream();
-		FileOutputStream writer = new FileOutputStream("a_filename");
+		FileOutputStream writer = new FileOutputStream(name + "_rec");
 		BufferedOutputStream bos = new BufferedOutputStream(writer);
 		while((bytesread += reader.read(filebuffer, 0, filebuffer.length)) != -1) {
 			logger.info("reading...");
 			logger.info(bytesread);
 			logger.info("filebuffer: " + filebuffer);
-			if (bytesread >= FILESIZE)
+			if (bytesread >= size)
 				break;
 		}
 		logger.info("Transfer Server finished");
 		
-		bos.write(filebuffer, 0, FILESIZE);
+		bos.write(filebuffer, 0, size);
 		bos.flush();
 		bos.close();
 	}
@@ -84,7 +119,7 @@ public class NetworkServerThread implements Runnable {
 
 		receivedMessage = receiver.readLine();
 
-		logger.info("A message from a client: ");
+		logger.info("SERVER: Client message: ");
 		logger.info(receivedMessage);
 
 		return receivedMessage;
@@ -94,6 +129,7 @@ public class NetworkServerThread implements Runnable {
 		try {
 			sender = new PrintWriter(new OutputStreamWriter(clientSocket
 					.getOutputStream()), true);
+			logger.info("SERVER: Server message: " + reply);
 		} catch (IOException e) {
 			logger.error("Error: Cannot get OutputStream");
 		}

@@ -6,9 +6,6 @@ import java.util.List;
 
 import ms.server.database.*;
 
-
-
-
 public class Auftrag implements ActiveRecord {
 
 	private String name, medientyp;

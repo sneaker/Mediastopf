@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -13,7 +15,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import ms.client.filesys.DirectoryObserver;
 import ms.client.interfaces.ClientHandler;
 import ms.client.log.Log;
-import ms.client.networking.ServerConnection;
+import ms.client.networking.NetworkClient;
+import ms.client.networking.NetworkClientTester;
 import ms.client.ui.MediaStopf;
 import ms.client.ui.SplashScreen;
 
@@ -28,22 +31,28 @@ public class Client implements ClientHandler {
 	private static final int PORT = 1337;
 	
 	private Logger logger = Log.getLogger();
-	private ServerConnection connection;
+	private NetworkClient connection;
+	private NetworkClientTester testconnection;
 	
 	
 	public Client() {
 		loadLog();
-		connectToServer();
 		loadUI();
+		connectToServer();
 	}
 	
 	private void connectToServer() {
 		try {
-			connection = new ServerConnection(HOST, PORT);
+			connection = new NetworkClient(HOST, PORT);
+			testconnection = new NetworkClientTester(HOST, PORT);
+			ExecutorService exec = Executors.newSingleThreadExecutor();
+			exec.execute(testconnection);
 		} catch (UnknownHostException e) {
-			logger.fatal("Unknown host");
+			logger.fatal("Unknow host");
+			e.printStackTrace();
 		} catch (IOException e) {
-			logger.fatal("Could not get I/O for connection to Server");
+			logger.info("Cannot connect to host");
+			e.printStackTrace();
 		}
 	}
 	
@@ -75,7 +84,6 @@ public class Client implements ClientHandler {
 			}
 		}
 	}
-	
 
 	/**
 	 * send objects

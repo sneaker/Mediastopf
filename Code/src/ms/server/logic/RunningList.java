@@ -7,11 +7,11 @@ import ms.server.StartServer;
 import ms.server.domain.Auftrag;
 
 
-public class ExportRunningList extends Observable {
+public class RunningList extends Observable {
 	
 	private ArrayList<Auftrag> list = new ArrayList<Auftrag>();
 	
-	public ExportRunningList() {
+	public RunningList() {
 		if(StartServer.DEBUG) {
 			for(int i=10; i < 20; i++) {
 				add(new Auftrag("test", "CD", i));

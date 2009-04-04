@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import ms.client.filesys.DirectoryObserver;
 import ms.client.interfaces.ClientHandler;
@@ -18,21 +17,20 @@ import ms.client.log.Log;
 import ms.client.networking.NetworkClient;
 import ms.client.networking.NetworkClientTester;
 import ms.client.ui.MainView;
-import ms.client.ui.SplashScreen;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 
-public class Client implements ClientHandler {
+public class Client implements ClientHandler, Observer {
 	
-	private static final String SPLASHIMAGE = MainView.UIIMAGELOCATION + "splash.jpg";
 	private static final String HOST = "localhost";
 	private static final int PORT = 1337;
 	
 	private Logger logger = Log.getLogger();
-	private NetworkClient connection;
+	private NetworkClient client;
 	private NetworkClientTester testconnection;
+	private String folder;
 	
 	
 	public Client() {
@@ -43,7 +41,7 @@ public class Client implements ClientHandler {
 	
 	private void connectToServer() {
 		try {
-			connection = new NetworkClient(HOST, PORT);
+			client = new NetworkClient(HOST, PORT);
 			testconnection = new NetworkClientTester(HOST, PORT);
 			ExecutorService exec = Executors.newSingleThreadExecutor();
 			exec.execute(testconnection);
@@ -61,13 +59,10 @@ public class Client implements ClientHandler {
 	 * 
 	 * @param folder to Observer
 	 */
-	public void observeDir(final String folder) {
+	public void observeDir(String folder) {
+		this.folder = folder;
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
-		dirObserver.subscribe(new Observer() {
-			public void update(Observable o, Object arg) {
-				sendFiles(folder);
-			}
-		});
+		dirObserver.subscribe(this);
 		dirObserver.start();
 		
 		logger.info("Directory Observer started in " + folder);
@@ -78,7 +73,7 @@ public class Client implements ClientHandler {
 		String[] fileList = task.list();
 		for(String f: fileList) {
 			try {
-				connection.sendFile(folder + File.separator + f);
+				client.sendFile(folder + File.separator + f);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -114,11 +109,6 @@ public class Client implements ClientHandler {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MainView mediastopf = new MainView(Client.this);
-				if (StartClient.DEBUG) {
-					mediastopf.setTitle(MainView.PROGRAM + " - Debug");
-				} else {
-					new SplashScreen(SPLASHIMAGE);
-				}
 				mediastopf.setVisible(true);
 			}
 		});
@@ -132,14 +122,13 @@ public class Client implements ClientHandler {
 	private void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		sendFiles(folder);
 	}
 }

@@ -29,11 +29,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.client.Client;
-import ms.client.logic.TaskList;
-import ms.client.logic.TaskRunningList;
+import ms.client.StartClient;
 import ms.client.ui.dialogs.AboutDialog;
 import ms.client.ui.dialogs.ConfigDialog;
-import ms.client.ui.dialogs.LogDialog;
 import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskComboBoxModel;
 import ms.client.ui.models.TaskTableModel;
@@ -47,6 +45,7 @@ public class MainView extends JFrame {
 
 	public static final String PROGRAM = "MediaStopf";
 	public static final String UIIMAGELOCATION = "/ms/client/ui/images/";
+	private static final String SPLASHIMAGE = UIIMAGELOCATION + "splash.jpg";
 
 	private TaskComboBoxModel boxModel;
 	private TaskTableModel tableModel;
@@ -55,8 +54,6 @@ public class MainView extends JFrame {
 	private JPanel tablePanel;
 	private JTextField statusBar;
 	private TaskTable taskTable;
-	private TaskList taskList;
-	private TaskRunningList runningList;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = "Run", send = "Send", cancel = "Cancel",
@@ -65,11 +62,14 @@ public class MainView extends JFrame {
 	private Client client;
 
 	public MainView(Client client) {
+		if (StartClient.DEBUG) {
+			setTitle(MainView.PROGRAM + " - Debug");
+		} else {
+			new SplashScreen(SPLASHIMAGE);
+		}
 		this.client = client;
-		taskList = new TaskList();
-		boxModel = new TaskComboBoxModel(taskList);
-		runningList = new TaskRunningList();
-		tableModel = new TaskTableModel(runningList);
+		boxModel = new TaskComboBoxModel();
+		tableModel = new TaskTableModel();
 
 		initGUI();
 	}
@@ -87,10 +87,10 @@ public class MainView extends JFrame {
 
 	private void initFrame() {
 		setTitle(PROGRAM);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
-		setMinimumSize(new Dimension(400, 450));
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(400, 450);
+		setMinimumSize(new Dimension(getWidth(), getHeight()));
+		setLayout(null);
 		setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
@@ -116,18 +116,7 @@ public class MainView extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
-					int width = getWidth();
-					int height = getHeight();
-
-					JPanel runtaskPanel = panelMap.get(runningTask);
-					runtaskPanel.setSize(width - 5, height - 180);
-					JPanel taskPanel = panelMap.get(tasks);
-					taskPanel.setSize(width - 5, taskPanel.getHeight());
-					JPanel statusPanel = panelMap.get(statusbar);
-					statusPanel.setBounds(0, height - 70, width - 5,
-							statusPanel.getHeight());
-
-					updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
+					updatePanelBounds();
 				}
 			}
 
@@ -136,6 +125,20 @@ public class MainView extends JFrame {
 				isShown = true;
 			}
 		});
+	}
+	
+	private void updatePanelBounds() {
+		int width = getWidth();
+		int height = getHeight();
+
+		JPanel runtaskPanel = panelMap.get(runningTask);
+		runtaskPanel.setSize(width - 5, height - 180);
+		JPanel taskPanel = panelMap.get(tasks);
+		taskPanel.setSize(width - 5, taskPanel.getHeight());
+		JPanel statusPanel = panelMap.get(statusbar);
+		statusPanel.setBounds(0, height - 70, width - 5, statusPanel.getHeight());
+		
+		updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
 	}
 
 	private void updateComponentBounds(JPanel runtaskPanel, JPanel taskPanel, JPanel statusPanel) {
@@ -321,8 +324,6 @@ public class MainView extends JFrame {
 			break;
 		case JOptionPane.NO_OPTION:
 			return;
-		default:
-			return;
 		}
 	}
 
@@ -396,7 +397,7 @@ public class MainView extends JFrame {
 						ConfigDialog cd = new ConfigDialog();
 						cd.setVisible(true);
 					} else if (e.getActionCommand() == log) {
-						LogDialog ld = new LogDialog();
+						LogFrame ld = new LogFrame();
 						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
 						exit();

@@ -1,4 +1,4 @@
-package ms.server.ui.dialogs;
+package ms.client.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -29,12 +28,11 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.server.filesys.FileIO;
-import ms.server.log.Log;
-import ms.server.ui.MainViewServer;
+import ms.client.filesys.FileIO;
+import ms.client.log.Log;
 
 
-public class LogDialog extends JDialog implements Runnable {
+public class LogFrame extends JFrame implements Runnable {
 
 	/**
 	 * 
@@ -48,27 +46,30 @@ public class LogDialog extends JDialog implements Runnable {
 	private final String save = "Save Log", close = "Close";
 	private boolean suspendThread = false;
 
-	public LogDialog() {
+	public LogFrame() {
 		initGUI();
 	}
 
 	private void initGUI() {
-		setTitle(MainViewServer.PROGRAM + " - Log");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLayout(null);
-		setMinimumSize(new Dimension(500, 430));
-		setSize(500, 430);
-		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage());
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		initFrame();
 
 		addButtons();
 		addRefreshBox();
 		addTextArea();
 		addLogListener();
 		addESCListener();
+	}
 
+	private void initFrame() {
+		setTitle(MainView.PROGRAM + " - Log");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setSize(500, 430);
+		setMinimumSize(new Dimension(getWidth(), getHeight()));
+		setLayout(null);
+		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		
 		componentListener();
 	}
 
@@ -78,13 +79,7 @@ public class LogDialog extends JDialog implements Runnable {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
-					int width = getWidth() - 15;
-					int height = getHeight() - 60;
-					scrollArea.setSize(width, height - 20);
-					scrollArea.revalidate();
-					box.setLocation(10, height);
-					buttonMap.get(save).setLocation(width - 235, height - 5);
-					buttonMap.get(close).setLocation(width - 125, height - 5);
+					updateComponentBounds();
 				}
 			}
 			@Override
@@ -97,6 +92,18 @@ public class LogDialog extends JDialog implements Runnable {
 			}
 		});
 	}
+	
+	private void updateComponentBounds() {
+		int width = getWidth() - 15;
+		int height = getHeight() - 65;
+		scrollArea.setSize(width , height - 15);
+		scrollArea.revalidate();
+		
+		buttonMap.get(save).setLocation(width - 235, height);
+		buttonMap.get(close).setLocation(width - 115, height);
+		
+		box.setLocation(10, height + 5);
+	}
 
 	private void addTextArea() {
 		textArea = new JTextArea();
@@ -106,7 +113,6 @@ public class LogDialog extends JDialog implements Runnable {
 		textArea.setLineWrap(true);
 		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		textArea.setComponentPopupMenu(getPopUpMenu(textArea));
-		
 		scrollArea = new JScrollPane(textArea);
 		scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -118,7 +124,7 @@ public class LogDialog extends JDialog implements Runnable {
 	private void addRefreshBox() {
 		box = new JCheckBox("Auto Refresh");
 		box.setSelected(true);
-		box.setBounds(10, 370, 100, 20);
+		box.setBounds(10, 370, 150, 20);
 		box.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (box.isSelected()) {
@@ -186,7 +192,6 @@ public class LogDialog extends JDialog implements Runnable {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
-
 			String file = addTXTPostfix(filename, path);
 			FileIO.write(file, textArea.getText().trim());
 		}
@@ -309,7 +314,7 @@ public class LogDialog extends JDialog implements Runnable {
 	}
 
 	private void readLogContent() {
-		String logContent = FileIO.read(Log.getServerLog());
+		String logContent = FileIO.read(Log.getLog());
 		textArea.setText(logContent);
 	}
 }

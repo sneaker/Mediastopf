@@ -10,10 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
-import ms.server.ui.dialogs.LogDialog;
-import ms.server.ui.dialogs.MessageDialog;
 
 
 public class SystemTrayIcon {
@@ -63,28 +59,15 @@ public class SystemTrayIcon {
 					} else if(e.getActionCommand() == hide) {
 						server.setVisible(false);
 					} else if(e.getActionCommand() == log) {
-						LogDialog ld = new LogDialog();
+						LogFrame ld = new LogFrame();
 						ld.setVisible(true);
 					} else if(e.getActionCommand() == exit){
-						exit();
+						server.exit();
 					}
 				}
 			});
 			menu.add(item);
 		}
 		return menu;
-	}
-	
-	private void exit() {
-		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
-		switch(result) {
-		case JOptionPane.YES_OPTION:
-			System.exit(0);
-			break;
-		case JOptionPane.NO_OPTION:
-			return;
-		default:
-			return;
-		}
 	}
 }

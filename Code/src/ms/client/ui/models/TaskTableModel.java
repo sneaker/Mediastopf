@@ -6,7 +6,7 @@ import java.util.Observer;
 import javax.swing.table.AbstractTableModel;
 
 import ms.client.logic.Task;
-import ms.client.logic.TaskRunningList;
+import ms.client.logic.TaskList;
 
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
@@ -18,10 +18,10 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	
 	private static final String[] columns = { "Task", "Status", "" };
 	
-	private TaskRunningList list;
+	private TaskList list;
 	
-	public TaskTableModel(TaskRunningList list) {
-		this.list = list;
+	public TaskTableModel() {
+		this.list = new TaskList();
 		list.addObserver(this);
 	}
 
@@ -47,7 +47,7 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 		Task task = list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return task.getTasknum();
+			return task.getTaskID();
 		case 1:
 			return task.getStatus();
 		default:
@@ -61,7 +61,7 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 		switch(columnIndex) {
 		case 1:
 			String aValue = (String) value;
-			task.setTasknum(Integer.valueOf(aValue));
+			task.setTaskID(Integer.valueOf(aValue));
 			break;
 		case 2:
 			task.setStatus((String) value);

@@ -19,22 +19,16 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import ms.client.ui.MainView;
 
 
-public class ConfigDialog extends JFrame {
+public class ConfigDialog extends AbstractDialog {
 
 	private static final String CONFIGFILE = "MediaStopf.cfg";
 
@@ -45,7 +39,9 @@ public class ConfigDialog extends JFrame {
 	
 	private Properties prop = new Properties();
 	private JTextField ripperTextField, folderTextField;
-	private String audioripper = "audioripper", defaultfolder = "defaultfolder";
+	private final String audioripper = "AudioRipper", defaultfolder = "Default Folder";
+	private final String clear = "Clear", cut = "Cut", copy = "Copy", paste = "Paste", selectAll = "Select All";
+	private final String ok = "Save", close = "Close";
 
 	public ConfigDialog() {
 		initGUI();
@@ -56,26 +52,40 @@ public class ConfigDialog extends JFrame {
 	 */
 	private void initGUI() {
 		setTitle(MainView.PROGRAM + " - Config");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLayout(null);
-		setResizable(false);
 		setSize(400, 230);
-		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 
-		addButtons();
-		addDefaultFolderPanel();
-		addAudioRipper();
-		addESCListener();
+		addPanels();
 		
 		loadProperties();
 	}
+	
+	private void addPanels() {
+		final String[] label = { defaultfolder, audioripper };
+		final String[] icons = { "defaultfolder.png", "audioripper.png" };
+		final int x=0;
+		final int[] y= { 10, 85 };
+		for(int i=0; i<label.length;i++) {
+			createBorder(label[i], new Rectangle(x, y[i], 395, 70));
+			createLabel(icons[i], new Rectangle(x+12, y[i]+20, 40, 40));
+			
+			JButton icon = createOpenButton(label[i], new Rectangle(355, y[i]+30, 22, 22));
+			icon.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(e.getActionCommand() == defaultfolder) {
+						openDefaultFolderFileChooser();
+					} else {
+						openAudioRipperDirChooser();
+					}
+				}
+			});
+		}
+		addDefaultFolderTextField();
+		addAudioRipperTextField();
+	}
 
-	private void addDefaultFolderPanel() {
-		createBorder("Default Folder", new Rectangle(0, 10, 395, 70));
-		createLabel("defaultfolder.png", new Rectangle(12, 30, 40, 40));
-		
+	private void addDefaultFolderTextField() {
 		folderTextField = createTextField(new Point(60, 40));
 		folderTextField.addMouseListener(new MouseAdapter() {
 			@Override
@@ -84,19 +94,9 @@ public class ConfigDialog extends JFrame {
 					openDefaultFolderFileChooser();
 			}
 		});
-		
-		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
-		openIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				openDefaultFolderFileChooser();
-			}
-		});
 	}
 
-	private void addAudioRipper() {
-		createBorder("AudioRipper", new Rectangle(0, 85, 395, 70));
-		createLabel("audioripper.png", new Rectangle(12, 105, 40, 40));
-		
+	private void addAudioRipperTextField() {
 		ripperTextField = createTextField(new Point(60, 115));
 		ripperTextField.addMouseListener(new MouseAdapter() {
 			@Override
@@ -105,17 +105,11 @@ public class ConfigDialog extends JFrame {
 					openAudioRipperDirChooser();
 			}
 		});
-		
-		JButton openIcon = createOpenButton(new Rectangle(355, 115, 22, 22));
-		openIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				openAudioRipperDirChooser();
-			}
-		});
 	}
 	
-	private JButton createOpenButton(Rectangle rec) {
+	private JButton createOpenButton(String name, Rectangle rec) {
 		JButton button = new JButton();
+		button.setActionCommand(name);
 		button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "open.png")));
 		button.setBounds(rec);
 		button.setToolTipText("Choose Directory");
@@ -155,56 +149,46 @@ public class ConfigDialog extends JFrame {
 		return textField;
 	}
 
-	/**
-	 * add buttons
-	 */
-	private void addButtons() {
+	String[] getButtonText() {
+		final String[] buttonText = { ok, close };
+		return buttonText;
+	}
+
+	Rectangle[] getButtonBounds() {
 		int x = 150;
 		int y = 170;
 		int width = 100;
 		int height = 25;
-		final String ok = "Save", close = "Close";
-		final String[] buttonText = { ok, close };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
+		return bounds;
+	}
+
+	int[] getButtonMnemonic() {
 		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
-		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == ok) {
-						saveProperties();
-						close();
-					} else if (e.getActionCommand() == close) {
-						close();
-					}
-				}
-			});
-			add(button);
-		}
+		return mnemonic;
 	}
 	
-	/**
-	 * close
-	 */
-	private void close() {
-		setVisible(false);
-		dispose();
+	ActionListener getButtonActionListener() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getActionCommand() == ok) {
+					saveProperties();
+					close();
+				} else if (e.getActionCommand() == close) {
+					close();
+				}
+			}
+		};
 	}
 	
 	/**
 	 * save properties.
 	 */
 	void saveProperties() {
-		if(!ripperTextField.getText().isEmpty())
-			prop.setProperty(audioripper, ripperTextField.getText());
-		if(!folderTextField.getText().isEmpty())
-			prop.setProperty(defaultfolder, folderTextField.getText());
+		saveValues();
 		try {
 			prop.store(new FileWriter(CONFIGFILE), "MediaStopf Config");
 		} catch (IOException e) {
@@ -212,17 +196,11 @@ public class ConfigDialog extends JFrame {
 		}
 	}
 	
-	/**
-	 * esc = close dialog
-	 */
-	private void addESCListener() {
-		ActionListener cancelListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				close();
-			}
-		};
-		JRootPane rootPane = getRootPane();
-		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+	private void saveValues() {
+		if(!ripperTextField.getText().isEmpty())
+			prop.setProperty(audioripper, ripperTextField.getText());
+		if(!folderTextField.getText().isEmpty())
+			prop.setProperty(defaultfolder, folderTextField.getText());
 	}
 	
 	/**
@@ -230,20 +208,20 @@ public class ConfigDialog extends JFrame {
 	 */
 	void loadProperties() {
 		File config = new File(CONFIGFILE);
-		if(!config.exists()) {
-			try {
-				config.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		try {
+			if(!config.exists()) {
+				config.createNewFile();
+			}
 			prop.load(new FileReader(CONFIGFILE));
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
+		loadValues();
+	}
+	
+	private void loadValues() {
 		if(prop.containsKey(audioripper))
 			ripperTextField.setText(prop.getProperty(audioripper).trim());
 		if(prop.containsKey(defaultfolder))
@@ -286,39 +264,26 @@ public class ConfigDialog extends JFrame {
 		}
 	}
 	
-	/**
-	 * PopupMenu
-	 * 
-	 * @param textField
-	 * @return JPopupMenu
-	 */
-	private JPopupMenu addPopUpMenu(final JTextField textField) {
-		JPopupMenu popupMenu = new JPopupMenu();
-		final String clear = "Clear", cut = "Cut", copy = "Copy", paste = "Paste", selectAll = "Select All"; 
-		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
-		for (int i = 0; i < menuItems.length; i++) {
-			JMenuItem menuItem = new JMenuItem(menuItems[i]);
-			if (i == 1 || i == 4) {
-				popupMenu.addSeparator();
-			}
-			menuItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand() == cut) {
-						textField.cut();
-					} else if (event.getActionCommand() == copy) {
-						textField.copy();
-					} else if (event.getActionCommand() == paste) {
-						textField.paste();
-					} else if (event.getActionCommand() == clear) {
-						textField.setText("");
-					} else {
-						textField.selectAll();
-					}
+	String[] getPopUpItems() {
+		return new String[] { clear, cut, copy, paste, selectAll };
+	}
+
+	ActionListener getPopUpActionListener(final JTextField textField) {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (event.getActionCommand() == cut) {
+					textField.cut();
+				} else if (event.getActionCommand() == copy) {
+					textField.copy();
+				} else if (event.getActionCommand() == paste) {
+					textField.paste();
+				} else if (event.getActionCommand() == clear) {
+					textField.setText("");
+				} else {
+					textField.selectAll();
 				}
-			});
-			popupMenu.add(menuItem);
-		}
-		return popupMenu;
+			}
+		};
 	}
 }

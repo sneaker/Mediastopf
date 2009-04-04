@@ -7,7 +7,6 @@ import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import ms.server.database.ActiveRecordManager;
 import ms.server.database.DbAdapter;
@@ -16,7 +15,6 @@ import ms.server.interfaces.ServerHandler;
 import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 import ms.server.ui.MainViewServer;
-import ms.server.ui.SplashScreen;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -24,7 +22,6 @@ import org.apache.log4j.Logger;
 
 public class Server implements ServerHandler {
 	
-	private static final String SPLASHIMAGE = MainViewServer.UIIMAGELOCATION + "splash.jpg";
 	private static final int MAX_SERVER_THREADS = 10;
 
 	public Server(int port) {
@@ -95,13 +92,7 @@ public class Server implements ServerHandler {
 	private void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 	}
@@ -111,11 +102,6 @@ public class Server implements ServerHandler {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MainViewServer mediastopf = new MainViewServer(Server.this);
-				if (StartServer.DEBUG) {
-					mediastopf.setTitle(MainViewServer.PROGRAM + " - Debug");
-				} else {
-					new SplashScreen(SPLASHIMAGE);
-				}
 				mediastopf.setVisible(true);
 			}
 		});

@@ -5,21 +5,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.ListSelectionModel;
 
 import ms.server.ui.dialogs.MessageDialog;
-import ms.server.ui.models.ExportTableModel;
-
-import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.decorator.SortOrder;
+import ms.server.ui.models.TableModel;
 
 
-public class ExportTable extends JXTable {
+public class ExportTable extends Table {
 
 	private static final long serialVersionUID = 1L;
 
-	public ExportTable(ExportTableModel taskTableModel) {
+	public ExportTable(TableModel taskTableModel) {
 		super(taskTableModel);
 		initTable();
 	}
@@ -28,10 +23,7 @@ public class ExportTable extends JXTable {
 	 * init Table
 	 */
 	private void initTable() {
-		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setComponentPopupMenu(createPopupMenu());
-		setSortOrder(0, SortOrder.ASCENDING);
-		setHighlighters(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
 	}
 
 	/**

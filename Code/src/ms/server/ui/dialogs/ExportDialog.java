@@ -19,23 +19,18 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 
-import ms.server.filesys.Exporter;
+import ms.server.filesys.FileIO;
 import ms.server.ui.MainViewServer;
 
 
-public class ExportDialog extends JDialog {
+public class ExportDialog extends AbstractDialog {
 
 	private static final String CONFIGFILE = "MediaStopfServer.cfg";
 
@@ -46,11 +41,12 @@ public class ExportDialog extends JDialog {
 	
 	private Properties prop = new Properties();
 	private JTextField exportTextField;
-	private String export = "exportfolder";
-	private String tasknum;
+	private final String exportFolder = "External Storage";
+	private final String export = "Export", close = "Close";
+	private String taskID;
 
-	public ExportDialog(String tasknum) {
-		this.tasknum = tasknum;
+	public ExportDialog(String taskID) {
+		this.taskID = taskID;
 		
 		initGUI();
 	}
@@ -60,24 +56,17 @@ public class ExportDialog extends JDialog {
 	 */
 	private void initGUI() {
 		setTitle(MainViewServer.PROGRAM + " - Export");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLayout(null);
-		setResizable(false);
 		setSize(400, 150);
-		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 
-		addButtons();
 		addDefaultFolderPanel();
-		addESCListener();
 		
 		loadProperties();
 	}
 
 	private void addDefaultFolderPanel() {
-		createBorder("External Storage", new Rectangle(0, 10, 395, 70));
+		createBorder(exportFolder, new Rectangle(0, 10, 395, 70));
 		createLabel("usbstick.png", new Rectangle(12, 30, 40, 40));
 		
 		exportTextField = createTextField(new Point(60, 40));
@@ -136,78 +125,68 @@ public class ExportDialog extends JDialog {
 		add(textField);
 		return textField;
 	}
+	
+	@Override
+	ActionListener getButtonActionListener() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getActionCommand() == export) {
+					export();
+					saveAndClose();
+				} else if (e.getActionCommand() == close) {
+					saveAndClose();
+				}
+			}
+		};
+	}
 
-	/**
-	 * add buttons
-	 */
-	private void addButtons() {
-		int x = 150;
-		int y = 90;
-		int width = 100;
-		int height = 25;
-		final String export = "Export", close = "Close";
-		final String[] buttonText = { export, close };
+	@Override
+	Rectangle[] getButtonBounds() {
+		final int x = 150;
+		final int y = 90;
+		final int width = 100;
+		final int height = 25;
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
+		return bounds;
+	}
+
+	@Override
+	int[] getButtonMnemonic() {
 		final int okMnemonic = KeyEvent.VK_O, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
-		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == export) {
-						export();
-						close();
-					} else if (e.getActionCommand() == close) {
-						close();
-					}
-				}
-			});
-			add(button);
-		}
+		return mnemonic;
+	}
+
+	@Override
+	String[] getButtonText() {
+		return new String[] { export, close };
 	}
 	
 	private void export() {
 		String exportFolder = exportTextField.getText().trim();
-		File file = new File(tasknum);
-		boolean done = Exporter.export(file.listFiles(), new File(exportFolder));
+		File file = new File(taskID);
+		boolean done = FileIO.transfer(file.listFiles(), new File(exportFolder));
 		if(done) {
 			MessageDialog.info("Export done", "Exported Files to " + exportFolder);
 		}
 	}
 	
 	/**
-	 * esc = close dialog
-	 */
-	private void addESCListener() {
-		ActionListener cancelListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				close();
-			}
-		};
-		JRootPane rootPane = getRootPane();
-		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
-	}
-	
-	/**
 	 * close
 	 */
-	private void close() {
+	private void saveAndClose() {
 		saveProperties();
-		setVisible(false);
-		dispose();
+		close();
 	}
-	
+
 	/**
 	 * save properties.
 	 */
 	void saveProperties() {
 		if(!exportTextField.getText().isEmpty())
-			prop.setProperty(export, exportTextField.getText().trim());
+			prop.setProperty(exportFolder, exportTextField.getText().trim());
 		try {
 			prop.store(new FileWriter(CONFIGFILE), "MediaStopf Config");
 		} catch (IOException e) {
@@ -235,8 +214,8 @@ public class ExportDialog extends JDialog {
 		} catch (IOException e) {
 			System.out.println(e);
 		}
-		if(prop.containsKey(export))
-			exportTextField.setText(prop.getProperty(export));
+		if(prop.containsKey(exportFolder))
+			exportTextField.setText(prop.getProperty(exportFolder));
 	}
 	
 	private void openExportFileChooser() {

@@ -6,10 +6,10 @@ import java.util.Observer;
 import javax.swing.table.AbstractTableModel;
 
 import ms.server.domain.Auftrag;
-import ms.server.logic.ExportRunningList;
+import ms.server.logic.RunningList;
 
 
-public class ExportTableModel extends AbstractTableModel implements Observer {
+public class TableModel extends AbstractTableModel implements Observer {
 
 	/**
 	 * 
@@ -18,10 +18,10 @@ public class ExportTableModel extends AbstractTableModel implements Observer {
 	
 	private static final String[] columns = { "Task", "Status", "" };
 	
-	private ExportRunningList list;
+	private RunningList list;
 	
-	public ExportTableModel(ExportRunningList list) {
-		this.list = list;
+	public TableModel() {
+		this.list = new RunningList();
 		list.addObserver(this);
 	}
 

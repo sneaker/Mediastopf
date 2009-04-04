@@ -11,27 +11,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 
 import ms.client.ui.MainView;
 import ms.client.utils.BrowserControl;
 
 
-public class AboutDialog extends JDialog {
+public class AboutDialog extends AbstractDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
 	private static final String URL = "www.no-more-secrets.ch";
 	private static final String URLEXT = "powered by No More Secrets";
 	private static final String BACKGROUNDIMAGE = MainView.UIIMAGELOCATION + "about.jpg";
+	private final String website = "Website", close = "Close";
 	
 	public AboutDialog() {
 		initGUI();
@@ -42,46 +36,46 @@ public class AboutDialog extends JDialog {
 	 */
 	private void initGUI() {
 		setTitle(MainView.PROGRAM + " - About...");
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setResizable(false);
-		setModal(true);
 		setSize(400, 250);
-		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
+		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		
-		addESCListener();
-		addCloseButton();
-		addWebsiteButton();
 		addURL();
 		drawBackgroundImage();
 	}
+	
+	String[] getButtonText() {
+		final String[] buttonText = { website, close };
+		return buttonText;
+	}
 
-	/**
-	 * Close Button to close dialog
-	 */
-	private void addCloseButton() {
-		JButton button_close = new JButton();
-		button_close.setText("Close");
-		button_close.setBounds(280, 190, 100, 20);
-		button_close.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				closeDialog();
-			}
-		});
-		add(button_close);
+	Rectangle[] getButtonBounds() {
+		final int x = 175;
+		final int y = 190;
+		final int width = 100;
+		final int height = 20;
+		final Rectangle websiteBounds = new Rectangle(x, y, width, height);
+		final Rectangle cancelBounds = new Rectangle(x + 105, y, width, height);
+		final Rectangle[] bounds = { websiteBounds, cancelBounds };
+		return bounds;
+	}
+
+	int[] getButtonMnemonic() {
+		final int websiteMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
+		final int[] mnemonic = { websiteMnemonic, cancelMnemonic };
+		return mnemonic;
 	}
 	
-	private void addWebsiteButton() {
-		JButton button_website = new JButton();
-		button_website.setText("Website");
-		button_website.setBounds(175, 190, 100, 20);
-		button_website.addActionListener(new ActionListener() {
+	ActionListener getButtonActionListener() {
+		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BrowserControl.displayURL(URL);
+				if (e.getActionCommand() == website) {
+					BrowserControl.displayURL(URL);
+				} else if (e.getActionCommand() == close) {
+					close();
+				}
 			}
-		});
-		add(button_website);
+		};
 	}
 
 	/**
@@ -98,28 +92,8 @@ public class AboutDialog extends JDialog {
 		};
 		panel.setOpaque(false);
 		panel.setLayout(null);
+		panel.setBounds(0, 0, getWidth(), getHeight());
 		add(panel);
-	}
-	
-	/**
-	 * esc = close dialog
-	 */
-	private void addESCListener() {
-		ActionListener cancelListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				closeDialog();
-			}
-		};
-		JRootPane rootPane = getRootPane();
-		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
-	}
-	
-	/**
-	 * close dialog
-	 */
-	private void closeDialog() {
-		setVisible(false);
-		dispose();
 	}
 	
 	/**
@@ -136,21 +110,15 @@ public class AboutDialog extends JDialog {
 		add(textField);
 	}
 
-	/**
-	 * PopupMenu
-	 * 
-	 * @param textField
-	 * @return JPopupMenu
-	 */
-	private JPopupMenu addPopUpMenu(final JTextField textField) {
-		JPopupMenu popupMenu = new JPopupMenu();
-		JMenuItem copyMenuItem = new JMenuItem("Copy");
-		copyMenuItem.addActionListener(new ActionListener() {
+	String[] getPopUpItems() {
+		return new String[] { "Copy" };
+	}
+	
+	ActionListener getPopUpActionListener(final JTextField textField) {
+		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textField.copy();
 			}
-		});
-		popupMenu.add(copyMenuItem);
-		return popupMenu;
+		};
 	}
 }

@@ -3,6 +3,7 @@ package ms.client;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
@@ -14,6 +15,7 @@ import javax.swing.UIManager;
 import ms.client.filesys.DirectoryObserver;
 import ms.client.interfaces.ClientHandler;
 import ms.client.log.Log;
+import ms.client.logic.Task;
 import ms.client.networking.NetworkClient;
 import ms.client.networking.NetworkClientTester;
 import ms.client.ui.MainView;
@@ -57,9 +59,9 @@ public class Client implements ClientHandler, Observer {
 	/**
 	 * start directory observer
 	 * 
-	 * @param folder to Observer
+	 * @param folder to Observe
 	 */
-	public void observeDir(String folder) {
+	public void observeDir(final String folder) {
 		this.folder = folder;
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
 		dirObserver.subscribe(this);
@@ -93,8 +95,18 @@ public class Client implements ClientHandler, Observer {
 	 * get received objects
 	 */
 	public Object getObject() {
-		//TODO
+		// TODO
 		return null;
+	}
+	
+	public ArrayList<Task> getTaskList() {
+		ArrayList<Task> list = new ArrayList<Task>();
+		try {
+			list = client.getTaskList();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 	
 	/**

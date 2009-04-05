@@ -17,10 +17,10 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	 */
 	private static final long serialVersionUID = 1L;
 	private TaskList list;
-	private int taskID;
+	private String taskID;
 	
-	public TaskComboBoxModel() {
-		this.list = new TaskList();
+	public TaskComboBoxModel(TaskList list) {
+		this.list = list;
 		list.addObserver(this);
 	}
 
@@ -29,7 +29,7 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	}
 
 	public void setSelectedItem(Object anItem) {
-		taskID = (Integer)anItem;
+		taskID = (String)anItem;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	}
 
 	public Object getElementAt(int index) {
-		return list.get(index).getTaskID();
+		return list.get(index).getStatus();
 	}
 
 	public int getSize() {

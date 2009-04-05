@@ -30,6 +30,7 @@ import javax.swing.KeyStroke;
 
 import ms.client.Client;
 import ms.client.StartClient;
+import ms.client.logic.TaskList;
 import ms.client.ui.dialogs.AboutDialog;
 import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.dialogs.MessageDialog;
@@ -191,7 +192,8 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskComboBox = new JComboBox(new TaskComboBoxModel());
+		TaskList taskList = new TaskList(client);
+		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, 365, 20);
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
@@ -231,8 +233,8 @@ public class MainView extends JFrame {
 			return;
 		}
 
-		client.sendFiles(taskID);
 		client.observeDir(taskID);
+//		client.sendFiles(taskID);
 
 		// TODO
 		// ApplicationLauncher.open(program);

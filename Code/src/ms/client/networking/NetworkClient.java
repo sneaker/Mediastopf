@@ -10,8 +10,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import ms.client.log.Log;
+import ms.client.logic.Task;
 
 import org.apache.log4j.Logger;
 
@@ -68,7 +70,8 @@ public class NetworkClient {
 		sendMessage("ENDTRANSFER");
 	}
 
-	public void getTaskList() throws IOException {
+	public ArrayList<Task> getTaskList() throws IOException {
+		ArrayList<Task> list = new ArrayList<Task>();
 		sendMessage("INFO");
 		logger.info("Receiving Info data...");
 		String reply;
@@ -77,10 +80,12 @@ public class NetworkClient {
 			if (reply.equals("ENDINFO"))
 				break;
 			else {
+				list.add(new Task(0, reply));
 				logger.info(reply);
 				sendMessage(OK);
 			}
 		}
 		logger.info("INFO transfer finished");
+		return list;
 	}
 }

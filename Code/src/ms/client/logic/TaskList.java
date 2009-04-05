@@ -3,6 +3,7 @@ package ms.client.logic;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import ms.client.Client;
 import ms.client.StartClient;
 
 
@@ -19,6 +20,11 @@ public class TaskList extends Observable {
 			add(new Task(2222, "Ready"));
 			add(new Task(3333, "Sending"));
 		}
+	}
+
+	public TaskList(Client client) {
+		this.list = client.getTaskList();
+//		list.add(new Task(0, "Marco"));
 	}
 
 	public void add(Task o) {

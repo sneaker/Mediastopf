@@ -26,6 +26,7 @@ abstract class AbstractDialog extends JDialog {
 		initDialog();
 		
 		addESCListener();
+		addButtons();
 	}
 
 	private void initDialog() {

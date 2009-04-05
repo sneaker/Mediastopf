@@ -49,7 +49,7 @@ public class MainViewServer extends JFrame {
 
 	public static final String PROGRAM = "MediaStopf Server";
 	public static final String UIIMAGELOCATION = "/ms/server/ui/images/";
-	private static final String SPLASHIMAGE = MainViewServer.UIIMAGELOCATION + "splash.jpg";
+	private static final String SPLASHIMAGE = UIIMAGELOCATION + "splash.jpg";
 
 	private TaskComboBoxModel boxModel;
 	private TableModel importTableModel;

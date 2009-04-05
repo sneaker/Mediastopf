@@ -34,7 +34,6 @@ import ms.client.ui.dialogs.AboutDialog;
 import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskComboBoxModel;
-import ms.client.ui.models.TaskTableModel;
 import ms.client.ui.tables.TaskTable;
 
 public class MainView extends JFrame {
@@ -47,8 +46,6 @@ public class MainView extends JFrame {
 	public static final String UIIMAGELOCATION = "/ms/client/ui/images/";
 	private static final String SPLASHIMAGE = UIIMAGELOCATION + "splash.jpg";
 
-	private TaskComboBoxModel boxModel;
-	private TaskTableModel tableModel;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -68,8 +65,6 @@ public class MainView extends JFrame {
 			new SplashScreen(SPLASHIMAGE);
 		}
 		this.client = client;
-		boxModel = new TaskComboBoxModel();
-		tableModel = new TaskTableModel();
 
 		initGUI();
 	}
@@ -196,7 +191,7 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskComboBox = new JComboBox(boxModel);
+		taskComboBox = new JComboBox(new TaskComboBoxModel());
 		taskComboBox.setBounds(10, 20, 365, 20);
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
@@ -270,8 +265,8 @@ public class MainView extends JFrame {
 		tablePanel = new JPanel();
 		tablePanel.setBounds(5, 15, 385, 200);
 		tablePanel.setLayout(null);
-
-		taskTable = new TaskTable(tableModel);
+		
+		taskTable = new TaskTable();
 		tableScrollPane = new JScrollPane(taskTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel
 				.getHeight());

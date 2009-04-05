@@ -13,8 +13,13 @@ public class Table extends JXTable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Table(TableModel taskTableModel) {
-		super(taskTableModel);
+	public Table() {
+		super(new TableModel());
+		initTable();
+	}
+	
+	public Table(TableModel tableModel) {
+		super(tableModel);
 		initTable();
 	}
 

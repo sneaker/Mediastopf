@@ -14,8 +14,8 @@ public class ExportTable extends Table {
 
 	private static final long serialVersionUID = 1L;
 
-	public ExportTable(TableModel taskTableModel) {
-		super(taskTableModel);
+	public ExportTable() {
+		super(new TableModel());
 		initTable();
 	}
 

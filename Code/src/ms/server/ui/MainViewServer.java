@@ -35,7 +35,6 @@ import ms.server.StartServer;
 import ms.server.ui.dialogs.AboutDialog;
 import ms.server.ui.dialogs.ExportDialog;
 import ms.server.ui.dialogs.MessageDialog;
-import ms.server.ui.models.TableModel;
 import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.Table;
@@ -52,8 +51,6 @@ public class MainViewServer extends JFrame {
 	private static final String SPLASHIMAGE = UIIMAGELOCATION + "splash.jpg";
 
 	private TaskComboBoxModel boxModel;
-	private TableModel importTableModel;
-	private TableModel exportTableModel;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
 	private ExportTable exportTable;
@@ -70,8 +67,6 @@ public class MainViewServer extends JFrame {
 			new SplashScreen(SPLASHIMAGE);
 		}
 		boxModel = new TaskComboBoxModel(server);
-		importTableModel = new TableModel();
-		exportTableModel = new TableModel();
 
 		initGUI();
 	}
@@ -273,11 +268,11 @@ public class MainViewServer extends JFrame {
 		tablePanel.setBounds(5, 15, 385, 200);
 		tablePanel.setLayout(null);
 		
-		exportTable = new ExportTable(exportTableModel);
+		exportTable = new ExportTable();
 		
 		tabPane = new JTabbedPane();
 		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight());
-		tabPane.addTab("Import", new JScrollPane(new Table(importTableModel)));
+		tabPane.addTab("Import", new JScrollPane(new Table()));
 		tabPane.addTab("Export", new JScrollPane(exportTable));
 		tabPane.addMouseListener(new MouseAdapter() {
 			@Override

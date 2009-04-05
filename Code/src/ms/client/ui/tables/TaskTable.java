@@ -20,8 +20,8 @@ public class TaskTable extends JXTable {
 	private static final long serialVersionUID = 1L;
 	
 	
-	public TaskTable(TaskTableModel taskTableModel) {
-		super(taskTableModel);
+	public TaskTable() {
+		super(new TaskTableModel());
 		initTable();
 	}
 	

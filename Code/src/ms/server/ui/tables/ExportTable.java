@@ -3,9 +3,11 @@ package ms.server.ui.tables;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ms.server.ui.MainViewServer;
 import ms.server.ui.dialogs.MessageDialog;
 import ms.server.ui.models.TableModel;
 
@@ -33,9 +35,10 @@ public class ExportTable extends Table {
 	 */
 	private JPopupMenu createPopupMenu() {
 		JPopupMenu popupMenu = new JPopupMenu();
-
+		
 		final String cancel = "Cancel";
 		JMenuItem menuItem = new JMenuItem(cancel);
+		menuItem.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "cancel.png")));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (event.getActionCommand() == cancel) {

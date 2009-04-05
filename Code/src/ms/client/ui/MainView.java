@@ -54,7 +54,7 @@ public class MainView extends JFrame {
 	private TaskTable taskTable;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
-	private String run = "Run", send = "Send", cancel = "Cancel",
+	private String run = "Run", reload = "Reload", send = "Send", cancel = "Cancel",
 			runningTask = "Running Tasks", tasks = "Tasks",
 			statusbar = "StatusBar";
 	private Client client;
@@ -140,18 +140,17 @@ public class MainView extends JFrame {
 	private void updateComponentBounds(JPanel runtaskPanel, JPanel taskPanel, JPanel statusPanel) {
 		buttonMap.get(run).setLocation(taskPanel.getWidth() - 135, taskPanel.getHeight() - 40);
 
-		int width = runtaskPanel.getWidth() - 10;
-		int height = runtaskPanel.getHeight();
-		buttonMap.get(send).setLocation(width - 235, height + 40);
-		buttonMap.get(cancel).setLocation(width - 125, height + 40);
-
 		taskComboBox.setSize(taskPanel.getWidth() - 30, 20);
+		statusBar.setSize(statusPanel.getWidth(), statusPanel.getHeight());
 
-		tablePanel.setSize(width, height + 10);
-		tableScrollPane.setSize(width, height);
+		int width = runtaskPanel.getWidth() - 10;
+		int height = runtaskPanel.getHeight() - 70;
+		tablePanel.setSize(width, height);
+		tableScrollPane.setSize(tablePanel.getWidth(), tablePanel.getHeight());
 		tableScrollPane.revalidate();
 
-		statusBar.setSize(statusPanel.getWidth(), statusPanel.getHeight());
+		buttonMap.get(send).setLocation(width - 235, height + 30);
+		buttonMap.get(cancel).setLocation(width - 125, height + 30);
 	}
 
 	private void addStatusBar() {
@@ -174,16 +173,16 @@ public class MainView extends JFrame {
 	 * add task panel
 	 */
 	private void addTaskPanel() {
-		addTaskComboBox();
+		addTaskComboBox();	
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBounds(0, 5, 395, 90);
 		panel.setBorder(BorderFactory.createTitledBorder(tasks));
 		panel.add(taskComboBox);
-		panel.add(addRunButton());
 		panelMap.put(tasks, panel);
 		add(panel);
+		addTaskButtons(panel);
 	}
 
 	/**
@@ -205,23 +204,41 @@ public class MainView extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * add button to run the task
-	 * 
-	 * @return JButton
-	 */
-	private JButton addRunButton() {
-		JButton runButton = new JButton();
-		runButton.setBounds(260, 50, 100, 25);
-		runButton.setText(run);
-		runButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				runSelectedItem();
-			}
-		});
-		buttonMap.put(run, runButton);
-		return runButton;
+	
+	private void addTaskButtons(JPanel panel) {
+		int x = 150;
+		int y = 50;
+		int width = 100;
+		int height = 25;
+		final String[] buttonText = { reload, run };
+		final String[] icons = { "reload.png", "tick.png" };
+		final Rectangle sendBounds = new Rectangle(x, y, width, height);
+		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
+		final Rectangle[] bounds = { sendBounds, cancelBounds };
+		final int sendAcc = KeyEvent.VK_F5;
+		final int cancelAcc = KeyEvent.VK_R;
+		final int[] mnemonic = { sendAcc, cancelAcc };
+		for (int i = 0; i < buttonText.length; i++) {
+			JButton button = new JButton();
+			button.setBounds(bounds[i]);
+			button.setText(buttonText[i]);
+			button.setMnemonic(mnemonic[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(UIIMAGELOCATION + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand() == reload) {
+						// TODO
+						MessageDialog.info("", "Not implemented yet");
+					} else if (e.getActionCommand() == run) {
+						runSelectedItem();
+					}
+				}
+			});
+			panel.add(button);
+			buttonMap.put(buttonText[i], button);
+		}
 	}
 
 	private void runSelectedItem() {
@@ -270,8 +287,7 @@ public class MainView extends JFrame {
 		
 		taskTable = new TaskTable();
 		tableScrollPane = new JScrollPane(taskTable);
-		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel
-				.getHeight());
+		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());
 		tablePanel.add(tableScrollPane);
 	}
 
@@ -287,6 +303,7 @@ public class MainView extends JFrame {
 		int width = 100;
 		int height = 25;
 		final String[] buttonText = { send, cancel };
+		final String[] icons = { "send.png", "cancel.png" };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
@@ -298,6 +315,9 @@ public class MainView extends JFrame {
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(UIIMAGELOCATION + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == send) {

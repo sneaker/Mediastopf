@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
+import ms.client.ui.MainView;
 import ms.server.filesys.FileIO;
 import ms.server.log.Log;
 
@@ -43,7 +44,7 @@ public class LogFrame extends JFrame implements Runnable {
 	private JScrollPane scrollArea;
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
-	private final String save = "Save Log", close = "Close";
+	private final String save = "Save", close = "Close";
 	private boolean suspendThread = false;
 
 	public LogFrame() {
@@ -160,16 +161,20 @@ public class LogFrame extends JFrame implements Runnable {
 		int width = 100;
 		int height = 25;
 		final String[] buttonText = { save, close };
+		final String[] icons = { "save.png", "cancel.png" };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int okMnemonic = KeyEvent.VK_O, cancelMnemonic = KeyEvent.VK_C;
+		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {

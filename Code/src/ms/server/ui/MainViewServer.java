@@ -227,12 +227,16 @@ public class MainViewServer extends JFrame {
 		final int width = 100;
 		final int height = 25;
 		final String[] label = { export, cancel };
+		final String[] icons = { "exportsmall.png", "cancel.png" };
 		final int[] events = { KeyEvent.VK_E, KeyEvent.VK_C };
 		for(int i=0;i<label.length;i++) {
 			JButton button = new JButton();
 			button.setBounds(x, y[i], width, height);
 			button.setText(label[i]);
 			button.setMnemonic(events[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(e.getActionCommand() == export) {

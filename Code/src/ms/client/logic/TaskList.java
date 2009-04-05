@@ -13,18 +13,22 @@ public class TaskList extends Observable {
 	
 	public TaskList() {
 		if(StartClient.DEBUG) {
-			for(int i=0; i < 10; i++) {
-				add(new Task(i, "Test"));
-			}
-			add(new Task(1111, "Waiting"));
-			add(new Task(2222, "Ready"));
-			add(new Task(3333, "Sending"));
+			addTestData();
 		}
 	}
 
 	public TaskList(Client client) {
-		this.list = client.getTaskList();
-//		list.add(new Task(0, "Marco"));
+//		this.list = client.getTaskList();
+		addTestData();
+	}
+	
+	private void addTestData() {
+		for(int i=0; i < 10; i++) {
+			add(new Task(i, "Test"));
+		}
+		add(new Task(1111, "Waiting"));
+		add(new Task(2222, "Ready"));
+		add(new Task(3333, "Sending"));
 	}
 
 	public void add(Task o) {

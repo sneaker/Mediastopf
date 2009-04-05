@@ -11,16 +11,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import ms.server.ui.MainViewServer;
 import ms.server.utils.BrowserControl;
 
 
-public class AboutDialog extends AbstractDialog {
+public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
@@ -37,21 +43,31 @@ public class AboutDialog extends AbstractDialog {
 	 * create and set gui components
 	 */
 	private void initGUI() {
+		initDialog();
+		
+		addURL();
+		addESCListener();
+		addButtons();
+		drawBackgroundImage();
+	}
+
+	private void initDialog() {
 		setTitle(MainViewServer.PROGRAM + " - About...");
 		setSize(400, 250);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
-		
-		addURL();
-		drawBackgroundImage();
+		setLayout(null);
+		setResizable(false);
+		setModal(true);
+		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
+	
 
-	String[] getButtonText() {
-		final String[] buttonText = { website, close };
-		return buttonText;
-	}
-
-	Rectangle[] getButtonBounds() {
+	/**
+	 * add buttons
+	 */
+	private void addButtons() {
 		final int x = 175;
 		final int y = 190;
 		final int width = 100;
@@ -59,25 +75,25 @@ public class AboutDialog extends AbstractDialog {
 		final Rectangle websiteBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 105, y, width, height);
 		final Rectangle[] bounds = { websiteBounds, cancelBounds };
-		return bounds;
-	}
-
-	int[] getButtonMnemonic() {
-		final int websiteMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
+		final String[] buttonText = { website, close };
+		final int websiteMnemonic = KeyEvent.VK_W, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { websiteMnemonic, cancelMnemonic };
-		return mnemonic;
-	}
-	
-	ActionListener getButtonActionListener() {
-		return new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand() == website) {
-					BrowserControl.displayURL(URL);
-				} else if (e.getActionCommand() == close) {
-					close();
+		for (int i = 0; i < buttonText.length; i++) {
+			JButton button = new JButton();
+			button.setBounds(bounds[i]);
+			button.setText(buttonText[i]);
+			button.setMnemonic(mnemonic[i]);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand() == website) {
+						BrowserControl.displayURL(URL);
+					} else if (e.getActionCommand() == close) {
+						close();
+					}
 				}
-			}
-		};
+			});
+			add(button);
+		}
 	}
 
 	/**
@@ -128,5 +144,23 @@ public class AboutDialog extends AbstractDialog {
 		});
 		popupMenu.add(copyMenuItem);
 		return popupMenu;
+	}
+
+	/**
+	 * esc = close dialog
+	 */
+	private void addESCListener() {
+		ActionListener cancelListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		};
+		JRootPane rootPane = getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+	}
+
+	private void close() {
+		setVisible(false);
+		dispose();
 	}
 }

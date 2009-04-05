@@ -19,16 +19,22 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import ms.client.ui.MainView;
 
 
-public class ConfigDialog extends AbstractDialog {
+public class ConfigDialog extends JDialog {
 
 	private static final String CONFIGFILE = "MediaStopf.cfg";
 
@@ -40,7 +46,6 @@ public class ConfigDialog extends AbstractDialog {
 	private Properties prop = new Properties();
 	private JTextField ripperTextField, folderTextField;
 	private final String audioripper = "AudioRipper", defaultfolder = "Default Folder";
-	private final String clear = "Clear", cut = "Cut", copy = "Copy", paste = "Paste", selectAll = "Select All";
 	private final String ok = "Save", close = "Close";
 
 	public ConfigDialog() {
@@ -51,14 +56,25 @@ public class ConfigDialog extends AbstractDialog {
 	 * init GUI
 	 */
 	private void initGUI() {
+		initDialog();
+
+		addPanels();
+		addESCListener();
+		addButtons();
+		
+		loadProperties();
+	}
+
+	private void initDialog() {
 		setTitle(MainView.PROGRAM + " - Config");
 		setSize(400, 230);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
-
-		addPanels();
-		
-		loadProperties();
+		setLayout(null);
+		setResizable(false);
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
 	}
 	
 	private void addPanels() {
@@ -148,40 +164,42 @@ public class ConfigDialog extends AbstractDialog {
 		add(textField);
 		return textField;
 	}
-
-	String[] getButtonText() {
-		final String[] buttonText = { ok, close };
-		return buttonText;
-	}
-
-	Rectangle[] getButtonBounds() {
+	
+	/**
+	 * add buttons
+	 */
+	protected void addButtons() {
 		int x = 150;
 		int y = 170;
 		int width = 100;
 		int height = 25;
-		final Rectangle sendBounds = new Rectangle(x, y, width, height);
+		final Rectangle okBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
-		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		return bounds;
-	}
-
-	int[] getButtonMnemonic() {
+		final Rectangle[] bounds = { okBounds, cancelBounds };
+		final String[] buttonText = { ok, close };
+		final String[] icons = { "save.png", "cancel.png" };
 		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
-		return mnemonic;
-	}
-	
-	ActionListener getButtonActionListener() {
-		return new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand() == ok) {
-					saveProperties();
-					close();
-				} else if (e.getActionCommand() == close) {
-					close();
+		for (int i = 0; i < buttonText.length; i++) {
+			JButton button = new JButton();
+			button.setBounds(bounds[i]);
+			button.setText(buttonText[i]);
+			button.setMnemonic(mnemonic[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand() == ok) {
+						saveProperties();
+						close();
+					} else if (e.getActionCommand() == close) {
+						close();
+					}
 				}
-			}
-		};
+			});
+			add(button);
+		}
 	}
 	
 	/**
@@ -264,26 +282,60 @@ public class ConfigDialog extends AbstractDialog {
 		}
 	}
 	
-	String[] getPopUpItems() {
-		return new String[] { clear, cut, copy, paste, selectAll };
-	}
-
-	ActionListener getPopUpActionListener(final JTextField textField) {
-		return new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				if (event.getActionCommand() == cut) {
-					textField.cut();
-				} else if (event.getActionCommand() == copy) {
-					textField.copy();
-				} else if (event.getActionCommand() == paste) {
-					textField.paste();
-				} else if (event.getActionCommand() == clear) {
-					textField.setText("");
-				} else {
-					textField.selectAll();
-				}
+	/**
+	 * esc = close dialog
+	 */
+	private void addESCListener() {
+		ActionListener cancelListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
 			}
 		};
+		JRootPane rootPane = getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+	}
+
+	/**
+	 * close
+	 */
+	private void close() {
+		setVisible(false);
+		dispose();
+	}
+	
+	/**
+	 * PopupMenu
+	 * 
+	 * @param textField
+	 * @return JPopupMenu
+	 */
+	private JPopupMenu addPopUpMenu(final JTextField textField) {
+		JPopupMenu popupMenu = new JPopupMenu();
+		final String clear = "Clear", cut = "Cut", copy = "Copy", paste = "Paste", selectAll = "Select All"; 
+		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
+		for (int i = 0; i < menuItems.length; i++) {
+			JMenuItem menuItem = new JMenuItem(menuItems[i]);
+			if (i == 1 || i == 4) {
+				popupMenu.addSeparator();
+			}
+			menuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					if (event.getActionCommand() == cut) {
+						textField.cut();
+					} else if (event.getActionCommand() == copy) {
+						textField.copy();
+					} else if (event.getActionCommand() == paste) {
+						textField.paste();
+					} else if (event.getActionCommand() == clear) {
+						textField.setText("");
+					} else {
+						textField.selectAll();
+					}
+				}
+			});
+			popupMenu.add(menuItem);
+		}
+		return popupMenu;
 	}
 }

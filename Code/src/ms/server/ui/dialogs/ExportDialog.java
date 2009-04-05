@@ -19,18 +19,23 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import ms.server.filesys.FileIO;
 import ms.server.ui.MainViewServer;
 
 
-public class ExportDialog extends AbstractDialog {
+public class ExportDialog extends JDialog {
 
 	private static final String CONFIGFILE = "MediaStopfServer.cfg";
 
@@ -59,6 +64,14 @@ public class ExportDialog extends AbstractDialog {
 		setSize(400, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		setLayout(null);
+		setResizable(false);
+		setModal(true);
+		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		addESCListener();
+		addButtons();
 
 		addDefaultFolderPanel();
 		
@@ -67,7 +80,7 @@ public class ExportDialog extends AbstractDialog {
 
 	private void addDefaultFolderPanel() {
 		createBorder(exportFolder, new Rectangle(0, 10, 395, 70));
-		createLabel("usbstick.png", new Rectangle(12, 30, 40, 40));
+		createLabel("export.png", new Rectangle(12, 30, 40, 40));
 		
 		exportTextField = createTextField(new Point(60, 40));
 		exportTextField.addMouseListener(new MouseAdapter() {
@@ -126,22 +139,11 @@ public class ExportDialog extends AbstractDialog {
 		return textField;
 	}
 	
-	@Override
-	ActionListener getButtonActionListener() {
-		return new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand() == export) {
-					export();
-					saveAndClose();
-				} else if (e.getActionCommand() == close) {
-					saveAndClose();
-				}
-			}
-		};
-	}
 
-	@Override
-	Rectangle[] getButtonBounds() {
+	/**
+	 * add buttons
+	 */
+	private void addButtons() {
 		final int x = 150;
 		final int y = 90;
 		final int width = 100;
@@ -149,19 +151,30 @@ public class ExportDialog extends AbstractDialog {
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		return bounds;
-	}
-
-	@Override
-	int[] getButtonMnemonic() {
-		final int okMnemonic = KeyEvent.VK_O, cancelMnemonic = KeyEvent.VK_C;
+		final String[] buttonText = { export, close };
+		final String[] icons = { "tick.png", "cancel.png" };
+		final int okMnemonic = KeyEvent.VK_E, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
-		return mnemonic;
-	}
-
-	@Override
-	String[] getButtonText() {
-		return new String[] { export, close };
+		for (int i = 0; i < buttonText.length; i++) {
+			JButton button = new JButton();
+			button.setBounds(bounds[i]);
+			button.setText(buttonText[i]);
+			button.setMnemonic(mnemonic[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand() == export) {
+						export();
+						saveAndClose();
+					} else if (e.getActionCommand() == close) {
+						saveAndClose();
+					}
+				}
+			});
+			add(button);
+		}
 	}
 	
 	private void export() {
@@ -269,5 +282,23 @@ public class ExportDialog extends AbstractDialog {
 			popupMenu.add(menuItem);
 		}
 		return popupMenu;
+	}
+
+	/**
+	 * esc = close dialog
+	 */
+	private void addESCListener() {
+		ActionListener cancelListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		};
+		JRootPane rootPane = getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+	}
+
+	private void close() {
+		setVisible(false);
+		dispose();
 	}
 }

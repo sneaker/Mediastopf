@@ -3,10 +3,12 @@ package ms.client.ui.tables;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.ListSelectionModel;
 
+import ms.client.ui.MainView;
 import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskTableModel;
 
@@ -45,8 +47,10 @@ public class TaskTable extends JXTable {
 		
 		final String send = "Send", cancel = "Cancel";
 		final String[] itemLabel = { send, cancel };
+		final String[] icons = { "send.png", "cancel.png" };
 		for (int i = 0; i < itemLabel.length; i++) {
 			JMenuItem menuItem = new JMenuItem(itemLabel[i]);
+			menuItem.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icons[i])));
 			menuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
 					if (event.getActionCommand() == send) {

@@ -34,7 +34,7 @@ public class NetworkServer implements Runnable {
 			exec = Executors.newFixedThreadPool(THREADCOUNT);
 		}
 
-		while (mediastop_ServerSocket.isBound()) {
+		while (true) {
 			try {
 				exec.execute(new NetworkServerThread(mediastop_ServerSocket.accept()));
 			} catch (IOException e) {
@@ -42,6 +42,5 @@ public class NetworkServer implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		exec.shutdown();
 	}
 }

@@ -45,15 +45,19 @@ public class NetworkClient {
 		if (!file.exists())
 			return;
 		
+		String reply;
 		sendMessage("TRANSFER");
-		if (!receiveMessage().equals("TRANSFER READY"))
+		reply = receiveMessage();
+		if (!reply.equals("TRANSFER READY"))
 			return;
 		sendMessage(filename);
-		if (!receiveMessage().equals("TRANSFER NAME OK"))
+		reply = receiveMessage();
+		if (!reply.equals("TRANSFER NAME OK"))
 			return;
 		Long size = file.length();
 		sendMessage(size.toString());
-		if (!receiveMessage().equals("TRANSFER SIZE OK"))
+		reply = receiveMessage();
+		if (!reply.equals("TRANSFER SIZE OK"))
 			return;
 		
 		byte[] filebuffer = new byte[size.intValue()];
@@ -67,6 +71,7 @@ public class NetworkClient {
 		sender.write(filebuffer,0,filebuffer.length);
 		sender.flush();
 		
+		reply = receiveMessage();
 		sendMessage("ENDTRANSFER");
 	}
 

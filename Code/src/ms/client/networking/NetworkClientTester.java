@@ -23,6 +23,8 @@ public class NetworkClientTester implements Runnable {
 	
 	public void run() {
 		while (true) {
+			System.out.println("command> ");
+			String aMessage = ConsoleInput.getMessage();
 			try {
 				nclient = new NetworkClient(host, port);
 			} catch (UnknownHostException e) {
@@ -30,8 +32,6 @@ public class NetworkClientTester implements Runnable {
 			} catch (IOException e) {
 				logger.error("Could not connect to server");
 			}
-			System.out.println("command> ");
-			String aMessage = ConsoleInput.getMessage();
 			if (aMessage.equals("exit"))
 				break;
 

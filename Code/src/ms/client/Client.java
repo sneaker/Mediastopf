@@ -44,9 +44,6 @@ public class Client implements ClientHandler, Observer {
 	private void connectToServer() {
 		try {
 			client = new NetworkClient(HOST, PORT);
-			testconnection = new NetworkClientTester(HOST, PORT);
-			ExecutorService exec = Executors.newSingleThreadExecutor();
-			exec.execute(testconnection);
 		} catch (UnknownHostException e) {
 			logger.fatal("Unknow host");
 			e.printStackTrace();
@@ -79,7 +76,7 @@ public class Client implements ClientHandler, Observer {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}	
 	}
 
 	/**

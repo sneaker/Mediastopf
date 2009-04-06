@@ -10,7 +10,10 @@
 \usepackage[ngerman]{babel}		% Print german date
 %\usepackage{pgfpages}			% Ausdruck auf mehrere Seiten
 %\pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=5mm]
-%\usepackage{graphicx}			% Graphiken benutzen
+\usepackage{graphicx}			% Graphiken benutzen
+
+\pgfdeclareimage[height=0.5cm]{logo}{logo}	% Logo rechts unten anzeigen
+\logo{\pgfuseimage{logo}}
 
 \title{MediaStopf -- Review Milestone 3}
 \author{David Tran, Marco Birchler, \\ Thomas Kallenberg, Martin Schwab}
@@ -24,33 +27,119 @@
 \end{frame}
 
 \begin{frame}{Agenda}
-
-\begin{itemize}[<+->]
-\item Prototyp -- Demonstration
-\item Ein interessanter Aspekt \\ (z.B. wie testet man Netzwerkverbindung)
-\item Nächste Schritte
+%\framesubtitle{bla untertitel}
+\begin{itemize} % [<+->]
+%\item Architekturüberblick
+\item ... was bisher geschah
+\item Herausforderungen
+\item Verbindung Client/Server
+\item MediaStopf in Aktion
+\item Nächste Schritte ...
 \end{itemize}
-
 \end{frame}
-\begin{frame}{Zweiter Titel}
-ein bisserl text
-\uncover<2->{Ab zweitem Klick anzeigen}
-\invisible<1>{das ist versteckt} 
-das ist sehr \alert{<2->wichtig}
-\begin{theorem}
-Das ist besonders interessant
-\end{theorem}
 
-\begin{enumerate}
-\item erstens
-\item zweitens
-\item drittens
-\end{enumerate}
+%\begin{frame}{Architekturüberblick}
+%  \begin{figure}
+%    \includegraphics[scale=0.2]{architektur}
+%    \caption{Client- und Server-Architektur}
+%  \end{figure}
+%\end{frame}
 
-% \minipage \includegraphics 10cm
-% \includegraphics[scale=0.3]{bild}
+\begin{frame}{... was bisher geschah}
+\begin{columns}[t]
+  \begin{column}{3cm}
+    Wochen 1+2 \\
+    Wochen 2+3 \\
+    Wochen 4+5 \\
+    Wochen 6+7 \\
+  \end{column}
+  \begin{column}{7cm}
+    Idee, Domain-Modell \\
+    Ausarbeitung Projektplan \\
+    Entwicklung Prototypen \small{(Risiken)} \\
+    1. Lauffähiges Gesamtsystem
+  \end{column}
+\end{columns}
+\end{frame}
 
+\begin{frame}{Herausforderungen}
+\begin{itemize}
+\item<1-> Eclipse und Git
+\item<2-> Drittprogramme überwachen
+\item<3-4> Huhn vs. Ei -- wer beginnt? \\ \small{(aka Schnittstellen)}
+\invisible<1-4>{ \item . }
+\invisible<1-3>{ \item und ...}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Verbindung Client-/Server}
+\begin{columns}[t]
+\begin{column}{3cm}
+  \begin{itemize}
+   \item zwei Mal dasselbe?
+   \item Symmetrie im Domainmodell...
+   % TODO
+   \item DM von ganz am Anfang wo wir gestritten haben über Import/Export
+  \end{itemize}
+\end{column}
+\begin{column}{7cm}
+  \begin{figure}
+    \includegraphics[scale=0.26]{client_server}
+    \caption{ähnlich? Client links, Server rechts}
+  \end{figure}
+\end{column}
+\end{columns}
+%\uncover<2->{Ab zweitem Klick anzeigen}
+%\invisible<1>{das ist versteckt} 
+\end{frame}
+
+\begin{frame}{MediaStopf in Aktion}
+% Max 3 Minuten probieren bis es geht, sonst mit den Slides demonstrieren!
+\framesubtitle{Livedemo}
+\end{frame}
+
+\begin{frame}{MediaStopf in Aktion}
+\framesubtitle{Offline-Variante -- Client}
+\begin{columns}[t]
+  \begin{column}{5cm}
+    \begin{itemize}
+      \item Eine CD wird eingelesen
+    \end{itemize}
+  \end{column}
+  \begin{column}{5cm}
+    \begin{figure}
+      \includegraphics[scale=0.3]{client_tasks}
+      \caption{Client beim Import}
+    \end{figure}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{MediaStopf in Aktion}
+\framesubtitle{Offline-Variante -- Server}
+\begin{columns}[t]
+  \begin{column}{5cm}
+    \begin{itemize}
+      \item Anbindung an Auftragsdatenbank
+      \item Einsammeln der Dateien
+    \end{itemize}
+  \end{column}
+  \begin{column}{5cm}
+    \begin{figure}
+      \includegraphics[scale=0.3]{server_2}
+      \caption{Server mit Aufträgen}
+    \end{figure}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Und so gehts weiter...}
+\begin{itemize}
+ \item Volle Unterstützung der UC
+ \item Systematisches Logging für Feedback bei Systemtest
+ \item Refactoring, Subsysteme separiert halten
+ \item Umstellung SQLite -> echte Datenbank
+\end{itemize}
 \end{frame}
 
 \end{document}
-

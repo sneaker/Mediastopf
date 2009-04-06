@@ -1,6 +1,11 @@
 package ms.server.database;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+
+
 
 import ms.server.database.*;
 import ms.server.domain.*;
@@ -13,9 +18,126 @@ public class DatabaseTester {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		loadData();
+		createTablesIfMissing();
+		//loadData();
 
 	}
+	
+	private static void createTablesIfMissing() {
+		try {
+			ActiveRecordManager.execute("select * from Auftrag");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE Auftrag (id INTEGER PRIMARY KEY  NOT NULL , status INTEGER NOT NULL  DEFAULT 1)");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from BildItem");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE BildItem (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , fk_Item INTEGER NOT NULL , Aufloesung INTEGER, Breite INTEGER, Hoehe INTEGER, Aufnahmeort VARCHAR)");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from Container");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE Container (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , fk_Container INTEGER, Name VARCHAR NOT NULL )");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from Einlesegeraet");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE Einlesegeraet (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , fk_Einlesestation INTEGER NOT NULL , Name VARCHAR)");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from Einlesestation");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE Einlesestation (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , fk_Sammelstation INTEGER NOT NULL , Name VARCHAR NOT NULL , Netzwerkadresse VARCHAR NOT NULL )");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from ExportMedium");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE ExportMedium (id INTEGER PRIMARY KEY  NOT NULL , fk_Container INTEGER, fk_Auftrag INTEGER NOT NULL , Name VARCHAR, Speicherkapazitaet INTEGER)");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from ImportMedium");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE ImportMedium (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , fk_Mediensammlung INTEGER NOT NULL , fk_Einlesegeraet INTEGER)");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from Item");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE Item (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , fk_ImportMedium INTEGER NOT NULL , fk_Container INTEGER, Name VARCHAR, Importdatum DATETIME, Speicherort VARCHAR)");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from Mediensammlung");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE Mediensammlung (id INTEGER PRIMARY KEY  NOT NULL ,name VARCHAR,fk_Auftrag INTEGER NOT NULL  DEFAULT 1 ,typ VARCHAR NOT NULL  DEFAULT 'Image' )");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from MusikItem");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE MusikItem (id INTEGER PRIMARY KEY  NOT NULL ,fk_Item INTEGER NOT NULL ,Dauer INTEGER,Interpret VARCHAR)");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+			ActiveRecordManager.execute("select * from Sammelstation");
+		} catch (SQLException e) {
+			try {
+				ActiveRecordManager.execute("CREATE TABLE Sammelstation (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , Name VARCHAR NOT NULL , Netzwerkadresse VARCHAR NOT NULL )");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		
+	}
+	
+	
 	
 	private static void loadData() {
 		//Get data from DB direct via domain object and activerecord

@@ -14,7 +14,7 @@ public class RunningList extends Observable {
 	public RunningList() {
 		if(StartServer.DEBUG) {
 			for(int i=10; i < 20; i++) {
-				add(new Auftrag("test", "CD", i));
+				add(new Auftrag(i));
 			}
 		}
 	}

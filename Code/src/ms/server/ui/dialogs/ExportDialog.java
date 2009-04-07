@@ -48,9 +48,9 @@ public class ExportDialog extends JDialog {
 	private JTextField exportTextField;
 	private final String exportFolder = "External Storage";
 	private final String export = "Export", close = "Close";
-	private String taskID;
+	private int taskID;
 
-	public ExportDialog(String taskID) {
+	public ExportDialog(int taskID) {
 		this.taskID = taskID;
 		
 		initGUI();
@@ -179,7 +179,7 @@ public class ExportDialog extends JDialog {
 	
 	private void export() {
 		String exportFolder = exportTextField.getText().trim();
-		File file = new File(taskID);
+		File file = new File(Integer.toString(taskID));
 		boolean done = FileIO.transfer(file.listFiles(), new File(exportFolder));
 		if(done) {
 			MessageDialog.info("Export done", "Exported Files to " + exportFolder);

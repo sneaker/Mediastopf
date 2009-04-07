@@ -18,8 +18,7 @@ public class TaskList extends Observable {
 	}
 
 	public TaskList(Client client) {
-//		this.list = client.getTaskList();
-		addTestData();
+		this.list = client.getTaskList();
 	}
 	
 	private void addTestData() {

@@ -74,7 +74,7 @@ public class NetworkServerThread implements Runnable {
 
 		for (Auftrag name : lp) {
 			try {
-				sendMessage(name.getName());
+				sendMessage(String.valueOf(name.getID()));
 				if (!receiveMessage().equals("OK"))
 					logger.fatal("Error in Network protocol");
 			} catch (IOException e) {

@@ -250,8 +250,8 @@ public class MainView extends JFrame {
 			return;
 		}
 
-		client.observeDir(taskID);
-//		client.sendFiles(taskID);
+//		client.observeDir(taskID);
+		client.sendFiles(taskID);
 
 		// TODO
 		// ApplicationLauncher.open(program);

@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.server.Server;
 import ms.server.StartServer;
@@ -208,7 +209,7 @@ public class MainViewServer extends JFrame {
 		taskComboBox.setBounds(10, 20, 365, 20);
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
-		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
+		taskComboBox.setUI(new MetalComboBoxUI() {
 			public void layoutComboBox(Container parent, MetalComboBoxLayoutManager manager) {
 				super.layoutComboBox(parent, manager);
 				arrowButton.setBounds(0, 0, 0, 0);
@@ -252,13 +253,13 @@ public class MainViewServer extends JFrame {
 	}
 	
 	private void exportSelectedItem() {
-		String tasknum = (String)taskComboBox.getSelectedItem();
-		File file = new File(tasknum);
+		int taskID = (Integer)taskComboBox.getSelectedItem();
+		File file = new File(Integer.toString(taskID));
 		if(!file.isDirectory()) {
-			MessageDialog.info("Not found", "No directory of " + tasknum + " found");
+			MessageDialog.info("Not found", "No directory of " + taskID + " found");
 			return;
 		}
-		ExportDialog ed = new ExportDialog(tasknum);
+		ExportDialog ed = new ExportDialog(taskID);
 		ed.setVisible(true);
 	}
 

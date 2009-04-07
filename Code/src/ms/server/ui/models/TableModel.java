@@ -47,9 +47,9 @@ public class TableModel extends AbstractTableModel implements Observer {
 		Auftrag task = list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return task.getAnzahlMedienSammlung();
+			return task.getID();
 		case 1:
-			return "";
+			return task.getStatus();
 		default:
 			return "";
 		}

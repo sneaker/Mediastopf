@@ -6,8 +6,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -17,22 +15,19 @@ import ms.client.interfaces.ClientHandler;
 import ms.client.log.Log;
 import ms.client.logic.Task;
 import ms.client.networking.NetworkClient;
-import ms.client.networking.NetworkClientTester;
 import ms.client.ui.MainView;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 
-public class Client implements ClientHandler, Observer {
+public class Client implements ClientHandler {
 	
 	private static final String HOST = "localhost";
 	private static final int PORT = 1337;
 	
 	private Logger logger = Log.getLogger();
 	private NetworkClient client;
-	private NetworkClientTester testconnection;
-	private String folder;
 	
 	
 	public Client() {
@@ -59,9 +54,13 @@ public class Client implements ClientHandler, Observer {
 	 * @param folder to Observe
 	 */
 	public void observeDir(final String folder) {
-		this.folder = folder;
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
-		dirObserver.subscribe(this);
+		dirObserver.subscribe(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				sendFiles(folder);
+			}
+		});
 		dirObserver.start();
 		
 		logger.info("Directory Observer started in " + folder);
@@ -134,10 +133,5 @@ public class Client implements ClientHandler, Observer {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		sendFiles(folder);
 	}
 }

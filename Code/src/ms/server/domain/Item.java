@@ -10,21 +10,23 @@ public class Item implements ActiveRecord {
 
 	
 	private String Name, Importdatum, Speicherort;
+	private int fk_ImportMedium, fk_Container;
 	private int id = NOTINDB;
-	private List<Mediensammlung> mediensammlunglist;
 	
 	
-	public Item(String name, String Importdatum, String Speicherort) {
+	
+	public Item(String name, String Importdatum, String Speicherort, int fk_ImportMedium, int fk_Container) {
 		this.Name = name;
 		this.Importdatum = Importdatum;
 		this.Speicherort = Speicherort;
+		this.fk_ImportMedium = fk_ImportMedium;
+		this.fk_Container = fk_Container;
 	}
 
 	public Item(ResultSet row) throws SQLException {
-		this(row.getString("Name"), row.getString("Importdatum"), row.getString("Speicherort"));
+		this(row.getString("Name"), row.getString("Importdatum"), row.getString("Speicherort"), row.getInt("fk_ImportMedium"), row.getInt("fk_Container"));
 		this.id = row.getInt("id");
-		String sql = "select * from Mediensammlung where id = " + this.id;
-		this.mediensammlunglist = ActiveRecordManager.getObjectList(sql, Mediensammlung.class);
+		
 	}
 
 	
@@ -115,10 +117,7 @@ public class Item implements ActiveRecord {
 
 	@Override
 	public String toString() {
-		String myStr = "Item-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort + "\n";
-		List<Mediensammlung> lp = ActiveRecordManager.getObjectList("select * from Mediensammlung where fk_Auftrag = " + id, Mediensammlung.class);
-		for (Mediensammlung Sammlung: lp) myStr = myStr + " " + Sammlung.toString() + "\n";
-		return myStr;
+		return "Item-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort;
 	}
 
 	public static List<Item> findAll() {
@@ -137,5 +136,21 @@ public class Item implements ActiveRecord {
 			
 			return res.get(0);
 		}
+	}
+
+	public void setFk_ImportMedium(int fk_ImportMedium) {
+		this.fk_ImportMedium = fk_ImportMedium;
+	}
+
+	public int getFk_ImportMedium() {
+		return fk_ImportMedium;
+	}
+
+	public void setFk_Container(int fk_Container) {
+		this.fk_Container = fk_Container;
+	}
+
+	public int getFk_Container() {
+		return fk_Container;
 	}
 }

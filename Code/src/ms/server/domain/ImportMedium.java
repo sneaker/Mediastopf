@@ -12,28 +12,32 @@ import ms.server.database.*;
 public class ImportMedium implements ActiveRecord {
 
 	
-
+	private String Name;
+	private int fk_Mediensammlung, fk_Einlesegeraet;
 	private int id = NOTINDB;
-	private List<Item> itemlist;
-	
-	
-	
 
-	public ImportMedium() {
-		
-		
+	
+	public ImportMedium(String Name, int fk_Mediensammlung, int fk_Einlesegeraet) {
+		this.setName(Name);
+		this.fk_Mediensammlung = fk_Mediensammlung;
+		this.fk_Einlesegeraet = fk_Einlesegeraet;
 	}
 
 	public ImportMedium(ResultSet row) throws SQLException {
+		this(row.getString("Name"), row.getInt("fk_Mediensammlung"), row.getInt("fk_Einlesegeraet"));
 		this.id = row.getInt("id");
 	}
 
-	
-	
-	
-
 	public int getID() {
 		return id;
+	}
+	
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public String getName() {
+		return Name;
 	}
 
 	/**
@@ -43,10 +47,10 @@ public class ImportMedium implements ActiveRecord {
 		try {
 			if (!isInDB())
 				id = ActiveRecordManager.executeInsert(
-								"insert into ImportMedium () values ()","");
+								"insert into ImportMedium (name, fk_Mediensammlung, fk_Einlesegeraet) values (?,?,?)",Name, Integer.toString(fk_Mediensammlung), Integer.toString(fk_Einlesegeraet));
 			else {
 				ActiveRecordManager.execute(
-						"UPDATE Mediensammlung SET  WHERE id = ?", Integer.toString(id));
+						"UPDATE Mediensammlung SET name = ?, fk_Mediensammlung = ?, fk_Einlesegeraet = ? WHERE id = ?", Name, Integer.toString(fk_Mediensammlung), Integer.toString(fk_Einlesegeraet), Integer.toString(id));
 			}
 			
 		} catch (SQLException e) {
@@ -90,7 +94,7 @@ public class ImportMedium implements ActiveRecord {
 
 	@Override
 	public String toString() {
-		return "ID: " + id;
+		return "ID: " + id + " Name: " + Name + " fk_Mediensammlung: " + fk_Mediensammlung + " fk_Einlesegeraet: " + fk_Einlesegeraet;
 	}
 
 	public static List<ImportMedium> findAll() {
@@ -110,6 +114,24 @@ public class ImportMedium implements ActiveRecord {
 			return res.get(0);
 		}
 	}
+
+	public void setFk_Mediensammlung(int fk_Mediensammlung) {
+		this.fk_Mediensammlung = fk_Mediensammlung;
+	}
+
+	public int getFk_Mediensammlung() {
+		return fk_Mediensammlung;
+	}
+
+	public void setFk_Einlesegeraet(int fk_Einlesegeraet) {
+		this.fk_Einlesegeraet = fk_Einlesegeraet;
+	}
+
+	public int getFk_Einlesegeraet() {
+		return fk_Einlesegeraet;
+	}
+
+	
 
 	
 

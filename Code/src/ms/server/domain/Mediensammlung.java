@@ -14,10 +14,7 @@ public class Mediensammlung implements ActiveRecord {
 	private String name;
 	private int typ, fk_Auftrag;
 	private int id = NOTINDB;
-	private List<ImportMedium> importmediumlist;
-	
-	
-	
+
 
 	public Mediensammlung(String name, int typ, int fk_Auftrag) {
 		this.name = name;
@@ -32,16 +29,28 @@ public class Mediensammlung implements ActiveRecord {
 	}
 
 	
+	public int getTyp() {
+		return typ;
+	}
+
+	public void setTyp(int typ) {
+		this.typ = typ;
+	}
 	
+	public int getFk_Auftrag() {
+		return fk_Auftrag;
+	}
+
+	public void setFk_Auftrag(int fk_Auftrag) {
+		this.fk_Auftrag = fk_Auftrag;
+	}
 	
 
 	public int getID() {
 		return id;
 	}
 
-	/**
-	 * returns false if saving the {@link Mediensammlung} was not successful.
-	 */
+	
 	public boolean save() {
 		try {
 			if (!isInDB())

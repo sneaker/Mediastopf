@@ -11,7 +11,6 @@ public class Auftrag implements ActiveRecord {
 	
 	private int status;
 	private int id = NOTINDB;
-	private List<Mediensammlung> mediensammlunglist;
 	
 	
 	public Auftrag(int status) {
@@ -21,8 +20,6 @@ public class Auftrag implements ActiveRecord {
 	public Auftrag(ResultSet row) throws SQLException {
 		this(row.getInt("status"));
 		this.id = row.getInt("id");
-		String sql = "select * from Mediensammlung where id = " + this.id;
-		this.mediensammlunglist = ActiveRecordManager.getObjectList(sql, Mediensammlung.class);
 	}
 
 	
@@ -98,10 +95,7 @@ public class Auftrag implements ActiveRecord {
 
 	@Override
 	public String toString() {
-		String myStr = "Auftrag-ID: " + id + " Status: " + status + "\n";
-		List<Mediensammlung> lp = ActiveRecordManager.getObjectList("select * from Mediensammlung where fk_Auftrag = " + id, Mediensammlung.class);
-		for (Mediensammlung Sammlung: lp) myStr = myStr + " " + Sammlung.toString() + "\n";
-		return myStr;
+		return "Auftrag-ID: " + id + " Status: " + status;
 	}
 
 	public static List<Auftrag> findAll() {

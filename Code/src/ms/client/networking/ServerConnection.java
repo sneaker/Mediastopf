@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -43,8 +44,8 @@ public class ServerConnection {
 	private void sendMessage(String message, Socket mediastopfSocket)
 			throws IOException {
 		logger.info(message);
-		PrintWriter sender = new PrintWriter(
-				mediastopfSocket.getOutputStream(), true);
+		PrintWriter sender = new PrintWriter(new OutputStreamWriter(
+				mediastopfSocket.getOutputStream()), true);
 		sender.println(message);
 	}
 

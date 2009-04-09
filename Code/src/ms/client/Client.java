@@ -14,7 +14,7 @@ import ms.client.filesys.DirectoryObserver;
 import ms.client.interfaces.ClientHandler;
 import ms.client.log.Log;
 import ms.client.logic.Task;
-import ms.client.networking.NetworkClient;
+import ms.client.networking.ServerConnection;
 import ms.client.ui.MainView;
 
 import org.apache.log4j.Level;
@@ -27,7 +27,7 @@ public class Client implements ClientHandler {
 	private static final int PORT = 1337;
 	
 	private Logger logger = Log.getLogger();
-	private NetworkClient client;
+	private ServerConnection client;
 	
 	
 	public Client() {
@@ -38,7 +38,7 @@ public class Client implements ClientHandler {
 	
 	private void connectToServer() {
 		try {
-			client = new NetworkClient(HOST, PORT);
+			client = new ServerConnection(HOST, PORT);
 		} catch (UnknownHostException e) {
 			logger.fatal("Unknow host");
 			e.printStackTrace();
@@ -75,7 +75,7 @@ public class Client implements ClientHandler {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}	
+		}
 	}
 
 	/**

@@ -33,14 +33,23 @@ public class NetworkServerThread implements Runnable {
 	public void run() {
 		String receivedMessage = null;
 		while (true) {
+		
 			try {
 				receivedMessage = receiveMessage();
 			} catch (IOException e) {
 				logger.error("Cannot read from receiver");
 				e.printStackTrace();
 			}
-			if (receivedMessage.equals("END"))
+			
+			if (receivedMessage.equals("END")) {
+				try {
+					sendMessage("END OK");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return;
+			}
 
 			if (receivedMessage.equals("INFO")) {
 				sendTaskList();

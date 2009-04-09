@@ -89,8 +89,8 @@ public class ServerConnection {
 		sender.flush();
 
 		reply = receiveMessage(mediastopfSocket);
-		sendMessage("ENDTRANSFER", mediastopfSocket);
-		terminateConnection(mediastopfSocket);
+		if (reply.equals("ENDTRANSFER"))
+			terminateConnection(mediastopfSocket);
 	}
 
 	public ArrayList<Task> getTaskList() throws IOException {

@@ -30,9 +30,7 @@ public class NetworkServer implements Runnable {
 	public void run() {
 		ExecutorService exec = null;
 
-		for (int i = 0; i < 5; ++i) {
-			exec = Executors.newFixedThreadPool(THREADCOUNT);
-		}
+		exec = Executors.newFixedThreadPool(THREADCOUNT);
 
 		while (true) {
 			try {

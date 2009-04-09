@@ -68,8 +68,6 @@ public class NetworkServerThread implements Runnable {
 
 					receiveFile(namemsg, size);
 					sendMessage("ENDTRANSFER");
-					receiveMessage();
-
 				} catch (IOException e) {
 					logger.error("cannot write to sender");
 					e.printStackTrace();
@@ -128,14 +126,8 @@ public class NetworkServerThread implements Runnable {
 			logger.error("Error: Cannot get InputStream");
 			e.printStackTrace();
 		}
-		String receivedMessage;
 
-		receivedMessage = receiver.readLine();
-
-		logger.info("SERVER: Client message: ");
-		logger.info(receivedMessage);
-
-		return receivedMessage;
+		return receiver.readLine();
 	}
 
 	private void sendMessage(String reply) throws IOException {

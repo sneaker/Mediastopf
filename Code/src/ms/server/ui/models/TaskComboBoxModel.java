@@ -19,7 +19,7 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	 */
 	private static final long serialVersionUID = 1L;
 	private TaskList list;
-	private int taskID;
+	private int taskID = -1;
 	
 	public TaskComboBoxModel(Server server) {
 		this.list = new TaskList(server);

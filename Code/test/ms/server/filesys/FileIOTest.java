@@ -17,7 +17,7 @@ public class FileIOTest {
 	@Before
 	public void setUp() throws Exception {
 		makeDirs();
-		generateRandomFiles();
+		generateFiles();
 	}
 
 	@After
@@ -44,7 +44,7 @@ public class FileIOTest {
 		}
 	}
 	
-	private void generateRandomFiles() {
+	private void generateFiles() {
 		for(int i=0; i < 10; i++) {
 			File f = new File(src + File.separator + "testfile" + (int)(Math.random()*10000));
 			try {

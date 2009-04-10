@@ -22,7 +22,8 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.server.ui.MainViewServer;
+import ms.server.ui.utils.Constants;
+import ms.server.ui.utils.I18NManager;
 import ms.server.utils.BrowserControl;
 
 
@@ -30,10 +31,8 @@ public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
-	private static final String URL = "www.no-more-secrets.ch";
-	private static final String URLEXT = "powered by No More Secrets";
-	private static final String BACKGROUNDIMAGE = MainViewServer.UIIMAGELOCATION + "about.jpg";
-	private final String website = "Website", close = "Close";
+	private I18NManager manager = I18NManager.getManager();
+	private final String website = manager.getString("About.website"), close = manager.getString("close");
 	
 	public AboutDialog() {
 		initGUI();
@@ -52,14 +51,14 @@ public class AboutDialog extends JDialog {
 	}
 
 	private void initDialog() {
-		setTitle(MainViewServer.PROGRAM + " - About...");
+		setTitle(Constants.PROGRAM + " - " + manager.getString("About.title"));
 		setSize(400, 250);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
 		setLayout(null);
 		setResizable(false);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
@@ -86,7 +85,7 @@ public class AboutDialog extends JDialog {
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == website) {
-						BrowserControl.displayURL(URL);
+						BrowserControl.displayURL(Constants.URL);
 					} else if (e.getActionCommand() == close) {
 						close();
 					}
@@ -104,7 +103,7 @@ public class AboutDialog extends JDialog {
 			private static final long serialVersionUID = 1L;
 			
 			public void paintComponent(Graphics g) {
-				ImageIcon img = new ImageIcon(getClass().getResource(BACKGROUNDIMAGE));
+				ImageIcon img = new ImageIcon(getClass().getResource(Constants.ABOUT));
 				g.drawImage(img.getImage(), 0, -30, null);
 			}
 		};
@@ -118,12 +117,12 @@ public class AboutDialog extends JDialog {
 	 * add url textfield
 	 */
 	private void addURL() {
-		JTextField textField = new JTextField(URL);
+		JTextField textField = new JTextField(Constants.URL);
 		textField.setHorizontalAlignment(JTextField.CENTER);
 		textField.setBounds(new Rectangle(10, 190, 155, 20));
 		textField.setEditable(false);
 		textField.setOpaque(false);
-		textField.setToolTipText(URLEXT);
+		textField.setToolTipText(Constants.URLEXT);
 		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		add(textField);
 	}
@@ -136,7 +135,7 @@ public class AboutDialog extends JDialog {
 	 */
 	private JPopupMenu addPopUpMenu(final JTextField textField) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		JMenuItem copyMenuItem = new JMenuItem("Copy");
+		JMenuItem copyMenuItem = new JMenuItem(manager.getString("copy"));
 		copyMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textField.copy();

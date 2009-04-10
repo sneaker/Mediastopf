@@ -31,6 +31,8 @@ import javax.swing.filechooser.FileFilter;
 import ms.client.ui.MainView;
 import ms.server.filesys.FileIO;
 import ms.server.log.Log;
+import ms.server.ui.utils.Constants;
+import ms.server.ui.utils.I18NManager;
 
 
 public class LogFrame extends JFrame implements Runnable {
@@ -40,11 +42,12 @@ public class LogFrame extends JFrame implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private I18NManager manager = I18NManager.getManager();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
-	private final String save = "Save", close = "Close";
+	private final String save = manager.getString("save"), close = manager.getString("close");
 	private boolean suspendThread = false;
 
 	public LogFrame() {
@@ -62,12 +65,12 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void initFrame() {
-		setTitle(MainViewServer.PROGRAM + " - Log");
+		setTitle(Constants.PROGRAM + " - " + manager.getString("Log.title"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(500, 430);
 		setMinimumSize(new Dimension(getWidth(), getHeight()));
 		setLayout(null);
-		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		
@@ -123,7 +126,7 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void addRefreshBox() {
-		box = new JCheckBox("Auto Refresh");
+		box = new JCheckBox(manager.getString("Log.autorefresh"));
 		box.setSelected(true);
 		box.setBounds(10, 370, 150, 20);
 		box.addActionListener(new ActionListener() {
@@ -156,14 +159,14 @@ public class LogFrame extends JFrame implements Runnable {
 	 * add buttons
 	 */
 	private void addButtons() {
-		int x = 250;
+		int x = 240;
 		int y = 365;
-		int width = 100;
+		int width = 115;
 		int height = 25;
 		final String[] buttonText = { save, close };
-		final String[] icons = { "save.png", "cancel.png" };
+		final String[] icons = { Constants.SAVE, Constants.CANCEL };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
+		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
 		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
@@ -221,9 +224,8 @@ public class LogFrame extends JFrame implements Runnable {
 				if (f.exists() && getDialogType() == SAVE_DIALOG) {
 					int result = JOptionPane.showConfirmDialog(
 							getTopLevelAncestor(),
-							"The selected file already exists. "
-									+ "Do you want to overwrite it?",
-							"The file already exists",
+							manager.getString("fileoverwritemessage"),
+							manager.getString("fileoverwritetitle"),
 							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					switch (result) {
@@ -285,7 +287,7 @@ public class LogFrame extends JFrame implements Runnable {
 	 */
 	private JPopupMenu getPopUpMenu(final JTextArea textArea) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		final String copy = "Copy", selectall = "Select All";
+		final String copy = manager.getString("copy"), selectall = manager.getString("selectall");
 		final String[] menuItems = { copy, selectall };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenuItem copyMenuItem = new JMenuItem(menuItems[i]);

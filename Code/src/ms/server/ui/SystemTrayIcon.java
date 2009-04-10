@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 
+import ms.server.ui.utils.Constants;
+
 
 public class SystemTrayIcon {
 	
@@ -31,7 +33,7 @@ public class SystemTrayIcon {
 	}
 
 	private TrayIcon getIcon(SystemTray tray) {
-		Image image = new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "icon.png")).getImage();
+		Image image = new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage();
 		TrayIcon trayIcon = new TrayIcon(image, "MediaStopf Server", addPopUpMenu(tray));
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {

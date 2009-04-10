@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -27,22 +29,22 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.server.filesys.FileIO;
-import ms.server.ui.MainViewServer;
+import ms.server.ui.utils.ConfigHandler;
 import ms.server.ui.utils.Constants;
-import ms.server.utils.PropertiesHandler;
+import ms.server.ui.utils.I18NManager;
 
 
-public class ExportDialog extends JDialog {
+public class ExportDialog extends JDialog implements Observer {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private PropertiesHandler config = new PropertiesHandler(Constants.CONFIGFILE);
-	private PropertiesHandler lang = new PropertiesHandler(Constants.LANGUAGE_EN);
-	private final String exportFolder = lang.getProperty("Exporter.exportfolder");
-	private final String export = lang.getProperty("Exporter.export"), close = lang.getProperty("Exporter.close");
+	private ConfigHandler config = ConfigHandler.getHandler();
+	private I18NManager manager = I18NManager.getManager();
+	private final String exportFolder = manager.getString("Exporter.exportstorage");
+	private final String export = manager.getString("export"), close = manager.getString("close");
 	private JTextField exportTextField;
 	private int taskID;
 
@@ -56,14 +58,14 @@ public class ExportDialog extends JDialog {
 	 * init GUI
 	 */
 	private void initGUI() {
-		setTitle(MainViewServer.PROGRAM + " - " + export);
+		setTitle(Constants.PROGRAM + " - " + export);
 		setSize(400, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setLayout(null);
 		setResizable(false);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + Constants.ICON)).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		addESCListener();
@@ -96,16 +98,16 @@ public class ExportDialog extends JDialog {
 	
 	private JButton createOpenButton(Rectangle rec) {
 		JButton button = new JButton();
-		button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + Constants.OPEN)));
+		button.setIcon(new ImageIcon(getClass().getResource(Constants.OPEN)));
 		button.setBounds(rec);
-		button.setToolTipText("Choose Directory");
+		button.setToolTipText(manager.getString("choosedir"));
 		add(button);
 		return button;
 	}
 
 	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icon)));
 		label.setBounds(rec);
 		add(label);
 	}
@@ -140,12 +142,12 @@ public class ExportDialog extends JDialog {
 	 * add buttons
 	 */
 	private void addButtons() {
-		final int x = 150;
+		final int x = 135;
 		final int y = 90;
-		final int width = 100;
+		final int width = 115;
 		final int height = 25;
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
+		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
 		final String[] buttonText = { export, close };
 		final String[] icons = { Constants.TICK, Constants.CANCEL };
@@ -156,7 +158,7 @@ public class ExportDialog extends JDialog {
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -178,7 +180,7 @@ public class ExportDialog extends JDialog {
 		File file = new File(Integer.toString(taskID));
 		boolean done = FileIO.transfer(file.listFiles(), new File(exportFolder));
 		if(done) {
-			MessageDialog.info("Export done", "Exported Files to " + exportFolder);
+			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
 		}
 	}
 	
@@ -236,8 +238,8 @@ public class ExportDialog extends JDialog {
 	 */
 	private JPopupMenu addPopUpMenu(final JTextField textField) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		final String clear = lang.getProperty("clear"), cut = lang.getProperty("cut"),
-				copy = lang.getProperty("copy"), paste = lang.getProperty("paste"), selectAll = lang.getProperty("selectall"); 
+		final String clear = manager.getString("clear"), cut = manager.getString("cut"),
+				copy = manager.getString("copy"), paste = manager.getString("paste"), selectAll = manager.getString("selectall"); 
 		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenuItem menuItem = new JMenuItem(menuItems[i]);
@@ -281,5 +283,10 @@ public class ExportDialog extends JDialog {
 	private void close() {
 		setVisible(false);
 		dispose();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		
 	}
 }

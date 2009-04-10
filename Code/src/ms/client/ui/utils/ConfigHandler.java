@@ -1,4 +1,4 @@
-package ms.server.utils;
+package ms.client.ui.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,17 +7,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-public class PropertiesHandler extends Properties {
+
+public class ConfigHandler extends Properties {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String filename;
+	static ConfigHandler handler = new ConfigHandler();
 	
-	public PropertiesHandler(String filename) {
-		this.filename = filename;
+	private String filename = Constants.CONFIGFILE;
+	
+	private ConfigHandler() {
 		load();
 	}
 	
@@ -45,5 +47,9 @@ public class PropertiesHandler extends Properties {
 		} catch (IOException e) {
 			System.out.println(e);
 		}
+	}
+	
+	public static ConfigHandler getHandler() {
+		return handler;
 	}
 }

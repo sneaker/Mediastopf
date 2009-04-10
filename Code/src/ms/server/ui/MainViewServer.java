@@ -39,6 +39,8 @@ import ms.server.ui.dialogs.MessageDialog;
 import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.Table;
+import ms.server.ui.utils.Constants;
+import ms.server.ui.utils.I18NManager;
 
 
 public class MainViewServer extends JFrame {
@@ -47,10 +49,7 @@ public class MainViewServer extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static final String PROGRAM = "MediaStopf Server";
-	public static final String UIIMAGELOCATION = "/ms/server/ui/images/";
-	private static final String SPLASHIMAGE = UIIMAGELOCATION + "splash.jpg";
-
+	private I18NManager manager = I18NManager.getManager();
 	private TaskComboBoxModel boxModel;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
@@ -59,13 +58,15 @@ public class MainViewServer extends JFrame {
 	private JTabbedPane tabPane;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
-	private String export = "Export", cancel = "Cancel", runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
+	private String export = manager.getString("export"), cancel = manager.getString("cancel"),
+	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"),
+	statusbar = manager.getString("Main.statusbar");
 	
 	public MainViewServer(Server server) {
 		if (StartServer.DEBUG) {
-			setTitle(MainViewServer.PROGRAM + " - Debug");
+			setTitle(Constants.PROGRAM + " - Debug");
 		} else {
-			new SplashScreen(SPLASHIMAGE);
+			new SplashScreen(Constants.SPLASH);
 		}
 		boxModel = new TaskComboBoxModel(server);
 
@@ -84,12 +85,12 @@ public class MainViewServer extends JFrame {
 	}
 
 	private void initFrame() {
-		setTitle(PROGRAM);
+		setTitle(Constants.PROGRAM);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLayout(null);
 		setMinimumSize(new Dimension(400, 450));
 		setSize(400, 450);
-		setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
@@ -162,10 +163,9 @@ public class MainViewServer extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBounds(0, 380, 450, 20);
-		panel.setBorder(BorderFactory.createTitledBorder(statusbar));
 		panelMap.put(statusbar, panel);
 		
-		statusBar = new JTextField("(C)2009 MediaStopf Server");
+		statusBar = new JTextField(manager.getString("Main.copyright"));
 		statusBar.setBounds(0, 0, panel.getWidth(), panel.getHeight());
 		statusBar.setEditable(false);
 		statusBar.setFocusable(false);
@@ -223,19 +223,19 @@ public class MainViewServer extends JFrame {
 	 * @return JButton
 	 */
 	private void addButtons() {
-		final int x = 260;
+		final int x = 245;
 		final int[] y = { 50, 230 };
-		final int width = 100;
+		final int width = 115;
 		final int height = 25;
 		final String[] label = { export, cancel };
-		final String[] icons = { "exportsmall.png", "cancel.png" };
+		final String[] icons = { Constants.EXPORT_S, Constants.CANCEL };
 		final int[] events = { KeyEvent.VK_E, KeyEvent.VK_C };
 		for(int i=0;i<label.length;i++) {
 			JButton button = new JButton();
 			button.setBounds(x, y[i], width, height);
 			button.setText(label[i]);
 			button.setMnemonic(events[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -256,7 +256,7 @@ public class MainViewServer extends JFrame {
 		int taskID = (Integer)taskComboBox.getSelectedItem();
 		File file = new File(Integer.toString(taskID));
 		if(!file.isDirectory()) {
-			MessageDialog.info("Not found", "No directory of " + taskID + " found");
+			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
 			return;
 		}
 		ExportDialog ed = new ExportDialog(taskID);
@@ -277,8 +277,8 @@ public class MainViewServer extends JFrame {
 		
 		tabPane = new JTabbedPane();
 		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight());
-		tabPane.addTab("Import", new JScrollPane(new Table()));
-		tabPane.addTab("Export", new JScrollPane(exportTable));
+		tabPane.addTab(manager.getString("Main.import"), new JScrollPane(new Table()));
+		tabPane.addTab(manager.getString("Main.export"), new JScrollPane(exportTable));
 		tabPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -293,7 +293,7 @@ public class MainViewServer extends JFrame {
 	}
 
 	void exit() {
-		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
+		int result = MessageDialog.yesNoDialog(manager.getString("Main.exittitle"), manager.getString("Main.exitmessage"));
 		switch(result) {
 		case JOptionPane.YES_OPTION:
 			System.exit(0);
@@ -311,7 +311,7 @@ public class MainViewServer extends JFrame {
 	 */
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		final String file = "File", help = "Help";
+		final String file = manager.getString("Main.filemenu"), help = manager.getString("Main.helpmenu");
 		final String[] menuItems = { file, help };
 		final int fileMnemonic = KeyEvent.VK_F, helpMnemonic = KeyEvent.VK_H;
 		final int[] keyEvent = new int[] { fileMnemonic, helpMnemonic };
@@ -334,7 +334,7 @@ public class MainViewServer extends JFrame {
 	 * @param helpMenu
 	 */
 	private void addHelpItems(JMenu helpMenu) {
-		JMenuItem aboutItem = new JMenuItem("About...");
+		JMenuItem aboutItem = new JMenuItem(manager.getString("Main.aboutitem"));
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -352,7 +352,7 @@ public class MainViewServer extends JFrame {
 	 *            JMenu
 	 */
 	private void addFileItems(JMenu fileMenu) {
-		final String log = "Log", exit = "Exit";
+		final String log = manager.getString("Main.logitem"), exit = manager.getString("Main.exititem");
 		final String[] fileTitles = { log, exit };
 		final KeyStroke configAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK);
 		final KeyStroke exitAccelerator = null;

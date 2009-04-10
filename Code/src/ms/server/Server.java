@@ -1,14 +1,12 @@
 package ms.server;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import ms.server.database.ActiveRecordManager;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
@@ -28,7 +26,6 @@ public class Server implements ServerHandler {
 		initLog();
 		startServer(port);
 		loadUI();
-//		loadData();
 	}
 
 	private void startServer(int port) {
@@ -39,17 +36,6 @@ public class Server implements ServerHandler {
 		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
 	}
 
-	private void loadData() {
-		// Get data from DB direct via domain object and activerecord
-		String sql = "select * from Auftrag";
-		List<Auftrag> lp = ActiveRecordManager.getObjectList(sql, Auftrag.class);
-		for (Auftrag name: lp) System.out.println(name.toString());
-
-		// Get data from DB via adapter class
-		lp = DbAdapter.getOrderList();
-		for (Auftrag name: lp) System.out.println(name.toString());
-	}
-	
 	public ArrayList<Auftrag> getDataBase() {
 		return DbAdapter.getOrderList();
 	}

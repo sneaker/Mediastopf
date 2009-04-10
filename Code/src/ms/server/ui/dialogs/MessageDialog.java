@@ -2,7 +2,7 @@ package ms.server.ui.dialogs;
 
 import javax.swing.JOptionPane;
 
-import ms.server.ui.utils.I18NManager;
+import ms.server.utils.I18NManager;
 
 public class MessageDialog {
 	

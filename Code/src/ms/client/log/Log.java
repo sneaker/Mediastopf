@@ -3,6 +3,8 @@ package ms.client.log;
 import java.io.File;
 import java.io.IOException;
 
+import ms.client.utils.Constants;
+
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
@@ -11,10 +13,12 @@ import org.apache.log4j.PatternLayout;
 
 public class Log {
 	
-	private static final String LOGFILE = "MediaStopf.log";
 	private static Logger logger = Logger.getRootLogger();
-
-	public Log() {
+	static {
+		new Log();
+	}
+	private Log() {
+		logger.setLevel(Level.ALL);
 		String pattern = "%d{ISO8601}: %m %n";
 		PatternLayout layout = new PatternLayout(pattern);
 		ConsoleLogger(layout);
@@ -30,7 +34,7 @@ public class Log {
 		createFile();
 		FileAppender fileAppender = null;
 		try {
-			fileAppender = new FileAppender(layout, LOGFILE, false);
+			fileAppender = new FileAppender(layout, Constants.LOGFILE, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,7 +42,7 @@ public class Log {
 	}
 
 	private void createFile() {
-		File f = new File(LOGFILE);
+		File f = new File(Constants.LOGFILE);
 		if(!f.exists()) {
 			try {
 				f.createNewFile();
@@ -49,30 +53,11 @@ public class Log {
 	}
 	
 	/**
-	 * Set Log Level:
-	 * ALL | DEBUG | INFO | WARN | ERROR | FATAL | OFF:
-	 * 
-	 * @param level
-	 */
-	public void setLevel(Level level) {
-		logger.setLevel(level);
-	}
-	
-	/**
 	 * get logger
 	 * 
 	 * @return Logger
 	 */
 	public static Logger getLogger() {
 		return logger;
-	}
-	
-	/**
-	 * get log filename
-	 * 
-	 * @return String
-	 */
-	public static String getLog() {
-		return LOGFILE;
 	}
 }

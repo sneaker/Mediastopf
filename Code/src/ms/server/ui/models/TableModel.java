@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import ms.server.domain.Auftrag;
 import ms.server.logic.RunningList;
-import ms.server.ui.utils.I18NManager;
+import ms.server.utils.I18NManager;
 
 
 public class TableModel extends AbstractTableModel implements Observer {

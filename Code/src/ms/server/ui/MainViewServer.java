@@ -39,8 +39,8 @@ import ms.server.ui.dialogs.MessageDialog;
 import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.Table;
-import ms.server.ui.utils.Constants;
-import ms.server.ui.utils.I18NManager;
+import ms.server.utils.Constants;
+import ms.server.utils.I18NManager;
 
 
 public class MainViewServer extends JFrame {
@@ -58,7 +58,7 @@ public class MainViewServer extends JFrame {
 	private JTabbedPane tabPane;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
-	private String export = manager.getString("export"), cancel = manager.getString("cancel"),
+	private final String export = manager.getString("export"), cancel = manager.getString("cancel"),
 	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"),
 	statusbar = manager.getString("Main.statusbar");
 	
@@ -88,8 +88,8 @@ public class MainViewServer extends JFrame {
 		setTitle(Constants.PROGRAM);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLayout(null);
-		setMinimumSize(new Dimension(400, 450));
-		setSize(400, 450);
+		setMinimumSize(new Dimension(600, 550));
+		setSize(600, 550);
 		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
@@ -111,14 +111,12 @@ public class MainViewServer extends JFrame {
 	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
-
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
 					updatePanelBounds();
 				}
 			}
-
 			@Override
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
@@ -148,9 +146,9 @@ public class MainViewServer extends JFrame {
 		buttonMap.get(cancel).setLocation(width - 125, height);
 		tablePanel.setSize(width, height - 30);
 		
-		taskComboBox.setSize(task.getWidth() - 30, 20);
+		taskComboBox.setSize(task.getWidth() - 20, 20);
 
-		tabPane.setSize(tablePanel.getWidth(), tablePanel.getHeight());
+		tabPane.setSize(tablePanel.getWidth(), tablePanel.getHeight()-5);
 		
 		statusBar.setSize(status.getWidth(), status.getHeight());
 	}
@@ -162,7 +160,7 @@ public class MainViewServer extends JFrame {
 	private void addStatusBar() {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 380, 450, 20);
+		panel.setBounds(0, getHeight() - 70, getWidth() + 50, 20);
 		panelMap.put(statusbar, panel);
 		
 		statusBar = new JTextField(manager.getString("Main.copyright"));
@@ -183,13 +181,13 @@ public class MainViewServer extends JFrame {
 		addTaskTable();
 		
 		final int[] y = { 5, 100 };
-		final int[] height = { 90, 270 };
+		final int[] height = { 90, getHeight() - 180 };
 		final String[] panelLabel = { tasks, runningTask };
 		final String[] buttonLabel = { export, cancel };
 		for(int i=0; i<panelLabel.length;i++) {
 			JPanel panel = new JPanel();
 			panel.setLayout(null);
-			panel.setBounds(0, y[i], 395, height[i]);
+			panel.setBounds(0, y[i], getWidth() - 5, height[i]);
 			panel.setBorder(BorderFactory.createTitledBorder(panelLabel[i]));
 			panel.add(buttonMap.get(buttonLabel[i]));
 			add(panel);
@@ -206,7 +204,7 @@ public class MainViewServer extends JFrame {
 	 */
 	private void addTaskComboBox() {
 		taskComboBox = new JComboBox(boxModel);
-		taskComboBox.setBounds(10, 20, 365, 20);
+		taskComboBox.setBounds(10, 20, getWidth() - 25, 20);
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new MetalComboBoxUI() {
@@ -223,13 +221,13 @@ public class MainViewServer extends JFrame {
 	 * @return JButton
 	 */
 	private void addButtons() {
-		final int x = 245;
-		final int[] y = { 50, 230 };
+		final int x = getWidth() - 140;
+		final int[] y = { 50, getHeight() - 220 };
 		final int width = 115;
 		final int height = 25;
 		final String[] label = { export, cancel };
 		final String[] icons = { Constants.EXPORT_S, Constants.CANCEL };
-		final int[] events = { KeyEvent.VK_E, KeyEvent.VK_C };
+		final int[] events = { manager.getMnemonic("export"), manager.getMnemonic("cancel") };
 		for(int i=0;i<label.length;i++) {
 			JButton button = new JButton();
 			button.setBounds(x, y[i], width, height);
@@ -270,13 +268,13 @@ public class MainViewServer extends JFrame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, 385, 200);
+		tablePanel.setBounds(5, 15, getWidth() - 15, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
 		exportTable = new ExportTable();
 		
 		tabPane = new JTabbedPane();
-		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight());
+		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight()-5);
 		tabPane.addTab(manager.getString("Main.import"), new JScrollPane(new Table()));
 		tabPane.addTab(manager.getString("Main.export"), new JScrollPane(exportTable));
 		tabPane.addMouseListener(new MouseAdapter() {
@@ -313,7 +311,7 @@ public class MainViewServer extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		final String file = manager.getString("Main.filemenu"), help = manager.getString("Main.helpmenu");
 		final String[] menuItems = { file, help };
-		final int fileMnemonic = KeyEvent.VK_F, helpMnemonic = KeyEvent.VK_H;
+		final int fileMnemonic = manager.getMnemonic("Main.filemenu"), helpMnemonic = manager.getMnemonic("Main.helpmenu");
 		final int[] keyEvent = new int[] { fileMnemonic, helpMnemonic };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenu menu = new JMenu(menuItems[i]);
@@ -352,11 +350,11 @@ public class MainViewServer extends JFrame {
 	 *            JMenu
 	 */
 	private void addFileItems(JMenu fileMenu) {
-		final String log = manager.getString("Main.logitem"), exit = manager.getString("Main.exititem");
+		final String log = manager.getString("Main.logitem"), exit = manager.getString("exit");
 		final String[] fileTitles = { log, exit };
-		final KeyStroke configAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK);
+		final KeyStroke logAccelerator = KeyStroke.getKeyStroke(manager.getMnemonic("Main.logitem"), KeyEvent.CTRL_DOWN_MASK);
 		final KeyStroke exitAccelerator = null;
-		final KeyStroke[] keyStrokes = { configAccelerator, exitAccelerator };
+		final KeyStroke[] keyStrokes = { logAccelerator, exitAccelerator };
 		for (int i = 0; i < fileTitles.length; i++) {
 			if(i == 1) {
 				fileMenu.addSeparator();

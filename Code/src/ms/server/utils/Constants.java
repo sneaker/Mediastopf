@@ -1,4 +1,4 @@
-package ms.server.ui.utils;
+package ms.server.utils;
 
 
 public class Constants {
@@ -11,6 +11,7 @@ public class Constants {
 	private static final String UILANGUAGE = "ms/server/ui/lang/";
 	
 	public static final String CONFIGFILE = "MediaStopfServer.cfg";
+	public static final String LOGFILE = "MediaStopfServer.log";
 	public static final String LANGUAGE = UILANGUAGE + "mediastopfserver";
 	
 	public static final String ICON = "icon.png";

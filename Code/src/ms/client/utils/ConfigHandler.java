@@ -1,4 +1,4 @@
-package ms.client.ui.utils;
+package ms.client.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
+
+import ms.server.utils.Constants;
 
 
 public class ConfigHandler extends Properties {

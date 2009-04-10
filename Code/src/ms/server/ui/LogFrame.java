@@ -30,9 +30,8 @@ import javax.swing.filechooser.FileFilter;
 
 import ms.client.ui.MainView;
 import ms.server.filesys.FileIO;
-import ms.server.log.Log;
-import ms.server.ui.utils.Constants;
-import ms.server.ui.utils.I18NManager;
+import ms.server.utils.Constants;
+import ms.server.utils.I18NManager;
 
 
 public class LogFrame extends JFrame implements Runnable {
@@ -168,8 +167,8 @@ public class LogFrame extends JFrame implements Runnable {
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
-		final int[] mnemonic = { okMnemonic, cancelMnemonic };
+		final int saveMnemonic = manager.getMnemonic("save"), cancelMnemonic = manager.getMnemonic("cancel");
+		final int[] mnemonic = { saveMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
@@ -309,7 +308,7 @@ public class LogFrame extends JFrame implements Runnable {
 		while(true) {
 			try {
 				readLogContent();
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 				synchronized (this) {
 					while (suspendThread) {
 						wait();
@@ -321,7 +320,7 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void readLogContent() {
-		String logContent = FileIO.read(Log.getServerLog());
+		String logContent = FileIO.read(Constants.LOGFILE);
 		textArea.setText(logContent);
 	}
 }

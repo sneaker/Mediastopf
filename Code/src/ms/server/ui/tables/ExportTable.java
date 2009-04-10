@@ -9,8 +9,8 @@ import javax.swing.JPopupMenu;
 
 import ms.server.ui.dialogs.MessageDialog;
 import ms.server.ui.models.TableModel;
-import ms.server.ui.utils.Constants;
-import ms.server.ui.utils.I18NManager;
+import ms.server.utils.Constants;
+import ms.server.utils.I18NManager;
 
 
 public class ExportTable extends Table {

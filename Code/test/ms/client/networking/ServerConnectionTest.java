@@ -11,12 +11,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ms.client.Client;
-import ms.client.networking.ServerConnection;
 import ms.server.Server;
 import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -76,8 +74,6 @@ public class ServerConnectionTest {
 	}
 
 	private void loadLog() {
-		Log log = new Log();
-		log.setLevel(Level.ALL);
 		Logger logger = Log.getLogger();
 		logger.info("Starting network server...");
 	}

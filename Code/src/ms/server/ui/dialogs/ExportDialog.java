@@ -29,9 +29,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.server.filesys.FileIO;
-import ms.server.ui.utils.ConfigHandler;
-import ms.server.ui.utils.Constants;
-import ms.server.ui.utils.I18NManager;
+import ms.server.utils.ConfigHandler;
+import ms.server.utils.Constants;
+import ms.server.utils.I18NManager;
 
 
 public class ExportDialog extends JDialog implements Observer {
@@ -45,6 +45,7 @@ public class ExportDialog extends JDialog implements Observer {
 	private I18NManager manager = I18NManager.getManager();
 	private final String exportFolder = manager.getString("Exporter.exportstorage");
 	private final String export = manager.getString("export"), close = manager.getString("close");
+	private final String exportcfg = "exportfolder";
 	private JTextField exportTextField;
 	private int taskID;
 
@@ -151,8 +152,8 @@ public class ExportDialog extends JDialog implements Observer {
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
 		final String[] buttonText = { export, close };
 		final String[] icons = { Constants.TICK, Constants.CANCEL };
-		final int okMnemonic = KeyEvent.VK_E, cancelMnemonic = KeyEvent.VK_C;
-		final int[] mnemonic = { okMnemonic, cancelMnemonic };
+		final int exportMnemonic = manager.getMnemonic("export"), cancelMnemonic = manager.getMnemonic("close");
+		final int[] mnemonic = { exportMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
@@ -202,15 +203,15 @@ public class ExportDialog extends JDialog implements Observer {
 
 	private void saveValues() {
 		if(!exportTextField.getText().isEmpty())
-			config.setProperty(exportFolder, exportTextField.getText().trim());
+			config.setProperty(exportcfg, exportTextField.getText().trim());
 	}
 	
 	/**
 	 * load properties.
 	 */
 	void loadProperties() {
-		if(config.containsKey(exportFolder))
-			exportTextField.setText(config.getProperty(exportFolder));
+		if(config.containsKey(exportcfg))
+			exportTextField.setText(config.getProperty(exportcfg));
 	}
 	
 	private void openExportFileChooser() {

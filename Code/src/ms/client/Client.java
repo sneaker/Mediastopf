@@ -17,7 +17,6 @@ import ms.client.logic.Task;
 import ms.client.networking.ServerConnection;
 import ms.client.ui.MainView;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 
@@ -31,7 +30,6 @@ public class Client implements ClientHandler {
 	
 	
 	public Client() {
-		initLog();
 		loadUI();
 		connectToServer();
 	}
@@ -129,11 +127,6 @@ public class Client implements ClientHandler {
 				mediastopf.setVisible(true);
 			}
 		});
-	}
-
-	private void initLog() {
-		Log log = new Log();
-		log.setLevel(Level.ALL);
 	}
 
 	private void setLookAndFeel() {

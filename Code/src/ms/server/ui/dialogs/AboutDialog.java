@@ -22,9 +22,9 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.server.ui.utils.Constants;
-import ms.server.ui.utils.I18NManager;
 import ms.server.utils.BrowserControl;
+import ms.server.utils.Constants;
+import ms.server.utils.I18NManager;
 
 
 public class AboutDialog extends JDialog {
@@ -32,7 +32,6 @@ public class AboutDialog extends JDialog {
 	private static final long serialVersionUID = 9535632795379520L;
 	
 	private I18NManager manager = I18NManager.getManager();
-	private final String website = manager.getString("About.website"), close = manager.getString("close");
 	
 	public AboutDialog() {
 		initGUI();
@@ -74,8 +73,9 @@ public class AboutDialog extends JDialog {
 		final Rectangle websiteBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 105, y, width, height);
 		final Rectangle[] bounds = { websiteBounds, cancelBounds };
+		final String website = manager.getString("About.website"), close = manager.getString("close");
 		final String[] buttonText = { website, close };
-		final int websiteMnemonic = KeyEvent.VK_W, cancelMnemonic = KeyEvent.VK_C;
+		final char websiteMnemonic = manager.getMnemonic("About.website"), cancelMnemonic = manager.getMnemonic("close");
 		final int[] mnemonic = { websiteMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();

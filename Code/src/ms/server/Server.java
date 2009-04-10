@@ -14,7 +14,6 @@ import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 import ms.server.ui.MainViewServer;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 
@@ -23,7 +22,6 @@ public class Server implements ServerHandler {
 	public static final int MAX_SERVER_THREADS = 10;
 
 	public Server(int port) {
-		initLog();
 		startServer(port);
 		loadUI();
 	}
@@ -56,11 +54,6 @@ public class Server implements ServerHandler {
 		//TODO
 	}
 	
-	private void initLog() {
-		Log log = new Log();
-		log.setLevel(Level.ALL);
-	}
-
 	private void serverStartInfo() {
 		// TODO: ANPASSEN!
 		Logger logger = Log.getLogger();

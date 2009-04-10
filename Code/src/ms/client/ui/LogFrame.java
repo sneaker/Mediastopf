@@ -29,7 +29,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
 import ms.client.filesys.FileIO;
-import ms.client.log.Log;
+import ms.client.utils.Constants;
 
 
 public class LogFrame extends JFrame implements Runnable {
@@ -318,7 +318,7 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void readLogContent() {
-		String logContent = FileIO.read(Log.getLog());
+		String logContent = FileIO.read(Constants.LOGFILE);
 		textArea.setText(logContent);
 	}
 }

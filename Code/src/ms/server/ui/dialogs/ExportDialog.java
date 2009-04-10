@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import ms.server.filesys.FileIO;
 import ms.server.ui.MainViewServer;
 import ms.server.ui.utils.Constants;
-import ms.server.ui.utils.PropertiesHandler;
+import ms.server.utils.PropertiesHandler;
 
 
 public class ExportDialog extends JDialog {
@@ -207,10 +207,6 @@ public class ExportDialog extends JDialog {
 	 * load properties.
 	 */
 	void loadProperties() {
-		loadValues();
-	}
-
-	private void loadValues() {
 		if(config.containsKey(exportFolder))
 			exportTextField.setText(config.getProperty(exportFolder));
 	}

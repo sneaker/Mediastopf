@@ -47,6 +47,7 @@ public class MainView extends JFrame {
 	public static final String UIIMAGELOCATION = "/ms/client/ui/images/";
 	private static final String SPLASHIMAGE = UIIMAGELOCATION + "splash.jpg";
 
+	private TaskList taskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -191,7 +192,7 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		TaskList taskList = new TaskList(client);
+		taskList = new TaskList(client);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, 365, 20);
 		if (0 < taskComboBox.getItemCount())
@@ -229,8 +230,7 @@ public class MainView extends JFrame {
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
-						// TODO
-						MessageDialog.info("", "Not implemented yet");
+						taskList.updateList();
 					} else if (e.getActionCommand() == run) {
 						runSelectedItem();
 					}
@@ -250,8 +250,7 @@ public class MainView extends JFrame {
 			return;
 		}
 
-//		client.observeDir(taskID);
-		client.sendFiles(taskID);
+		client.observeDir(taskID);
 
 		// TODO
 		// ApplicationLauncher.open(program);

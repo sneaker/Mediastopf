@@ -1,17 +1,18 @@
-package ms.client;
+package ms.client.networking;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ms.client.Client;
 import ms.client.networking.ServerConnection;
+import ms.server.Server;
 import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 
@@ -21,11 +22,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ClientTest {
+public class ServerConnectionTest {
 	
-	private static final String HOST = "localhost";
-	private static final int PORT = 1337;
-	private static final int MAX_SERVER_THREADS = 10;
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + "msclienttest" + File.separator;
 	private File folder;
 	private ServerConnection connection;
@@ -33,7 +31,7 @@ public class ClientTest {
 	@Before
 	public void setUp() throws Exception {
 		startServer();
-		connection = new ServerConnection(HOST, PORT);
+		connection = new ServerConnection(Client.HOST, Client.PORT);
 		
 		makeDirs();
 		generateFiles();
@@ -45,7 +43,7 @@ public class ClientTest {
 	}
 
 	@Test
-	public void testSendFiles() {
+	public void testSendFile() {
 		String[] fileList = folder.list();
 		for(String f: fileList) {
 			try {
@@ -74,7 +72,7 @@ public class ClientTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new NetworkServer(PORT, MAX_SERVER_THREADS));
+		exec.execute(new NetworkServer(Client.PORT, Server.MAX_SERVER_THREADS));
 	}
 
 	private void loadLog() {

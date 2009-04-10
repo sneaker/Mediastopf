@@ -22,17 +22,17 @@ import org.apache.log4j.Logger;
 
 public class Server implements ServerHandler {
 	
-	private static final int MAX_SERVER_THREADS = 10;
+	public static final int MAX_SERVER_THREADS = 10;
 
 	public Server(int port) {
-		loadLog();
-		serverStartInfo();
+		initLog();
 		startServer(port);
 		loadUI();
 //		loadData();
 	}
 
 	private void startServer(int port) {
+		serverStartInfo();
 		Logger logger = Log.getLogger();
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
@@ -70,7 +70,7 @@ public class Server implements ServerHandler {
 		//TODO
 	}
 	
-	private void loadLog() {
+	private void initLog() {
 		Log log = new Log();
 		log.setLevel(Level.ALL);
 	}

@@ -10,6 +10,7 @@ import ms.client.StartClient;
 public class TaskList extends Observable {
 	
 	private ArrayList<Task> list = new ArrayList<Task>();
+	private Client client;
 	
 	public TaskList() {
 		if(StartClient.DEBUG) {
@@ -18,7 +19,8 @@ public class TaskList extends Observable {
 	}
 
 	public TaskList(Client client) {
-		this.list = client.getTaskList();
+		this.client = client;
+		updateList();
 	}
 	
 	private void addTestData() {
@@ -54,5 +56,9 @@ public class TaskList extends Observable {
 	
 	public int size() {
 		return list.size();
+	}
+	
+	public void updateList() {
+		this.list = client.getTaskList();
 	}
 }

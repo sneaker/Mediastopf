@@ -1,5 +1,9 @@
 package ms.client.interfaces;
 
+import java.util.ArrayList;
+
+import ms.client.logic.Task;
+
 public interface ClientHandler {
 	
 	/**
@@ -28,4 +32,8 @@ public interface ClientHandler {
 	 * cancel running job
 	 */
 	public void cancelJob();
+	/**
+	 * get Tasks from Database
+	 */
+	public ArrayList<Task> getTaskList();
 }

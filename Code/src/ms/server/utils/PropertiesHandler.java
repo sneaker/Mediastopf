@@ -1,4 +1,4 @@
-package ms.server.ui.utils;
+package ms.server.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;

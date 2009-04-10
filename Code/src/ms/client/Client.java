@@ -23,15 +23,15 @@ import org.apache.log4j.Logger;
 
 public class Client implements ClientHandler {
 	
-	private static final String HOST = "localhost";
-	private static final int PORT = 1337;
+	public static final String HOST = "localhost";
+	public static final int PORT = 1337;
 	
 	private Logger logger = Log.getLogger();
 	private ServerConnection client;
 	
 	
 	public Client() {
-		loadLog();
+		initLog();
 		loadUI();
 		connectToServer();
 	}
@@ -40,7 +40,7 @@ public class Client implements ClientHandler {
 		try {
 			client = new ServerConnection(HOST, PORT);
 		} catch (UnknownHostException e) {
-			logger.fatal("Unknow host");
+			logger.fatal("Unknown host");
 			e.printStackTrace();
 		} catch (IOException e) {
 			logger.info("Cannot connect to host");
@@ -66,6 +66,11 @@ public class Client implements ClientHandler {
 		logger.info("Directory Observer started in " + folder);
 	}
 	
+	/**
+	 * send files from folder
+	 * 
+	 * @param folder with files
+	 */
 	public void sendFiles(String folder) {
 		File task = new File(folder);
 		String[] fileList = task.list();
@@ -95,11 +100,15 @@ public class Client implements ClientHandler {
 		return null;
 	}
 	
+	/**
+	 * get Tasks from Database
+	 */
 	public ArrayList<Task> getTaskList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 		try {
 			list = client.getTaskList();
 		} catch (IOException e) {
+			logger.fatal("Can't get Tasks");
 			e.printStackTrace();
 		}
 		return list;
@@ -122,7 +131,7 @@ public class Client implements ClientHandler {
 		});
 	}
 
-	private void loadLog() {
+	private void initLog() {
 		Log log = new Log();
 		log.setLevel(Level.ALL);
 	}

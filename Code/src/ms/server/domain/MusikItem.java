@@ -39,5 +39,10 @@ public class MusikItem extends Item {
 	public String getInterpret() {
 		return Interpret;
 	}
+	
+	@Override
+	public String toString() {
+		return "Musikitem-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort + " Dauer: " + Dauer + " Interpret: " + Interpret;
+	}
 
 }

@@ -158,11 +158,16 @@ public class DatabaseTester {
 		List<Item> ItemList = ActiveRecordManager.getObjectList(sql, Item.class);
 		for (Item name: ItemList) System.out.println(name.toString());
 		
-		/*System.out.println("BildItemliste:");
-		sql = "select * from BildItem";
+		System.out.println("BildItemliste:");
+		sql = "select Name, Importdatum, Speicherort, BildItem.id as id, Aufloesung, Aufnahmeort, fk_ImportMedium, fk_Container, Breite, Hoehe  from BildItem, Item WHERE BildItem.fk_Item = Item.id";
 		List<BildItem> BildItemList = ActiveRecordManager.getObjectList(sql, BildItem.class);
 		for (BildItem name: BildItemList) System.out.println(name.toString());
-		*/
+		
+		System.out.println("MusikItemliste:");
+		sql = "select MusikItem.id as id, Dauer, Interpret, fk_ImportMedium, fk_Container, Name, Importdatum, Speicherort from MusikItem, Item WHERE MusikItem.fk_Item = Item.id";
+		List<MusikItem> MusikItemList = ActiveRecordManager.getObjectList(sql, MusikItem.class);
+		for (MusikItem name: MusikItemList) System.out.println(name.toString());
+		
 		
 		System.out.println("Containerliste:");
 		sql = "select * from Container";

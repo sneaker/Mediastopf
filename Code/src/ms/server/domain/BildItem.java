@@ -60,7 +60,7 @@ public class BildItem extends Item {
 	
 	@Override
 	public String toString() {
-		return "Bilditem-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort;
+		return "Bilditem-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort + " Auflösung: " + Aufloesung + " Hoehe: " + Hoehe + " Breite: " + Breite;
 	}
 
 }

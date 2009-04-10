@@ -9,8 +9,8 @@ import ms.server.database.*;
 public class Item implements ActiveRecord {
 
 	
-	private String Name, Importdatum, Speicherort;
-	private int fk_ImportMedium, fk_Container;
+	protected String Name, Importdatum, Speicherort;
+	protected int fk_ImportMedium, fk_Container;
 	private int id = NOTINDB;
 	
 	

@@ -158,6 +158,12 @@ public class DatabaseTester {
 		List<Item> ItemList = ActiveRecordManager.getObjectList(sql, Item.class);
 		for (Item name: ItemList) System.out.println(name.toString());
 		
+		/*System.out.println("BildItemliste:");
+		sql = "select * from BildItem";
+		List<BildItem> BildItemList = ActiveRecordManager.getObjectList(sql, BildItem.class);
+		for (BildItem name: BildItemList) System.out.println(name.toString());
+		*/
+		
 		System.out.println("Containerliste:");
 		sql = "select * from Container";
 		List<Container> ContainerList = ActiveRecordManager.getObjectList(sql, Container.class);
@@ -168,6 +174,20 @@ public class DatabaseTester {
 		List<Einlesegeraet> EinlesegeraetList = ActiveRecordManager.getObjectList(sql, Einlesegeraet.class);
 		for (Einlesegeraet name: EinlesegeraetList) System.out.println(name.toString());
 		
+		System.out.println("Einlesestationliste:");
+		sql = "select * from Einlesestation";
+		List<Einlesestation> EinlesestationList = ActiveRecordManager.getObjectList(sql, Einlesestation.class);
+		for (Einlesestation name: EinlesestationList) System.out.println(name.toString());
+		
+		System.out.println("Sammelstationliste:");
+		sql = "select * from Sammelstation";
+		List<Sammelstation> SammelstationList = ActiveRecordManager.getObjectList(sql, Sammelstation.class);
+		for (Sammelstation name: SammelstationList) System.out.println(name.toString());
+		
+		System.out.println("Exportmediumliste:");
+		sql = "select * from Exportmedium";
+		List<ExportMedium> ExportmediumList = ActiveRecordManager.getObjectList(sql, ExportMedium.class);
+		for (ExportMedium name: ExportmediumList) System.out.println(name.toString());
 		
 		//Get data from DB via adapter class
 		//lp = DbAdapter.getOrderList();

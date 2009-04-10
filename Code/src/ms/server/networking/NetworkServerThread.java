@@ -105,17 +105,14 @@ public class NetworkServerThread implements Runnable {
 		FileOutputStream writer = new FileOutputStream(name + "_rec");
 		BufferedOutputStream bos = new BufferedOutputStream(writer);
 		while ((bytesread += reader.read(filebuffer, 0, filebuffer.length)) != -1) {
-			logger.info("reading...");
-			logger.info(bytesread);
-			logger.info("filebuffer: " + filebuffer);
 			if (bytesread >= size)
 				break;
 		}
-		logger.info("Transfer Server finished");
 
 		bos.write(filebuffer, 0, size);
 		bos.flush();
 		bos.close();
+		writer.close();
 	}
 
 	private String receiveMessage() throws IOException {
@@ -127,19 +124,21 @@ public class NetworkServerThread implements Runnable {
 			e.printStackTrace();
 		}
 
-		return receiver.readLine();
+		String rec = receiver.readLine();
+		logger.info("SERVER: Client message: " + rec);
+		return rec;
 	}
 
 	private void sendMessage(String reply) throws IOException {
 		try {
 			sender = new PrintWriter(new OutputStreamWriter(clientSocket
-					.getOutputStream()), true);
+					.getOutputStream()), false);
 			logger.info("SERVER: Server message: " + reply);
 		} catch (IOException e) {
 			logger.error("Error: Cannot get OutputStream");
 		}
 
 		sender.println(reply);
-		logger.info("The Reply: " + reply);
+		sender.flush();
 	}
 }

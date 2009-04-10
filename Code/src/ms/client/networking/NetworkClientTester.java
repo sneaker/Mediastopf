@@ -20,7 +20,6 @@ public class NetworkClientTester implements Runnable {
 			this.port = port;
 	}
 
-	
 	public void run() {
 		while (true) {
 			System.out.println("command> ");

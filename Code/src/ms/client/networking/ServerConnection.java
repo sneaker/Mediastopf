@@ -42,10 +42,10 @@ public class ServerConnection {
 
 	private void sendMessage(String message, Socket mediastopfSocket)
 			throws IOException {
-		logger.info(message);
 		PrintWriter sender = new PrintWriter(
-				mediastopfSocket.getOutputStream(), true);
+				mediastopfSocket.getOutputStream(), false);
 		sender.println(message);
+		sender.flush();
 	}
 
 	private String receiveMessage(Socket mediastopfSocket) throws IOException {
@@ -75,15 +75,18 @@ public class ServerConnection {
 		reply = receiveMessage(mediastopfSocket);
 		if (!reply.equals("TRANSFER SIZE OK"))
 			return;
-
+				
+		for (int i = 0; i < 10000; i++)
+			;
+		
 		byte[] filebuffer = new byte[size.intValue()];
 		FileInputStream mediafilestream = new FileInputStream(filename);
 		BufferedInputStream bis = new BufferedInputStream(mediafilestream);
 
 		bis.read(filebuffer, 0, filebuffer.length);
 
-		OutputStream sender = mediastopfSocket.getOutputStream();
 		logger.info("Sending File: " + filename + "...");
+		OutputStream sender = mediastopfSocket.getOutputStream();
 		sender.write(filebuffer, 0, filebuffer.length);
 		sender.flush();
 

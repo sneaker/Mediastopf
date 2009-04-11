@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import ms.server.utils.Constants;
+import ms.client.utils.Constants;
 
 
 public class ConfigHandler extends Properties {

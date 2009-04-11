@@ -10,8 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -34,7 +32,7 @@ import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
 
-public class ExportDialog extends JDialog implements Observer {
+public class ExportDialog extends JDialog {
 
 	/**
 	 * 
@@ -101,7 +99,7 @@ public class ExportDialog extends JDialog implements Observer {
 		JButton button = new JButton();
 		button.setIcon(new ImageIcon(getClass().getResource(Constants.OPEN)));
 		button.setBounds(rec);
-		button.setToolTipText(manager.getString("choosedir"));
+		button.setToolTipText(manager.getString("Exporter.choosedir"));
 		add(button);
 		return button;
 	}
@@ -284,10 +282,5 @@ public class ExportDialog extends JDialog implements Observer {
 	private void close() {
 		setVisible(false);
 		dispose();
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		
 	}
 }

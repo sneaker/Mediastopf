@@ -28,8 +28,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.client.ui.MainView;
 import ms.server.filesys.FileIO;
+import ms.server.utils.ConfigHandler;
 import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
@@ -42,11 +42,13 @@ public class LogFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
+	private ConfigHandler config = ConfigHandler.getHandler();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private final String save = manager.getString("save"), close = manager.getString("close");
+	private final String logcfg = "log";
 	private boolean suspendThread = false;
 
 	public LogFrame() {
@@ -61,6 +63,8 @@ public class LogFrame extends JFrame implements Runnable {
 		addTextArea();
 		addLogListener();
 		addESCListener();
+		
+		loadProperties();
 	}
 
 	private void initFrame() {
@@ -158,7 +162,7 @@ public class LogFrame extends JFrame implements Runnable {
 	 * add buttons
 	 */
 	private void addButtons() {
-		int x = 240;
+		int x = 235;
 		int y = 365;
 		int width = 115;
 		int height = 25;
@@ -167,14 +171,14 @@ public class LogFrame extends JFrame implements Runnable {
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int saveMnemonic = manager.getMnemonic("save"), cancelMnemonic = manager.getMnemonic("cancel");
-		final int[] mnemonic = { saveMnemonic, cancelMnemonic };
+		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
+		final int[] mnemonic = { okMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -223,8 +227,8 @@ public class LogFrame extends JFrame implements Runnable {
 				if (f.exists() && getDialogType() == SAVE_DIALOG) {
 					int result = JOptionPane.showConfirmDialog(
 							getTopLevelAncestor(),
-							manager.getString("fileoverwritemessage"),
-							manager.getString("fileoverwritetitle"),
+							manager.getString("Log.fileoverwritemessage"),
+							manager.getString("Log.fileoverwritetitle"),
 							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					switch (result) {
@@ -256,11 +260,29 @@ public class LogFrame extends JFrame implements Runnable {
 			}
 		});
 	}
+	
+	private void saveProperties() {
+		saveValues();
+		config.save();
+	}
+	
+	private void saveValues() {
+		config.setProperty(logcfg, String.valueOf(box.isSelected()));
+	}
+	
+	/**
+	 * load properties.
+	 */
+	private void loadProperties() {
+		if(config.containsKey(logcfg))
+			box.setSelected(Boolean.parseBoolean(config.getProperty(logcfg)));
+	}
 
 	/**
 	 * close
 	 */
 	private void close() {
+		saveProperties();
 		setVisible(false);
 		dispose();
 	}
@@ -308,7 +330,7 @@ public class LogFrame extends JFrame implements Runnable {
 		while(true) {
 			try {
 				readLogContent();
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 				synchronized (this) {
 					while (suspendThread) {
 						wait();

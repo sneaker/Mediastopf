@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import ms.client.logic.Task;
 import ms.client.logic.TaskList;
+import ms.client.utils.I18NManager;
 
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
@@ -16,7 +17,8 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final String[] columns = { "Task", "Status", "" };
+	private static I18NManager manager = I18NManager.getManager();
+	private static final String[] columns = { manager.getString("Model.task"), manager.getString("Model.status"), "" };
 	
 	private TaskList list;
 	

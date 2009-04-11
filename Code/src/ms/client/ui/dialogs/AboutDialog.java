@@ -22,18 +22,16 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.client.ui.MainView;
 import ms.client.utils.BrowserControl;
+import ms.client.utils.Constants;
+import ms.client.utils.I18NManager;
 
 
 public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
-	private static final String URL = "www.no-more-secrets.ch";
-	private static final String URLEXT = "powered by No More Secrets";
-	private static final String BACKGROUNDIMAGE = MainView.UIIMAGELOCATION + "about.jpg";
-	private final String website = "Website", close = "Close";
+	private I18NManager manager = I18NManager.getManager();
 	
 	public AboutDialog() {
 		initGUI();
@@ -52,14 +50,14 @@ public class AboutDialog extends JDialog {
 	}
 
 	private void initDialog() {
-		setTitle(MainView.PROGRAM + " - About...");
+		setTitle(Constants.PROGRAM + " - " + manager.getString("About.title"));
 		setSize(400, 250);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
 		setLayout(null);
 		setResizable(false);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
@@ -75,8 +73,9 @@ public class AboutDialog extends JDialog {
 		final Rectangle websiteBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + 105, y, width, height);
 		final Rectangle[] bounds = { websiteBounds, cancelBounds };
+		final String website = manager.getString("About.website"), close = manager.getString("close");
 		final String[] buttonText = { website, close };
-		final int websiteMnemonic = KeyEvent.VK_W, cancelMnemonic = KeyEvent.VK_C;
+		final char websiteMnemonic = manager.getMnemonic("About.website"), cancelMnemonic = manager.getMnemonic("close");
 		final int[] mnemonic = { websiteMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
@@ -86,7 +85,7 @@ public class AboutDialog extends JDialog {
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == website) {
-						BrowserControl.displayURL(URL);
+						BrowserControl.displayURL(Constants.URL);
 					} else if (e.getActionCommand() == close) {
 						close();
 					}
@@ -104,7 +103,7 @@ public class AboutDialog extends JDialog {
 			private static final long serialVersionUID = 1L;
 			
 			public void paintComponent(Graphics g) {
-				ImageIcon img = new ImageIcon(getClass().getResource(BACKGROUNDIMAGE));
+				ImageIcon img = new ImageIcon(getClass().getResource(Constants.ABOUT));
 				g.drawImage(img.getImage(), 0, -30, null);
 			}
 		};
@@ -118,12 +117,12 @@ public class AboutDialog extends JDialog {
 	 * add url textfield
 	 */
 	private void addURL() {
-		JTextField textField = new JTextField(URL);
+		JTextField textField = new JTextField(Constants.URL);
 		textField.setHorizontalAlignment(JTextField.CENTER);
 		textField.setBounds(new Rectangle(10, 190, 155, 20));
 		textField.setEditable(false);
 		textField.setOpaque(false);
-		textField.setToolTipText(URLEXT);
+		textField.setToolTipText(Constants.URLEXT);
 		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		add(textField);
 	}
@@ -136,7 +135,7 @@ public class AboutDialog extends JDialog {
 	 */
 	private JPopupMenu addPopUpMenu(final JTextField textField) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		JMenuItem copyMenuItem = new JMenuItem("Copy");
+		JMenuItem copyMenuItem = new JMenuItem(manager.getString("copy"));
 		copyMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textField.copy();

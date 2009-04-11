@@ -3,7 +3,7 @@ package ms.client.utils;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import ms.server.utils.Constants;
+import ms.client.utils.Constants;
 
 public class I18NManager {
 

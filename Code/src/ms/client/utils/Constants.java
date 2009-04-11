@@ -20,12 +20,12 @@ public class Constants {
 	public static final String EXPORT_S = "exportsmall.png";
 	public static final String SAVE = "save.png";
 	public static final String TICK = "tick.png";
+	public static final String RELOAD = "reload.png";
+	public static final String SEND = "send.png";
 	
 	public static final String ABOUT = UIIMAGE + "about.jpg";
 	public static final String OPEN = UIIMAGE + "open.png";
 	public static final String SPLASH = UIIMAGE + "splash.jpg";
 	public static final String AUDIORIPPER = UIIMAGE + "audioripper.png";
 	public static final String DEFAULTFOLDER = UIIMAGE + "defaultfolder.png";
-	public static final String RELOAD = UIIMAGE + "reload.png";
-	public static final String SEND = UIIMAGE + "send.png";
 }

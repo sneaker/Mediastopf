@@ -67,8 +67,7 @@ public class Einlesegeraet implements ActiveRecord {
 	public boolean delete() {
 		try {
 			if (isInDB())
-							ActiveRecordManager.execute("DELETE FROM Einlesegeraet WHERE id=?;", Integer
-					.toString(id));
+							ActiveRecordManager.execute("DELETE FROM Einlesegeraet WHERE id=?;", Integer.toString(id));
 		} catch (SQLException e) {
 			System.err.println(e);
 			return false;

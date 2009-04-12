@@ -65,7 +65,7 @@ public class Auftrag implements ActiveRecord {
 	public boolean delete() {
 		try {
 			if (isInDB())
-							ActiveRecordManager.execute("DELETE FROM Anzahl WHERE id=?;", Integer
+							ActiveRecordManager.execute("DELETE FROM Auftrag WHERE id=?;", Integer
 					.toString(id));
 		} catch (SQLException e) {
 			System.err.println(e);

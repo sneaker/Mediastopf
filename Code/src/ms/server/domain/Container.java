@@ -68,7 +68,7 @@ public class Container implements ActiveRecord {
 	public boolean delete() {
 		try {
 			if (isInDB())
-							ActiveRecordManager.execute("DELETE FROM Item WHERE id=?;", Integer.toString(id));
+							ActiveRecordManager.execute("DELETE FROM Container WHERE id=?;", Integer.toString(id));
 		} catch (SQLException e) {
 			System.err.println(e);
 			return false;
@@ -101,14 +101,14 @@ public class Container implements ActiveRecord {
 	}
 
 	public static List<Container> findAll() {
-		String sql = "select * from Auftrag;";
+		String sql = "select * from Container;";
 		List<Container> lp = ActiveRecordManager.getObjectList(sql, Container.class);
 		
 		return lp;
 	}
 
 	public static Container findByID(int id) {
-		String sql = "select * from Auftrag WHERE id = " + id + ";";
+		String sql = "select * from Container WHERE id = " + id + ";";
 		List<Container> res = ActiveRecordManager.getObjectList(sql, Container.class);
 		if (res.isEmpty())
 			return null;

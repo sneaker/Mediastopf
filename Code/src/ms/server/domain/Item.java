@@ -69,10 +69,10 @@ public class Item implements ActiveRecord {
 		try {
 			if (!isInDB())
 				id = ActiveRecordManager.executeInsert(
-								"insert into Item (Name, Speicherort, Importdatum) values (?, ?, ?)", Name, Speicherort, Importdatum);
+								"insert into Item (Name, Speicherort, Importdatum, fk_ImportMedium, fk_Container) values (?, ?, ?, ?, ?)", Name, Speicherort, Importdatum, Integer.toString(fk_ImportMedium), Integer.toString(fk_Container));
 			else {
 				ActiveRecordManager.execute(
-						"UPDATE Auftrag SET Name = ?, Speicherort = ?, Importdatum = ? WHERE id = ?", Name, Speicherort, Importdatum, Integer.toString(id));
+						"UPDATE Auftrag SET Name = ?, Speicherort = ?, Importdatum = ?, fk_ImportMedium = ?, fk_Container = ? WHERE id = ?", Name, Speicherort, Importdatum, Integer.toString(fk_ImportMedium), Integer.toString(fk_Container), Integer.toString(id));
 			}
 			
 		} catch (SQLException e) {

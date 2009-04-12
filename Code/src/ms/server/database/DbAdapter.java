@@ -1,5 +1,7 @@
 package ms.server.database;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -7,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import ms.server.domain.Auftrag;
 import ms.server.log.Log;
@@ -36,20 +39,17 @@ public class DbAdapter {
 		return connection;
 	}
 
-	public static ArrayList<Auftrag> getOrderList() {
-		ArrayList<Auftrag> resultlist = new ArrayList<Auftrag>();
-		Connection conn;
-		try {
-			conn = getConnection();
-			Statement stat = conn.createStatement();
-			ResultSet res = stat.executeQuery("select * from Auftrag");
-			while (res.next()) {
-				resultlist.add(new Auftrag(res));
-			}
-			stat.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return resultlist;
+	public static List<Auftrag> getOrderList() {
+		return getAuftragList();
+	}
+	
+	public static List<Auftrag> getAuftragList() {
+		String sql = "select * from Auftrag";
+		return ActiveRecordManager.getObjectList(sql, Auftrag.class);
+	}
+	
+	public static List<Auftrag> getAuftragList(int AuftragId ) {
+		String sql = "select * from Auftrag WHERE id = " + AuftragId;
+		return ActiveRecordManager.getObjectList(sql, Auftrag.class);
 	}
 }

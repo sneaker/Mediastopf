@@ -1,21 +1,3 @@
-/**
- * This file is part of JVector.
- * 
- * JVector is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * JVector is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with JVector.  If not, see <http://www.gnu.org/licenses/>.
- * 
- */
-
 package ms.client.utils;
 
 import java.io.IOException;
@@ -45,7 +27,7 @@ public class BrowserControl {
 	 *
 	 * @param url the file's url (the url must start with either "http://"
 	 * or "file://").
-	 */
+ */
 	public static void displayURL(String url) {
 		boolean windows = isWindowsPlatform();
 		String cmd = null;

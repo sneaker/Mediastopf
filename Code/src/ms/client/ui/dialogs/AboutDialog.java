@@ -43,7 +43,7 @@ public class AboutDialog extends JDialog {
 	private void initGUI() {
 		initDialog();
 		
-		addURL();
+		addTextFields();
 		addESCListener();
 		addButtons();
 		drawBackgroundImage();
@@ -70,29 +70,16 @@ public class AboutDialog extends JDialog {
 		final int y = 190;
 		final int width = 100;
 		final int height = 20;
-		final Rectangle websiteBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + 105, y, width, height);
-		final Rectangle[] bounds = { websiteBounds, cancelBounds };
-		final String website = manager.getString("About.website"), close = manager.getString("close");
-		final String[] buttonText = { website, close };
-		final char websiteMnemonic = manager.getMnemonic("About.website"), cancelMnemonic = manager.getMnemonic("close");
-		final int[] mnemonic = { websiteMnemonic, cancelMnemonic };
-		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == website) {
-						BrowserControl.displayURL(Constants.URL);
-					} else if (e.getActionCommand() == close) {
-						close();
-					}
-				}
-			});
-			add(button);
-		}
+		JButton button = new JButton();
+		button.setBounds(x + 105, y, width, height);
+		button.setText(manager.getString("close"));
+		button.setMnemonic(manager.getMnemonic("close"));
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		});
+		add(button);
 	}
 
 	/**
@@ -116,15 +103,22 @@ public class AboutDialog extends JDialog {
 	/**
 	 * add url textfield
 	 */
-	private void addURL() {
-		JTextField textField = new JTextField(Constants.URL);
-		textField.setHorizontalAlignment(JTextField.CENTER);
-		textField.setBounds(new Rectangle(10, 190, 155, 20));
-		textField.setEditable(false);
-		textField.setOpaque(false);
-		textField.setToolTipText(Constants.URLEXT);
-		textField.setComponentPopupMenu(addPopUpMenu(textField));
-		add(textField);
+	private void addTextFields() {
+		final String[] texts = { Constants.URL, Constants.HSR };
+		final String[] tooltips = { Constants.URLEXT, Constants.HSREXT };
+		final Rectangle urlBounds = new Rectangle(10, 190, 155, 20);
+		final Rectangle hsrBounds = new Rectangle(165, 190, 110, 20);
+		final Rectangle[] bounds = { urlBounds, hsrBounds };
+		for(int i=0; i<texts.length; i++) {
+			JTextField textField = new JTextField(texts[i]);
+			textField.setHorizontalAlignment(JTextField.CENTER);
+			textField.setBounds(bounds[i]);
+			textField.setEditable(false);
+			textField.setOpaque(false);
+			textField.setToolTipText(tooltips[i]);
+			textField.setComponentPopupMenu(addPopUpMenu(textField));
+			add(textField);
+		}
 	}
 
 	/**
@@ -134,14 +128,25 @@ public class AboutDialog extends JDialog {
 	 * @return JPopupMenu
 	 */
 	private JPopupMenu addPopUpMenu(final JTextField textField) {
+		final String copy = manager.getString("copy");
+		final String open = manager.getString("About.open");
+		final String[] texts = { open, copy };
 		JPopupMenu popupMenu = new JPopupMenu();
-		JMenuItem copyMenuItem = new JMenuItem(manager.getString("copy"));
-		copyMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				textField.copy();
-			}
-		});
-		popupMenu.add(copyMenuItem);
+		for(int i=0; i<texts.length; i++) {
+			JMenuItem menuItem = new JMenuItem(texts[i]);
+			menuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(e.getActionCommand() == copy) {
+						textField.selectAll();
+						textField.copy();
+						textField.select(0, 0);
+					} else {
+						BrowserControl.displayURL(textField.getText().trim());
+					}
+				}
+			});
+			popupMenu.add(menuItem);
+		}
 		return popupMenu;
 	}
 

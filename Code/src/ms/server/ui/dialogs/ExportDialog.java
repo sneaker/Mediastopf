@@ -57,6 +57,16 @@ public class ExportDialog extends JDialog {
 	 * init GUI
 	 */
 	private void initGUI() {
+		initDialog();
+
+		addESCListener();
+		addButtons();
+		addDefaultFolderPanel();
+		
+		loadProperties();
+	}
+
+	private void initDialog() {
 		setTitle(Constants.PROGRAM + " - " + export);
 		setSize(400, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -66,13 +76,6 @@ public class ExportDialog extends JDialog {
 		setModal(true);
 		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		addESCListener();
-		addButtons();
-
-		addDefaultFolderPanel();
-		
-		loadProperties();
 	}
 
 	private void addDefaultFolderPanel() {
@@ -87,21 +90,20 @@ public class ExportDialog extends JDialog {
 					openExportFileChooser();
 			}
 		});
-		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
-		openIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				openExportFileChooser();
-			}
-		});
+		createOpenButton(new Rectangle(355, 40, 22, 22));
 	}
 	
-	private JButton createOpenButton(Rectangle rec) {
+	private void createOpenButton(Rectangle rec) {
 		JButton button = new JButton();
 		button.setIcon(new ImageIcon(getClass().getResource(Constants.OPEN)));
 		button.setBounds(rec);
 		button.setToolTipText(manager.getString("Exporter.choosedir"));
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openExportFileChooser();
+			}
+		});
 		add(button);
-		return button;
 	}
 
 	private void createLabel(String icon, Rectangle rec) {
@@ -180,6 +182,8 @@ public class ExportDialog extends JDialog {
 		boolean done = FileIO.transfer(file.listFiles(), new File(exportFolder));
 		if(done) {
 			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
+		} else {
+			MessageDialog.info(manager.getString("Exporter.exportfailedtitle"), manager.getString("Exporter.exportfailed"));
 		}
 	}
 	
@@ -194,7 +198,7 @@ public class ExportDialog extends JDialog {
 	/**
 	 * save properties.
 	 */
-	void saveProperties() {
+	private void saveProperties() {
 		saveValues();
 		config.save();
 	}
@@ -207,7 +211,7 @@ public class ExportDialog extends JDialog {
 	/**
 	 * load properties.
 	 */
-	void loadProperties() {
+	private void loadProperties() {
 		if(config.containsKey(exportcfg))
 			exportTextField.setText(config.getProperty(exportcfg));
 	}

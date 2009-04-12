@@ -188,8 +188,7 @@ public class ConfigDialog extends JDialog {
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
-						saveProperties();
-						close();
+						saveAndClose();
 					} else if (e.getActionCommand() == close) {
 						close();
 					}
@@ -197,6 +196,11 @@ public class ConfigDialog extends JDialog {
 			});
 			add(button);
 		}
+	}
+	
+	private void saveAndClose() {
+		saveProperties();
+		close();
 	}
 	
 	/**

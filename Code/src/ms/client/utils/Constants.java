@@ -6,6 +6,8 @@ public class Constants {
 	public static final String PROGRAM = "MediaStopf";
 	public static final String URL = "www.no-more-secrets.ch";
 	public static final String URLEXT = "powered by No More Secrets";
+	public static final String HSR = "www.hsr.ch";
+	public static final String HSREXT = "powered by HSR";
 	
 	public static final String UIIMAGE = "/ms/client/ui/images/";
 	private static final String UILANGUAGE = "ms/client/ui/lang/";

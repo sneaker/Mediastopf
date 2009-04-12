@@ -17,7 +17,8 @@ public class FileIOTest {
 	@Before
 	public void setUp() throws Exception {
 		makeDirs();
-		generateFiles();
+		generateFiles(src);
+		generateFolders(src);
 	}
 
 	@After
@@ -44,14 +45,22 @@ public class FileIOTest {
 		}
 	}
 	
-	private void generateFiles() {
+	private void generateFiles(File folder) {
 		for(int i=0; i < 10; i++) {
-			File f = new File(src + File.separator + "testfile" + (int)(Math.random()*10000));
+			File f = new File(folder + File.separator + "testfile" + (int)(Math.random()*10000));
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	private void generateFolders(File folder) {
+		for(int i=0; i < 5; i++) {
+			File f = new File(folder + File.separator + "folder" + (int)(Math.random()*10000));
+			f.mkdirs();
+			generateFiles(f);
 		}
 	}
 	
@@ -74,6 +83,9 @@ public class FileIOTest {
 		if(file.isDirectory()) {
 			File[] fileList = file.listFiles();
 			for(File f: fileList) {
+				if(f.isDirectory()) {
+					delDir(f);
+				}
 				f.delete();
 			}
 		}

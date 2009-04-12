@@ -52,11 +52,11 @@ public class FileIO {
 	}
 	
 	/**
-	 * move files from a source to a destination
+	 * copying files from a source to a destination
 	 * 
-	 * @param srcList filelist to move
+	 * @param srcList filelist to copy
 	 * @param destDir destination folder
-	 * @return boolean if transfer is done properly
+	 * @return boolean true, if transfer was done properly
 	 */
 	public static boolean transfer(File[] srcList, File destDir) {
 		destDir.mkdirs();
@@ -65,14 +65,19 @@ public class FileIO {
         FileOutputStream destination;
 		try {
 			for(File file: srcList) {
+				File destFile = new File(destDir + File.separator + file.getName());
+				if(file.isDirectory()) {
+					destFile.mkdirs();
+					transfer(file.listFiles(), destFile);
+					continue;
+				}
 				source = new FileInputStream(file);
-		        destination = new FileOutputStream(destDir + File.separator + file.getName());
+		        destination = new FileOutputStream(destFile);
 				
 		        FileChannel sourceFileChannel = source.getChannel();
 		        FileChannel destinationFileChannel = destination.getChannel();
 				
-		        long size = sourceFileChannel.size();
-		        sourceFileChannel.transferTo(0, size, destinationFileChannel);
+		        sourceFileChannel.transferTo(0, sourceFileChannel.size(), destinationFileChannel);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

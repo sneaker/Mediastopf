@@ -1,19 +1,22 @@
 package ms.client.log;
 
-import java.io.File;
 import java.io.IOException;
 
 import ms.client.utils.Constants;
 
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
+import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.apache.log4j.WriterAppender;
+
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 public class Log {
 	
-	private static Logger logger = Logger.getRootLogger();
+	private static Logger logger = Logger.getLogger(Log.class);
+	private static ByteOutputStream bos = new ByteOutputStream();
 	static {
 		new Log();
 	}
@@ -21,37 +24,34 @@ public class Log {
 		logger.setLevel(Level.ALL);
 		String pattern = "%d{ISO8601}: %m %n";
 		PatternLayout layout = new PatternLayout(pattern);
-		ConsoleLogger(layout);
+		consoleLogger(layout);
 		fileLogger(layout);
+		writeLogger(layout);
 	}
 
-	private void ConsoleLogger(PatternLayout layout) {
+	private void writeLogger(PatternLayout layout) {
+		WriterAppender writeAppender = new WriterAppender(layout, bos);
+		logger.addAppender(writeAppender);
+	}
+
+	private void consoleLogger(PatternLayout layout) {
 		ConsoleAppender consoleAppender = new ConsoleAppender(layout);
+		consoleAppender.setFollow(true);
 		logger.addAppender(consoleAppender);
 	}
 
 	private void fileLogger(PatternLayout layout) {
-		createFile();
-		FileAppender fileAppender = null;
+		DailyRollingFileAppender fileAppender = new DailyRollingFileAppender();
 		try {
-			fileAppender = new FileAppender(layout, Constants.LOGFILE, false);
+			fileAppender = new DailyRollingFileAppender(layout, Constants.LOGFILE, "'_'yyyy-MM-dd");
+			fileAppender.setAppend(true);
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.info("Can't write Logfile");
 		}
 		logger.addAppender(fileAppender);
 	}
 
-	private void createFile() {
-		File f = new File(Constants.LOGFILE);
-		if(!f.exists()) {
-			try {
-				f.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	/**
 	 * get logger
 	 * 
@@ -59,5 +59,14 @@ public class Log {
 	 */
 	public static Logger getLogger() {
 		return logger;
+	}
+	
+	/**
+	 * get OutputStream with logged information
+	 * 
+	 * @return ByteOutputStream
+	 */
+	public static ByteOutputStream getOutputStream() {
+		return bos;
 	}
 }

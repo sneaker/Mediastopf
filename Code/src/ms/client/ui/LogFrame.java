@@ -28,10 +28,13 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
 import ms.client.filesys.FileIO;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
+import ms.client.log.Log;
 
 
 public class LogFrame extends JFrame implements Runnable {
@@ -48,7 +51,7 @@ public class LogFrame extends JFrame implements Runnable {
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private final String save = manager.getString("save"), close = manager.getString("close");
-	private final String logcfg = "log";
+	private final String logcfg = "log.autorefresh";
 	private boolean suspendThread = false;
 
 	public LogFrame() {
@@ -342,7 +345,10 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void readLogContent() {
-		String logContent = FileIO.read(Constants.LOGFILE);
-		textArea.setText(logContent);
+		ByteOutputStream bos = Log.getOutputStream();
+		textArea.setText(bos.toString());
+		if(box.isSelected()) {
+			textArea.setCaretPosition(textArea.getDocument().getLength());
+		}
 	}
 }

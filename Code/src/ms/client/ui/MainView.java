@@ -84,7 +84,7 @@ public class MainView extends JFrame {
 	private void initFrame() {
 		setTitle(Constants.PROGRAM);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setSize(400, 450);
+		setSize(600, 550);
 		setMinimumSize(new Dimension(getWidth(), getHeight()));
 		setLayout(null);
 		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
@@ -155,7 +155,7 @@ public class MainView extends JFrame {
 	private void addStatusBar() {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 380, 450, 20);
+		panel.setBounds(0, getHeight() - 70, getWidth() + 50, 20);
 		panel.setBorder(BorderFactory.createTitledBorder(statusbar));
 		panelMap.put(statusbar, panel);
 
@@ -176,7 +176,7 @@ public class MainView extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 5, 395, 90);
+		panel.setBounds(0, 5, getWidth() - 5, 90);
 		panel.setBorder(BorderFactory.createTitledBorder(tasks));
 		panel.add(taskComboBox);
 		panelMap.put(tasks, panel);
@@ -192,7 +192,7 @@ public class MainView extends JFrame {
 	private void addTaskComboBox() {
 		taskList = new TaskList(client);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
-		taskComboBox.setBounds(10, 20, 375, 20);
+		taskComboBox.setBounds(10, 20, getWidth() - 25, 20);
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
@@ -205,8 +205,8 @@ public class MainView extends JFrame {
 	}
 	
 	private void addTaskButtons(JPanel panel) {
-		int x = 135;
-		int y = 50;
+		int x = panel.getWidth() - 260;
+		int y = panel.getHeight() - 40;
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { reload, run };
@@ -214,9 +214,9 @@ public class MainView extends JFrame {
 		final Rectangle reloadBounds = new Rectangle(x, y, width, height);
 		final Rectangle runBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { reloadBounds, runBounds };
-		final int reloadAcc = KeyEvent.VK_F5;
-		final int runAcc = manager.getMnemonic("Main.run");
-		final int[] mnemonic = { reloadAcc, runAcc };
+		final int reloadMnemonic = KeyEvent.VK_F5;
+		final int runMnemonic = manager.getMnemonic("Main.run");
+		final int[] mnemonic = { reloadMnemonic, runMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
@@ -261,7 +261,7 @@ public class MainView extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 100, 395, 270);
+		panel.setBounds(0, 100, getWidth() - 5, getHeight() - 180);
 		panel.setBorder(BorderFactory.createTitledBorder(runningTask));
 
 		addRunningTaskButtons(panel);
@@ -278,7 +278,7 @@ public class MainView extends JFrame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, 385, 200);
+		tablePanel.setBounds(5, 15, getWidth() - 15, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
 		taskTable = new TaskTable();
@@ -294,8 +294,8 @@ public class MainView extends JFrame {
 	 *            JPanel
 	 */
 	private void addRunningTaskButtons(JPanel panel) {
-		int x = 135;
-		int y = 230;
+		int x = panel.getWidth() - 260;
+		int y = panel.getHeight() - 40;
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { send, cancel };

@@ -252,6 +252,10 @@ public class MainViewServer extends JFrame {
 	
 	private void exportSelectedItem() {
 		int taskID = (Integer)taskComboBox.getSelectedItem();
+		if(taskID == -1) {
+			MessageDialog.noneSelectedDialog();
+			return;
+		}
 		File file = new File(Integer.toString(taskID));
 		if(!file.isDirectory()) {
 			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);

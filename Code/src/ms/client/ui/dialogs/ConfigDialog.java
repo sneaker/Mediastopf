@@ -42,7 +42,6 @@ public class ConfigDialog extends JDialog {
 	private I18NManager manager = I18NManager.getManager();
 	private JTextField ripperTextField, folderTextField;
 	private final String audioripper = manager.getString("Config.audiograbber"), defaultfolder = manager.getString("Config.defaultfolder");
-	private final String audiorippercfg = "audioripper", defaultfoldercfg = "defaultfolder";
 	private final String save = manager.getString("save"), close = manager.getString("close");
 
 	public ConfigDialog() {
@@ -213,19 +212,19 @@ public class ConfigDialog extends JDialog {
 	
 	private void saveValues() {
 		if(!ripperTextField.getText().isEmpty())
-			config.setProperty(audiorippercfg, ripperTextField.getText());
+			config.setProperty(Constants.AUDIORIPPERCFG, ripperTextField.getText());
 		if(!folderTextField.getText().isEmpty())
-			config.setProperty(defaultfoldercfg, folderTextField.getText());
+			config.setProperty(Constants.DEFAULTFOLDERCFG, folderTextField.getText());
 	}
 	
 	/**
 	 * load properties.
 	 */
 	private void loadProperties() {
-		if(config.containsKey(audiorippercfg))
-			ripperTextField.setText(config.getProperty(audiorippercfg).trim());
-		if(config.containsKey(defaultfoldercfg))
-			folderTextField.setText(config.getProperty(defaultfoldercfg).trim());
+		if(config.containsKey(Constants.AUDIORIPPERCFG))
+			ripperTextField.setText(config.getProperty(Constants.AUDIORIPPERCFG).trim());
+		if(config.containsKey(Constants.DEFAULTFOLDERCFG))
+			folderTextField.setText(config.getProperty(Constants.DEFAULTFOLDERCFG).trim());
 	}
 	
 	private void openAudioRipperDirChooser() {

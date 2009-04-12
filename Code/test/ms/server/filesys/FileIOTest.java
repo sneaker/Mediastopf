@@ -1,6 +1,7 @@
 package ms.server.filesys;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class FileIOTest {
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
-				e.printStackTrace();
+				fail(e.getMessage());
 			}
 		}
 	}
@@ -67,6 +68,12 @@ public class FileIOTest {
 	private void makeDirs() {
 		src = new File(TEMPDIR + "mstestsrc");
 		dest = new File(TEMPDIR + "mstestdest");
+		if(src.exists()) {
+			delSrcDir();
+		}
+		if(dest.exists()) {
+			delDestDir();
+		}
 		src.mkdirs();
 		dest.mkdirs();
 	}

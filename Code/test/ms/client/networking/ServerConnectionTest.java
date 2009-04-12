@@ -1,9 +1,11 @@
 package ms.client.networking;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class ServerConnectionTest {
 			try {
 				connection.sendFile(folder + File.separator + f);
 			} catch (IOException e) {
-				e.printStackTrace();
+				fail(e.getMessage());
 			}
 		}
 		String[] transferedList = folder.list(new FilenameFilter() {
@@ -63,8 +65,8 @@ public class ServerConnectionTest {
 			File file = new File(folder + File.separator + f);
 			File transfile = new File(folder + File.separator + f + "_rec");
 			assertEquals(file.length(), transfile.length());
+			assertEquals(file.getName(), transfile.getName().replace("_rec", ""));
 		}
-		// TODO: check filenames etc.
 	}
 	
 	private void startServer() {
@@ -85,20 +87,28 @@ public class ServerConnectionTest {
 				f.createNewFile();
 				generate_content(f);
 			} catch (IOException e) {
-				e.printStackTrace();
+				fail(e.getMessage());
 			}
 		}
 	}
 	
-	private void generate_content(File f) throws IOException {
-		FileOutputStream fous = new FileOutputStream(f);
-		BufferedOutputStream bos = new BufferedOutputStream(fous);
-		int rand = (int) (Math.random()*10000);
-		for(int i = 0; i < rand; i++){
-			bos.write(i);
-			bos.flush();
+	private void generate_content(File f) {
+		FileOutputStream fous;
+		BufferedOutputStream bos;
+		try {
+			fous = new FileOutputStream(f);
+			bos = new BufferedOutputStream(fous);
+			int rand = (int) (Math.random()*10000);
+			for(int i = 0; i < rand; i++){
+				bos.write(i);
+				bos.flush();
+			}
+			bos.close();
+		} catch (FileNotFoundException e) {
+			fail(e.getMessage());
+		} catch (IOException e) {
+			fail(e.getMessage());
 		}
-		bos.close();
 	}
 
 	private void makeDirs() {

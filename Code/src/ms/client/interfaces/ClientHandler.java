@@ -1,5 +1,6 @@
 package ms.client.interfaces;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import ms.client.logic.Task;
@@ -11,13 +12,13 @@ public interface ClientHandler {
 	 * 
 	 * @param folder to Observer
 	 */
-	public void observeDir(String folder);
+	public void observeDir(File folder);
 	/**
 	 * send files from folder
 	 * 
 	 * @param folder with files
 	 */
-	public void sendFiles(String folder);
+	public void sendFiles(File folder);
 	/**
 	 * send objects
 	 * 

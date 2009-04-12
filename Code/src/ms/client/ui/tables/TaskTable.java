@@ -8,6 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.ListSelectionModel;
 
+import ms.client.logic.TaskList;
 import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskTableModel;
 import ms.client.utils.Constants;
@@ -24,8 +25,8 @@ public class TaskTable extends JXTable {
 	
 	private I18NManager manager = I18NManager.getManager();
 	
-	public TaskTable() {
-		super(new TaskTableModel());
+	public TaskTable(TaskList list) {
+		super(new TaskTableModel(list));
 		initTable();
 	}
 	

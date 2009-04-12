@@ -9,6 +9,9 @@ public class Constants {
 	public static final String HSR = "www.hsr.ch";
 	public static final String HSREXT = "powered by HSR";
 	
+	public static final String AUDIORIPPERCFG = "audioripper";
+	public static final String DEFAULTFOLDERCFG = "defaultfolder";
+	
 	public static final String UIIMAGE = "/ms/client/ui/images/";
 	private static final String UILANGUAGE = "ms/client/ui/lang/";
 	

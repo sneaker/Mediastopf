@@ -109,8 +109,8 @@ public class LogFrame extends JFrame implements Runnable {
 		scrollArea.setSize(width , height - 15);
 		scrollArea.revalidate();
 		
-		buttonMap.get(save).setLocation(width - 235, height);
-		buttonMap.get(close).setLocation(width - 115, height);
+		buttonMap.get(save).setLocation(width - 250, height);
+		buttonMap.get(close).setLocation(width - 125, height);
 		
 		box.setLocation(10, height + 5);
 	}
@@ -200,6 +200,7 @@ public class LogFrame extends JFrame implements Runnable {
 
 	private void saveAsTXT() {
 		JFileChooser fileChooser = getFileChooser();
+		fileChooser.setSelectedFile(new File(Constants.LOGFILE));
 		fileFilter(fileChooser);
 
 		int returnVal = fileChooser.showSaveDialog(null);

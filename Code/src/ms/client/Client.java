@@ -16,6 +16,8 @@ import ms.client.log.Log;
 import ms.client.logic.Task;
 import ms.client.networking.ServerConnection;
 import ms.client.ui.MainView;
+import ms.client.ui.dialogs.MessageDialog;
+import ms.client.utils.I18NManager;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +27,7 @@ public class Client implements ClientHandler {
 	public static final String HOST = "localhost";
 	public static final int PORT = 1337;
 	
+	private I18NManager manager = I18NManager.getManager();
 	private Logger logger = Log.getLogger();
 	private ServerConnection client;
 	
@@ -40,19 +43,21 @@ public class Client implements ClientHandler {
 		} catch (UnknownHostException e) {
 			logger.fatal("Unknown host");
 			e.printStackTrace();
+			System.exit(0);
 		} catch (IOException e) {
 			logger.info("Cannot connect to host");
 			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 	
 	/**
 	 * start directory observer
 	 * 
-	 * @param folder to Observe
+	 * @param folder to observe
 	 */
-	public void observeDir(final String folder) {
-		DirectoryObserver dirObserver = new DirectoryObserver(folder);
+	public void observeDir(final File folder) {
+		DirectoryObserver dirObserver = new DirectoryObserver(folder.toString());
 		dirObserver.subscribe(new Observer() {
 			@Override
 			public void update(Observable o, Object arg) {
@@ -69,13 +74,13 @@ public class Client implements ClientHandler {
 	 * 
 	 * @param folder with files
 	 */
-	public void sendFiles(String folder) {
-		File task = new File(folder);
-		String[] fileList = task.list();
+	public void sendFiles(File folder) {
+		String[] fileList = folder.list();
 		for(String f: fileList) {
 			try {
 				client.sendFile(folder + File.separator + f);
 			} catch (IOException e) {
+				logger.warn(f + " not sent");
 				e.printStackTrace();
 			}
 		}
@@ -107,7 +112,7 @@ public class Client implements ClientHandler {
 			list = client.getTaskList();
 		} catch (IOException e) {
 			logger.fatal("Can't get Tasks");
-			e.printStackTrace();
+			MessageDialog.info(manager.getString("Dialog.cantgettask"), manager.getString("Dialog.checkconnection"));
 		}
 		return list;
 	}

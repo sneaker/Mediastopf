@@ -19,7 +19,7 @@ public class MessageDialog {
 	 * show a information dialog
 	 */
 	public static void noneSelectedDialog() {
-		JOptionPane.showMessageDialog(null, manager.getString("notaskmessage"), manager.getString("Dialog.notasktitle"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, manager.getString("Dialog.notaskmessage"), manager.getString("Dialog.notasktitle"), JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	/**

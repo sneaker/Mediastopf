@@ -22,8 +22,8 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	
 	private TaskList list;
 	
-	public TaskTableModel() {
-		this.list = new TaskList();
+	public TaskTableModel(TaskList list) {
+		this.list = list;
 		list.addObserver(this);
 	}
 

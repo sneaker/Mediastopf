@@ -14,7 +14,9 @@ public class TaskList extends Observable {
 	
 	public TaskList() {
 		if(StartClient.DEBUG) {
-			addTestData();
+			add(new Task(1111, "Waiting"));
+			add(new Task(2222, "Ready"));
+			add(new Task(3333, "Sending"));
 		}
 	}
 
@@ -23,15 +25,6 @@ public class TaskList extends Observable {
 		updateList();
 	}
 	
-	private void addTestData() {
-		for(int i=0; i < 10; i++) {
-			add(new Task(i, "Test"));
-		}
-		add(new Task(1111, "Waiting"));
-		add(new Task(2222, "Ready"));
-		add(new Task(3333, "Sending"));
-	}
-
 	public void add(Task o) {
 		list.add(o);
 		setChanged();
@@ -60,5 +53,7 @@ public class TaskList extends Observable {
 	
 	public void updateList() {
 		this.list = client.getTaskList();
+		setChanged();
+		notifyObservers();
 	}
 }

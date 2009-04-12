@@ -1,5 +1,6 @@
 package ms.client.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -30,14 +31,18 @@ import javax.swing.KeyStroke;
 
 import ms.client.Client;
 import ms.client.StartClient;
+import ms.client.logic.Task;
 import ms.client.logic.TaskList;
 import ms.client.ui.dialogs.AboutDialog;
 import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskComboBoxModel;
 import ms.client.ui.tables.TaskTable;
+import ms.client.utils.ConfigHandler;
 import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
+import ms.client.utils.StatusMessage;
+import ms.client.utils.StatusMessage.StatusType;
 
 public class MainView extends JFrame {
 	/**
@@ -46,7 +51,9 @@ public class MainView extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
+	private ConfigHandler config = ConfigHandler.getHandler();
 	private TaskList taskList;
+	private TaskList runTaskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -126,11 +133,11 @@ public class MainView extends JFrame {
 		int height = getHeight();
 
 		JPanel runtaskPanel = panelMap.get(runningTask);
-		runtaskPanel.setSize(width - 5, height - 180);
+		runtaskPanel.setSize(width - 10, height - 180);
 		JPanel taskPanel = panelMap.get(tasks);
-		taskPanel.setSize(width - 5, taskPanel.getHeight());
+		taskPanel.setSize(width - 10, taskPanel.getHeight());
 		JPanel statusPanel = panelMap.get(statusbar);
-		statusPanel.setBounds(0, height - 70, width - 5, statusPanel.getHeight());
+		statusPanel.setBounds(0, height - 70, width - 10, statusPanel.getHeight());
 		
 		updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
 	}
@@ -139,7 +146,7 @@ public class MainView extends JFrame {
 		buttonMap.get(reload).setLocation(taskPanel.getWidth() - 260, taskPanel.getHeight() - 40);
 		buttonMap.get(run).setLocation(taskPanel.getWidth() - 135, taskPanel.getHeight() - 40);
 
-		taskComboBox.setSize(taskPanel.getWidth() - 20, 20);
+		taskComboBox.setSize(taskPanel.getWidth() - 25, 20);
 		statusBar.setSize(statusPanel.getWidth(), statusPanel.getHeight());
 
 		int width = runtaskPanel.getWidth() - 10;
@@ -155,11 +162,10 @@ public class MainView extends JFrame {
 	private void addStatusBar() {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, getHeight() - 70, getWidth() + 50, 20);
-		panel.setBorder(BorderFactory.createTitledBorder(statusbar));
+		panel.setBounds(0, getHeight() - 70, getWidth() - 10, 20);
 		panelMap.put(statusbar, panel);
 
-		statusBar = new JTextField(manager.getString("Main.copyright"));
+		statusBar = new JTextField(manager.getString("StatusMessage.copyright"));
 		statusBar.setBounds(0, 0, panel.getWidth(), panel.getHeight());
 		statusBar.setEditable(false);
 		statusBar.setFocusable(false);
@@ -176,7 +182,7 @@ public class MainView extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 5, getWidth() - 5, 90);
+		panel.setBounds(0, 5, getWidth() - 10, 90);
 		panel.setBorder(BorderFactory.createTitledBorder(tasks));
 		panel.add(taskComboBox);
 		panelMap.put(tasks, panel);
@@ -192,7 +198,7 @@ public class MainView extends JFrame {
 	private void addTaskComboBox() {
 		taskList = new TaskList(client);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
-		taskComboBox.setBounds(10, 20, getWidth() - 25, 20);
+		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
@@ -229,6 +235,7 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
 						taskList.updateList();
+						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == run) {
 						runSelectedItem();
 					}
@@ -241,16 +248,60 @@ public class MainView extends JFrame {
 
 	private void runSelectedItem() {
 		String taskID = (String) taskComboBox.getSelectedItem();
-		File task = new File(taskID);
-		if (!task.isDirectory()) {
-			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
+		if(taskID == null) {
+			MessageDialog.noneSelectedDialog();
 			return;
 		}
-
-		client.observeDir(taskID);
-
+		String folder = getFolderFromProperties();
+		if(!new File(folder).exists()) {
+			askDefaultFolder();
+			return;
+		}
+		File task = new File(folder + File.separator + taskID);
+		task.mkdirs();
+		
+		updateStatusBar(StatusType.RUNMESSAGE);
+//		client.observeDir(task);
+		client.sendFiles(task);
+		
+//		int id = Integer.valueOf(taskID);
+//		taskList.remove(taskComboBox.getSelectedIndex());
+//		runTaskList.add(new Task(id, "Sending"));
+		
 		// TODO
 		// ApplicationLauncher.open(program);
+	}
+
+	private void askDefaultFolder() {
+		MessageDialog.info(manager.getString("Main.choosedefaultfoldertitle"),
+				manager.getString("Main.choosedefaultfolder") + manager.getString("Config.defaultfolder"));
+		openConfigDialog();
+		runSelectedItem();
+	}
+
+	private String getFolderFromProperties() {
+		if(config.containsKey(Constants.DEFAULTFOLDERCFG)) {
+			return config.getProperty(Constants.DEFAULTFOLDERCFG).trim();
+		}
+		return "";
+	}
+	
+	private void updateStatusBar(StatusType type) {
+		statusBar.setForeground(Color.BLACK);
+		statusBar.setText(StatusMessage.getMessage(type));
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(4000);
+					statusBar.setForeground(Color.GRAY);
+					statusBar.setText(manager.getString("StatusMessage.copyright"));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		t.start();
 	}
 
 	/**
@@ -261,7 +312,7 @@ public class MainView extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 100, getWidth() - 5, getHeight() - 180);
+		panel.setBounds(0, 100, getWidth() - 10, getHeight() - 180);
 		panel.setBorder(BorderFactory.createTitledBorder(runningTask));
 
 		addRunningTaskButtons(panel);
@@ -278,10 +329,11 @@ public class MainView extends JFrame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, getWidth() - 15, getHeight() - 250);
+		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
-		taskTable = new TaskTable();
+		runTaskList = new TaskList();
+		taskTable = new TaskTable(runTaskList);
 		tableScrollPane = new JScrollPane(taskTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());
 		tablePanel.add(tableScrollPane);
@@ -318,8 +370,10 @@ public class MainView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == send) {
 						taskTable.send();
+						updateStatusBar(StatusType.SENDMESSAGE);
 					} else if (e.getActionCommand() == cancel) {
 						taskTable.cancel();
+						updateStatusBar(StatusType.CANCELMESSAGE);
 					}
 				}
 			});
@@ -393,8 +447,7 @@ public class MainView extends JFrame {
 		final KeyStroke configAccelerator = KeyStroke.getKeyStroke(manager.getMnemonic("Main.configitem"), KeyEvent.CTRL_DOWN_MASK);
 		final KeyStroke logAccelerator = KeyStroke.getKeyStroke(manager.getMnemonic("Main.logitem"), KeyEvent.CTRL_DOWN_MASK);
 		final KeyStroke exitAccelerator = null;
-		final KeyStroke[] keyStrokes = { configAccelerator, logAccelerator,
-				exitAccelerator };
+		final KeyStroke[] keyStrokes = { configAccelerator, logAccelerator, exitAccelerator };
 		for (int i = 0; i < fileTitles.length; i++) {
 			if (i == 2) {
 				fileMenu.addSeparator();
@@ -405,8 +458,7 @@ public class MainView extends JFrame {
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == config) {
-						ConfigDialog cd = new ConfigDialog();
-						cd.setVisible(true);
+						openConfigDialog();
 					} else if (e.getActionCommand() == log) {
 						LogFrame ld = new LogFrame();
 						ld.setVisible(true);
@@ -417,5 +469,10 @@ public class MainView extends JFrame {
 			});
 			fileMenu.add(fileItem);
 		}
+	}
+
+	private void openConfigDialog() {
+		ConfigDialog cd = new ConfigDialog();
+		cd.setVisible(true);
 	}
 }

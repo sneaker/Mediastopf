@@ -85,7 +85,7 @@ public class MainView extends JFrame {
 		setTitle(Constants.PROGRAM);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(600, 550);
-		setMinimumSize(new Dimension(getWidth(), getHeight()));
+		setMinimumSize(new Dimension(400, 450));
 		setLayout(null);
 		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

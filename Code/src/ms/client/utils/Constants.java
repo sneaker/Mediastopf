@@ -13,7 +13,7 @@ public class Constants {
 	private static final String UILANGUAGE = "ms/client/ui/lang/";
 	
 	public static final String CONFIGFILE = "MediaStopf.cfg";
-	public static final String LOGFILE = "MediaStopf.log";
+	public static final String LOGFILE = "logs/MediaStopf.log";
 	public static final String LANGUAGE = UILANGUAGE + "mediastopf";
 	
 	public static final String ICON = "icon.png";

@@ -89,7 +89,7 @@ public class MainViewServer extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLayout(null);
 		setSize(600, 550);
-		setMinimumSize(new Dimension(getWidth(), getHeight()));
+		setMinimumSize(new Dimension(400, 450));
 		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);

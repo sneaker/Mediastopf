@@ -48,7 +48,6 @@ public class CreateDeleteDomainObjectsTest {
 		BildItem myBildItem = new BildItem("Name" + randomint1, "Importdate" + randomint2, "Speicherort" + randomint3, randomint1, "ort" + randomint2, randomint3, randomint1, randomint2, randomint3);
 		myBildItem.save();
 		String sql = "select Name, Importdatum, Speicherort, BildItem.id as id, Aufloesung, Aufnahmeort, fk_ImportMedium, fk_Container, Breite, Hoehe  from BildItem, Item WHERE BildItem.fk_Item = Item.id and BildItem.id = " + myBildItem.getID();
-		System.out.println(sql);
 		List<BildItem> myList = ActiveRecordManager.getObjectList(sql, BildItem.class);
 				
 		for (BildItem item: myList) assertEquals(myBildItem, item);

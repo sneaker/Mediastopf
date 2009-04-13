@@ -1,11 +1,14 @@
 package ms.server.ui.dialogs;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -31,7 +34,12 @@ import ms.server.utils.ConfigHandler;
 import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
-
+/**
+ * dialog to choose a destination, where the files should be copied
+ * 
+ * @author david
+ *
+ */
 public class ExportDialog extends JDialog {
 
 	/**
@@ -43,7 +51,7 @@ public class ExportDialog extends JDialog {
 	private I18NManager manager = I18NManager.getManager();
 	private final String exportFolder = manager.getString("Exporter.exportstorage");
 	private final String export = manager.getString("export"), close = manager.getString("close");
-	private final String exportcfg = "exportfolder";
+	private JLabel folderNotValidLabel = getNotValidLabel(new Point(140, 10));
 	private JTextField exportTextField;
 	private int taskID;
 
@@ -64,6 +72,8 @@ public class ExportDialog extends JDialog {
 		addDefaultFolderPanel();
 		
 		loadProperties();
+		
+		showPathNotValidLabel();
 	}
 
 	private void initDialog() {
@@ -83,6 +93,12 @@ public class ExportDialog extends JDialog {
 		createLabel(Constants.EXPORT_L, new Rectangle(12, 30, 40, 40));
 		
 		exportTextField = createTextField(new Point(60, 40));
+		exportTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				showPathNotValidLabel();
+			}
+		});
 		exportTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -168,7 +184,7 @@ public class ExportDialog extends JDialog {
 						export();
 						saveAndClose();
 					} else if (e.getActionCommand() == close) {
-						saveAndClose();
+						close();
 					}
 				}
 			});
@@ -205,15 +221,15 @@ public class ExportDialog extends JDialog {
 
 	private void saveValues() {
 		if(!exportTextField.getText().isEmpty())
-			config.setProperty(exportcfg, exportTextField.getText().trim());
+			config.setProperty(Constants.EXPORTCFG, exportTextField.getText().trim());
 	}
 	
 	/**
 	 * load properties.
 	 */
 	private void loadProperties() {
-		if(config.containsKey(exportcfg))
-			exportTextField.setText(config.getProperty(exportcfg));
+		if(config.containsKey(Constants.EXPORTCFG))
+			exportTextField.setText(config.getProperty(Constants.EXPORTCFG));
 	}
 	
 	private void openExportFileChooser() {
@@ -221,6 +237,7 @@ public class ExportDialog extends JDialog {
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
 		openDialog(dirChooser, exportTextField);
+		showPathNotValidLabel();
 	}
 
 	private void openDialog(JFileChooser dirChooser, JTextField textField) {
@@ -286,5 +303,28 @@ public class ExportDialog extends JDialog {
 	private void close() {
 		setVisible(false);
 		dispose();
+	}
+	
+	private JLabel getNotValidLabel(Point p) {
+		JLabel label = new JLabel(manager.getString("Exporter.notvalid"));
+		label.setSize(120, 25);
+		label.setLocation(p);
+		label.setForeground(Color.RED);
+		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBorder(BorderFactory.createLineBorder(Color.RED));
+		label.setVisible(true);
+		add(label, 0);
+		return label;
+	}
+	
+	private void showPathNotValidLabel() {
+		String text = exportTextField.getText();
+		File f = new File(text);
+		if(f.exists() && f.isDirectory()) {
+			folderNotValidLabel.setVisible(false);
+		} else {
+			folderNotValidLabel.setVisible(true);
+		}
 	}
 }

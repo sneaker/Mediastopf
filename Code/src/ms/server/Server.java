@@ -16,7 +16,13 @@ import ms.server.ui.MainViewServer;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * server classe
+ * loading gui components and start server
+ * 
+ * @author david
+ *
+ */
 public class Server implements ServerHandler {
 	
 	public static final int MAX_SERVER_THREADS = 10;

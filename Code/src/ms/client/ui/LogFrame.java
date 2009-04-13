@@ -30,13 +30,18 @@ import javax.swing.filechooser.FileFilter;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
-import ms.client.filesys.FileIO;
+import ms.client.filesys.FileContentWriter;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
 import ms.client.log.Log;
 
-
+/**
+ * show log information from logger
+ * 
+ * @author david
+ *
+ */
 public class LogFrame extends JFrame implements Runnable {
 
 	/**
@@ -51,7 +56,6 @@ public class LogFrame extends JFrame implements Runnable {
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private final String save = manager.getString("save"), close = manager.getString("close");
-	private final String logcfg = "log.autorefresh";
 	private boolean suspendThread = false;
 
 	public LogFrame() {
@@ -208,7 +212,7 @@ public class LogFrame extends JFrame implements Runnable {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
 			String file = addTXTPostfix(filename, path);
-			FileIO.write(file, textArea.getText().trim());
+			FileContentWriter.write(new File(file), textArea.getText().trim());
 		}
 	}
 
@@ -271,15 +275,15 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 	
 	private void saveValues() {
-		config.setProperty(logcfg, String.valueOf(box.isSelected()));
+		config.setProperty(Constants.LOGCFG, String.valueOf(box.isSelected()));
 	}
 	
 	/**
 	 * load properties.
 	 */
 	private void loadProperties() {
-		if(config.containsKey(logcfg))
-			box.setSelected(Boolean.parseBoolean(config.getProperty(logcfg)));
+		if(config.containsKey(Constants.LOGCFG))
+			box.setSelected(Boolean.parseBoolean(config.getProperty(Constants.LOGCFG)));
 	}
 
 	/**

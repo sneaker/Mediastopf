@@ -21,7 +21,14 @@ import ms.client.utils.I18NManager;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * client class
+ * used to load gui components and connecting to server,
+ * also included a directory observer, which automatically trigger "sendFiles"
+ * 
+ * @author david
+ *
+ */
 public class Client implements ClientHandler {
 	
 	public static final String HOST = "localhost";

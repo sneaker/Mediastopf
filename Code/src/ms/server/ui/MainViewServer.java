@@ -42,7 +42,12 @@ import ms.server.ui.tables.Table;
 import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
-
+/**
+ * main window of mediastopf server
+ * 
+ * @author david
+ *
+ */
 public class MainViewServer extends JFrame {
 	/**
 	 * 
@@ -125,7 +130,7 @@ public class MainViewServer extends JFrame {
 	}
 	
 	private void updatePanelBounds() {
-		int width = getWidth() - 5;
+		int width = getWidth() - 10;
 		int height = getHeight() - 70;
 		
 		JPanel runtaskPanel = panelMap.get(runningTask);
@@ -139,11 +144,11 @@ public class MainViewServer extends JFrame {
 	}
 	
 	private void updateComponentBounds(JPanel runtask, JPanel task, JPanel status) {
-		buttonMap.get(export).setLocation(task.getWidth() - 135,task.getHeight() - 40);
+		buttonMap.get(export).setLocation(task.getWidth() - 140,task.getHeight() - 40);
 		
 		int width = runtask.getWidth() - 10;
 		int height = runtask.getHeight() - 40;
-		buttonMap.get(cancel).setLocation(width - 125, height);
+		buttonMap.get(cancel).setLocation(width - 130, height);
 		tablePanel.setSize(width, height - 30);
 		
 		taskComboBox.setSize(task.getWidth() - 20, 20);
@@ -160,7 +165,7 @@ public class MainViewServer extends JFrame {
 	private void addStatusBar() {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, getHeight() - 70, getWidth() + 50, 20);
+		panel.setBounds(0, getHeight() - 70, getWidth() - 10, 20);
 		panelMap.put(statusbar, panel);
 		
 		statusBar = new JTextField(manager.getString("Main.copyright"));
@@ -187,7 +192,7 @@ public class MainViewServer extends JFrame {
 		for(int i=0; i<panelLabel.length;i++) {
 			JPanel panel = new JPanel();
 			panel.setLayout(null);
-			panel.setBounds(0, y[i], getWidth() - 5, height[i]);
+			panel.setBounds(0, y[i], getWidth() - 10, height[i]);
 			panel.setBorder(BorderFactory.createTitledBorder(panelLabel[i]));
 			panel.add(buttonMap.get(buttonLabel[i]));
 			add(panel);
@@ -204,7 +209,7 @@ public class MainViewServer extends JFrame {
 	 */
 	private void addTaskComboBox() {
 		taskComboBox = new JComboBox(boxModel);
-		taskComboBox.setBounds(10, 20, getWidth() - 25, 20);
+		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new MetalComboBoxUI() {
@@ -221,7 +226,7 @@ public class MainViewServer extends JFrame {
 	 * @return JButton
 	 */
 	private void addButtons() {
-		final int x = getWidth() - 140;
+		final int x = getWidth() - 150;
 		final int[] y = { 50, getHeight() - 220 };
 		final int width = 115;
 		final int height = 25;
@@ -272,7 +277,7 @@ public class MainViewServer extends JFrame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, getWidth() - 15, getHeight() - 250);
+		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
 		exportTable = new ExportTable();

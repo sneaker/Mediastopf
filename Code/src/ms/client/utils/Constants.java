@@ -1,6 +1,15 @@
 package ms.client.utils;
 
-
+/**
+ * definitions:
+ * - programname
+ * - icons
+ * - files
+ * - etc.
+ * 
+ * @author david
+ *
+ */
 public class Constants {
 	
 	public static final String PROGRAM = "MediaStopf";
@@ -11,6 +20,7 @@ public class Constants {
 	
 	public static final String AUDIORIPPERCFG = "audioripper";
 	public static final String DEFAULTFOLDERCFG = "defaultfolder";
+	public static final String LOGCFG = "log.autorefresh";
 	
 	public static final String UIIMAGE = "/ms/client/ui/images/";
 	private static final String UILANGUAGE = "ms/client/ui/lang/";
@@ -21,8 +31,6 @@ public class Constants {
 	
 	public static final String ICON = "icon.png";
 	public static final String CANCEL = "cancel.png";
-	public static final String EXPORT_L = "export.png";
-	public static final String EXPORT_S = "exportsmall.png";
 	public static final String SAVE = "save.png";
 	public static final String TICK = "tick.png";
 	public static final String RELOAD = "reload.png";

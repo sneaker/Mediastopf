@@ -8,7 +8,12 @@ import java.io.IOException;
 import java.util.Properties;
 
 
-
+/**
+ * save/load a configfile
+ * 
+ * @author david
+ *
+ */
 public class ConfigHandler extends Properties {
 	
 	/**

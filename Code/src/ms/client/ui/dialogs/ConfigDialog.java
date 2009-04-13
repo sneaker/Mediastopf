@@ -1,11 +1,14 @@
 package ms.client.ui.dialogs;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,11 +29,18 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import ms.client.utils.Constants;
 import ms.client.utils.ConfigHandler;
+import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
 
-
+/**
+ * configuration dialog
+ * - custom cdripper
+ * - custom import folder
+ * 		
+ * @author david
+ *
+ */
 public class ConfigDialog extends JDialog {
 
 	/**
@@ -43,6 +53,8 @@ public class ConfigDialog extends JDialog {
 	private JTextField ripperTextField, folderTextField;
 	private final String audioripper = manager.getString("Config.audiograbber"), defaultfolder = manager.getString("Config.defaultfolder");
 	private final String save = manager.getString("save"), close = manager.getString("close");
+	private JLabel folderNotValidLabel = getNotValidLabel(new Point(100, 10));
+	private JLabel ripperNotValidLabel = getNotValidLabel(new Point(100, 85));
 
 	public ConfigDialog() {
 		initGUI();
@@ -59,6 +71,9 @@ public class ConfigDialog extends JDialog {
 		addButtons();
 		
 		loadProperties();
+		
+		showPathNotValidLabel();
+		showFileNotValidLabel();
 	}
 
 	private void initDialog() {
@@ -99,9 +114,15 @@ public class ConfigDialog extends JDialog {
 
 	private void addDefaultFolderTextField() {
 		folderTextField = createTextField(new Point(60, 40));
+		folderTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				showPathNotValidLabel();
+			}
+		});
 		folderTextField.addMouseListener(new MouseAdapter() {
 			@Override
-			 public void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				if((e.getButton() == MouseEvent.BUTTON1) && (e.getClickCount() == 2))
 					openDefaultFolderFileChooser();
 			}
@@ -110,6 +131,12 @@ public class ConfigDialog extends JDialog {
 
 	private void addAudioRipperTextField() {
 		ripperTextField = createTextField(new Point(60, 115));
+		ripperTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				showFileNotValidLabel();
+			}
+		});
 		ripperTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -231,6 +258,7 @@ public class ConfigDialog extends JDialog {
 		JFileChooser fileChooser = new JFileChooser();
 		fileFilter(fileChooser);
 		openDialog(fileChooser, ripperTextField);
+		showFileNotValidLabel();
 	}
 	
 	private void openDefaultFolderFileChooser() {
@@ -238,6 +266,7 @@ public class ConfigDialog extends JDialog {
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
 		openDialog(dirChooser, folderTextField);
+		showPathNotValidLabel();
 	}
 
 	private void openDialog(JFileChooser fileChooser, JTextField textField) {
@@ -248,6 +277,19 @@ public class ConfigDialog extends JDialog {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			textField.setText(fileChooser.getSelectedFile().getAbsolutePath().trim());
 		}
+	}
+	
+	private JLabel getNotValidLabel(Point p) {
+		JLabel label = new JLabel(manager.getString("Config.notvalid"));
+		label.setSize(120, 25);
+		label.setLocation(p);
+		label.setForeground(Color.RED);
+		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBorder(BorderFactory.createLineBorder(Color.RED));
+		label.setVisible(true);
+		add(label, 0);
+		return label;
 	}
 
 	private void fileFilter(JFileChooser fileChooser) {
@@ -319,5 +361,25 @@ public class ConfigDialog extends JDialog {
 			popupMenu.add(menuItem);
 		}
 		return popupMenu;
+	}
+
+	private void showPathNotValidLabel() {
+		String text = folderTextField.getText();
+		File f = new File(text);
+		if(f.exists() && f.isDirectory()) {
+			folderNotValidLabel.setVisible(false);
+		} else {
+			folderNotValidLabel.setVisible(true);
+		}
+	}
+	
+	private void showFileNotValidLabel() {
+		String text = ripperTextField.getText();
+		File f = new File(text);
+		if(f.exists() && f.isFile() && text.endsWith("exe")) {
+			ripperNotValidLabel.setVisible(false);
+		} else {
+			ripperNotValidLabel.setVisible(true);
+		}
 	}
 }

@@ -44,6 +44,12 @@ import ms.client.utils.I18NManager;
 import ms.client.utils.StatusMessage;
 import ms.client.utils.StatusMessage.StatusType;
 
+/**
+ * main window of mediastopf
+ * 
+ * @author david
+ *
+ */
 public class MainView extends JFrame {
 	/**
 	 * 
@@ -264,9 +270,10 @@ public class MainView extends JFrame {
 //		client.observeDir(task);
 		client.sendFiles(task);
 		
-//		int id = Integer.valueOf(taskID);
-//		taskList.remove(taskComboBox.getSelectedIndex());
-//		runTaskList.add(new Task(id, "Sending"));
+		// TODO
+		int id = Integer.valueOf(taskID);
+		taskList.remove(taskComboBox.getSelectedIndex());
+		runTaskList.add(new Task(id, "Sending"));
 		
 		// TODO
 		// ApplicationLauncher.open(program);

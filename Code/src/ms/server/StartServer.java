@@ -1,5 +1,13 @@
 package ms.server;
 
+/**
+ * start server
+ * server in debugmode if args has "-debug" flag and
+ * possibility to change port with the "-port" flag
+ * 
+ * @author david
+ *
+ */
 public class StartServer {
 
 	public static boolean DEBUG = false;

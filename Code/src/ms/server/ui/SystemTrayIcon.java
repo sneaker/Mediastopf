@@ -14,7 +14,12 @@ import javax.swing.ImageIcon;
 import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
-
+/**
+ * show trayicon if possible
+ * 
+ * @author david
+ *
+ */
 public class SystemTrayIcon {
 	
 	private I18NManager manager = I18NManager.getManager();

@@ -1,6 +1,12 @@
 package ms.client.utils;
 
 
+/**
+ * statusmessages
+ * 
+ * @author david
+ *
+ */
 public class StatusMessage {
 	
 	private static I18NManager manager = I18NManager.getManager();

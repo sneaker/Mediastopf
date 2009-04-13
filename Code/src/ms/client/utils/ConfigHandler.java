@@ -9,7 +9,12 @@ import java.util.Properties;
 
 import ms.client.utils.Constants;
 
-
+/**
+ * save/load a configfile
+ * 
+ * @author david
+ *
+ */
 public class ConfigHandler extends Properties {
 	
 	/**

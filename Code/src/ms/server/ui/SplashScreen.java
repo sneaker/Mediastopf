@@ -8,6 +8,12 @@ import javax.swing.JLabel;
 import javax.swing.JWindow;
 import javax.swing.border.LineBorder;
 
+/**
+ * splash screen
+ * 
+ * @author david
+ *
+ */
 public class SplashScreen extends JWindow implements Runnable {
 	
 	private static final long serialVersionUID = 1L;

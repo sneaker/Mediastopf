@@ -13,6 +13,16 @@ import org.apache.log4j.WriterAppender;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
+/**
+ * Apache log4j Logger
+ * three different logtypes:
+ * - show in console
+ * - write to a file (daily logging)
+ * - put log information to a outputstream
+ * 
+ * @author david
+ *
+ */
 public class Log {
 	
 	private static Logger logger = Logger.getLogger(Log.class);

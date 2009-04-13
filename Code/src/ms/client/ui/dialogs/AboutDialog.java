@@ -26,7 +26,12 @@ import ms.client.utils.BrowserControl;
 import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
 
-
+/**
+ * about dialog
+ * 
+ * @author david
+ *
+ */
 public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;

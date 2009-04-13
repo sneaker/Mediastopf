@@ -5,6 +5,12 @@ import java.util.ArrayList;
 
 import ms.client.logic.Task;
 
+/**
+ * client interface
+ * 
+ * @author david
+ *
+ */
 public interface ClientHandler {
 	
 	/**

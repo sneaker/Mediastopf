@@ -2,6 +2,12 @@ package ms.client.utils;
 
 import java.util.ResourceBundle;
 
+/**
+ * determine language of system and get the language from a file
+ * 
+ * @author david
+ *
+ */
 public class I18NManager {
 
 	private static I18NManager manager = new I18NManager();

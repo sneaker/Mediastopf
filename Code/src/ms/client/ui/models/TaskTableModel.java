@@ -49,7 +49,7 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 		Task task = list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return task.getTaskID();
+			return task.getID();
 		case 1:
 			return task.getStatus();
 		default:
@@ -63,7 +63,7 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 		switch(columnIndex) {
 		case 1:
 			String aValue = (String) value;
-			task.setTaskID(Integer.valueOf(aValue));
+			task.setID(Integer.valueOf(aValue));
 			break;
 		case 2:
 			task.setStatus((String) value);

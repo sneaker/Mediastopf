@@ -22,7 +22,7 @@ public class ConfigHandler extends Properties {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	static ConfigHandler handler = new ConfigHandler();
+	private static ConfigHandler handler = new ConfigHandler();
 	
 	private String filename = Constants.CONFIGFILE;
 	

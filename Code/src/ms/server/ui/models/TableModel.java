@@ -5,8 +5,8 @@ import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
-import ms.server.domain.Auftrag;
 import ms.server.logic.RunningList;
+import ms.server.logic.Task;
 import ms.server.utils.I18NManager;
 
 
@@ -46,7 +46,7 @@ public class TableModel extends AbstractTableModel implements Observer {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Auftrag task = list.get(rowIndex);
+		Task task = list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return task.getID();

@@ -30,6 +30,7 @@ import javax.swing.KeyStroke;
 
 import ms.client.Client;
 import ms.client.StartClient;
+import ms.client.logic.Task;
 import ms.client.logic.TaskList;
 import ms.client.ui.dialogs.AboutDialog;
 import ms.client.ui.dialogs.ConfigDialog;
@@ -66,6 +67,17 @@ public class MainView extends JFrame {
 			new SplashScreen(SPLASHIMAGE);
 		}
 		this.client = client;
+		taskList = new TaskList();
+		boxModel = new TaskComboBoxModel(taskList);
+		taskList.add("Audio-CD einlesen");
+		runningList = new TaskRunningList();
+		tableModel = new TaskTableModel(runningList);
+		runningList.add(new Task(1, "queued"));
+		runningList.add(new Task(2, "queued"));
+		runningList.add(new Task(3, "queued"));
+		runningList.add(new Task(4, "running..."));
+		runningList.add(new Task(5, "done"));
+		runningList.add(new Task(6, "done"));
 
 		initGUI();
 	}

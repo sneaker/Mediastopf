@@ -32,6 +32,10 @@ import javax.swing.KeyStroke;
 
 import ms.server.Server;
 import ms.server.StartServer;
+import ms.server.domain.Auftrag;
+import ms.server.logic.ExportRunningList;
+import ms.server.logic.ImportRunningList;
+import ms.server.logic.TaskList;
 import ms.server.ui.dialogs.AboutDialog;
 import ms.server.ui.dialogs.ExportDialog;
 import ms.server.ui.dialogs.MessageDialog;
@@ -39,7 +43,9 @@ import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.Table;
 
-
+/**
+ * Sets up the GUI for the server instance.
+ */
 public class MainViewServer extends JFrame {
 	/**
 	 * 

@@ -1,29 +1,34 @@
 package ms.server;
 
-
+/**
+ * Main class for the MediaStopf Server instance. 
+ */
 public class StartServer {
-	
+
 	public static boolean DEBUG = false;
-	
+
 	private static int PORT = 1337;
-	
+
 	/**
 	 * Start Server
 	 * 
 	 * @param args
+	 *            Use -port to set another port to listen to. <br />
+	 *            Use -debug to suppress splash screen at startup and enable
+	 *            more logging.
 	 */
 	public static void main(final String[] args) {
-		for(int i=0; i<args.length; i++) {
-			if(0<args.length) {
+		for (int i = 0; i < args.length; i++) {
+			if (0 < args.length) {
 				if (args[i].equalsIgnoreCase("-port")) {
-					PORT = Integer.valueOf(args[i+1]);
+					PORT = Integer.valueOf(args[i + 1]);
 				}
 				if (args[i].equalsIgnoreCase("-debug")) {
 					DEBUG = true;
 				}
 			}
 		}
-		
+
 		new Server(PORT);
 	}
 }

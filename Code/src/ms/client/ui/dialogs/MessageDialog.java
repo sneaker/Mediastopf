@@ -2,7 +2,11 @@ package ms.client.ui.dialogs;
 
 import javax.swing.JOptionPane;
 
+import ms.client.utils.I18NManager;
+
 public class MessageDialog {
+	
+	private static I18NManager manager = I18NManager.getManager();
 	
 	/**
 	 * show a information dialog
@@ -15,7 +19,7 @@ public class MessageDialog {
 	 * show a information dialog
 	 */
 	public static void noneSelectedDialog() {
-		JOptionPane.showMessageDialog(null, "Choose a Task", "No Task selected", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, manager.getString("Dialog.notaskmessage"), manager.getString("Dialog.notasktitle"), JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	/**

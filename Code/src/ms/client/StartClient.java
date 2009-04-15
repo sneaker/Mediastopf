@@ -1,6 +1,12 @@
 package ms.client;
 
-
+/**
+ * start client
+ * client in debugmode if args has a "-debug" flag
+ * 
+ * @author david
+ *
+ */
 public class StartClient {
 	
 	public static boolean DEBUG = false;

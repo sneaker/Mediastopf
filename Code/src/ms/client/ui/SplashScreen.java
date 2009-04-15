@@ -8,25 +8,35 @@ import javax.swing.JLabel;
 import javax.swing.JWindow;
 import javax.swing.border.LineBorder;
 
+/**
+ * splash screen
+ * 
+ * @author david
+ *
+ */
 public class SplashScreen extends JWindow implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private String image;
 
-	public SplashScreen(String splash) {
-		this.image = splash;
+	public SplashScreen(String image) {
+		this.image = image;
 		new Thread(this).start();
 	}
 
 	public void run() {
 		initWindow(setSplashImage());
+		sleep();
+		close();
+	}
+
+	private void sleep() {
 		try {
 			Thread.sleep(1600);
 		} catch (InterruptedException e) {
 			System.out.println(e);
 		}
-		close();
 	}
 
 	private void close() {

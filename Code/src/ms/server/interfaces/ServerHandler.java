@@ -4,7 +4,12 @@ import java.util.ArrayList;
 
 import ms.server.domain.Auftrag;
 
-
+/**
+ * server interface
+ * 
+ * @author david
+ *
+ */
 public interface ServerHandler {
 	/**
 	 * get entries from a database

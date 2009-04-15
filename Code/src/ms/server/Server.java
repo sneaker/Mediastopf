@@ -1,14 +1,12 @@
 package ms.server;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import ms.server.database.ActiveRecordManager;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
@@ -16,40 +14,32 @@ import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 import ms.server.ui.MainViewServer;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-
+/**
+ * server classe
+ * loading gui components and start server
+ * 
+ * @author david
+ *
+ */
 public class Server implements ServerHandler {
 	
-	private static final int MAX_SERVER_THREADS = 10;
+	public static final int MAX_SERVER_THREADS = 10;
 
 	public Server(int port) {
-		loadLog();
-		serverStartInfo();
 		startServer(port);
 		loadUI();
-//		loadData();
 	}
 
 	private void startServer(int port) {
+		serverStartInfo();
 		Logger logger = Log.getLogger();
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
 		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
 	}
 
-	private void loadData() {
-		// Get data from DB direct via domain object and activerecord
-		String sql = "select * from Auftrag";
-		List<Auftrag> lp = ActiveRecordManager.getObjectList(sql, Auftrag.class);
-		for (Auftrag name: lp) System.out.println(name.toString());
-
-		// Get data from DB via adapter class
-		lp = DbAdapter.getOrderList();
-		for (Auftrag name: lp) System.out.println(name.toString());
-	}
-	
 	public ArrayList<Auftrag> getDataBase() {
 		return DbAdapter.getOrderList();
 	}
@@ -70,11 +60,6 @@ public class Server implements ServerHandler {
 		//TODO
 	}
 	
-	private void loadLog() {
-		Log log = new Log();
-		log.setLevel(Level.ALL);
-	}
-
 	private void serverStartInfo() {
 		// TODO: ANPASSEN!
 		Logger logger = Log.getLogger();

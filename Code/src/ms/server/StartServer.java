@@ -2,12 +2,17 @@ package ms.server;
 
 /**
  * Main class for the MediaStopf Server instance. 
+ * start server
+ * server in debugmode if args has "-debug" flag and
+ * possibility to change port with the "-port" flag
+ * 
+ * @author david
+ *
  */
 public class StartServer {
 
 	public static boolean DEBUG = false;
-
-	private static int PORT = 1337;
+	public static int PORT = 1337;
 
 	/**
 	 * Start Server
@@ -18,8 +23,8 @@ public class StartServer {
 	 *            more logging.
 	 */
 	public static void main(final String[] args) {
-		for (int i = 0; i < args.length; i++) {
-			if (0 < args.length) {
+		if (0 < args.length) {
+			for (int i = 0; i < args.length; i++) {
 				if (args[i].equalsIgnoreCase("-port")) {
 					PORT = Integer.valueOf(args[i + 1]);
 				}
@@ -28,7 +33,6 @@ public class StartServer {
 				}
 			}
 		}
-
 		new Server(PORT);
 	}
 }

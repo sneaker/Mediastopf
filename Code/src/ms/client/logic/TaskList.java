@@ -10,27 +10,21 @@ import ms.client.StartClient;
 public class TaskList extends Observable {
 	
 	private ArrayList<Task> list = new ArrayList<Task>();
+	private Client client;
 	
 	public TaskList() {
 		if(StartClient.DEBUG) {
-			addTestData();
+			add(new Task(1111, "Waiting"));
+			add(new Task(2222, "Ready"));
+			add(new Task(3333, "Sending"));
 		}
 	}
 
 	public TaskList(Client client) {
-//		this.list = client.getTaskList();
-		addTestData();
+		this.client = client;
+		updateList();
 	}
 	
-	private void addTestData() {
-		for(int i=0; i < 10; i++) {
-			add(new Task(i, "Test"));
-		}
-		add(new Task(1111, "Waiting"));
-		add(new Task(2222, "Ready"));
-		add(new Task(3333, "Sending"));
-	}
-
 	public void add(Task o) {
 		list.add(o);
 		setChanged();
@@ -55,5 +49,11 @@ public class TaskList extends Observable {
 	
 	public int size() {
 		return list.size();
+	}
+	
+	public void updateList() {
+		this.list = client.getTaskList();
+		setChanged();
+		notifyObservers();
 	}
 }

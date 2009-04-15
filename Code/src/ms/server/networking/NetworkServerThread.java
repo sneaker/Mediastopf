@@ -33,14 +33,23 @@ public class NetworkServerThread implements Runnable {
 	public void run() {
 		String receivedMessage = null;
 		while (true) {
+		
 			try {
 				receivedMessage = receiveMessage();
 			} catch (IOException e) {
 				logger.error("Cannot read from receiver");
 				e.printStackTrace();
 			}
-			if (receivedMessage.equals("END"))
+			
+			if (receivedMessage.equals("END")) {
+				try {
+					sendMessage("END OK");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return;
+			}
 
 			if (receivedMessage.equals("INFO")) {
 				sendTaskList();
@@ -59,8 +68,6 @@ public class NetworkServerThread implements Runnable {
 
 					receiveFile(namemsg, size);
 					sendMessage("ENDTRANSFER");
-					receiveMessage();
-
 				} catch (IOException e) {
 					logger.error("cannot write to sender");
 					e.printStackTrace();
@@ -74,7 +81,7 @@ public class NetworkServerThread implements Runnable {
 
 		for (Auftrag name : lp) {
 			try {
-				sendMessage(name.getName());
+				sendMessage(String.valueOf(name.getID()));
 				if (!receiveMessage().equals("OK"))
 					logger.fatal("Error in Network protocol");
 			} catch (IOException e) {
@@ -98,17 +105,14 @@ public class NetworkServerThread implements Runnable {
 		FileOutputStream writer = new FileOutputStream(name + "_rec");
 		BufferedOutputStream bos = new BufferedOutputStream(writer);
 		while ((bytesread += reader.read(filebuffer, 0, filebuffer.length)) != -1) {
-			logger.info("reading...");
-			logger.info(bytesread);
-			logger.info("filebuffer: " + filebuffer);
 			if (bytesread >= size)
 				break;
 		}
-		logger.info("Transfer Server finished");
 
 		bos.write(filebuffer, 0, size);
 		bos.flush();
 		bos.close();
+		writer.close();
 	}
 
 	private String receiveMessage() throws IOException {
@@ -119,26 +123,22 @@ public class NetworkServerThread implements Runnable {
 			logger.error("Error: Cannot get InputStream");
 			e.printStackTrace();
 		}
-		String receivedMessage;
 
-		receivedMessage = receiver.readLine();
-
-		logger.info("SERVER: Client message: ");
-		logger.info(receivedMessage);
-
-		return receivedMessage;
+		String rec = receiver.readLine();
+		logger.info("SERVER: Client message: " + rec);
+		return rec;
 	}
 
 	private void sendMessage(String reply) throws IOException {
 		try {
 			sender = new PrintWriter(new OutputStreamWriter(clientSocket
-					.getOutputStream()), true);
+					.getOutputStream()), false);
 			logger.info("SERVER: Server message: " + reply);
 		} catch (IOException e) {
 			logger.error("Error: Cannot get OutputStream");
 		}
 
 		sender.println(reply);
-		logger.info("The Reply: " + reply);
+		sender.flush();
 	}
 }

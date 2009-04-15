@@ -14,6 +14,7 @@ public class Mediensammlung implements ActiveRecord {
 	private String name;
 	private int typ, fk_Auftrag;
 	private int id = NOTINDB;
+	private List<ImportMedium> importmediumlist;
 	
 	
 	

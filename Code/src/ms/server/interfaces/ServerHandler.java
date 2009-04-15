@@ -2,7 +2,7 @@ package ms.server.interfaces;
 
 import java.util.ArrayList;
 
-import ms.server.domain.Auftrag;
+import ms.server.logic.Task;
 
 /**
  * server interface
@@ -16,7 +16,7 @@ public interface ServerHandler {
 	 * 
 	 * @return ArrayList
 	 */
-	public ArrayList<Auftrag> getDataBase();
+	public ArrayList<Task> getDataBase();
 	/**
 	 * send objects
 	 * 

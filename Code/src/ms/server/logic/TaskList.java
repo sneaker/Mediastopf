@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import ms.server.Server;
-import ms.server.domain.Auftrag;
 
 
 public class TaskList extends Observable {
@@ -18,8 +17,8 @@ public class TaskList extends Observable {
 	}
 
 	private void updateList() {
-		ArrayList<Auftrag> tasklist = server.getDataBase();
-		for(Auftrag a: tasklist) {
+		ArrayList<Task> tasklist = server.getDataBase();
+		for(Task a: tasklist) {
 			list.add(a.getID());
 		}
 		setChanged();

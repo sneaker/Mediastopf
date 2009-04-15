@@ -11,6 +11,7 @@ import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
 import ms.server.log.Log;
+import ms.server.logic.Task;
 import ms.server.networking.NetworkServer;
 import ms.server.ui.MainViewServer;
 
@@ -40,8 +41,13 @@ public class Server implements ServerHandler {
 		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
 	}
 
-	public ArrayList<Auftrag> getDataBase() {
-		return DbAdapter.getOrderList();
+	public ArrayList<Task> getDataBase() {
+		ArrayList<Auftrag> list = DbAdapter.getOrderList();
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		for(Auftrag a: list) {
+			tasks.add(new Task(a.getID(), Integer.toString(a.getStatus())));
+		}
+		return tasks;
 	}
 	
 	public void sendObject(Object o) {

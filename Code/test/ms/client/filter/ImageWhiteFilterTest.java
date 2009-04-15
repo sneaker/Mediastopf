@@ -5,12 +5,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.junit.Test;
 
 public class ImageWhiteFilterTest {
 	
-	private static final int IMAGE_HEIGHT = 100;
+	private static final int IMAGE_HEIGHT = 111;
 	private static final int IMAGE_WIDTH = IMAGE_HEIGHT;
 
 	@Test
@@ -37,18 +39,26 @@ public class ImageWhiteFilterTest {
 	
 	@Test
 	public void testImage95PercentWhite() {
-		int split = IMAGE_WIDTH/100*95;
-		BufferedImage image = createSplitImage(split);
+//		int splitX = round((double)IMAGE_WIDTH/100*95);
+		int splitY = round((double)IMAGE_HEIGHT/100*95);
+		BufferedImage image = createSplitImage(0, splitY);
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertTrue(isWhite);
 	}
 	
 	@Test
 	public void testImage94PercentWhite() {
-		int split = IMAGE_WIDTH/100*94;
-		BufferedImage image = createSplitImage(split);
+//		int splitX = round((double)IMAGE_WIDTH/100*94);
+		int splitY = round((double)IMAGE_HEIGHT/100*94);
+		BufferedImage image = createSplitImage(0, splitY);
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertFalse(isWhite);
+	}
+	
+	private int round(double d) {
+		BigDecimal bd = new BigDecimal(d);
+		bd = bd.setScale(0, RoundingMode.HALF_UP);
+		return bd.intValue();
 	}
 	
 	private BufferedImage createImage(Color c) {
@@ -61,10 +71,10 @@ public class ImageWhiteFilterTest {
 		return image;
 	}
 	
-	private BufferedImage createSplitImage(int startBlack) {
+	private BufferedImage createSplitImage(int startBlackX, int startBlackY) {
 		BufferedImage image = createImage(new Color(255, 255, 255));
-		for (int i = 0; i < image.getWidth(); i++) {
-			for (int j = startBlack; j < image.getHeight(); j++) {
+		for (int i = startBlackX; i < image.getWidth(); i++) {
+			for (int j = startBlackY; j < image.getHeight(); j++) {
 				image.setRGB(i, j, new Color(0, 0, 0).getRGB());
 			}
 		}

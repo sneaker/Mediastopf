@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import ms.server.ui.Constants;
+
 
 /**
  * save/load a configfile

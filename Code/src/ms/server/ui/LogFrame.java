@@ -31,7 +31,6 @@ import javax.swing.filechooser.FileFilter;
 import ms.server.filesys.FileIO;
 import ms.server.log.Log;
 import ms.server.utils.ConfigHandler;
-import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;

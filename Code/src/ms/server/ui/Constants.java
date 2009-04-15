@@ -1,4 +1,4 @@
-package ms.server.utils;
+package ms.server.ui;
 
 /**
  * definitions:

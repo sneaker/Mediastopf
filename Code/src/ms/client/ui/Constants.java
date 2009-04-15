@@ -1,4 +1,4 @@
-package ms.client.utils;
+package ms.client.ui;
 
 /**
  * definitions:

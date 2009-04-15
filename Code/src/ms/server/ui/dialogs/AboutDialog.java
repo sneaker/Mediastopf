@@ -22,8 +22,8 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import ms.server.ui.Constants;
 import ms.server.utils.BrowserControl;
-import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
 /**

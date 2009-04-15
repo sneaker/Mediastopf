@@ -29,8 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import ms.client.ui.Constants;
 import ms.client.utils.ConfigHandler;
-import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
 
 /**

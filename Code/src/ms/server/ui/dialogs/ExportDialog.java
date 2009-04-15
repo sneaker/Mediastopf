@@ -30,8 +30,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.server.filesys.FileIO;
+import ms.server.ui.Constants;
 import ms.server.utils.ConfigHandler;
-import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
 /**

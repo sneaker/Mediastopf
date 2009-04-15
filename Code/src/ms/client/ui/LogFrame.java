@@ -32,7 +32,6 @@ import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 import ms.client.filesys.FileContentWriter;
 import ms.client.utils.ConfigHandler;
-import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
 import ms.client.log.Log;
 

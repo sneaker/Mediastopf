@@ -2,7 +2,7 @@ package ms.client.log;
 
 import java.io.IOException;
 
-import ms.client.utils.Constants;
+import ms.client.ui.Constants;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.DailyRollingFileAppender;

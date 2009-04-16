@@ -24,7 +24,8 @@ import org.junit.Test;
 
 public class ServerConnectionTest {
 	
-	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + "msclienttest" + File.separator;
+	// Added additional File.separator after the tmpdir, because system wanted to access "/tmpmsclienttest/testfile4693". Probably Windows is handling this in another way?
+	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator;
 	private File folder;
 	private ServerConnection connection;
 
@@ -82,6 +83,8 @@ public class ServerConnectionTest {
 	private void generateFiles() {
 		for(int i=0; i < 100; i++) {
 			File f = new File(folder + File.separator + "testfile" + (int)(Math.random()*10000));
+			System.out.println(File.separator);
+			System.out.println(f.getPath());
 			try {
 				f.createNewFile();
 				generate_content(f);

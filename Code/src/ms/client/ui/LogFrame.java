@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 
@@ -27,8 +28,6 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
-
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 import ms.client.filesys.FileContentWriter;
 import ms.client.utils.ConfigHandler;
@@ -350,7 +349,7 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void readLogContent() {
-		ByteOutputStream bos = Log.getOutputStream();
+		ByteArrayOutputStream bos = Log.getOutputStream();
 		textArea.setText(bos.toString());
 		if(box.isSelected()) {
 			textArea.setCaretPosition(textArea.getDocument().getLength());

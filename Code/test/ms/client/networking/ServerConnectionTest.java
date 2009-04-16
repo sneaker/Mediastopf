@@ -53,7 +53,6 @@ public class ServerConnectionTest {
 			}
 		}
 		String[] transferedList = folder.list(new FilenameFilter() {
-			@Override
 			public boolean accept(File dir, String name) {
 				return name.contains("_rec");
 			}

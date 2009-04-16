@@ -61,16 +61,14 @@ public class BildItem extends Item {
 		return Hoehe;
 	}
 	
-	@Override
 	public String toString() {
-		return "Bilditem-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort + " Auflösung: " + Aufloesung + " Hoehe: " + Hoehe + " Breite: " + Breite;
+		return "Bilditem-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort + " AuflÃ¶sung: " + Aufloesung + " Hoehe: " + Hoehe + " Breite: " + Breite;
 	}
 	
 	public int getID() {
 		return id;
 	}
 	
-	@Override
 	public boolean save() {
 		try {
 			if (!isInDB())

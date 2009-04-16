@@ -14,6 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -37,12 +38,15 @@ import ms.client.ui.dialogs.AboutDialog;
 import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskComboBoxModel;
+import ms.client.ui.models.TaskTableModel;
 import ms.client.ui.tables.TaskTable;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
 import ms.client.utils.StatusMessage;
 import ms.client.utils.StatusMessage.StatusType;
+import ms.server.logic.RunningList;
+import ms.server.ui.models.TableModel;
 
 /**
  * main window of mediastopf
@@ -72,6 +76,10 @@ public class MainView extends JFrame {
 	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
 	private Client client;
 
+	private TaskComboBoxModel boxModel;
+	private TaskList runningList;
+	private TaskTableModel tableModel;
+
 	public MainView(Client client) {
 		if (StartClient.DEBUG) {
 			setTitle(Constants.PROGRAM + " - Debug");
@@ -81,8 +89,8 @@ public class MainView extends JFrame {
 		this.client = client;
 		taskList = new TaskList();
 		boxModel = new TaskComboBoxModel(taskList);
-		taskList.add("Audio-CD einlesen");
-		runningList = new TaskRunningList();
+		taskList.add(new Task(0, "Audio-CD einlesen"));
+		runningList = new TaskList();
 		tableModel = new TaskTableModel(runningList);
 		runningList.add(new Task(1, "queued"));
 		runningList.add(new Task(2, "queued"));
@@ -308,7 +316,6 @@ public class MainView extends JFrame {
 		statusBar.setForeground(Color.BLACK);
 		statusBar.setText(StatusMessage.getMessage(type));
 		Thread t = new Thread(new Runnable() {
-			@Override
 			public void run() {
 				try {
 					Thread.sleep(4000);

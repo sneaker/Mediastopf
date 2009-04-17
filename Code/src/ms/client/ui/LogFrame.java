@@ -28,10 +28,19 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.client.filesys.FileIO;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
+import ms.client.filesys.FileContentWriter;
+import ms.client.utils.ConfigHandler;
+import ms.client.utils.I18NManager;
 import ms.client.log.Log;
 
-
+/**
+ * show log information from logger
+ * 
+ * @author david
+ *
+ */
 public class LogFrame extends JFrame implements Runnable {
 
 	/**
@@ -39,11 +48,13 @@ public class LogFrame extends JFrame implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private I18NManager manager = I18NManager.getManager();
+	private ConfigHandler config = ConfigHandler.getHandler();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
-	private final String save = "Save", close = "Close";
+	private final String save = manager.getString("save"), close = manager.getString("close");
 	private boolean suspendThread = false;
 
 	public LogFrame() {
@@ -58,15 +69,17 @@ public class LogFrame extends JFrame implements Runnable {
 		addTextArea();
 		addLogListener();
 		addESCListener();
+		
+		loadProperties();
 	}
 
 	private void initFrame() {
-		setTitle(MainView.PROGRAM + " - Log");
+		setTitle(Constants.PROGRAM + " - " + manager.getString("Log.title"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(500, 430);
 		setMinimumSize(new Dimension(getWidth(), getHeight()));
 		setLayout(null);
-		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		
@@ -99,8 +112,8 @@ public class LogFrame extends JFrame implements Runnable {
 		scrollArea.setSize(width , height - 15);
 		scrollArea.revalidate();
 		
-		buttonMap.get(save).setLocation(width - 235, height);
-		buttonMap.get(close).setLocation(width - 115, height);
+		buttonMap.get(save).setLocation(width - 250, height);
+		buttonMap.get(close).setLocation(width - 125, height);
 		
 		box.setLocation(10, height + 5);
 	}
@@ -122,7 +135,7 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void addRefreshBox() {
-		box = new JCheckBox("Auto Refresh");
+		box = new JCheckBox(manager.getString("Log.autorefresh"));
 		box.setSelected(true);
 		box.setBounds(10, 370, 150, 20);
 		box.addActionListener(new ActionListener() {
@@ -155,23 +168,23 @@ public class LogFrame extends JFrame implements Runnable {
 	 * add buttons
 	 */
 	private void addButtons() {
-		int x = 250;
+		int x = 235;
 		int y = 365;
-		int width = 100;
+		int width = 115;
 		int height = 25;
 		final String[] buttonText = { save, close };
-		final String[] icons = { "save.png", "cancel.png" };
+		final String[] icons = { Constants.SAVE, Constants.CANCEL };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
-		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
-		final int[] mnemonic = { okMnemonic, cancelMnemonic };
+		final Rectangle closeBounds = new Rectangle(x + width + 10, y, width, height);
+		final Rectangle[] bounds = { sendBounds, closeBounds };
+		final int saveMnemonic = manager.getMnemonic("save"), closeMnemonic = manager.getMnemonic("close");
+		final int[] mnemonic = { saveMnemonic, closeMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -190,6 +203,7 @@ public class LogFrame extends JFrame implements Runnable {
 
 	private void saveAsTXT() {
 		JFileChooser fileChooser = getFileChooser();
+		fileChooser.setSelectedFile(new File(Constants.LOGFILE));
 		fileFilter(fileChooser);
 
 		int returnVal = fileChooser.showSaveDialog(null);
@@ -197,7 +211,7 @@ public class LogFrame extends JFrame implements Runnable {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
 			String file = addTXTPostfix(filename, path);
-			FileIO.write(file, textArea.getText().trim());
+			FileContentWriter.write(new File(file), textArea.getText().trim());
 		}
 	}
 
@@ -220,9 +234,8 @@ public class LogFrame extends JFrame implements Runnable {
 				if (f.exists() && getDialogType() == SAVE_DIALOG) {
 					int result = JOptionPane.showConfirmDialog(
 							getTopLevelAncestor(),
-							"The selected file already exists. "
-									+ "Do you want to overwrite it?",
-							"The file already exists",
+							manager.getString("Log.fileoverwritemessage"),
+							manager.getString("Log.fileoverwritetitle"),
 							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					switch (result) {
@@ -254,11 +267,29 @@ public class LogFrame extends JFrame implements Runnable {
 			}
 		});
 	}
+	
+	private void saveProperties() {
+		saveValues();
+		config.save();
+	}
+	
+	private void saveValues() {
+		config.setProperty(Constants.LOGCFG, String.valueOf(box.isSelected()));
+	}
+	
+	/**
+	 * load properties.
+	 */
+	private void loadProperties() {
+		if(config.containsKey(Constants.LOGCFG))
+			box.setSelected(Boolean.parseBoolean(config.getProperty(Constants.LOGCFG)));
+	}
 
 	/**
 	 * close
 	 */
 	private void close() {
+		saveProperties();
 		setVisible(false);
 		dispose();
 	}
@@ -284,7 +315,7 @@ public class LogFrame extends JFrame implements Runnable {
 	 */
 	private JPopupMenu getPopUpMenu(final JTextArea textArea) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		final String copy = "Copy", selectall = "Select All";
+		final String copy = manager.getString("copy"), selectall = manager.getString("selectall");
 		final String[] menuItems = { copy, selectall };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenuItem copyMenuItem = new JMenuItem(menuItems[i]);
@@ -318,7 +349,10 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void readLogContent() {
-		String logContent = FileIO.read(Log.getLog());
-		textArea.setText(logContent);
+		ByteOutputStream bos = Log.getOutputStream();
+		textArea.setText(bos.toString());
+		if(box.isSelected()) {
+			textArea.setCaretPosition(textArea.getDocument().getLength());
+		}
 	}
 }

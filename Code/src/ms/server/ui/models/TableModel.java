@@ -5,8 +5,9 @@ import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
-import ms.server.domain.Auftrag;
 import ms.server.logic.RunningList;
+import ms.server.logic.Task;
+import ms.server.utils.I18NManager;
 
 
 public class TableModel extends AbstractTableModel implements Observer {
@@ -16,7 +17,8 @@ public class TableModel extends AbstractTableModel implements Observer {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final String[] columns = { "Task", "Status", "" };
+	private static I18NManager manager = I18NManager.getManager();
+	private static final String[] columns = { manager.getString("Model.task"), manager.getString("Model.status"), "" };
 	
 	private RunningList list;
 	
@@ -44,7 +46,7 @@ public class TableModel extends AbstractTableModel implements Observer {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Auftrag task = list.get(rowIndex);
+		Task task = list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return task.getID();

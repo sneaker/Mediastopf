@@ -31,7 +31,7 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	}
 
 	public void setSelectedItem(Object anItem) {
-		taskID = (Integer)anItem;
+		taskID = (Integer) anItem;
 	}
 
 	@Override

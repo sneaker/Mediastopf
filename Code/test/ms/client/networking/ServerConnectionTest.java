@@ -1,6 +1,7 @@
-package ms.client;
+package ms.client.networking;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -11,21 +12,18 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.client.networking.ServerConnection;
+import ms.client.Client;
+import ms.server.Server;
 import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ClientTest {
+public class ServerConnectionTest {
 	
-	private static final String HOST = "localhost";
-	private static final int PORT = 1337;
-	private static final int MAX_SERVER_THREADS = 10;
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + "msclienttest" + File.separator;
 	private File folder;
 	private ServerConnection connection;
@@ -33,7 +31,7 @@ public class ClientTest {
 	@Before
 	public void setUp() throws Exception {
 		startServer();
-		connection = new ServerConnection(HOST, PORT);
+		connection = new ServerConnection(Client.HOST, Client.PORT);
 		
 		makeDirs();
 		generateFiles();
@@ -45,13 +43,13 @@ public class ClientTest {
 	}
 
 	@Test
-	public void testSendFiles() {
+	public void testSendFile() {
 		String[] fileList = folder.list();
 		for(String f: fileList) {
 			try {
 				connection.sendFile(folder + File.separator + f);
 			} catch (IOException e) {
-				e.printStackTrace();
+				fail(e.getMessage());
 			}
 		}
 		String[] transferedList = folder.list(new FilenameFilter() {
@@ -67,19 +65,17 @@ public class ClientTest {
 			File file = new File(folder + File.separator + f);
 			File transfile = new File(folder + File.separator + f + "_rec");
 			assertEquals(file.length(), transfile.length());
+			assertEquals(file.getName(), transfile.getName().replace("_rec", ""));
 		}
-		// TODO: check filenames etc.
 	}
 	
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new NetworkServer(PORT, MAX_SERVER_THREADS));
+		exec.execute(new NetworkServer(Client.PORT, Server.MAX_SERVER_THREADS));
 	}
 
 	private void loadLog() {
-		Log log = new Log();
-		log.setLevel(Level.ALL);
 		Logger logger = Log.getLogger();
 		logger.info("Starting network server...");
 	}
@@ -91,20 +87,28 @@ public class ClientTest {
 				f.createNewFile();
 				generate_content(f);
 			} catch (IOException e) {
-				e.printStackTrace();
+				fail(e.getMessage());
 			}
 		}
 	}
 	
-	private void generate_content(File f) throws IOException {
-		FileOutputStream fous = new FileOutputStream(f);
-		BufferedOutputStream bos = new BufferedOutputStream(fous);
-		int rand = (int) (Math.random()*10000);
-		for(int i = 0; i < rand; i++){
-			bos.write(i);
-			bos.flush();
+	private void generate_content(File f) {
+		FileOutputStream fous;
+		BufferedOutputStream bos;
+		try {
+			fous = new FileOutputStream(f);
+			bos = new BufferedOutputStream(fous);
+			int rand = (int) (Math.random()*10000);
+			for(int i = 0; i < rand; i++){
+				bos.write(i);
+				bos.flush();
+			}
+			bos.close();
+		} catch (FileNotFoundException e) {
+			fail(e.getMessage());
+		} catch (IOException e) {
+			fail(e.getMessage());
 		}
-		bos.close();
 	}
 
 	private void makeDirs() {

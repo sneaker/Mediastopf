@@ -7,14 +7,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import ms.server.ui.MainViewServer;
+import ms.server.ui.Constants;
 import ms.server.ui.dialogs.MessageDialog;
 import ms.server.ui.models.TableModel;
+import ms.server.utils.I18NManager;
 
 
 public class ExportTable extends Table {
 
 	private static final long serialVersionUID = 1L;
+	
+	private I18NManager manager = I18NManager.getManager();
 
 	public ExportTable() {
 		super(new TableModel());
@@ -36,9 +39,9 @@ public class ExportTable extends Table {
 	private JPopupMenu createPopupMenu() {
 		JPopupMenu popupMenu = new JPopupMenu();
 		
-		final String cancel = "Cancel";
+		final String cancel = manager.getString("cancel");
 		JMenuItem menuItem = new JMenuItem(cancel);
-		menuItem.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + "cancel.png")));
+		menuItem.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.CANCEL)));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (event.getActionCommand() == cancel) {

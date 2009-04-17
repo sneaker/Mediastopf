@@ -1,4 +1,4 @@
-package ms.client.logic;
+package ms.server.logic;
 
 
 public class Task {

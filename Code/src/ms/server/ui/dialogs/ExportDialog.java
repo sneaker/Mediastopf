@@ -1,11 +1,14 @@
 package ms.server.ui.dialogs;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,11 +30,16 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.server.filesys.FileIO;
-import ms.server.ui.MainViewServer;
-import ms.server.ui.utils.Constants;
-import ms.server.ui.utils.PropertiesHandler;
+import ms.server.ui.Constants;
+import ms.server.utils.ConfigHandler;
+import ms.server.utils.I18NManager;
 
-
+/**
+ * dialog to choose a destination, where the files should be copied
+ * 
+ * @author david
+ *
+ */
 public class ExportDialog extends JDialog {
 
 	/**
@@ -39,10 +47,11 @@ public class ExportDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private PropertiesHandler config = new PropertiesHandler(Constants.CONFIGFILE);
-	private PropertiesHandler lang = new PropertiesHandler(Constants.LANGUAGE_EN);
-	private final String exportFolder = lang.getProperty("Exporter.exportfolder");
-	private final String export = lang.getProperty("Exporter.export"), close = lang.getProperty("Exporter.close");
+	private ConfigHandler config = ConfigHandler.getHandler();
+	private I18NManager manager = I18NManager.getManager();
+	private final String exportFolder = manager.getString("Exporter.exportstorage");
+	private final String export = manager.getString("export"), close = manager.getString("close");
+	private JLabel folderNotValidLabel = getNotValidLabel(new Point(140, 10));
 	private JTextField exportTextField;
 	private int taskID;
 
@@ -56,22 +65,27 @@ public class ExportDialog extends JDialog {
 	 * init GUI
 	 */
 	private void initGUI() {
-		setTitle(MainViewServer.PROGRAM + " - " + export);
+		initDialog();
+
+		addESCListener();
+		addButtons();
+		addDefaultFolderPanel();
+		
+		loadProperties();
+		
+		showPathNotValidLabel();
+	}
+
+	private void initDialog() {
+		setTitle(Constants.PROGRAM + " - " + export);
 		setSize(400, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setLayout(null);
 		setResizable(false);
 		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + Constants.ICON)).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		addESCListener();
-		addButtons();
-
-		addDefaultFolderPanel();
-		
-		loadProperties();
 	}
 
 	private void addDefaultFolderPanel() {
@@ -79,6 +93,12 @@ public class ExportDialog extends JDialog {
 		createLabel(Constants.EXPORT_L, new Rectangle(12, 30, 40, 40));
 		
 		exportTextField = createTextField(new Point(60, 40));
+		exportTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				showPathNotValidLabel();
+			}
+		});
 		exportTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -86,26 +106,25 @@ public class ExportDialog extends JDialog {
 					openExportFileChooser();
 			}
 		});
-		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
-		openIcon.addActionListener(new ActionListener() {
+		createOpenButton(new Rectangle(355, 40, 22, 22));
+	}
+	
+	private void createOpenButton(Rectangle rec) {
+		JButton button = new JButton();
+		button.setIcon(new ImageIcon(getClass().getResource(Constants.OPEN)));
+		button.setBounds(rec);
+		button.setToolTipText(manager.getString("Exporter.choosedir"));
+		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openExportFileChooser();
 			}
 		});
-	}
-	
-	private JButton createOpenButton(Rectangle rec) {
-		JButton button = new JButton();
-		button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + Constants.OPEN)));
-		button.setBounds(rec);
-		button.setToolTipText("Choose Directory");
 		add(button);
-		return button;
 	}
 
 	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icon)));
 		label.setBounds(rec);
 		add(label);
 	}
@@ -140,23 +159,23 @@ public class ExportDialog extends JDialog {
 	 * add buttons
 	 */
 	private void addButtons() {
-		final int x = 150;
+		final int x = 135;
 		final int y = 90;
-		final int width = 100;
+		final int width = 115;
 		final int height = 25;
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
+		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
 		final String[] buttonText = { export, close };
 		final String[] icons = { Constants.TICK, Constants.CANCEL };
-		final int okMnemonic = KeyEvent.VK_E, cancelMnemonic = KeyEvent.VK_C;
-		final int[] mnemonic = { okMnemonic, cancelMnemonic };
+		final int exportMnemonic = manager.getMnemonic("export"), cancelMnemonic = manager.getMnemonic("close");
+		final int[] mnemonic = { exportMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(MainViewServer.UIIMAGELOCATION + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -165,7 +184,7 @@ public class ExportDialog extends JDialog {
 						export();
 						saveAndClose();
 					} else if (e.getActionCommand() == close) {
-						saveAndClose();
+						close();
 					}
 				}
 			});
@@ -178,7 +197,9 @@ public class ExportDialog extends JDialog {
 		File file = new File(Integer.toString(taskID));
 		boolean done = FileIO.transfer(file.listFiles(), new File(exportFolder));
 		if(done) {
-			MessageDialog.info("Export done", "Exported Files to " + exportFolder);
+			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
+		} else {
+			MessageDialog.info(manager.getString("Exporter.exportfailedtitle"), manager.getString("Exporter.exportfailed"));
 		}
 	}
 	
@@ -193,26 +214,22 @@ public class ExportDialog extends JDialog {
 	/**
 	 * save properties.
 	 */
-	void saveProperties() {
+	private void saveProperties() {
 		saveValues();
 		config.save();
 	}
 
 	private void saveValues() {
 		if(!exportTextField.getText().isEmpty())
-			config.setProperty(exportFolder, exportTextField.getText().trim());
+			config.setProperty(Constants.EXPORTCFG, exportTextField.getText().trim());
 	}
 	
 	/**
 	 * load properties.
 	 */
-	void loadProperties() {
-		loadValues();
-	}
-
-	private void loadValues() {
-		if(config.containsKey(exportFolder))
-			exportTextField.setText(config.getProperty(exportFolder));
+	private void loadProperties() {
+		if(config.containsKey(Constants.EXPORTCFG))
+			exportTextField.setText(config.getProperty(Constants.EXPORTCFG));
 	}
 	
 	private void openExportFileChooser() {
@@ -220,6 +237,7 @@ public class ExportDialog extends JDialog {
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
 		openDialog(dirChooser, exportTextField);
+		showPathNotValidLabel();
 	}
 
 	private void openDialog(JFileChooser dirChooser, JTextField textField) {
@@ -240,8 +258,8 @@ public class ExportDialog extends JDialog {
 	 */
 	private JPopupMenu addPopUpMenu(final JTextField textField) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		final String clear = lang.getProperty("clear"), cut = lang.getProperty("cut"),
-				copy = lang.getProperty("copy"), paste = lang.getProperty("paste"), selectAll = lang.getProperty("selectall"); 
+		final String clear = manager.getString("clear"), cut = manager.getString("cut"),
+				copy = manager.getString("copy"), paste = manager.getString("paste"), selectAll = manager.getString("selectall"); 
 		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenuItem menuItem = new JMenuItem(menuItems[i]);
@@ -285,5 +303,28 @@ public class ExportDialog extends JDialog {
 	private void close() {
 		setVisible(false);
 		dispose();
+	}
+	
+	private JLabel getNotValidLabel(Point p) {
+		JLabel label = new JLabel(manager.getString("Exporter.notvalid"));
+		label.setSize(120, 25);
+		label.setLocation(p);
+		label.setForeground(Color.RED);
+		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBorder(BorderFactory.createLineBorder(Color.RED));
+		label.setVisible(true);
+		add(label, 0);
+		return label;
+	}
+	
+	private void showPathNotValidLabel() {
+		String text = exportTextField.getText();
+		File f = new File(text);
+		if(f.exists() && f.isDirectory()) {
+			folderNotValidLabel.setVisible(false);
+		} else {
+			folderNotValidLabel.setVisible(true);
+		}
 	}
 }

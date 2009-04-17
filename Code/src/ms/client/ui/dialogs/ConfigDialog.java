@@ -1,20 +1,18 @@
 package ms.client.ui.dialogs;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,22 +29,32 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import ms.client.ui.MainView;
+import ms.client.ui.Constants;
+import ms.client.utils.ConfigHandler;
+import ms.client.utils.I18NManager;
 
-
+/**
+ * configuration dialog
+ * - custom cdripper
+ * - custom import folder
+ * 		
+ * @author david
+ *
+ */
 public class ConfigDialog extends JDialog {
-
-	private static final String CONFIGFILE = "MediaStopf.cfg";
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Properties prop = new Properties();
+	private ConfigHandler config = ConfigHandler.getHandler();
+	private I18NManager manager = I18NManager.getManager();
 	private JTextField ripperTextField, folderTextField;
-	private final String audioripper = "AudioRipper", defaultfolder = "Default Folder";
-	private final String ok = "Save", close = "Close";
+	private final String audioripper = manager.getString("Config.audiograbber"), defaultfolder = manager.getString("Config.defaultfolder");
+	private final String save = manager.getString("save"), close = manager.getString("close");
+	private JLabel folderNotValidLabel = getNotValidLabel(new Point(100, 10));
+	private JLabel ripperNotValidLabel = getNotValidLabel(new Point(100, 85));
 
 	public ConfigDialog() {
 		initGUI();
@@ -63,10 +71,13 @@ public class ConfigDialog extends JDialog {
 		addButtons();
 		
 		loadProperties();
+		
+		showPathNotValidLabel();
+		showFileNotValidLabel();
 	}
 
 	private void initDialog() {
-		setTitle(MainView.PROGRAM + " - Config");
+		setTitle(Constants.PROGRAM + " - " + manager.getString("Config.title"));
 		setSize(400, 230);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
@@ -74,12 +85,12 @@ public class ConfigDialog extends JDialog {
 		setResizable(false);
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setIconImage(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 	}
 	
 	private void addPanels() {
 		final String[] label = { defaultfolder, audioripper };
-		final String[] icons = { "defaultfolder.png", "audioripper.png" };
+		final String[] icons = { Constants.DEFAULTFOLDER, Constants.AUDIORIPPER };
 		final int x=0;
 		final int[] y= { 10, 85 };
 		for(int i=0; i<label.length;i++) {
@@ -103,9 +114,15 @@ public class ConfigDialog extends JDialog {
 
 	private void addDefaultFolderTextField() {
 		folderTextField = createTextField(new Point(60, 40));
+		folderTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				showPathNotValidLabel();
+			}
+		});
 		folderTextField.addMouseListener(new MouseAdapter() {
 			@Override
-			 public void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				if((e.getButton() == MouseEvent.BUTTON1) && (e.getClickCount() == 2))
 					openDefaultFolderFileChooser();
 			}
@@ -114,6 +131,12 @@ public class ConfigDialog extends JDialog {
 
 	private void addAudioRipperTextField() {
 		ripperTextField = createTextField(new Point(60, 115));
+		ripperTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				showFileNotValidLabel();
+			}
+		});
 		ripperTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -126,16 +149,16 @@ public class ConfigDialog extends JDialog {
 	private JButton createOpenButton(String name, Rectangle rec) {
 		JButton button = new JButton();
 		button.setActionCommand(name);
-		button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + "open.png")));
+		button.setIcon(new ImageIcon(getClass().getResource(Constants.OPEN)));
 		button.setBounds(rec);
-		button.setToolTipText("Choose Directory");
+		button.setToolTipText(manager.getString("choosedir"));
 		add(button);
 		return button;
 	}
 
 	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(icon)));
 		label.setBounds(rec);
 		add(label);
 	}
@@ -169,30 +192,29 @@ public class ConfigDialog extends JDialog {
 	 * add buttons
 	 */
 	protected void addButtons() {
-		int x = 150;
-		int y = 170;
-		int width = 100;
+		int x = 135;
+		int y = 165;
+		int width = 115;
 		int height = 25;
 		final Rectangle okBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
+		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { okBounds, cancelBounds };
-		final String[] buttonText = { ok, close };
-		final String[] icons = { "save.png", "cancel.png" };
-		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
-		final int[] mnemonic = { okMnemonic, cancelMnemonic };
+		final String[] buttonText = { save, close };
+		final String[] icons = { Constants.SAVE, Constants.CANCEL };
+		final int saveMnemonic = manager.getMnemonic("save"), cancelMnemonic = manager.getMnemonic("close");
+		final int[] mnemonic = { saveMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(MainView.UIIMAGELOCATION + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == ok) {
-						saveProperties();
-						close();
+					if (e.getActionCommand() == save) {
+						saveAndClose();
 					} else if (e.getActionCommand() == close) {
 						close();
 					}
@@ -202,54 +224,41 @@ public class ConfigDialog extends JDialog {
 		}
 	}
 	
+	private void saveAndClose() {
+		saveProperties();
+		close();
+	}
+	
 	/**
 	 * save properties.
 	 */
-	void saveProperties() {
+	private void saveProperties() {
 		saveValues();
-		try {
-			prop.store(new FileWriter(CONFIGFILE), "MediaStopf Config");
-		} catch (IOException e) {
-			System.out.println(e);
-		}
+		config.save();
 	}
 	
 	private void saveValues() {
 		if(!ripperTextField.getText().isEmpty())
-			prop.setProperty(audioripper, ripperTextField.getText());
+			config.setProperty(Constants.AUDIORIPPERCFG, ripperTextField.getText());
 		if(!folderTextField.getText().isEmpty())
-			prop.setProperty(defaultfolder, folderTextField.getText());
+			config.setProperty(Constants.DEFAULTFOLDERCFG, folderTextField.getText());
 	}
 	
 	/**
 	 * load properties.
 	 */
-	void loadProperties() {
-		File config = new File(CONFIGFILE);
-		try {
-			if(!config.exists()) {
-				config.createNewFile();
-			}
-			prop.load(new FileReader(CONFIGFILE));
-		} catch (FileNotFoundException e) {
-			System.out.println(e);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-		loadValues();
-	}
-	
-	private void loadValues() {
-		if(prop.containsKey(audioripper))
-			ripperTextField.setText(prop.getProperty(audioripper).trim());
-		if(prop.containsKey(defaultfolder))
-			folderTextField.setText(prop.getProperty(defaultfolder).trim());
+	private void loadProperties() {
+		if(config.containsKey(Constants.AUDIORIPPERCFG))
+			ripperTextField.setText(config.getProperty(Constants.AUDIORIPPERCFG).trim());
+		if(config.containsKey(Constants.DEFAULTFOLDERCFG))
+			folderTextField.setText(config.getProperty(Constants.DEFAULTFOLDERCFG).trim());
 	}
 	
 	private void openAudioRipperDirChooser() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileFilter(fileChooser);
 		openDialog(fileChooser, ripperTextField);
+		showFileNotValidLabel();
 	}
 	
 	private void openDefaultFolderFileChooser() {
@@ -257,6 +266,7 @@ public class ConfigDialog extends JDialog {
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
 		openDialog(dirChooser, folderTextField);
+		showPathNotValidLabel();
 	}
 
 	private void openDialog(JFileChooser fileChooser, JTextField textField) {
@@ -267,6 +277,19 @@ public class ConfigDialog extends JDialog {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			textField.setText(fileChooser.getSelectedFile().getAbsolutePath().trim());
 		}
+	}
+	
+	private JLabel getNotValidLabel(Point p) {
+		JLabel label = new JLabel(manager.getString("Config.notvalid"));
+		label.setSize(120, 25);
+		label.setLocation(p);
+		label.setForeground(Color.RED);
+		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBorder(BorderFactory.createLineBorder(Color.RED));
+		label.setVisible(true);
+		add(label, 0);
+		return label;
 	}
 
 	private void fileFilter(JFileChooser fileChooser) {
@@ -311,7 +334,8 @@ public class ConfigDialog extends JDialog {
 	 */
 	private JPopupMenu addPopUpMenu(final JTextField textField) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		final String clear = "Clear", cut = "Cut", copy = "Copy", paste = "Paste", selectAll = "Select All"; 
+		final String clear = manager.getString("clear"), cut = manager.getString("cut"),
+		copy = manager.getString("copy"), paste = manager.getString("paste"), selectAll = manager.getString("selectall"); 
 		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenuItem menuItem = new JMenuItem(menuItems[i]);
@@ -337,5 +361,25 @@ public class ConfigDialog extends JDialog {
 			popupMenu.add(menuItem);
 		}
 		return popupMenu;
+	}
+
+	private void showPathNotValidLabel() {
+		String text = folderTextField.getText();
+		File f = new File(text);
+		if(f.exists() && f.isDirectory()) {
+			folderNotValidLabel.setVisible(false);
+		} else {
+			folderNotValidLabel.setVisible(true);
+		}
+	}
+	
+	private void showFileNotValidLabel() {
+		String text = ripperTextField.getText();
+		File f = new File(text);
+		if(f.exists() && f.isFile() && text.endsWith("exe")) {
+			ripperNotValidLabel.setVisible(false);
+		} else {
+			ripperNotValidLabel.setVisible(true);
+		}
 	}
 }

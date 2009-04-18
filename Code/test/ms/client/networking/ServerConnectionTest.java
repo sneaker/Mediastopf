@@ -1,8 +1,5 @@
 package ms.client.networking;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,23 +9,20 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import junit.framework.TestCase;
 import ms.client.Client;
 import ms.server.Server;
 import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
-public class ServerConnectionTest {
+public class ServerConnectionTest extends TestCase {
 	
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + "msclienttest" + File.separator;
 	private File folder;
 	private ServerConnection connection;
 
-	@Before
 	public void setUp() throws Exception {
 		startServer();
 		connection = new ServerConnection(Client.HOST, Client.PORT);
@@ -37,12 +31,10 @@ public class ServerConnectionTest {
 		generateFiles();
 	}
 
-	@After
 	public void tearDown() throws Exception {
 		delDir();
 	}
 
-	@Test
 	public void testSendFile() {
 		String[] fileList = folder.list();
 		for(String f: fileList) {

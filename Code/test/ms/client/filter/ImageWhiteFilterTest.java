@@ -1,58 +1,91 @@
 package ms.client.filter;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.junit.Test;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-public class ImageWhiteFilterTest {
+public class ImageWhiteFilterTest extends TestCase {
 	
-	private static final int IMAGE_HEIGHT = 111;
-	private static final int IMAGE_WIDTH = IMAGE_HEIGHT;
-
-	@Test
+	private int imageHeight = 111;
+	private int imageWidth = imageHeight;
+	
+	public ImageWhiteFilterTest(String testName) {
+		super(testName);
+	}
+	
 	public void testImageWhite() {
 		BufferedImage image = createImage(new Color(255, 255, 255));
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertTrue(isWhite);
-		
-		image = createImage(new Color(230, 230, 230));
-		isWhite = ImageWhiteFilter.analyzeImage(image);
+	}
+	
+	public void testImageLargeWhite() {
+		imageHeight = 1111;
+		testImageWhite();
+	}
+	
+	public void testImageWhiteBoundry() {
+		BufferedImage image = createImage(new Color(242, 242, 242));
+		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertTrue(isWhite);
 	}
 	
-	@Test
+	public void testImageLargeWhiteBoundry() {
+		imageHeight = 1111;
+		testImageWhiteBoundry();
+	}
+	
 	public void testImageNotWhite() {
 		BufferedImage image = createImage(new Color(0, 0, 0));
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertFalse(isWhite);
-		
-		image = createImage(new Color(229, 229, 229));
-		isWhite = ImageWhiteFilter.analyzeImage(image);
+	}
+	
+	public void testImageLargeNotWhite() {
+		imageHeight = 1111;
+		testImageNotWhite();
+	}
+	
+	public void testImageNotWhiteBoundry() {
+		BufferedImage image = createImage(new Color(241, 241, 241));
+		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertFalse(isWhite);
 	}
 	
-	@Test
+	public void testImageLargeNotWhiteBoundry() {
+		imageHeight = 1111;
+		testImageNotWhiteBoundry();
+	}
+	
 	public void testImage95PercentWhite() {
-//		int splitX = round((double)IMAGE_WIDTH/100*95);
-		int splitY = round((double)IMAGE_HEIGHT/100*95);
-		BufferedImage image = createSplitImage(0, splitY);
+		int imageResolution = imageHeight*imageWidth;
+		int split = round((double)imageResolution/100*5);
+		BufferedImage image = createSplitImage(split);
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertTrue(isWhite);
 	}
 	
-	@Test
+	public void testImageLarge95PercentWhite() {
+		imageHeight = 1111;
+		testImage95PercentWhite();
+	}
+	
 	public void testImage94PercentWhite() {
-//		int splitX = round((double)IMAGE_WIDTH/100*94);
-		int splitY = round((double)IMAGE_HEIGHT/100*94);
-		BufferedImage image = createSplitImage(0, splitY);
+		int imageResolution = imageHeight*imageWidth;
+		int split = round((double)imageResolution/100*6);
+		BufferedImage image = createSplitImage(split);
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertFalse(isWhite);
+	}
+	
+	public void testImageLarge94PercentWhite() {
+		imageHeight = 1111;
+		testImage94PercentWhite();
 	}
 	
 	private int round(double d) {
@@ -62,7 +95,7 @@ public class ImageWhiteFilterTest {
 	}
 	
 	private BufferedImage createImage(Color c) {
-		BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		for (int i = 0; i < image.getWidth(); i++) {
 			for (int j = 0; j < image.getHeight(); j++) {
 				image.setRGB(i, j, c.getRGB());
@@ -71,13 +104,32 @@ public class ImageWhiteFilterTest {
 		return image;
 	}
 	
-	private BufferedImage createSplitImage(int startBlackX, int startBlackY) {
+	private BufferedImage createSplitImage(int split) {
+		int paintedPixels = 0;
 		BufferedImage image = createImage(new Color(255, 255, 255));
-		for (int i = startBlackX; i < image.getWidth(); i++) {
-			for (int j = startBlackY; j < image.getHeight(); j++) {
+		for (int i = 0; i < image.getWidth(); i++) {
+			for (int j = 0; j < image.getHeight(); j++) {
+				if(split <= paintedPixels) {
+					break;
+				}
 				image.setRGB(i, j, new Color(0, 0, 0).getRGB());
+				paintedPixels++;
 			}
 		}
 		return image;
+	}
+	
+	public static Test suite() {
+	    TestSuite suite = new TestSuite();
+	    String[] testsMethods = { "testImageWhite", "testImageLargeWhite",
+	    		"testImageWhiteBoundry", "testImageLargeWhiteBoundry",
+	    		"testImageNotWhite", "testImageLargeNotWhite",
+	    		"testImageNotWhiteBoundry", "testImageLargeNotWhiteBoundry",
+	    		"testImage95PercentWhite", "testImageLarge95PercentWhite",
+	    		"testImage94PercentWhite", "testImageLarge94PercentWhite" };
+	    for (String t : testsMethods) {
+			suite.addTest(new ImageWhiteFilterTest(t));
+		}
+	    return suite;
 	}
 }

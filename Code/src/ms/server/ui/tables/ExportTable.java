@@ -7,9 +7,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ms.server.ui.Constants;
 import ms.server.ui.dialogs.MessageDialog;
 import ms.server.ui.models.TableModel;
-import ms.server.utils.Constants;
 import ms.server.utils.I18NManager;
 
 

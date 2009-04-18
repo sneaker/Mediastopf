@@ -31,7 +31,6 @@ import javax.swing.filechooser.FileFilter;
 
 import ms.client.filesys.FileContentWriter;
 import ms.client.utils.ConfigHandler;
-import ms.client.utils.Constants;
 import ms.client.utils.I18NManager;
 import ms.client.log.Log;
 

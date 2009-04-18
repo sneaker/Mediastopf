@@ -2,6 +2,8 @@ package ms.server.utils;
 
 import java.util.ResourceBundle;
 
+import ms.server.ui.Constants;
+
 /**
  * determine language of system and get the language from a file
  * 

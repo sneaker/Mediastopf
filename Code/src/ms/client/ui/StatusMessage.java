@@ -1,4 +1,6 @@
-package ms.client.utils;
+package ms.client.ui;
+
+import ms.client.utils.I18NManager;
 
 
 /**

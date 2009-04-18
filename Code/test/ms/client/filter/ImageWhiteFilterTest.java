@@ -5,9 +5,7 @@ import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 public class ImageWhiteFilterTest extends TestCase {
 	
@@ -117,19 +115,5 @@ public class ImageWhiteFilterTest extends TestCase {
 			}
 		}
 		return image;
-	}
-	
-	public static Test suite() {
-	    TestSuite suite = new TestSuite();
-	    String[] testsMethods = { "testImageWhite", "testImageLargeWhite",
-	    		"testImageWhiteBoundry", "testImageLargeWhiteBoundry",
-	    		"testImageNotWhite", "testImageLargeNotWhite",
-	    		"testImageNotWhiteBoundry", "testImageLargeNotWhiteBoundry",
-	    		"testImage95PercentWhite", "testImageLarge95PercentWhite",
-	    		"testImage94PercentWhite", "testImageLarge94PercentWhite" };
-	    for (String t : testsMethods) {
-			suite.addTest(new ImageWhiteFilterTest(t));
-		}
-	    return suite;
 	}
 }

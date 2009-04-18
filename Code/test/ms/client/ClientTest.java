@@ -14,7 +14,7 @@ public class ClientTest extends TestCase {
 	    TestSuite suite = new TestSuite();
 	    suite.addTestSuite(DirectoryObserverTest.class);
 	    suite.addTestSuite(ServerConnectionTest.class);
-	    suite.addTest(ImageWhiteFilterTest.suite());
+	    suite.addTestSuite(ImageWhiteFilterTest.class);
 	    return suite;
 	}
 }

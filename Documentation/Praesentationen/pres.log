@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2008.11.3)  26 MAR 2009 15:56
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2008.11.3)  6 APR 2009 09:30
 entering extended mode
  %&-line parsing enabled.
 **pres.tex
@@ -806,25 +806,25 @@ Package babel Info: Making " an active character on input line 92.
 ))
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\\' on input line 16.
+(hyperref)                removing `\\' on input line 19.
 
 (./pres.aux)
 \openout1 = `pres.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
 -------------------- Geometry parameters
 paper: user defined
 landscape: --
@@ -864,7 +864,7 @@ driver: pdftex
 
 (1in=72.27pt, 1cm=28.45pt)
 -----------------------
-Package hyperref Info: Link coloring OFF on input line 20.
+Package hyperref Info: Link coloring OFF on input line 23.
  (/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
 Package: nameref 2006/12/27 v2.28 Cross-referencing by name of section
 
@@ -873,71 +873,98 @@ Package: refcount 2006/02/20 v3.0 Data extraction from references (HO)
 )
 \c@section@level=\count151
 )
-LaTeX Info: Redefining \ref on input line 20.
-LaTeX Info: Redefining \pageref on input line 20.
+LaTeX Info: Redefining \ref on input line 23.
+LaTeX Info: Redefining \pageref on input line 23.
  (./pres.out)
 (./pres.out)
 \@outlinefile=\write4
 \openout4 = `pres.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 20.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 23.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 20.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 23.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 20.
+(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 23.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/bx/n on input line 20.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/bx/n on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/bx/n on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 20.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/bx/n on input line 23.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 20.
+(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 20.
+(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 23.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 20.
+(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 20.
+(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 23.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 20.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 20.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 23.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/bx/n on input line 20.
+(Font)                  T1/cmss/m/n --> T1/cmss/bx/n on input line 23.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/bx/it on input line 20.
+(Font)                  T1/cmss/m/it --> T1/cmss/bx/it on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/bx/n --> T1/cmr/bx/n on input line 20.
+(Font)                  OT1/cmss/bx/n --> T1/cmr/bx/n on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  T1/cmss/bx/n --> T1/cmss/bx/n on input line 20.
+(Font)                  T1/cmss/bx/n --> T1/cmss/bx/n on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/bx/n on input line 20.
+(Font)                  T1/cmss/m/n --> T1/cmss/bx/n on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/bx/it on input line 20.
+(Font)                  T1/cmss/m/it --> T1/cmss/bx/it on input line 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  T1/cmtt/m/n --> T1/cmtt/bx/n on input line 20.
+(Font)                  T1/cmtt/m/n --> T1/cmtt/bx/n on input line 23.
  (./pres.nav)
 
 LaTeX Font Warning: Font shape `T1/cmss/m/n' in size <4> not available
-(Font)              size <5> substituted on input line 24.
+(Font)              size <5> substituted on input line 27.
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./logo.jpg>] [2
 
-] [3
+]
+[3
 
 ] [4
 
 ] [5
 
 ] [6
+
+] [7
+
+] <client_server.png, id=198, 806.01125pt x 454.69875pt>
+File: client_server.png Graphic file (type png)
+
+<use client_server.png>
+Overfull \hbox (10.3887pt too wide) in paragraph at lines 94--94
+ [] 
+ []
+
+[8
+
+ <./client_server.png>] [9
+
+] <client_tasks.png, id=251, 401.5pt x 451.6875pt>
+File: client_tasks.png Graphic file (type png)
+
+<use client_tasks.png> [10
+
+ <./client_tasks.png>]
+<server_2.png, id=278, 401.5pt x 451.6875pt>
+File: server_2.png Graphic file (type png)
+ <use server_2.png> [11
+
+ <./server_2.png>] [12
 
 ]
 \tf@nav=\write5
@@ -949,28 +976,28 @@ LaTeX Font Warning: Font shape `T1/cmss/m/n' in size <4> not available
 \tf@snm=\write7
 \openout7 = `pres.snm'.
 
-
-(./pres.aux)
+ (./pres.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
  ) 
 Here is how much of TeX's memory you used:
- 11528 strings out of 95070
- 202337 string characters out of 1182680
+ 11551 strings out of 95070
+ 202261 string characters out of 1182680
  279061 words of memory out of 1500000
- 14397 multiletter control sequences out of 10000+50000
- 9996 words of font info for 24 fonts, out of 1200000 for 2000
+ 14403 multiletter control sequences out of 10000+50000
+ 9930 words of font info for 24 fonts, out of 1200000 for 2000
  28 hyphenation exceptions out of 8191
- 41i,14n,54p,332b,551s stack positions out of 5000i,500n,6000p,200000b,5000s
- </home/mm/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecsi1095.600pk> </home/mm/.
-texmf-var/fonts/pk/ljfour/jknappen/ec/ecss0800.600pk> </home/mm/.texmf-var/font
-s/pk/ljfour/jknappen/ec/ecss1095.600pk> </home/mm/.texmf-var/fonts/pk/ljfour/jk
-nappen/ec/ecss1440.600pk>
-Output written on pres.pdf (6 pages, 66010 bytes).
+ 41i,14n,51p,332b,634s stack positions out of 5000i,500n,6000p,200000b,5000s
+ </home/mm/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss0900.600pk> </home/mm/.
+texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1000.600pk> </home/mm/.texmf-var/font
+s/pk/ljfour/jknappen/ec/ecss0800.600pk> </home/mm/.texmf-var/fonts/pk/ljfour/jk
+nappen/ec/ecss1095.600pk> </home/mm/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss
+1440.600pk>
+Output written on pres.pdf (12 pages, 190239 bytes).
 PDF statistics:
- 282 PDF objects out of 1000 (max. 8388607)
- 13 named destinations out of 1000 (max. 131072)
- 49 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 521 PDF objects out of 1000 (max. 8388607)
+ 25 named destinations out of 1000 (max. 131072)
+ 69 words of extra memory for PDF output out of 10000 (max. 10000000)
 

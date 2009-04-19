@@ -14,9 +14,9 @@ public class TaskList extends Observable {
 	
 	public TaskList() {
 		if(StartClient.DEBUG) {
-			add(new Task(1111, "Waiting"));
-			add(new Task(2222, "Ready"));
-			add(new Task(3333, "Sending"));
+			add(new Task(1111, "Warten"));
+			add(new Task(2222, "Fertig"));
+			add(new Task(3333, "Senden"));
 		}
 	}
 

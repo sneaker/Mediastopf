@@ -1,5 +1,6 @@
 package ms.client.log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import ms.client.ui.Constants;
@@ -10,8 +11,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
-
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 /**
  * Apache log4j Logger
@@ -26,7 +25,7 @@ import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 public class Log {
 	
 	private static Logger logger = Logger.getLogger(Log.class);
-	private static ByteOutputStream bos = new ByteOutputStream();
+	private static ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	static {
 		new Log();
 	}
@@ -74,9 +73,9 @@ public class Log {
 	/**
 	 * get OutputStream with logged information
 	 * 
-	 * @return ByteOutputStream
+	 * @return ByteArrayOutputStream
 	 */
-	public static ByteOutputStream getOutputStream() {
+	public static ByteArrayOutputStream getOutputStream() {
 		return bos;
 	}
 }

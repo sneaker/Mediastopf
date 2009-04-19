@@ -39,6 +39,7 @@ import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskComboBoxModel;
 import ms.client.ui.tables.TaskTable;
+import ms.client.utils.ApplicationLauncher;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.I18NManager;
 
@@ -250,43 +251,48 @@ public class MainView extends JFrame {
 		}
 	}
 
+	// TODO
 	private void runSelectedItem() {
 		String taskID = (String) taskComboBox.getSelectedItem();
 		if(taskID == null) {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
-		String folder = getFolderFromProperties();
+		String folder = getValueOf(Constants.DEFAULTFOLDERCFG);
 		if(!new File(folder).exists()) {
-			askDefaultFolder();
+			askFolder(manager.getString("Main.choosedefaultfoldertitle"),
+			manager.getString("Main.choosedefaultfolder"));
 			return;
 		}
 		File task = new File(folder + File.separator + taskID);
 		task.mkdirs();
 		
+		String ripper = getValueOf(Constants.AUDIORIPPERCFG);
+		if(!new File(ripper).exists()) {
+			askFolder(manager.getString("Main.chooseaudiorippertitle"),
+			manager.getString("Main.chooseaudioripper"));
+			return;
+		}
+		ApplicationLauncher.open(ripper);
+		
 		updateStatusBar(StatusType.RUNMESSAGE);
-//		client.observeDir(task);
-		client.sendFiles(task);
+		client.observeDir(task);
 		
 		// TODO
 		int id = Integer.valueOf(taskID);
 		taskList.remove(taskComboBox.getSelectedIndex());
-		runTaskList.add(new Task(id, "Sending"));
-		
-		// TODO
-		// ApplicationLauncher.open(program);
+		runTaskList.add(new Task(id, "Warten"));
 	}
 
-	private void askDefaultFolder() {
-		MessageDialog.info(manager.getString("Main.choosedefaultfoldertitle"),
-				manager.getString("Main.choosedefaultfolder") + manager.getString("Config.defaultfolder"));
+	private void askFolder(String title, String message) {
+		MessageDialog.info(title, message + manager.getString("Config.defaultfolder"));
 		openConfigDialog();
 		runSelectedItem();
 	}
 
-	private String getFolderFromProperties() {
-		if(config.containsKey(Constants.DEFAULTFOLDERCFG)) {
-			return config.getProperty(Constants.DEFAULTFOLDERCFG).trim();
+	private String getValueOf(String key) {
+		if(config.containsKey(key)) {
+			return config.getProperty(key).trim();
 		}
 		return "";
 	}

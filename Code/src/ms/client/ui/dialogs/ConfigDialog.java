@@ -343,7 +343,6 @@ public class ConfigDialog extends JDialog {
 				popupMenu.addSeparator();
 			}
 			menuItem.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent event) {
 					if (event.getActionCommand() == cut) {
 						textField.cut();

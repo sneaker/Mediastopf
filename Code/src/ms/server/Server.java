@@ -1,6 +1,7 @@
 package ms.server;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -57,7 +58,8 @@ public class Server implements ServerHandler {
 	
 	
 	public ArrayList<Task> getDataBase() {
-		ArrayList<Auftrag> list = (ArrayList<Auftrag>) DbAdapter.getOrderList();
+
+		List<Auftrag> list = DbAdapter.getOrderList();
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		for(Auftrag a: list) {
 			tasks.add(new Task(a.getID(), Integer.toString(a.getStatus())));

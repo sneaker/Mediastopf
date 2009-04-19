@@ -1,5 +1,6 @@
 package ms.server.log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import ms.server.ui.Constants;
@@ -10,7 +11,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
-
 
 
 /**
@@ -27,6 +27,7 @@ public class Log {
 	
 	private static Logger logger = Logger.getLogger(Log.class);
 
+	private static ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	static {
 		new Log();
 	}
@@ -72,5 +73,9 @@ public class Log {
 	 * 
 	 * @return ByteOutputStream
 	 */
-	
+
+	public static ByteArrayOutputStream getOutputStream() {
+		return bos;
+	}
+
 }

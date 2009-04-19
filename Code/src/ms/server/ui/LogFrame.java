@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 
@@ -32,7 +33,6 @@ import ms.server.filesys.FileIO;
 import ms.server.log.Log;
 import ms.server.utils.ConfigHandler;
 import ms.server.utils.I18NManager;
-
 
 
 /**
@@ -349,6 +349,10 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void readLogContent() {
+
+		ByteArrayOutputStream bos = Log.getOutputStream();
+		textArea.setText(bos.toString());
+
 		if(box.isSelected()) {
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}

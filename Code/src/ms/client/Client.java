@@ -66,7 +66,6 @@ public class Client implements ClientHandler {
 	public void observeDir(final File folder) {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder.toString());
 		dirObserver.subscribe(new Observer() {
-			@Override
 			public void update(Observable o, Object arg) {
 				sendFiles(folder);
 			}

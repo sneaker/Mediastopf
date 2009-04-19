@@ -54,7 +54,7 @@ public class Server implements ServerHandler {
 	}
 	
 	public ArrayList<Auftrag> getDataBase() {
-		return DbAdapter.getOrderList();
+		return (ArrayList<Auftrag>) DbAdapter.getOrderList();
 	}
 	
 	public void sendObject(Object o) {

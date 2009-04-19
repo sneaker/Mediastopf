@@ -39,11 +39,16 @@ public class DirectoryObserverTestHelper {
 	}
 
 	public void createFile() {
-		File f = new File(testDirectory + (int) (Math.random() * 1000));
+		createFile((Math.random() * 1000) + "");
+	}
+	
+	public void createFile(String name) {
+		File f = new File(testDirectory + name);
 		try {
 			f.createNewFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
 }

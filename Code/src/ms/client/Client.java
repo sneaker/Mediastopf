@@ -65,12 +65,12 @@ public class Client implements ClientHandler {
 	 */
 	public void observeDir(final File folder) {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder.toString());
-		dirObserver.subscribe(new Observer() {
+		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
 				sendFiles(folder);
 			}
 		});
-		dirObserver.start();
+		new Thread(dirObserver).start();
 		
 		logger.info("Directory Observer started in " + folder);
 	}

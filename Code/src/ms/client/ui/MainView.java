@@ -43,8 +43,6 @@ import ms.client.ui.models.TaskTableModel;
 import ms.client.ui.tables.TaskTable;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.I18NManager;
-import ms.client.utils.StatusMessage;
-import ms.client.utils.StatusMessage.StatusType;
 import ms.server.logic.RunningList;
 import ms.server.ui.models.TableModel;
 

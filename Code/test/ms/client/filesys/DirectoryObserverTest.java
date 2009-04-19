@@ -37,9 +37,35 @@ public class DirectoryObserverTest extends TestCase {
 	}
 
 	@Test
-	public void observeDirectoryChange() {
-		changeScanner.subscribe(notifyTester);
-		changeScanner.start();
+	public void testObserveMassiveDirectoryChange() {
+		DirectoryObserverTestHelper d = new DirectoryObserverTestHelper(TEMPDIR);
+		changeScanner.addObserver(notifyTester);
+		new Thread(changeScanner).start();
+
+		for (int i = 0; i < 50; i++)
+			d.createFile();
+
+		changeScanner.poll();
+		notifyTester.reset();
+		d.createFile("newlyCreated-1");
+		changeScanner.poll();
+		
+		//
+		//d.createFile("newlyCreated-2");
+		//d.createFile("newlyCreated-3");
+		
+		changeScanner.poll();
+		changeScanner.poll();
+		
+		assertTrue("Should detect filesystem changes", notifyTester.isUpdated);
+		
+		new File(TEMPDIR + File.separator + "subdir").delete();
+	}
+	
+	@Test
+	public void testObserveDirectoryChange() {
+		changeScanner.addObserver(notifyTester);
+		new Thread (changeScanner).start();
 
 		assertFalse("Should not find filesystem changes", notifyTester.isUpdated);
 
@@ -49,23 +75,16 @@ public class DirectoryObserverTest extends TestCase {
 
 		assertTrue("Should detect filesystem changes", notifyTester.isUpdated);
 	}
-
-	@Test
-	public void testSubscriptionMechanism() {
-		changeScanner.subscribe(notifyTester);
-		changeScanner.unsubscribe(notifyTester);
-
-		changeScanner.start();
-
-		new DirectoryObserverTestHelper(TEMPDIR).createFile();
-		assertFalse("Should not find filesystem changes", notifyTester.isUpdated);
-	}
 	
 	private class UpdateDetector implements Observer {
 		public boolean isUpdated = false;
 		
 		public void update(Observable o, Object arg) {
 			isUpdated = true;
+		}
+		
+		public void reset(){
+			isUpdated = false;
 		}
 	}
 }

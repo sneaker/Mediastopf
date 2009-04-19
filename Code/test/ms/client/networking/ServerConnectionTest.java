@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 
 public class ServerConnectionTest extends TestCase {
 	
-	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + "msclienttest" + File.separator;
+	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator;
 	private File folder;
 	private ServerConnection connection;
 

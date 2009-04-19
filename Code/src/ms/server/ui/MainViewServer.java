@@ -2,7 +2,6 @@ package ms.server.ui;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,54 +29,50 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.server.Server;
-import ms.server.logic.ExportRunningList;
-import ms.server.logic.ImportRunningList;
-import ms.server.logic.TaskList;
+import ms.server.StartServer;
 import ms.server.ui.dialogs.AboutDialog;
 import ms.server.ui.dialogs.ExportDialog;
-import ms.server.ui.dialogs.LogDialog;
 import ms.server.ui.dialogs.MessageDialog;
-import ms.server.ui.models.ExportTableModel;
-import ms.server.ui.models.ImportTableModel;
 import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
-import ms.server.ui.tables.ImportTable;
+import ms.server.ui.tables.Table;
+import ms.server.utils.I18NManager;
 
-
-public class MediaStopfServer extends JFrame {
+/**
+ * main window of mediastopf server
+ * 
+ * @author david
+ *
+ */
+public class MainViewServer extends JFrame {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static final String PROGRAM = "MediaStopf Server";
-	public static final String UIIMAGELOCATION = "/ms/server/ui/images/";
-
+	private I18NManager manager = I18NManager.getManager();
 	private TaskComboBoxModel boxModel;
-	private ImportTableModel importTableModel;
-	private ExportTableModel exportTableModel;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
-	private ImportTable importTable;
 	private ExportTable exportTable;
 	private JTextField statusBar;
 	private JTabbedPane tabPane;
-	private TaskList taskList;
-	private ImportRunningList importRunningList;
-	private ExportRunningList exportRunningList;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
-	private String export = "Export", cancel = "Cancel", runningTask = "Running Tasks", tasks = "Tasks", statusbar = "StatusBar";
+	private final String export = manager.getString("export"), cancel = manager.getString("cancel"),
+	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"),
+	statusbar = manager.getString("Main.statusbar");
 	
-	public MediaStopfServer(Server server) {
-		taskList = new TaskList(server);
-		boxModel = new TaskComboBoxModel(taskList);
-		importRunningList = new ImportRunningList();
-		exportRunningList = new ExportRunningList();
-		importTableModel = new ImportTableModel(importRunningList);
-		exportTableModel = new ExportTableModel(exportRunningList);
+	public MainViewServer(Server server) {
+		if (StartServer.DEBUG) {
+			setTitle(Constants.PROGRAM + " - Debug");
+		} else {
+			new SplashScreen(Constants.SPLASH);
+		}
+		boxModel = new TaskComboBoxModel(server);
 
 		initGUI();
 	}
@@ -86,22 +81,23 @@ public class MediaStopfServer extends JFrame {
 	 * init GUI Components
 	 */
 	private void initGUI() {
-		setTitle(PROGRAM);
+		initFrame();
+
+		addTrayIcon();
+		addStatusBar();
+		addTaskPanel();
+	}
+
+	private void initFrame() {
+		setTitle(Constants.PROGRAM);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLayout(null);
+		setSize(600, 550);
 		setMinimumSize(new Dimension(400, 450));
-		setSize(400, 450);
-		//setIconImage(new ImageIcon(getClass().getResource(UIIMAGELOCATION + "icon.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
-
-		//addTrayIcon();
-		addStatusBar();
-		addTaskComboBox();
-		addTaskTable();
-		addTaskPanel();
-		addRunningTaskPanel();
 		
 		componentListener();
 		windowListener();
@@ -119,24 +115,12 @@ public class MediaStopfServer extends JFrame {
 	private void componentListener() {
 		addComponentListener(new ComponentAdapter() {
 			private boolean isShown = false;
-
 			@Override
 			public void componentResized(ComponentEvent e) {
 				if (isShown) {
-					int width = getWidth() - 5;
-					int height = getHeight() - 70;
-					
-					JPanel runtaskPanel = panelMap.get(runningTask);
-					runtaskPanel.setSize(width, height - 110);
-					JPanel taskPanel = panelMap.get(tasks);
-					taskPanel.setSize(width, taskPanel.getHeight());
-					JPanel statusPanel = panelMap.get(statusbar);
-					statusPanel.setBounds(0, height, width, statusPanel.getHeight());
-
-					updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
+					updatePanelBounds();
 				}
 			}
-
 			@Override
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
@@ -144,17 +128,31 @@ public class MediaStopfServer extends JFrame {
 		});
 	}
 	
+	private void updatePanelBounds() {
+		int width = getWidth() - 10;
+		int height = getHeight() - 70;
+		
+		JPanel runtaskPanel = panelMap.get(runningTask);
+		runtaskPanel.setSize(width, height - 110);
+		JPanel taskPanel = panelMap.get(tasks);
+		taskPanel.setSize(width, taskPanel.getHeight());
+		JPanel statusPanel = panelMap.get(statusbar);
+		statusPanel.setBounds(0, height, width, statusPanel.getHeight());
+		
+		updateComponentBounds(runtaskPanel, taskPanel, statusPanel);
+	}
+	
 	private void updateComponentBounds(JPanel runtask, JPanel task, JPanel status) {
-		buttonMap.get(export).setLocation(task.getWidth() - 135,task.getHeight() - 40);
+		buttonMap.get(export).setLocation(task.getWidth() - 140,task.getHeight() - 40);
 		
 		int width = runtask.getWidth() - 10;
 		int height = runtask.getHeight() - 40;
-		buttonMap.get(cancel).setLocation(width - 125, height);
+		buttonMap.get(cancel).setLocation(width - 130, height);
 		tablePanel.setSize(width, height - 30);
 		
-		taskComboBox.setSize(task.getWidth() - 30, 20);
+		taskComboBox.setSize(task.getWidth() - 20, 20);
 
-		tabPane.setSize(tablePanel.getWidth(), tablePanel.getHeight());
+		tabPane.setSize(tablePanel.getWidth(), tablePanel.getHeight()-5);
 		
 		statusBar.setSize(status.getWidth(), status.getHeight());
 	}
@@ -166,11 +164,10 @@ public class MediaStopfServer extends JFrame {
 	private void addStatusBar() {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 380, 450, 20);
-		panel.setBorder(BorderFactory.createTitledBorder(statusbar));
+		panel.setBounds(0, getHeight() - 70, getWidth() - 10, 20);
 		panelMap.put(statusbar, panel);
 		
-		statusBar = new JTextField("(C)2009 MediaStopf Server");
+		statusBar = new JTextField(manager.getString("Main.copyright"));
 		statusBar.setBounds(0, 0, panel.getWidth(), panel.getHeight());
 		statusBar.setEditable(false);
 		statusBar.setFocusable(false);
@@ -183,16 +180,27 @@ public class MediaStopfServer extends JFrame {
 	 * add task panel
 	 */
 	private void addTaskPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(0, 5, 395, 90);
-		panel.setBorder(BorderFactory.createTitledBorder(tasks));
-		panel.add(taskComboBox);
-		panel.add(addExportButton());
-		panelMap.put(tasks, panel);
-		add(panel);
+		addButtons();
+		addTaskComboBox();
+		addTaskTable();
+		
+		final int[] y = { 5, 100 };
+		final int[] height = { 90, getHeight() - 180 };
+		final String[] panelLabel = { tasks, runningTask };
+		final String[] buttonLabel = { export, cancel };
+		for(int i=0; i<panelLabel.length;i++) {
+			JPanel panel = new JPanel();
+			panel.setLayout(null);
+			panel.setBounds(0, y[i], getWidth() - 10, height[i]);
+			panel.setBorder(BorderFactory.createTitledBorder(panelLabel[i]));
+			panel.add(buttonMap.get(buttonLabel[i]));
+			add(panel);
+			panelMap.put(panelLabel[i], panel);
+		}
+		panelMap.get(tasks).add(taskComboBox);
+		panelMap.get(runningTask).add(tablePanel);
 	}
-
+	
 	/**
 	 * combobox which show the tasks available
 	 * 
@@ -200,10 +208,10 @@ public class MediaStopfServer extends JFrame {
 	 */
 	private void addTaskComboBox() {
 		taskComboBox = new JComboBox(boxModel);
-		taskComboBox.setBounds(10, 20, 365, 20);
+		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
-		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
+		taskComboBox.setUI(new MetalComboBoxUI() {
 			public void layoutComboBox(Container parent, MetalComboBoxLayoutManager manager) {
 				super.layoutComboBox(parent, manager);
 				arrowButton.setBounds(0, 0, 0, 0);
@@ -212,48 +220,53 @@ public class MediaStopfServer extends JFrame {
 	}
 
 	/**
-	 * add button to export the task to a medium
+	 * add buttons
 	 * 
 	 * @return JButton
 	 */
-	private JButton addExportButton() {
-		JButton exportButton = new JButton();
-		exportButton.setBounds(260, 50, 100, 25);
-		exportButton.setText(export);
-		exportButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportSelectedItem();
-			}
-		});
-		buttonMap.put(export, exportButton);
-		return exportButton;
+	private void addButtons() {
+		final int x = getWidth() - 150;
+		final int[] y = { 50, getHeight() - 220 };
+		final int width = 115;
+		final int height = 25;
+		final String[] label = { export, cancel };
+		final String[] icons = { Constants.EXPORT_S, Constants.CANCEL };
+		final int[] events = { manager.getMnemonic("export"), manager.getMnemonic("cancel") };
+		for(int i=0;i<label.length;i++) {
+			JButton button = new JButton();
+			button.setBounds(x, y[i], width, height);
+			button.setText(label[i]);
+			button.setMnemonic(events[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(e.getActionCommand() == export) {
+						exportSelectedItem();
+					} else {
+						exportTable.cancel();
+					}
+				}
+			});
+			buttonMap.put(label[i], button);
+		}
+		buttonMap.get(cancel).setEnabled(false);
 	}
 	
 	private void exportSelectedItem() {
-		String tasknum = (String)taskComboBox.getSelectedItem();
-		File file = new File(tasknum);
-		if(!file.isDirectory()) {
-			MessageDialog.info("Not found", "No directory of " + tasknum + " found");
+		int taskID = (Integer)taskComboBox.getSelectedItem();
+		if(taskID == -1) {
+			MessageDialog.noneSelectedDialog();
 			return;
 		}
-		ExportDialog ed = new ExportDialog(tasknum);
+		File file = new File(Integer.toString(taskID));
+		if(!file.isDirectory()) {
+			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
+			return;
+		}
+		ExportDialog ed = new ExportDialog(taskID);
 		ed.setVisible(true);
-	}
-
-	/**
-	 * add running task panel
-	 */
-	private void addRunningTaskPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(0, 100, 395, 270);
-		panel.setBorder(BorderFactory.createTitledBorder(runningTask));
-
-		addRunningTaskButtons(panel);
-
-		panel.add(tablePanel);
-		panelMap.put(runningTask, panel);
-		add(panel);
 	}
 
 	/**
@@ -263,16 +276,15 @@ public class MediaStopfServer extends JFrame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, 385, 200);
+		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
-		importTable = new ImportTable(importTableModel);
-		exportTable = new ExportTable(exportTableModel);
+		exportTable = new ExportTable();
 		
 		tabPane = new JTabbedPane();
-		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight());
-		tabPane.addTab("Import", new JScrollPane(importTable));
-		tabPane.addTab("Export", new JScrollPane(exportTable));
+		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight()-5);
+		tabPane.addTab(manager.getString("Main.import"), new JScrollPane(new Table()));
+		tabPane.addTab(manager.getString("Main.export"), new JScrollPane(exportTable));
 		tabPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -286,42 +298,13 @@ public class MediaStopfServer extends JFrame {
 		tablePanel.add(tabPane);
 	}
 
-	/**
-	 * add button for the running tasks
-	 * 
-	 * @param panel
-	 *            JPanel
-	 */
-	private void addRunningTaskButtons(JPanel panel) {
-		int x = 260;
-		int y = 230;
-		int width = 100;
-		int height = 25;
-		JButton button = new JButton();
-		button.setBounds(new Rectangle(x, y, width, height));
-		button.setText(cancel);
-		button.setMnemonic(KeyEvent.VK_C);
-		button.setEnabled(false);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand() == cancel) {
-					exportTable.cancel();
-				}
-			}
-		});
-		panel.add(button);
-		buttonMap.put(cancel, button);
-	}
-	
-	private void exit() {
-		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
+	void exit() {
+		int result = MessageDialog.yesNoDialog(manager.getString("Main.exittitle"), manager.getString("Main.exitmessage"));
 		switch(result) {
 		case JOptionPane.YES_OPTION:
 			System.exit(0);
 			break;
 		case JOptionPane.NO_OPTION:
-			return;
-		default:
 			return;
 		}
 	}
@@ -334,9 +317,9 @@ public class MediaStopfServer extends JFrame {
 	 */
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		final String file = "File", help = "Help";
+		final String file = manager.getString("Main.filemenu"), help = manager.getString("Main.helpmenu");
 		final String[] menuItems = { file, help };
-		final int fileMnemonic = KeyEvent.VK_F, helpMnemonic = KeyEvent.VK_H;
+		final int fileMnemonic = manager.getMnemonic("Main.filemenu"), helpMnemonic = manager.getMnemonic("Main.helpmenu");
 		final int[] keyEvent = new int[] { fileMnemonic, helpMnemonic };
 		for (int i = 0; i < menuItems.length; i++) {
 			JMenu menu = new JMenu(menuItems[i]);
@@ -357,7 +340,7 @@ public class MediaStopfServer extends JFrame {
 	 * @param helpMenu
 	 */
 	private void addHelpItems(JMenu helpMenu) {
-		JMenuItem aboutItem = new JMenuItem("About...");
+		JMenuItem aboutItem = new JMenuItem(manager.getString("Main.aboutitem"));
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -375,11 +358,11 @@ public class MediaStopfServer extends JFrame {
 	 *            JMenu
 	 */
 	private void addFileItems(JMenu fileMenu) {
-		final String log = "Log", exit = "Exit";
+		final String log = manager.getString("Main.logitem"), exit = manager.getString("exit");
 		final String[] fileTitles = { log, exit };
-		final KeyStroke configAccelerator = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK);
+		final KeyStroke logAccelerator = KeyStroke.getKeyStroke(manager.getMnemonic("Main.logitem"), KeyEvent.CTRL_DOWN_MASK);
 		final KeyStroke exitAccelerator = null;
-		final KeyStroke[] keyStrokes = { configAccelerator, exitAccelerator };
+		final KeyStroke[] keyStrokes = { logAccelerator, exitAccelerator };
 		for (int i = 0; i < fileTitles.length; i++) {
 			if(i == 1) {
 				fileMenu.addSeparator();
@@ -390,7 +373,7 @@ public class MediaStopfServer extends JFrame {
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == log) {
-						LogDialog ld = new LogDialog();
+						LogFrame ld = new LogFrame();
 						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
 						exit();

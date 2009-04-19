@@ -3,20 +3,20 @@ package ms.client.logic;
 
 public class Task {
 	
-	private int tasknum;
+	private int taskID;
 	private String status;
 
-	public Task(int tasknum, String status) {
-		this.setTasknum(tasknum);
+	public Task(int taskID, String status) {
+		this.setID(taskID);
 		this.setStatus(status);
 	}
 
-	public void setTasknum(int tasknum) {
-		this.tasknum = tasknum;
+	public void setID(int taskID) {
+		this.taskID = taskID;
 	}
 
-	public int getTasknum() {
-		return tasknum;
+	public int getID() {
+		return taskID;
 	}
 
 	public void setStatus(String status) {
@@ -34,7 +34,7 @@ public class Task {
         } else if (obj instanceof Task) {
         	Task task = (Task) obj;
             return ((status == null ? task.getStatus() == null : status.equalsIgnoreCase(task.getStatus()) &&
-                    (tasknum == 0 ? task.getTasknum() == 0 : tasknum == task.getTasknum())));
+                    (taskID == 0 ? task.getID() == 0 : taskID == task.getID())));
         }
         return false;
     }

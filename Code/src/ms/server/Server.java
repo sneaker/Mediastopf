@@ -1,60 +1,70 @@
 package ms.server;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import ms.server.database.ActiveRecordManager;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
 import ms.server.log.Log;
+import ms.server.logic.Task;
 import ms.server.networking.NetworkServer;
-import ms.server.ui.MediaStopfServer;
-import ms.server.ui.SplashScreen;
+import ms.server.ui.MainViewServer;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
+/**
+ * server classe
+ * loading gui components and start server
+ * 
+ * @author david
+ *
+ */
 public class Server implements ServerHandler {
 	
-	private static final String SPLASHIMAGE = MediaStopfServer.UIIMAGELOCATION + "splash.jpg";
-	private static final int MAX_SERVER_THREADS = 10;
+	public static final int MAX_SERVER_THREADS = 10;
 
 	public Server(int port) {
-		loadLog();
-		serverStartInfo();
 		startServer(port);
 		loadUI();
-//		loadData();
 	}
 
 	private void startServer(int port) {
+		serverStartInfo();
 		Logger logger = Log.getLogger();
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
 		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
 	}
 
+
 	private void loadData() {
 		// Get data from DB direct via domain object and activerecord
 		String sql = "select * from Auftrag";
-		List<Auftrag> lp = ActiveRecordManager.getObjectList(sql, Auftrag.class);
+		ArrayList<Auftrag> lp = (ArrayList<Auftrag>) ActiveRecordManager.getObjectList(sql, Auftrag.class);
 		for (Auftrag name: lp) System.out.println(name.toString());
 
 		// Get data from DB via adapter class
-		lp = DbAdapter.getOrderList();
+		lp = (ArrayList<Auftrag>) DbAdapter.getOrderList();
 		for (Auftrag name: lp) System.out.println(name.toString());
 	}
 	
-	public ArrayList<Auftrag> getDataBase() {
-		return (ArrayList<Auftrag>) DbAdapter.getOrderList();
+	
+	public ArrayList<Task> getDataBase() {
+		ArrayList<Auftrag> list = (ArrayList<Auftrag>) DbAdapter.getOrderList();
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		for(Auftrag a: list) {
+			tasks.add(new Task(a.getID(), Integer.toString(a.getStatus())));
+		}
+		return tasks;
+
 	}
 	
 	public void sendObject(Object o) {
@@ -73,11 +83,6 @@ public class Server implements ServerHandler {
 		//TODO
 	}
 	
-	private void loadLog() {
-		Log log = new Log();
-		log.setLevel(Level.ALL);
-	}
-
 	private void serverStartInfo() {
 		// TODO: ANPASSEN!
 		Logger logger = Log.getLogger();
@@ -95,13 +100,7 @@ public class Server implements ServerHandler {
 	private void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 	}
@@ -110,12 +109,7 @@ public class Server implements ServerHandler {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MediaStopfServer mediastopf = new MediaStopfServer(Server.this);
-				if (StartServer.DEBUG) {
-					mediastopf.setTitle(MediaStopfServer.PROGRAM + " - Debug");
-				} else {
-					new SplashScreen(SPLASHIMAGE);
-				}
+				MainViewServer mediastopf = new MainViewServer(Server.this);
 				mediastopf.setVisible(true);
 			}
 		});

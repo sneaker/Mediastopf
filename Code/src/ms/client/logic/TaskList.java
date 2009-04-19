@@ -3,29 +3,36 @@ package ms.client.logic;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import ms.client.Client;
 import ms.client.StartClient;
 
 
 public class TaskList extends Observable {
 	
-	private ArrayList<String> list = new ArrayList<String>();
+	private ArrayList<Task> list = new ArrayList<Task>();
+	private Client client;
 	
 	public TaskList() {
 		if(StartClient.DEBUG) {
-			for(int i=0; i < 10; i++) {
-				add("test" + i);
-			}
+			add(new Task(1111, "Waiting"));
+			add(new Task(2222, "Ready"));
+			add(new Task(3333, "Sending"));
 		}
 	}
+
+	public TaskList(Client client) {
+		this.client = client;
+		updateList();
+	}
 	
-	public void add(String task) {
-		list.add(task);
+	public void add(Task o) {
+		list.add(o);
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void remove(String task) {
-		list.remove(task);
+	public void remove(Task o) {
+		list.remove(o);
 		setChanged();
 		notifyObservers();
 	}
@@ -36,11 +43,17 @@ public class TaskList extends Observable {
 		notifyObservers();
 	}
 	
-	public String get(int index) {
+	public Task get(int index) {
 		return list.get(index);
 	}
 	
 	public int size() {
 		return list.size();
+	}
+	
+	public void updateList() {
+		this.list = client.getTaskList();
+		setChanged();
+		notifyObservers();
 	}
 }

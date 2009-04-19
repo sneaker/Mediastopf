@@ -30,11 +30,9 @@ public class NetworkServer implements Runnable {
 	public void run() {
 		ExecutorService exec = null;
 
-		for (int i = 0; i < 5; ++i) {
-			exec = Executors.newFixedThreadPool(THREADCOUNT);
-		}
+		exec = Executors.newFixedThreadPool(THREADCOUNT);
 
-		while (mediastop_ServerSocket.isBound()) {
+		while (true) {
 			try {
 				exec.execute(new NetworkServerThread(mediastop_ServerSocket.accept()));
 			} catch (IOException e) {
@@ -42,6 +40,5 @@ public class NetworkServer implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		exec.shutdown();
 	}
 }

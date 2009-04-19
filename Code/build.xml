@@ -20,7 +20,6 @@
 	<property name="main.class.client" value="ms.client.StartClient" />
 	<property name="main.class.server" value="ms.server.StartServer" />
 	
-	
 	<path id="project.classpath">
 		<pathelement location="${build.dir}" />
 		<pathelement location="${test.build.dir}" />
@@ -36,21 +35,32 @@
 		<delete dir="${build.dir}" />
 		<delete dir="${test.build.dir}" />
 		<delete dir="${doc.dir}" />
+		<delete dir="${release.dir}" />
 	</target>
 
 	<target name="compile" depends="clean">
 		<mkdir dir="${build.dir}" />
-		<javac srcdir="${src.dir}" destdir="${build.dir}" optimize="true" debug="true" fork="true">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" optimize="true" debug="true">
 			<classpath refid="project.classpath" />
 		</javac>
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
 	</target>
 
-	<target name="compile-tests">
+	<target name="compile-tests" depends="clean">
 		<mkdir dir="${test.build.dir}" />
 		<mkdir dir="${test.dir}" />
-		<javac srcdir="${test.dir}" destdir="${test.build.dir}" optimize="true" debug="true" fork="true">
+		<javac srcdir="${test.dir}" destdir="${test.build.dir}" optimize="true" debug="true">
 			<classpath refid="project.classpath" />
 		</javac>
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="test" depends="compile, compile-tests" description="tests">
@@ -76,15 +86,21 @@
 
 	<target name="jar" depends="compile" description="create the JAR file">
 	  <mkdir dir="${release.dir}" />
-		<jar destfile="${release.dir}/${file.client}" basedir="${build.dir}">
+		<jar destfile="${release.dir}/${file.client}" basedir="${build.dir}" excludes="ms/server/**">
 			<manifest>
 				<attribute name="Main-Class" value="${main.class.client}" />
 			</manifest>
+			<zipfileset excludes="META-INF/*.SF" src="lib/sqlitejdbc-v053.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/swingx-0.9.5.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/log4j-1.2.15.jar"/>
 	  	</jar>
-		<jar destfile="${release.dir}/${file.server}" basedir="${build.dir}">
+		<jar destfile="${release.dir}/${file.server}" basedir="${build.dir}" excludes="ms/client/**">
 			<manifest>
 				<attribute name="Main-Class" value="${main.class.server}" />
 			</manifest>
+			<zipfileset excludes="META-INF/*.SF" src="lib/sqlitejdbc-v053.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/swingx-0.9.5.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/log4j-1.2.15.jar"/>
 	  	</jar>
 	</target>
 
@@ -94,12 +110,11 @@
 				<exclude name="**/.*" />
 				<include name="${release.dir}/${file.server}" />
 				<include name="${release.dir}/${file.client}" />
-				<include name="mediastopf_client.sh" />
-				<include name="mediastopf_server.sh" />
 				<include name="javadoc/**" />
 				<include name="lib/**" />
 				<include name="src/**" />
 				<include name="test/**" />
+				<include name="db/**" />
 				<include name="build.xml" />
 			</zipfileset>
 		</zip>

@@ -4,41 +4,28 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import ms.server.Server;
-import ms.server.StartServer;
-import ms.server.domain.Auftrag;
 
 
 public class TaskList extends Observable {
 	
-	private ArrayList<String> list = new ArrayList<String>();
+	private ArrayList<Integer> list = new ArrayList<Integer>();
 	private Server server;
 	
 	public TaskList(Server server) {
 		this.server = server;
-		
-		if(StartServer.DEBUG) {
-			for(int i=10; i < 20; i++) {
-				add(i + "");
-			}
-		} else {
-			updateList();
-		}
+		updateList();
 	}
 
 	private void updateList() {
-		ArrayList<Auftrag> tasklist = server.getDataBase();
-		for(Auftrag a: tasklist) {
-			String mediatype = "Unknown";
-			if(a.getMedientyp() != null) {
-				mediatype = a.getMedientyp();
-			}
-			list.add("TaskID: " + a.getID() + " - MediaType: " + mediatype);
+		ArrayList<Task> tasklist = server.getDataBase();
+		for(Task a: tasklist) {
+			list.add(a.getID());
 		}
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void add(String task) {
+	public void add(int task) {
 		list.add(task);
 		setChanged();
 		notifyObservers();
@@ -56,7 +43,7 @@ public class TaskList extends Observable {
 		notifyObservers();
 	}
 	
-	public String get(int index) {
+	public int get(int index) {
 		return list.get(index);
 	}
 	

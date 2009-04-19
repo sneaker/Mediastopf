@@ -3,24 +3,24 @@ package ms.server.ui.tables;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.ListSelectionModel;
 
+import ms.server.ui.Constants;
 import ms.server.ui.dialogs.MessageDialog;
-import ms.server.ui.models.ExportTableModel;
-
-import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.decorator.SortOrder;
+import ms.server.ui.models.TableModel;
+import ms.server.utils.I18NManager;
 
 
-public class ExportTable extends JXTable {
+public class ExportTable extends Table {
 
 	private static final long serialVersionUID = 1L;
+	
+	private I18NManager manager = I18NManager.getManager();
 
-	public ExportTable(ExportTableModel taskTableModel) {
-		super(taskTableModel);
+	public ExportTable() {
+		super(new TableModel());
 		initTable();
 	}
 
@@ -28,10 +28,7 @@ public class ExportTable extends JXTable {
 	 * init Table
 	 */
 	private void initTable() {
-		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setComponentPopupMenu(createPopupMenu());
-		setSortOrder(0, SortOrder.ASCENDING);
-		setHighlighters(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
 	}
 
 	/**
@@ -41,9 +38,10 @@ public class ExportTable extends JXTable {
 	 */
 	private JPopupMenu createPopupMenu() {
 		JPopupMenu popupMenu = new JPopupMenu();
-
-		final String cancel = "Cancel";
+		
+		final String cancel = manager.getString("cancel");
 		JMenuItem menuItem = new JMenuItem(cancel);
+		menuItem.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.CANCEL)));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (event.getActionCommand() == cancel) {

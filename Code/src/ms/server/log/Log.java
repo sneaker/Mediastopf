@@ -1,63 +1,67 @@
 package ms.server.log;
 
-import java.io.File;
 import java.io.IOException;
 
+import ms.server.ui.Constants;
+
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
+import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.apache.log4j.WriterAppender;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
+/**
+ * Apache log4j Logger
+ * three different logtypes:
+ * - show in console
+ * - write to a file (daily logging)
+ * - put log information to a outputstream
+ * 
+ * @author david
+ *
+ */
 public class Log {
 	
-	private static final String LOGFILE = "MediaStopfServer.log";
-	private static Logger logger = Logger.getRootLogger();
-
-	public Log() {
+	private static Logger logger = Logger.getLogger(Log.class);
+	private static ByteOutputStream bos = new ByteOutputStream();
+	static {
+		new Log();
+	}
+	private Log() {
+		logger.setLevel(Level.ALL);
 		String pattern = "%d{ISO8601}: %m %n";
 		PatternLayout layout = new PatternLayout(pattern);
-		ConsoleLogger(layout);
+		consoleLogger(layout);
 		fileLogger(layout);
+		writeLogger(layout);
 	}
 
-	private void ConsoleLogger(PatternLayout layout) {
+	private void writeLogger(PatternLayout layout) {
+		WriterAppender writeAppender = new WriterAppender(layout, bos);
+		logger.addAppender(writeAppender);
+	}
+
+	private void consoleLogger(PatternLayout layout) {
 		ConsoleAppender consoleAppender = new ConsoleAppender(layout);
+		consoleAppender.setFollow(true);
 		logger.addAppender(consoleAppender);
 	}
 
 	private void fileLogger(PatternLayout layout) {
-		createFile();
-		FileAppender fileAppender = null;
+		DailyRollingFileAppender fileAppender = new DailyRollingFileAppender();
 		try {
-			fileAppender = new FileAppender(layout, LOGFILE, false);
+			fileAppender = new DailyRollingFileAppender(layout, Constants.LOGFILE, "'_'yyyy-MM-dd");
+			fileAppender.setAppend(true);
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.info("Can't write Logfile");
 		}
 		logger.addAppender(fileAppender);
 	}
 
-	private void createFile() {
-		File f = new File(LOGFILE);
-		if(!f.exists()) {
-			try {
-				f.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * Set Log Level:
-	 * ALL | DEBUG | INFO | WARN | ERROR | FATAL | OFF:
-	 * 
-	 * @param level
-	 */
-	public void setLevel(Level level) {
-		logger.setLevel(level);
-	}
-	
 	/**
 	 * get logger
 	 * 
@@ -68,11 +72,11 @@ public class Log {
 	}
 	
 	/**
-	 * get log filename
+	 * get OutputStream with logged information
 	 * 
-	 * @return String
+	 * @return ByteOutputStream
 	 */
-	public static String getServerLog() {
-		return LOGFILE;
+	public static ByteOutputStream getOutputStream() {
+		return bos;
 	}
 }

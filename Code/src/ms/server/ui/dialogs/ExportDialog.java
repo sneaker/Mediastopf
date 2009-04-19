@@ -1,20 +1,18 @@
 package ms.server.ui.dialogs;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,32 +22,41 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.border.LineBorder;
 
-import ms.server.filesys.Exporter;
-import ms.server.ui.MediaStopfServer;
+import ms.server.filesys.FileIO;
+import ms.server.ui.Constants;
+import ms.server.utils.ConfigHandler;
+import ms.server.utils.I18NManager;
 
-
+/**
+ * dialog to choose a destination, where the files should be copied
+ * 
+ * @author david
+ *
+ */
 public class ExportDialog extends JDialog {
-
-	private static final String CONFIGFILE = "MediaStopfServer.cfg";
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Properties prop = new Properties();
+	private ConfigHandler config = ConfigHandler.getHandler();
+	private I18NManager manager = I18NManager.getManager();
+	private final String exportFolder = manager.getString("Exporter.exportstorage");
+	private final String export = manager.getString("export"), close = manager.getString("close");
+	private JLabel folderNotValidLabel = getNotValidLabel(new Point(140, 10));
 	private JTextField exportTextField;
-	private String export = "exportfolder";
-	private String tasknum;
+	private int taskID;
 
-	public ExportDialog(String tasknum) {
-		this.tasknum = tasknum;
+	public ExportDialog(int taskID) {
+		this.taskID = taskID;
 		
 		initGUI();
 	}
@@ -58,28 +65,40 @@ public class ExportDialog extends JDialog {
 	 * init GUI
 	 */
 	private void initGUI() {
-		setTitle(MediaStopfServer.PROGRAM + " - Export");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLayout(null);
-		setResizable(false);
-		setSize(400, 150);
-		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage());
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		initDialog();
 
+		addESCListener();
 		addButtons();
 		addDefaultFolderPanel();
-		addESCListener();
 		
 		loadProperties();
+		
+		showPathNotValidLabel();
+	}
+
+	private void initDialog() {
+		setTitle(Constants.PROGRAM + " - " + export);
+		setSize(400, 150);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		setLayout(null);
+		setResizable(false);
+		setModal(true);
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	private void addDefaultFolderPanel() {
-		createBorder("Export Storage", new Rectangle(0, 10, 395, 70));
-		createLabel("export.png", new Rectangle(12, 30, 40, 40));
+		createBorder(exportFolder, new Rectangle(0, 10, 395, 70));
+		createLabel(Constants.EXPORT_L, new Rectangle(12, 30, 40, 40));
 		
 		exportTextField = createTextField(new Point(60, 40));
+		exportTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				showPathNotValidLabel();
+			}
+		});
 		exportTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -87,28 +106,26 @@ public class ExportDialog extends JDialog {
 					openExportFileChooser();
 			}
 		});
-		JButton openIcon = createOpenButton(new Rectangle(355, 40, 22, 22));
-		openIcon.addActionListener(new ActionListener() {
+		createOpenButton(new Rectangle(355, 40, 22, 22));
+	}
+	
+	private void createOpenButton(Rectangle rec) {
+		JButton button = new JButton();
+		button.setIcon(new ImageIcon(getClass().getResource(Constants.OPEN)));
+		button.setBounds(rec);
+		button.setToolTipText(manager.getString("Exporter.choosedir"));
+		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openExportFileChooser();
 			}
 		});
-	}
-	
-	private JButton createOpenButton(Rectangle rec) {
-		JButton button = new JButton();
-		button.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "open.png")));
-		button.setBounds(rec);
-		button.setToolTipText("Choose Directory");
 		add(button);
-		return button;
 	}
 
 	private void createLabel(String icon, Rectangle rec) {
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + icon)));
+		label.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icon)));
 		label.setBounds(rec);
-		label.setBorder(LineBorder.createBlackLineBorder());
 		add(label);
 	}
 
@@ -125,6 +142,7 @@ public class ExportDialog extends JDialog {
 		final JTextField textField = new JTextField();
 		textField.setSize(290, 22);
 		textField.setLocation(p);
+		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -135,32 +153,36 @@ public class ExportDialog extends JDialog {
 		add(textField);
 		return textField;
 	}
+	
 
 	/**
 	 * add buttons
 	 */
 	private void addButtons() {
-		int x = 150;
-		int y = 90;
-		int width = 100;
-		int height = 25;
-		final String export = "Export", close = "Close";
-		final String[] buttonText = { export, close };
+		final int x = 135;
+		final int y = 90;
+		final int width = 115;
+		final int height = 25;
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + 110, y, width, height);
+		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int okMnemonic = KeyEvent.VK_O, cancelMnemonic = KeyEvent.VK_C;
-		final int[] mnemonic = { okMnemonic, cancelMnemonic };
+		final String[] buttonText = { export, close };
+		final String[] icons = { Constants.TICK, Constants.CANCEL };
+		final int exportMnemonic = manager.getMnemonic("export"), cancelMnemonic = manager.getMnemonic("close");
+		final int[] mnemonic = { exportMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
+		    button.setVerticalTextPosition(JButton.CENTER);
+		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == export) {
 						export();
-						close();
+						saveAndClose();
 					} else if (e.getActionCommand() == close) {
 						close();
 					}
@@ -172,13 +194,99 @@ public class ExportDialog extends JDialog {
 	
 	private void export() {
 		String exportFolder = exportTextField.getText().trim();
-		File file = new File(tasknum);
-		boolean done = Exporter.export(file.listFiles(), new File(exportFolder));
+		File file = new File(Integer.toString(taskID));
+		boolean done = FileIO.transfer(file.listFiles(), new File(exportFolder));
 		if(done) {
-			MessageDialog.info("Export done", "Exported Files to " + exportFolder);
+			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
+		} else {
+			MessageDialog.info(manager.getString("Exporter.exportfailedtitle"), manager.getString("Exporter.exportfailed"));
 		}
 	}
 	
+	/**
+	 * close
+	 */
+	private void saveAndClose() {
+		saveProperties();
+		close();
+	}
+
+	/**
+	 * save properties.
+	 */
+	private void saveProperties() {
+		saveValues();
+		config.save();
+	}
+
+	private void saveValues() {
+		if(!exportTextField.getText().isEmpty())
+			config.setProperty(Constants.EXPORTCFG, exportTextField.getText().trim());
+	}
+	
+	/**
+	 * load properties.
+	 */
+	private void loadProperties() {
+		if(config.containsKey(Constants.EXPORTCFG))
+			exportTextField.setText(config.getProperty(Constants.EXPORTCFG));
+	}
+	
+	private void openExportFileChooser() {
+		JFileChooser dirChooser = new JFileChooser();
+		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		dirChooser.setAcceptAllFileFilterUsed(false);
+		openDialog(dirChooser, exportTextField);
+		showPathNotValidLabel();
+	}
+
+	private void openDialog(JFileChooser dirChooser, JTextField textField) {
+		if(!textField.getText().isEmpty()) {
+			dirChooser.setCurrentDirectory(new File(textField.getText()));
+		}
+		int returnVal = dirChooser.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			textField.setText(dirChooser.getSelectedFile().getAbsolutePath().trim());
+		}
+	}
+	
+	/**
+	 * PopupMenu
+	 * 
+	 * @param textField
+	 * @return JPopupMenu
+	 */
+	private JPopupMenu addPopUpMenu(final JTextField textField) {
+		JPopupMenu popupMenu = new JPopupMenu();
+		final String clear = manager.getString("clear"), cut = manager.getString("cut"),
+				copy = manager.getString("copy"), paste = manager.getString("paste"), selectAll = manager.getString("selectall"); 
+		final String[] menuItems = new String[] { clear, cut, copy, paste, selectAll };
+		for (int i = 0; i < menuItems.length; i++) {
+			JMenuItem menuItem = new JMenuItem(menuItems[i]);
+			if (i == 1 || i == 4) {
+				popupMenu.addSeparator();
+			}
+			menuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					if (event.getActionCommand() == cut) {
+						textField.cut();
+					} else if (event.getActionCommand() == copy) {
+						textField.copy();
+					} else if (event.getActionCommand() == paste) {
+						textField.paste();
+					} else if (event.getActionCommand() == clear) {
+						textField.setText("");
+					} else {
+						textField.selectAll();
+					}
+				}
+			});
+			popupMenu.add(menuItem);
+		}
+		return popupMenu;
+	}
+
 	/**
 	 * esc = close dialog
 	 */
@@ -191,67 +299,32 @@ public class ExportDialog extends JDialog {
 		JRootPane rootPane = getRootPane();
 		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
-	
-	/**
-	 * close
-	 */
+
 	private void close() {
-		saveProperties();
 		setVisible(false);
 		dispose();
 	}
 	
-	/**
-	 * save properties.
-	 */
-	void saveProperties() {
-		if(!exportTextField.getText().isEmpty())
-			prop.setProperty(export, exportTextField.getText().trim());
-		try {
-			prop.store(new FileWriter(CONFIGFILE), "MediaStopf Config");
-		} catch (IOException e) {
-			System.out.println(e);
-		}
+	private JLabel getNotValidLabel(Point p) {
+		JLabel label = new JLabel(manager.getString("Exporter.notvalid"));
+		label.setSize(120, 25);
+		label.setLocation(p);
+		label.setForeground(Color.RED);
+		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBorder(BorderFactory.createLineBorder(Color.RED));
+		label.setVisible(true);
+		add(label, 0);
+		return label;
 	}
 	
-	/**
-	 * load properties.
-	 */
-	void loadProperties() {
-		String configfile = CONFIGFILE;
-		File config = new File(configfile);
-		if(!config.exists()) {
-			try {
-				config.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			prop.load(new FileReader(configfile));
-		} catch (FileNotFoundException e) {
-			System.out.println(e);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-		if(prop.containsKey(export))
-			exportTextField.setText(prop.getProperty(export));
-	}
-	
-	private void openExportFileChooser() {
-		JFileChooser dirChooser = new JFileChooser();
-		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		dirChooser.setAcceptAllFileFilterUsed(false);
-		openDialog(dirChooser, exportTextField);
-	}
-
-	private void openDialog(JFileChooser dirChooser, JTextField textField) {
-		if(!textField.getText().isEmpty()) {
-			dirChooser.setCurrentDirectory(new File(textField.getText()));
-		}
-		int returnVal = dirChooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			textField.setText(dirChooser.getSelectedFile().getAbsolutePath().trim());
+	private void showPathNotValidLabel() {
+		String text = exportTextField.getText();
+		File f = new File(text);
+		if(f.exists() && f.isDirectory()) {
+			folderNotValidLabel.setVisible(false);
+		} else {
+			folderNotValidLabel.setVisible(true);
 		}
 	}
 }

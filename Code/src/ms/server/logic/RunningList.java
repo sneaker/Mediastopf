@@ -4,28 +4,27 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import ms.server.StartServer;
-import ms.server.domain.Auftrag;
 
 
-public class ExportRunningList extends Observable {
+public class RunningList extends Observable {
 	
-	private ArrayList<Auftrag> list = new ArrayList<Auftrag>();
+	private ArrayList<Task> list = new ArrayList<Task>();
 	
-	public ExportRunningList() {
+	public RunningList() {
 		if(StartServer.DEBUG) {
 			for(int i=10; i < 20; i++) {
-				add(new Auftrag("test", "CD", i));
+				add(new Task(i, "test"));
 			}
 		}
 	}
 	
-	public void add(Auftrag o) {
+	public void add(Task o) {
 		list.add(o);
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void remove(Auftrag o) {
+	public void remove(Task o) {
 		list.remove(o);
 		setChanged();
 		notifyObservers();
@@ -37,7 +36,7 @@ public class ExportRunningList extends Observable {
 		notifyObservers();
 	}
 	
-	public Auftrag get(int index) {
+	public Task get(int index) {
 		return list.get(index);
 	}
 	

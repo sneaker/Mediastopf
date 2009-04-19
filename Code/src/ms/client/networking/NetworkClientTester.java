@@ -13,25 +13,24 @@ public class NetworkClientTester implements Runnable {
 	Logger logger = Log.getLogger();
 	String host;
 	int port;
-	NetworkClient nclient = null;
+	ServerConnection nclient = null;
 
 	public NetworkClientTester(String host, int port) {
 			this.host = host;
 			this.port = port;
 	}
 
-	
 	public void run() {
 		while (true) {
+			System.out.println("command> ");
+			String aMessage = ConsoleInput.getMessage();
 			try {
-				nclient = new NetworkClient(host, port);
+				nclient = new ServerConnection(host, port);
 			} catch (UnknownHostException e) {
 				logger.fatal("Unknown host");
 			} catch (IOException e) {
 				logger.error("Could not connect to server");
 			}
-			System.out.println("command> ");
-			String aMessage = ConsoleInput.getMessage();
 			if (aMessage.equals("exit"))
 				break;
 

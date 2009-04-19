@@ -10,17 +10,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
-import ms.server.ui.dialogs.LogDialog;
-import ms.server.ui.dialogs.MessageDialog;
+import ms.server.utils.I18NManager;
 
-
+/**
+ * show trayicon if possible
+ * 
+ * @author david
+ *
+ */
 public class SystemTrayIcon {
 	
-	private MediaStopfServer server;
+	private I18NManager manager = I18NManager.getManager();
+	private MainViewServer server;
 
-	public SystemTrayIcon(MediaStopfServer server) {
+	public SystemTrayIcon(MainViewServer server) {
 		if (!SystemTray.isSupported()) {
 			return;
 		}
@@ -35,8 +39,8 @@ public class SystemTrayIcon {
 	}
 
 	private TrayIcon getIcon(SystemTray tray) {
-		Image image = new ImageIcon(getClass().getResource(MediaStopfServer.UIIMAGELOCATION + "icon.png")).getImage();
-		TrayIcon trayIcon = new TrayIcon(image, "MediaStopf Server", addPopUpMenu(tray));
+		Image image = new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage();
+		TrayIcon trayIcon = new TrayIcon(image, Constants.PROGRAM, addPopUpMenu(tray));
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -49,8 +53,8 @@ public class SystemTrayIcon {
 	private PopupMenu addPopUpMenu(SystemTray tray) {
 		PopupMenu menu = new PopupMenu();
 
-		final String open = "Open", hide = "Hide", log = "Log", exit = "Exit";
-		final String[] items = { open, hide, log, exit };
+		final String toggle = manager.getString("Tray.minimize"), log = manager.getString("Tray.log"), exit = manager.getString("exit");
+		final String[] items = { toggle, log, exit };
 		for (int i = 0; i < items.length; i++) {
 			if (2 < i) {
 				menu.addSeparator();
@@ -58,33 +62,18 @@ public class SystemTrayIcon {
 			MenuItem item = new MenuItem(items[i]);
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(e.getActionCommand() == open) {
-						server.setVisible(true);
-					} else if(e.getActionCommand() == hide) {
-						server.setVisible(false);
+					if(e.getActionCommand() == toggle) {
+						server.setVisible(!server.isVisible());
 					} else if(e.getActionCommand() == log) {
-						LogDialog ld = new LogDialog();
+						LogFrame ld = new LogFrame();
 						ld.setVisible(true);
 					} else if(e.getActionCommand() == exit){
-						exit();
+						server.exit();
 					}
 				}
 			});
 			menu.add(item);
 		}
 		return menu;
-	}
-	
-	private void exit() {
-		int result = MessageDialog.yesNoDialog("Exit", "Do your really want to Quit?");
-		switch(result) {
-		case JOptionPane.YES_OPTION:
-			System.exit(0);
-			break;
-		case JOptionPane.NO_OPTION:
-			return;
-		default:
-			return;
-		}
 	}
 }

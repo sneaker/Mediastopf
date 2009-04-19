@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -21,17 +22,21 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.client.ui.MediaStopf;
+import ms.client.ui.Constants;
 import ms.client.utils.BrowserControl;
+import ms.client.utils.I18NManager;
 
-
+/**
+ * about dialog
+ * 
+ * @author david
+ *
+ */
 public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
-	private static final String URL = "www.no-more-secrets.ch";
-	private static final String URLEXT = "powered by No More Secrets";
-	private static final String BACKGROUNDIMAGE = MediaStopf.UIIMAGELOCATION + "about.jpg";
+	private I18NManager manager = I18NManager.getManager();
 	
 	public AboutDialog() {
 		initGUI();
@@ -41,47 +46,45 @@ public class AboutDialog extends JDialog {
 	 * create and set gui components
 	 */
 	private void initGUI() {
-		setTitle(MediaStopf.PROGRAM + " - About...");
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setResizable(false);
-		setModal(true);
-		setSize(400, 250);
-		setIconImage(new ImageIcon(getClass().getResource(MediaStopf.UIIMAGELOCATION + "icon.png")).getImage());
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
+		initDialog();
 		
+		addTextFields();
 		addESCListener();
-		addCloseButton();
-		addWebsiteButton();
-		addURL();
+		addButtons();
 		drawBackgroundImage();
 	}
 
-	/**
-	 * Close Button to close dialog
-	 */
-	private void addCloseButton() {
-		JButton button_close = new JButton();
-		button_close.setText("Close");
-		button_close.setBounds(280, 190, 100, 20);
-		button_close.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				closeDialog();
-			}
-		});
-		add(button_close);
+	private void initDialog() {
+		setTitle(Constants.PROGRAM + " - " + manager.getString("About.title"));
+		setSize(400, 250);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
+		setLayout(null);
+		setResizable(false);
+		setModal(true);
+		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
-	private void addWebsiteButton() {
-		JButton button_website = new JButton();
-		button_website.setText("Website");
-		button_website.setBounds(175, 190, 100, 20);
-		button_website.addActionListener(new ActionListener() {
+
+	/**
+	 * add buttons
+	 */
+	private void addButtons() {
+		final int x = 175;
+		final int y = 190;
+		final int width = 100;
+		final int height = 20;
+		JButton button = new JButton();
+		button.setBounds(x + 105, y, width, height);
+		button.setText(manager.getString("close"));
+		button.setMnemonic(manager.getMnemonic("close"));
+		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BrowserControl.displayURL(URL);
+				close();
 			}
 		});
-		add(button_website);
+		add(button);
 	}
 
 	/**
@@ -92,48 +95,35 @@ public class AboutDialog extends JDialog {
 			private static final long serialVersionUID = 1L;
 			
 			public void paintComponent(Graphics g) {
-				ImageIcon img = new ImageIcon(getClass().getResource(BACKGROUNDIMAGE));
+				ImageIcon img = new ImageIcon(getClass().getResource(Constants.ABOUT));
 				g.drawImage(img.getImage(), 0, -30, null);
 			}
 		};
 		panel.setOpaque(false);
 		panel.setLayout(null);
+		panel.setBounds(0, 0, getWidth(), getHeight());
 		add(panel);
-	}
-	
-	/**
-	 * esc = close dialog
-	 */
-	private void addESCListener() {
-		ActionListener cancelListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				closeDialog();
-			}
-		};
-		JRootPane rootPane = getRootPane();
-		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
-	}
-	
-	/**
-	 * close dialog
-	 */
-	private void closeDialog() {
-		setVisible(false);
-		dispose();
 	}
 	
 	/**
 	 * add url textfield
 	 */
-	private void addURL() {
-		JTextField textField = new JTextField(URL);
-		textField.setHorizontalAlignment(JTextField.CENTER);
-		textField.setBounds(new Rectangle(10, 190, 155, 20));
-		textField.setEditable(false);
-		textField.setOpaque(false);
-		textField.setToolTipText(URLEXT);
-		textField.setComponentPopupMenu(addPopUpMenu(textField));
-		add(textField);
+	private void addTextFields() {
+		final String[] texts = { Constants.URL, Constants.HSR };
+		final String[] tooltips = { Constants.URLEXT, Constants.HSREXT };
+		final Rectangle urlBounds = new Rectangle(10, 190, 155, 20);
+		final Rectangle hsrBounds = new Rectangle(165, 190, 110, 20);
+		final Rectangle[] bounds = { urlBounds, hsrBounds };
+		for(int i=0; i<texts.length; i++) {
+			JTextField textField = new JTextField(texts[i]);
+			textField.setHorizontalAlignment(JTextField.CENTER);
+			textField.setBounds(bounds[i]);
+			textField.setEditable(false);
+			textField.setOpaque(false);
+			textField.setToolTipText(tooltips[i]);
+			textField.setComponentPopupMenu(addPopUpMenu(textField));
+			add(textField);
+		}
 	}
 
 	/**
@@ -143,14 +133,43 @@ public class AboutDialog extends JDialog {
 	 * @return JPopupMenu
 	 */
 	private JPopupMenu addPopUpMenu(final JTextField textField) {
+		final String copy = manager.getString("copy");
+		final String open = manager.getString("About.open");
+		final String[] texts = { open, copy };
 		JPopupMenu popupMenu = new JPopupMenu();
-		JMenuItem copyMenuItem = new JMenuItem("Copy");
-		copyMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				textField.copy();
-			}
-		});
-		popupMenu.add(copyMenuItem);
+		for(int i=0; i<texts.length; i++) {
+			JMenuItem menuItem = new JMenuItem(texts[i]);
+			menuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(e.getActionCommand() == copy) {
+						textField.selectAll();
+						textField.copy();
+						textField.select(0, 0);
+					} else {
+						BrowserControl.displayURL(textField.getText().trim());
+					}
+				}
+			});
+			popupMenu.add(menuItem);
+		}
 		return popupMenu;
+	}
+
+	/**
+	 * esc = close dialog
+	 */
+	private void addESCListener() {
+		ActionListener cancelListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		};
+		JRootPane rootPane = getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+	}
+
+	private void close() {
+		setVisible(false);
+		dispose();
 	}
 }

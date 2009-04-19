@@ -18,7 +18,6 @@ import ms.server.ui.MainViewServer;
 
 import org.apache.log4j.Logger;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 /**
  * server classe

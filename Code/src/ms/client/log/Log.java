@@ -11,7 +11,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
+
 
 /**
  * Apache log4j Logger
@@ -26,7 +27,7 @@ import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 public class Log {
 	
 	private static Logger logger = Logger.getLogger(Log.class);
-	private static ByteOutputStream bos = new ByteOutputStream();
+
 	static {
 		new Log();
 	}
@@ -40,8 +41,8 @@ public class Log {
 	}
 
 	private void writeLogger(PatternLayout layout) {
-		WriterAppender writeAppender = new WriterAppender(layout, bos);
-		logger.addAppender(writeAppender);
+		
+	
 	}
 
 	private void consoleLogger(PatternLayout layout) {
@@ -76,7 +77,5 @@ public class Log {
 	 * 
 	 * @return ByteOutputStream
 	 */
-	public static ByteOutputStream getOutputStream() {
-		return bos;
-	}
+
 }

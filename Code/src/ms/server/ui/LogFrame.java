@@ -33,7 +33,7 @@ import ms.server.log.Log;
 import ms.server.utils.ConfigHandler;
 import ms.server.utils.I18NManager;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
 
 /**
  * show log information from logger
@@ -349,8 +349,6 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void readLogContent() {
-		ByteOutputStream bos = Log.getOutputStream();
-		textArea.setText(bos.toString());
 		if(box.isSelected()) {
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}

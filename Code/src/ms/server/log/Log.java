@@ -35,14 +35,10 @@ public class Log {
 		PatternLayout layout = new PatternLayout(pattern);
 		consoleLogger(layout);
 		fileLogger(layout);
-		writeLogger(layout);
+	
 	}
 
-	private void writeLogger(PatternLayout layout) {
-		WriterAppender writeAppender = new WriterAppender(layout, bos);
-		logger.addAppender(writeAppender);
-	}
-
+	
 	private void consoleLogger(PatternLayout layout) {
 		ConsoleAppender consoleAppender = new ConsoleAppender(layout);
 		consoleAppender.setFollow(true);
@@ -73,9 +69,10 @@ public class Log {
 	/**
 	 * get OutputStream with logged information
 	 * 
-	 * @return ByteOutputStream
+	 * @return ByteArrayOutputStream
 	 */
 	public static ByteArrayOutputStream getOutputStream() {
 		return bos;
 	}
+
 }

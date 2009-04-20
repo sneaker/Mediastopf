@@ -75,9 +75,6 @@ public class ServerConnection {
 		reply = receiveMessage(mediastopfSocket);
 		if (!reply.equals("TRANSFER SIZE OK"))
 			return;
-				
-		for (int i = 0; i < 10000; i++)
-			;
 		
 		byte[] filebuffer = new byte[size.intValue()];
 		FileInputStream mediafilestream = new FileInputStream(filename);

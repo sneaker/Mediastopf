@@ -62,7 +62,9 @@ public class BildItem extends Item {
 	}
 	
 	public String toString() {
+
 		return "Bilditem-ID: " + id + " Name: " + Name + " Importdatum: " + Importdatum + " Speicherort: " + Speicherort + " Auflösung: " + Aufloesung + " Hoehe: " + Hoehe + " Breite: " + Breite;
+
 	}
 	
 	public int getID() {

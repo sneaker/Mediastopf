@@ -350,6 +350,7 @@ public class LogFrame extends JFrame implements Runnable {
 	private void readLogContent() {
 		ByteArrayOutputStream bos = Log.getOutputStream();
 		textArea.setText(bos.toString());
+
 		if(box.isSelected()) {
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}

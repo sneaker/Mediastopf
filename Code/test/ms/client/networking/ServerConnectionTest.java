@@ -18,8 +18,6 @@ import ms.server.networking.NetworkServer;
 import org.apache.log4j.Logger;
 
 public class ServerConnectionTest extends TestCase {
-	
-	// Added additional File.separator after the tmpdir, because system wanted to access "/tmpmsclienttest/testfile4693". Probably Windows is handling this in another way?
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator;
 	private File folder;
 	private ServerConnection connection;

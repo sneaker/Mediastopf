@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import ms.server.database.ActiveRecordManager;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
@@ -17,6 +18,7 @@ import ms.server.networking.NetworkServer;
 import ms.server.ui.MainViewServer;
 
 import org.apache.log4j.Logger;
+
 
 /**
  * server classe
@@ -42,13 +44,28 @@ public class Server implements ServerHandler {
 		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
 	}
 
+
+	private void loadData() {
+		// Get data from DB direct via domain object and activerecord
+		String sql = "select * from Auftrag";
+		ArrayList<Auftrag> lp = (ArrayList<Auftrag>) ActiveRecordManager.getObjectList(sql, Auftrag.class);
+		for (Auftrag name: lp) System.out.println(name.toString());
+
+		// Get data from DB via adapter class
+		lp = (ArrayList<Auftrag>) DbAdapter.getOrderList();
+		for (Auftrag name: lp) System.out.println(name.toString());
+	}
+	
+	
 	public ArrayList<Task> getDataBase() {
+
 		List<Auftrag> list = DbAdapter.getOrderList();
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		for(Auftrag a: list) {
 			tasks.add(new Task(a.getID(), Integer.toString(a.getStatus())));
 		}
 		return tasks;
+
 	}
 	
 	public void sendObject(Object o) {

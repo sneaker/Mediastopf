@@ -2,6 +2,7 @@ package ms.client.filesys;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -10,7 +11,7 @@ public class DirectoryObserverTestHelper {
 	private String testDirectory;
 
 	public DirectoryObserverTestHelper(String directory) {
-		testDirectory = directory + File.separator + "newlyCreated";
+		testDirectory = directory + File.separator; // + "newlyCreated";
 	}
 
 	public void changeFile() {
@@ -39,7 +40,7 @@ public class DirectoryObserverTestHelper {
 	}
 
 	public void createFile() {
-		createFile((Math.random() * 1000) + "");
+		createFile("newly Created" + (Math.random() * 1000));
 	}
 	
 	public void createFile(String name) {
@@ -49,6 +50,18 @@ public class DirectoryObserverTestHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void changeFile(String filename) {
+		try {
+			FileWriter f = new FileWriter(testDirectory + filename);
+			f.write("fjkdslfjls\nfjkdsjfdsfjl");
+			f.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 }

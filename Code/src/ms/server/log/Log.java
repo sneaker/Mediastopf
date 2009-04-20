@@ -35,7 +35,12 @@ public class Log {
 		PatternLayout layout = new PatternLayout(pattern);
 		consoleLogger(layout);
 		fileLogger(layout);
+		writeLogger(layout);
+	}
 	
+	private void writeLogger(PatternLayout layout) {
+		WriterAppender writeAppender = new WriterAppender(layout, bos);
+		logger.addAppender(writeAppender);
 	}
 
 	

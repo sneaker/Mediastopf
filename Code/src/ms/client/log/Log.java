@@ -40,8 +40,8 @@ public class Log {
 	}
 
 	private void writeLogger(PatternLayout layout) {
-		
-	
+		WriterAppender writeAppender = new WriterAppender(layout, bos);
+		logger.addAppender(writeAppender);
 	}
 
 	private void consoleLogger(PatternLayout layout) {

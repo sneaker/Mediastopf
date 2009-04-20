@@ -12,6 +12,7 @@
 	<property name="test.dir" location="test" />
 	<property name="test.build.dir" location="test.bin" />
 	<property name="release.dir" value="release" />
+	<property name="logs.dir" value="logs" />
 
 	<property name="filename" value="mediastopf" />
 	<property name="file.client" value="${filename}_client.jar" />
@@ -37,6 +38,7 @@
 		<delete dir="${test.build.dir}" />
 		<delete dir="${doc.dir}" />
 		<delete dir="${release.dir}" />
+		<delete dir="${logs.dir}" />
 	</target>
 
 	<target name="compile" depends="clean">

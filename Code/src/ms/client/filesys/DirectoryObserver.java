@@ -58,7 +58,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	}
 
 	/**
-	 * Currently just tracking new files! 
+	 * Currently not scanning subdirectories!
 	 */
 	private List<FileChange> getDirectoryChanges() {
 		File[] newFileList = _observedDirectory.listFiles();

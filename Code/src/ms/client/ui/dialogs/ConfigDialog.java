@@ -375,7 +375,11 @@ public class ConfigDialog extends JDialog {
 	private void showFileNotValidLabel() {
 		String text = ripperTextField.getText();
 		File f = new File(text);
-		if(f.exists() && f.isFile() && text.endsWith("exe")) {
+		if(System.getProperty("os.name").equalsIgnoreCase("windows") && !text.endsWith("exe")) {
+			ripperNotValidLabel.setVisible(false);
+			return;
+		}
+		if(f.exists() && f.isFile()) {
 			ripperNotValidLabel.setVisible(false);
 		} else {
 			ripperNotValidLabel.setVisible(true);

@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 
 import junit.framework.TestCase;
 import ms.client.Client;
+import ms.log.Log;
 import ms.server.Server;
-import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 
 import org.apache.log4j.Logger;

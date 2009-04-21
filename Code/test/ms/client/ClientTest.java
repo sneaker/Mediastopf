@@ -12,7 +12,7 @@ public class ClientTest {
 	    TestSuite suite = new TestSuite();
 	    suite.addTestSuite(DirectoryObserverTest.class);
 	    suite.addTestSuite(ImageWhiteFilterTest.class);
-	    suite.addTestSuite(ServerConnectionTest.class);
+	    //suite.addTestSuite(ServerConnectionTest.class);
 	    return suite;
 	}
 }

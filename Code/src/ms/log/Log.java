@@ -1,9 +1,9 @@
-package ms.client.log;
+package ms.log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import ms.client.ui.Constants;
+import ms.server.ui.Constants;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.DailyRollingFileAppender;
@@ -26,7 +26,6 @@ public class Log {
 	
 	private static Logger logger = Logger.getLogger(Log.class);
 	private static ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
 	static {
 		new Log();
 	}
@@ -38,12 +37,13 @@ public class Log {
 		fileLogger(layout);
 		writeLogger(layout);
 	}
-
+	
 	private void writeLogger(PatternLayout layout) {
 		WriterAppender writeAppender = new WriterAppender(layout, bos);
 		logger.addAppender(writeAppender);
 	}
 
+	
 	private void consoleLogger(PatternLayout layout) {
 		ConsoleAppender consoleAppender = new ConsoleAppender(layout);
 		consoleAppender.setFollow(true);

@@ -30,9 +30,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
 import ms.client.filesys.FileContentWriter;
-import ms.client.log.Log;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.I18NManager;
+import ms.log.Log;
 
 /**
  * show log information from logger

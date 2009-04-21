@@ -12,8 +12,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import ms.client.log.Log;
 import ms.client.logic.Task;
+import ms.log.Log;
 
 import org.apache.log4j.Logger;
 

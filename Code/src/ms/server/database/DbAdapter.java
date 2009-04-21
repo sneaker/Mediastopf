@@ -8,8 +8,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import ms.log.Log;
 import ms.server.domain.*;
-import ms.server.log.Log;
 
 import org.apache.log4j.Logger;
 

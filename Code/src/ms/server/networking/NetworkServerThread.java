@@ -11,9 +11,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import ms.log.Log;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
-import ms.server.log.Log;
 
 import org.apache.log4j.Logger;
 

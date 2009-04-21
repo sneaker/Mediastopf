@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 import ms.client.Client;
 import ms.log.Log;
 import ms.server.Server;
-import ms.server.networking.NetworkServer;
+import ms.server.networking.PortListener;
 
 import org.apache.log4j.Logger;
 
@@ -62,7 +62,7 @@ public class ServerConnectionTest extends TestCase {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new NetworkServer(Client.PORT, Server.MAX_SERVER_THREADS));
+		exec.execute(new PortListener(Client.PORT, Server.MAX_SERVER_THREADS));
 	}
 
 	private void loadLog() {

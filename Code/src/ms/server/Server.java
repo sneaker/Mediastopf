@@ -13,7 +13,7 @@ import ms.logic.Task;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
-import ms.server.networking.NetworkServer;
+import ms.server.networking.PortListener;
 import ms.server.ui.MainViewServer;
 
 import org.apache.log4j.Logger;
@@ -40,7 +40,7 @@ public class Server implements ServerHandler {
 		Logger logger = Log.getLogger();
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new NetworkServer(port, MAX_SERVER_THREADS));
+		exec.execute(new PortListener(port, MAX_SERVER_THREADS));
 	}
 
 	public ArrayList<Task> getDataBase() {

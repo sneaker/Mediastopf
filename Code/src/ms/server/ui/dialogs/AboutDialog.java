@@ -23,8 +23,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.server.ui.Constants;
-import ms.server.utils.BrowserControl;
 import ms.server.utils.I18NManager;
+import ms.utils.BrowserControl;
 
 /**
  * about dialog

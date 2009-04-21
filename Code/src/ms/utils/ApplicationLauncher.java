@@ -1,4 +1,4 @@
-package ms.client.utils;
+package ms.utils;
 
 import java.io.IOException;
 

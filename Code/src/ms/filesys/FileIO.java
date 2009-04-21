@@ -1,4 +1,4 @@
-package ms.server.filesys;
+package ms.filesys;
 
 import java.io.File;
 import java.io.FileInputStream;

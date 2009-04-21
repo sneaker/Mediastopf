@@ -9,10 +9,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import ms.log.Log;
+import ms.logic.Task;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 import ms.server.interfaces.ServerHandler;
-import ms.server.logic.Task;
 import ms.server.networking.NetworkServer;
 import ms.server.ui.MainViewServer;
 

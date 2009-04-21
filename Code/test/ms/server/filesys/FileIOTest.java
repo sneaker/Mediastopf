@@ -3,6 +3,8 @@ package ms.server.filesys;
 import java.io.File;
 import java.io.IOException;
 
+import ms.filesys.FileIO;
+
 import junit.framework.TestCase;
 
 public class FileIOTest extends TestCase {

@@ -2,7 +2,7 @@ package ms.server.interfaces;
 
 import java.util.ArrayList;
 
-import ms.server.logic.Task;
+import ms.logic.Task;
 
 /**
  * server interface

@@ -29,8 +29,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
+import ms.filesys.FileIO;
 import ms.log.Log;
-import ms.server.filesys.FileIO;
 import ms.server.utils.ConfigHandler;
 import ms.server.utils.I18NManager;
 

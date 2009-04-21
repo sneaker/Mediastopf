@@ -5,6 +5,7 @@ import java.util.Observable;
 
 import ms.client.Client;
 import ms.client.StartClient;
+import ms.logic.Task;
 
 
 public class TaskList extends Observable {

@@ -3,6 +3,7 @@ package ms.server.logic;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import ms.logic.Task;
 import ms.server.Server;
 
 

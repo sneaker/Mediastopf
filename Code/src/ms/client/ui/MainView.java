@@ -41,6 +41,7 @@ import ms.client.ui.tables.TaskTable;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.I18NManager;
 import ms.logic.Task;
+import ms.ui.SplashScreen;
 import ms.utils.ApplicationLauncher;
 
 /**

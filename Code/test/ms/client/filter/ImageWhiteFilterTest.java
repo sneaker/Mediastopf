@@ -1,65 +1,115 @@
 package ms.client.filter;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import junit.framework.TestCase;
+import javax.imageio.ImageIO;
 
-public class ImageWhiteFilterTest extends TestCase {
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class ImageWhiteFilterTest {
+	
+	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator;
 	
 	private int imageHeight = 111;
 	private int imageWidth = imageHeight;
+	private File file;
 	
-	public ImageWhiteFilterTest(String testName) {
-		super(testName);
+	@Before
+	public void setUp() {
+		file = new File(TEMPDIR + "testImage");
 	}
 	
+	@After
+	public void tearDown() {
+		if(file.exists()) {
+			file.delete();
+		}
+	}
+	
+	@Test
+	public void testImageFileWhite() {
+		BufferedImage image = createImage(new Color(255, 255, 255));
+		try {
+			ImageIO.write(image, "jpg", file);
+			image = ImageIO.read(file);
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
+		assertTrue(isWhite);
+	}
+	
+	@Test
+	public void testImageNull() {
+		BufferedImage image = null;
+		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
+		assertFalse(isWhite);
+	}
+	
+	@Test
 	public void testImageWhite() {
 		BufferedImage image = createImage(new Color(255, 255, 255));
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertTrue(isWhite);
 	}
 	
+	@Test
 	public void testImageLargeWhite() {
 		imageHeight = 1111;
 		testImageWhite();
 	}
 	
+	@Test
 	public void testImageWhiteBoundry() {
 		BufferedImage image = createImage(new Color(242, 242, 242));
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertTrue(isWhite);
 	}
 	
+	@Test
 	public void testImageLargeWhiteBoundry() {
 		imageHeight = 1111;
 		testImageWhiteBoundry();
 	}
 	
+	@Test
 	public void testImageNotWhite() {
 		BufferedImage image = createImage(new Color(0, 0, 0));
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertFalse(isWhite);
 	}
 	
+	@Test
 	public void testImageLargeNotWhite() {
 		imageHeight = 1111;
 		testImageNotWhite();
 	}
 	
+	@Test
 	public void testImageNotWhiteBoundry() {
 		BufferedImage image = createImage(new Color(241, 241, 241));
 		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
 		assertFalse(isWhite);
 	}
 	
+	@Test
 	public void testImageLargeNotWhiteBoundry() {
 		imageHeight = 1111;
 		testImageNotWhiteBoundry();
 	}
 	
+	@Test
 	public void testImage95PercentWhite() {
 		int imageResolution = imageHeight*imageWidth;
 		int split = round((double)imageResolution/100*5);
@@ -68,11 +118,13 @@ public class ImageWhiteFilterTest extends TestCase {
 		assertTrue(isWhite);
 	}
 	
+	@Test
 	public void testImageLarge95PercentWhite() {
 		imageHeight = 1111;
 		testImage95PercentWhite();
 	}
 	
+	@Test
 	public void testImage94PercentWhite() {
 		int imageResolution = imageHeight*imageWidth;
 		int split = round((double)imageResolution/100*6);
@@ -81,6 +133,7 @@ public class ImageWhiteFilterTest extends TestCase {
 		assertFalse(isWhite);
 	}
 	
+	@Test
 	public void testImageLarge94PercentWhite() {
 		imageHeight = 1111;
 		testImage94PercentWhite();

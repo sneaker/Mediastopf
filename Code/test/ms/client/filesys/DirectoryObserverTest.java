@@ -1,18 +1,21 @@
 package ms.client.filesys;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import junit.framework.TestCase;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DirectoryObserverTest extends TestCase {
+public class DirectoryObserverTest {
 
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir");
 	

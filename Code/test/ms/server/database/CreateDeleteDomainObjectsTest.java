@@ -1,9 +1,11 @@
 package ms.server.database;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import java.util.Random;
 
-import junit.framework.TestCase;
 import ms.server.domain.Auftrag;
 import ms.server.domain.BildItem;
 import ms.server.domain.Container;
@@ -15,10 +17,15 @@ import ms.server.domain.Mediensammlung;
 import ms.server.domain.MusikItem;
 import ms.server.domain.Sammelstation;
 
-public class CreateDeleteDomainObjectsTest extends TestCase {
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class CreateDeleteDomainObjectsTest {
 	
 	private static int randomint1, randomint2, randomint3;
 
+	@Before
 	public void setUp() throws Exception {
 		Random generator = new Random();
 		randomint1 = generator.nextInt();
@@ -27,10 +34,12 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 				
 	}
 
+	@After
 	public void tearDown() throws Exception {
 		
 	}
 
+	@Test
 	public void testAuftragDbTable() {
 		Auftrag myAuftrag = new Auftrag(randomint1);
 		myAuftrag.save();		
@@ -43,6 +52,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty());
 	}
 	
+	@Test
 	public void testBildItemDbTable() {
 		BildItem myBildItem = new BildItem("Name" + randomint1, "Importdate" + randomint2, "Speicherort" + randomint3, randomint1, "ort" + randomint2, randomint3, randomint1, randomint2, randomint3);
 		myBildItem.save();
@@ -55,6 +65,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, BildItem.class).isEmpty());
 	}
 	
+	@Test
 	public void testMusikItemDbTable() {
 		MusikItem myMusikItem = new MusikItem("Name" + randomint1, "Importdate" + randomint2, "Speicherort" + randomint3, randomint1, "ort" + randomint2, randomint3, randomint1);
 		myMusikItem.save();
@@ -67,6 +78,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, MusikItem.class).isEmpty());
 	}
 	
+	@Test
 	public void testContainerDbTable() {
 		Container myContainer = new Container("Name" + randomint1, randomint2);
 		myContainer.save();		
@@ -79,6 +91,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, Container.class).isEmpty());
 	}
 	
+	@Test
 	public void testEinlesegeraetDbTable() {
 		Einlesegeraet myEinlesegeraet = new Einlesegeraet("Name" + randomint1, randomint2);
 		myEinlesegeraet.save();		
@@ -91,6 +104,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, Einlesegeraet.class).isEmpty());
 	}
 	
+	@Test
 	public void testEinlesestationDbTable() {
 		Einlesestation myEinlesestation = new Einlesestation("Name" + randomint1, randomint2, "Netzwerkadresse" + randomint3);
 		myEinlesestation.save();		
@@ -103,6 +117,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, Einlesestation.class).isEmpty());
 	}
 	
+	@Test
 	public void testExportMediumDbTable() {
 		ExportMedium myExportMedium = new ExportMedium("Name" + randomint1, randomint2, randomint3, randomint1);
 		myExportMedium.save();		
@@ -115,6 +130,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, ExportMedium.class).isEmpty());
 	}
 	
+	@Test
 	public void testImportMediumDbTable() {
 		ImportMedium myImportMedium = new ImportMedium("Name" + randomint1, randomint2, randomint3);
 		myImportMedium.save();		
@@ -127,6 +143,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, ImportMedium.class).isEmpty());
 	}
 	
+	@Test
 	public void testMediensammlungDbTable() {
 		Mediensammlung myImportMedium = new Mediensammlung("Name" + randomint1, randomint2, randomint3);
 		myImportMedium.save();		
@@ -139,6 +156,7 @@ public class CreateDeleteDomainObjectsTest extends TestCase {
 		assertTrue(ActiveRecordManager.getObjectList(sql, Mediensammlung.class).isEmpty());
 	}
 	
+	@Test
 	public void testSammelstationDbTable() {
 		Sammelstation mySammelstation = new Sammelstation("Name" + randomint1, "Netzwerkadresse" + randomint2);
 		mySammelstation.save();		

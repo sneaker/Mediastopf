@@ -1,26 +1,34 @@
 package ms.server.filesys;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class FileIOTest extends TestCase {
+public class FileIOTest {
 	
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator;
 	private File src, dest;
 
+	@Before
 	public void setUp() throws Exception {
 		makeDirs();
 		generateFiles(src);
 		generateFolders(src);
 	}
 
+	@After
 	public void tearDown() throws Exception {
 		delSrcDir();
 		delDestDir();
 	}
 
+	@Test
 	public void testFileListCount() {
 		File[] srclist = src.listFiles();
 		FileIO.transfer(srclist, dest);
@@ -28,6 +36,7 @@ public class FileIOTest extends TestCase {
 		assertEquals(srclist.length, destlist.length);
 	}
 
+	@Test
 	public void testFileList() {
 		File[] srclist = src.listFiles();
 		FileIO.transfer(srclist, dest);
@@ -38,7 +47,7 @@ public class FileIOTest extends TestCase {
 	}
 
 	private void generateFiles(File folder) {
-		for(int i=0; i < 10; i++) {
+		for(int i=0; i < 3; i++) {
 			File f = new File(folder + File.separator + "testfile" + (int)(Math.random()*10000));
 			try {
 				f.createNewFile();
@@ -49,7 +58,7 @@ public class FileIOTest extends TestCase {
 	}
 	
 	private void generateFolders(File folder) {
-		for(int i=0; i < 5; i++) {
+		for(int i=0; i < 2; i++) {
 			File f = new File(folder + File.separator + "folder" + (int)(Math.random()*10000));
 			f.mkdirs();
 			generateFiles(f);

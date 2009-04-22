@@ -41,6 +41,7 @@ public class ImageWhiteFilter {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 		return analyzeImage(image);
 	}
@@ -52,6 +53,9 @@ public class ImageWhiteFilter {
 	 * @return boolean true, if it's white
 	 */
 	public static boolean analyzeImage(BufferedImage image) {
+		if(image == null) {
+			return false;
+		}
 		int imageResolution = image.getWidth() * image.getHeight();
 		if(imageResolution<1000*1000) {
 			return analyzeSmallImage(image);

@@ -1,5 +1,8 @@
 package ms.client.networking;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,19 +12,22 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import junit.framework.TestCase;
 import ms.client.Client;
 import ms.server.Server;
 import ms.server.log.Log;
 import ms.server.networking.NetworkServer;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ServerConnectionTest extends TestCase {
+public class ServerConnectionTest {
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator;
 	private File folder;
 	private ServerConnection connection;
 
+	@Before
 	public void setUp() throws Exception {
 		startServer();
 		connection = new ServerConnection(Client.HOST, Client.PORT);
@@ -30,10 +36,12 @@ public class ServerConnectionTest extends TestCase {
 		generateFiles();
 	}
 
+	@After
 	public void tearDown() throws Exception {
 		delDir();
 	}
 
+	@Test
 	public void testSendFile() {
 		String[] fileList = folder.list();
 		for(String f: fileList) {
@@ -71,10 +79,8 @@ public class ServerConnectionTest extends TestCase {
 	}
 	
 	private void generateFiles() {
-		for(int i=0; i < 100; i++) {
+		for(int i=0; i < 5; i++) {
 			File f = new File(folder + File.separator + "testfile" + (int)(Math.random()*10000));
-			System.out.println(File.separator);
-			System.out.println(f.getPath());
 			try {
 				f.createNewFile();
 				generate_content(f);

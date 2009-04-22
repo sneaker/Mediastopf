@@ -1,9 +1,10 @@
 package ms.server.database;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 import java.util.Random;
 
-import junit.framework.TestCase;
 import ms.server.domain.Auftrag;
 import ms.server.domain.Einlesegeraet;
 import ms.server.domain.Einlesestation;
@@ -11,10 +12,15 @@ import ms.server.domain.ImportMedium;
 import ms.server.domain.Mediensammlung;
 import ms.server.domain.Sammelstation;
 
-public class DbAdapterTest extends TestCase {
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class DbAdapterTest {
 	
 	private static int randomint1, randomint2, randomint3;
 
+	@Before
 	public void setUp() throws Exception {
 		Random generator = new Random();
 		randomint1 = generator.nextInt();
@@ -23,10 +29,12 @@ public class DbAdapterTest extends TestCase {
 				
 	}
 
+	@After
 	public void tearDown() throws Exception {
 		
 	}
 
+	@Test
 	public void testGetAuftragList() {
 		Auftrag myAuftrag = new Auftrag(randomint1);
 		myAuftrag.save();		
@@ -39,6 +47,7 @@ public class DbAdapterTest extends TestCase {
 		assertEquals(null, DbAuftrag);
 	}
 	
+	@Test
 	public void testGetMediensammlungList() {
 		Auftrag myAuftrag = new Auftrag(randomint1);
 		myAuftrag.save();
@@ -56,6 +65,7 @@ public class DbAdapterTest extends TestCase {
 		assertEquals(null, myMediensammlung);
 	}
 	
+	@Test
 	public void testGetImportMediumList() {
 		Mediensammlung myMediensammlung = new Mediensammlung("Name"+randomint1, randomint2, randomint3);
 		myMediensammlung.save();
@@ -78,6 +88,7 @@ public class DbAdapterTest extends TestCase {
 		assertEquals(null, myImportMedium);
 	}
 	
+	@Test
 	public void testGetSammelstationList() {
 		Sammelstation mySammelstation = new Sammelstation("Name" + randomint1, "Netzwerkadresse" + randomint2);
 		mySammelstation.save();		
@@ -90,6 +101,7 @@ public class DbAdapterTest extends TestCase {
 		assertEquals(null, DbSammelstation);
 	}
 	
+	@Test
 	public void testGetEinlesestationList() {
 		Sammelstation mySammelstation = new Sammelstation("Name" + randomint1, "Netzwerkadresse" + randomint2);
 		mySammelstation.save();
@@ -107,6 +119,7 @@ public class DbAdapterTest extends TestCase {
 		assertEquals(null, myEinlesestation);
 	}
 	
+	@Test
 	public void testGetEinlesegeraetList() {
 		Einlesestation myEinlesestation = new Einlesestation("Name" + randomint1, randomint2, "Netzwerkadresse" + randomint3);
 		myEinlesestation.save();

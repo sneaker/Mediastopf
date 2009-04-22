@@ -46,22 +46,22 @@ public class ImageWhiteFilterTest {
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertTrue(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertTrue(isNotWhite);
 	}
 	
 	@Test
 	public void testImageNull() {
 		BufferedImage image = null;
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertFalse(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertFalse(isNotWhite);
 	}
 	
 	@Test
 	public void testImageWhite() {
 		BufferedImage image = createImage(new Color(255, 255, 255));
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertTrue(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertTrue(isNotWhite);
 	}
 	
 	@Test
@@ -73,8 +73,8 @@ public class ImageWhiteFilterTest {
 	@Test
 	public void testImageWhiteBoundry() {
 		BufferedImage image = createImage(new Color(242, 242, 242));
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertTrue(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertTrue(isNotWhite);
 	}
 	
 	@Test
@@ -86,8 +86,8 @@ public class ImageWhiteFilterTest {
 	@Test
 	public void testImageNotWhite() {
 		BufferedImage image = createImage(new Color(0, 0, 0));
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertFalse(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertFalse(isNotWhite);
 	}
 	
 	@Test
@@ -99,8 +99,8 @@ public class ImageWhiteFilterTest {
 	@Test
 	public void testImageNotWhiteBoundry() {
 		BufferedImage image = createImage(new Color(241, 241, 241));
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertFalse(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertFalse(isNotWhite);
 	}
 	
 	@Test
@@ -114,8 +114,8 @@ public class ImageWhiteFilterTest {
 		int imageResolution = imageHeight*imageWidth;
 		int split = round((double)imageResolution/100*5);
 		BufferedImage image = createSplitImage(split);
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertTrue(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertTrue(isNotWhite);
 	}
 	
 	@Test
@@ -129,8 +129,8 @@ public class ImageWhiteFilterTest {
 		int imageResolution = imageHeight*imageWidth;
 		int split = round((double)imageResolution/100*6);
 		BufferedImage image = createSplitImage(split);
-		boolean isWhite = ImageWhiteFilter.analyzeImage(image);
-		assertFalse(isWhite);
+		boolean isNotWhite = ImageWhiteFilter.analyzeImage(image);
+		assertFalse(isNotWhite);
 	}
 	
 	@Test

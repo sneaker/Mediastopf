@@ -23,8 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ServerConnectionTest {
-	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator;
-	private File folder;
+	private final File tempDir = new File(System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator);
 	private ServerConnection connection;
 
 	@Before
@@ -43,15 +42,15 @@ public class ServerConnectionTest {
 
 	@Test
 	public void testSendFile() {
-		String[] fileList = folder.list();
+		String[] fileList = tempDir.list();
 		for(String f: fileList) {
 			try {
-				connection.sendFile(folder + File.separator + f);
+				connection.sendFile(tempDir + File.separator + f);
 			} catch (IOException e) {
 				fail(e.getMessage());
 			}
 		}
-		String[] transferedList = folder.list(new FilenameFilter() {
+		String[] transferedList = tempDir.list(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.contains("_rec");
 			}
@@ -60,8 +59,8 @@ public class ServerConnectionTest {
 		assertEquals(fileList.length, transferedList.length);
 		
 		for(String f: fileList){
-			File file = new File(folder + File.separator + f);
-			File transfile = new File(folder + File.separator + f + "_rec");
+			File file = new File(tempDir + File.separator + f);
+			File transfile = new File(tempDir + File.separator + f + "_rec");
 			assertEquals(file.length(), transfile.length());
 			assertEquals(file.getName(), transfile.getName().replace("_rec", ""));
 		}
@@ -79,8 +78,8 @@ public class ServerConnectionTest {
 	}
 	
 	private void generateFiles() {
-		for(int i=0; i < 5; i++) {
-			File f = new File(folder + File.separator + "testfile" + (int)(Math.random()*10000));
+		for(int i=0; i < 4; i++) {
+			File f = new File(tempDir + File.separator + "testfile" + (int)(Math.random()*10000));
 			try {
 				f.createNewFile();
 				generate_content(f);
@@ -110,17 +109,17 @@ public class ServerConnectionTest {
 	}
 
 	private void makeDirs() {
-		folder = new File(TEMPDIR);
-		folder.mkdirs();
+		delDir();
+		tempDir.mkdirs();
 	}
 	
 	private void delDir() {
-		if(folder.isDirectory()) {
-			File[] fileList = folder.listFiles();
+		if(tempDir.isDirectory()) {
+			File[] fileList = tempDir.listFiles();
 			for(File f: fileList) {
 				f.delete();
 			}
 		}
-		folder.delete();
+		tempDir.delete();
 	}
 }

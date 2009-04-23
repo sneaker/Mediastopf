@@ -12,8 +12,8 @@ import org.junit.Test;
 
 public class FileIOTest {
 	
-	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator;
-	private File src, dest;
+	private final String tempDir = System.getProperty("java.io.tmpdir") + File.separator;
+	private File src = new File(tempDir + "mstestsrc"), dest = new File(tempDir + "mstestdest");
 
 	@Before
 	public void setUp() throws Exception {
@@ -47,7 +47,7 @@ public class FileIOTest {
 	}
 
 	private void generateFiles(File folder) {
-		for(int i=0; i < 3; i++) {
+		for(int i=0; i < 2; i++) {
 			File f = new File(folder + File.separator + "testfile" + (int)(Math.random()*10000));
 			try {
 				f.createNewFile();
@@ -58,7 +58,7 @@ public class FileIOTest {
 	}
 	
 	private void generateFolders(File folder) {
-		for(int i=0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) {
 			File f = new File(folder + File.separator + "folder" + (int)(Math.random()*10000));
 			f.mkdirs();
 			generateFiles(f);
@@ -66,14 +66,8 @@ public class FileIOTest {
 	}
 	
 	private void makeDirs() {
-		src = new File(TEMPDIR + "mstestsrc");
-		dest = new File(TEMPDIR + "mstestdest");
-		if(src.exists()) {
-			delSrcDir();
-		}
-		if(dest.exists()) {
-			delDestDir();
-		}
+		delSrcDir();
+		delDestDir();
 		src.mkdirs();
 		dest.mkdirs();
 	}
@@ -87,10 +81,10 @@ public class FileIOTest {
 	}
 	
 	private void delDir(File file) {
-		if(file.isDirectory()) {
+		if (file.isDirectory()) {
 			File[] fileList = file.listFiles();
-			for(File f: fileList) {
-				if(f.isDirectory()) {
+			for (File f : fileList) {
+				if (f.isDirectory()) {
 					delDir(f);
 				}
 				f.delete();

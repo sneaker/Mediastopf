@@ -1,4 +1,4 @@
-package ms.server.ui;
+package ms.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -31,6 +31,7 @@ import javax.swing.filechooser.FileFilter;
 
 import ms.filesys.FileIO;
 import ms.log.Log;
+import ms.server.ui.Constants;
 import ms.server.utils.ConfigHandler;
 import ms.server.utils.I18NManager;
 

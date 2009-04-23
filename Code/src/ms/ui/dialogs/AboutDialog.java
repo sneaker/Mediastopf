@@ -1,5 +1,5 @@
 
-package ms.client.ui.dialogs;
+package ms.ui.dialogs;
 
 
 import java.awt.Dimension;
@@ -22,8 +22,8 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.client.ui.Constants;
-import ms.client.utils.I18NManager;
+import ms.server.ui.Constants;
+import ms.server.utils.I18NManager;
 import ms.utils.BrowserControl;
 
 /**

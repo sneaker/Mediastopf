@@ -1,4 +1,4 @@
-package ms.server.ui.dialogs;
+package ms.ui.dialogs;
 
 import javax.swing.JOptionPane;
 

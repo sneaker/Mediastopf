@@ -33,15 +33,16 @@ import ms.client.Client;
 import ms.client.StartClient;
 import ms.client.logic.TaskList;
 import ms.client.ui.StatusMessage.StatusType;
-import ms.client.ui.dialogs.AboutDialog;
 import ms.client.ui.dialogs.ConfigDialog;
-import ms.client.ui.dialogs.MessageDialog;
 import ms.client.ui.models.TaskComboBoxModel;
 import ms.client.ui.tables.TaskTable;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.I18NManager;
 import ms.logic.Task;
+import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
+import ms.ui.dialogs.AboutDialog;
+import ms.ui.dialogs.MessageDialog;
 import ms.utils.ApplicationLauncher;
 
 /**
@@ -70,15 +71,13 @@ public class MainView extends JFrame {
 	private String run = manager.getString("Main.run"), reload = manager.getString("Main.reload"),
 	send = manager.getString("send"), cancel = manager.getString("cancel"),
 	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
-	private Client client;
 
-	public MainView(Client client) {
+	public MainView() {
 		if (StartClient.DEBUG) {
 			setTitle(Constants.PROGRAM + " - Debug");
 		} else {
 			new SplashScreen(Constants.SPLASH);
 		}
-		this.client = client;
 
 		initGUI();
 	}
@@ -202,7 +201,7 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = new TaskList(client);
+		taskList = new TaskList();
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if (0 < taskComboBox.getItemCount())
@@ -277,7 +276,7 @@ public class MainView extends JFrame {
 		ApplicationLauncher.open(ripper);
 		
 		updateStatusBar(StatusType.RUNMESSAGE);
-		client.observeDir(task);
+		Client.observeDir(task);
 		
 		// TODO
 		int id = Integer.valueOf(taskID);

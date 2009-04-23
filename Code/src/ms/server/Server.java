@@ -12,7 +12,6 @@ import ms.log.Log;
 import ms.logic.Task;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
-import ms.server.interfaces.ServerHandler;
 import ms.server.networking.PortListener;
 import ms.server.ui.MainViewServer;
 
@@ -26,7 +25,7 @@ import org.apache.log4j.Logger;
  * @author david
  *
  */
-public class Server implements ServerHandler {
+public class Server {
 	
 	public static final int MAX_SERVER_THREADS = 10;
 
@@ -43,7 +42,7 @@ public class Server implements ServerHandler {
 		exec.execute(new PortListener(port, MAX_SERVER_THREADS));
 	}
 
-	public ArrayList<Task> getDataBase() {
+	public static ArrayList<Task> getDataBase() {
 		List<Auftrag> list = DbAdapter.getOrderList();
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		for(Auftrag a: list) {
@@ -51,22 +50,6 @@ public class Server implements ServerHandler {
 		}
 		return tasks;
 
-	}
-	
-	public void sendObject(Object o) {
-		//TODO
-	}
-	
-	public Object getObject() {
-		//TODO
-		return null;
-	}
-	
-	/**
-	 * cancel running job
-	 */
-	public void cancelJob() {
-		//TODO
 	}
 	
 	private void serverStartInfo() {
@@ -95,7 +78,7 @@ public class Server implements ServerHandler {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainViewServer mediastopf = new MainViewServer(Server.this);
+				MainViewServer mediastopf = new MainViewServer();
 				mediastopf.setVisible(true);
 			}
 		});

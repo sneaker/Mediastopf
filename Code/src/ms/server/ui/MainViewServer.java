@@ -31,16 +31,16 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
-import ms.server.Server;
 import ms.server.StartServer;
-import ms.server.ui.dialogs.AboutDialog;
 import ms.server.ui.dialogs.ExportDialog;
-import ms.server.ui.dialogs.MessageDialog;
 import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.Table;
 import ms.server.utils.I18NManager;
+import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
+import ms.ui.dialogs.AboutDialog;
+import ms.ui.dialogs.MessageDialog;
 
 /**
  * main window of mediastopf server
@@ -67,13 +67,13 @@ public class MainViewServer extends JFrame {
 	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"),
 	statusbar = manager.getString("Main.statusbar");
 	
-	public MainViewServer(Server server) {
+	public MainViewServer() {
 		if (StartServer.DEBUG) {
 			setTitle(Constants.PROGRAM + " - Debug");
 		} else {
 			new SplashScreen(Constants.SPLASH);
 		}
-		boxModel = new TaskComboBoxModel(server);
+		boxModel = new TaskComboBoxModel();
 
 		initGUI();
 	}

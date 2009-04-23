@@ -10,14 +10,13 @@ import java.util.Observer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import ms.client.interfaces.ClientHandler;
 import ms.client.networking.ServerConnection;
 import ms.client.observer.DirectoryObserver;
 import ms.client.ui.MainView;
-import ms.client.ui.dialogs.MessageDialog;
 import ms.client.utils.I18NManager;
 import ms.log.Log;
 import ms.logic.Task;
+import ms.ui.dialogs.MessageDialog;
 
 import org.apache.log4j.Logger;
 
@@ -29,14 +28,14 @@ import org.apache.log4j.Logger;
  * @author david
  *
  */
-public class Client implements ClientHandler {
+public class Client {
 	
 	public static final String HOST = "localhost";
 	public static final int PORT = 1337;
 	
-	private I18NManager manager = I18NManager.getManager();
-	private Logger logger = Log.getLogger();
-	private ServerConnection client;
+	private static I18NManager manager = I18NManager.getManager();
+	private static Logger logger = Log.getLogger();
+	private static ServerConnection client;
 	
 	
 	public Client() {
@@ -63,7 +62,7 @@ public class Client implements ClientHandler {
 	 * 
 	 * @param folder to observe
 	 */
-	public void observeDir(final File folder) {
+	public static void observeDir(final File folder) {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder.toString());
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
@@ -80,7 +79,7 @@ public class Client implements ClientHandler {
 	 * 
 	 * @param folder with files
 	 */
-	public void sendFiles(File folder) {
+	public static void sendFiles(File folder) {
 		String[] fileList = folder.list();
 		for(String f: fileList) {
 			try {
@@ -91,28 +90,11 @@ public class Client implements ClientHandler {
 			}
 		}
 	}
-
-	/**
-	 * send objects
-	 * 
-	 * @param Object
-	 */
-	public void sendObject(Object o) {
-		//TODO
-	}
-	
-	/**
-	 * get received objects
-	 */
-	public Object getObject() {
-		// TODO
-		return null;
-	}
 	
 	/**
 	 * get Tasks from Database
 	 */
-	public ArrayList<Task> getTaskList() {
+	public static ArrayList<Task> getTaskList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 		try {
 			list = client.getTaskList();
@@ -123,18 +105,11 @@ public class Client implements ClientHandler {
 		return list;
 	}
 	
-	/**
-	 * cancel running job
-	 */
-	public void cancelJob() {
-		//TODO
-	}
-	
 	private void loadUI() {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainView mediastopf = new MainView(Client.this);
+				MainView mediastopf = new MainView();
 				mediastopf.setVisible(true);
 			}
 		});

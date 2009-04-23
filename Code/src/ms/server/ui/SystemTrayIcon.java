@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 
 import ms.server.utils.I18NManager;
+import ms.ui.LogFrame;
 
 /**
  * show trayicon if possible

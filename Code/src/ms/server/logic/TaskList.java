@@ -9,15 +9,13 @@ import ms.server.Server;
 public class TaskList extends Observable {
 
 	private ArrayList<Integer> list = new ArrayList<Integer>();
-	private Server server;
 
-	public TaskList(Server server) {
-		this.server = server;
+	public TaskList() {
 		updateList();
 	}
 
 	private void updateList() {
-		ArrayList<Task> tasklist = server.getDataBase();
+		ArrayList<Task> tasklist = Server.getDataBase();
 		for (Task a : tasklist) {
 			list.add(a.getID());
 		}

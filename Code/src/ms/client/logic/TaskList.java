@@ -10,7 +10,6 @@ import ms.logic.Task;
 public class TaskList extends Observable {
 
 	private ArrayList<Task> list = new ArrayList<Task>();
-	private Client client;
 
 	public TaskList() {
 		if (StartClient.DEBUG) {
@@ -18,10 +17,6 @@ public class TaskList extends Observable {
 			add(new Task(2222, "Fertig"));
 			add(new Task(3333, "Senden"));
 		}
-	}
-
-	public TaskList(Client client) {
-		this.client = client;
 		updateList();
 	}
 
@@ -52,7 +47,7 @@ public class TaskList extends Observable {
 	}
 
 	public void updateList() {
-		this.list = client.getTaskList();
+		this.list = Client.getTaskList();
 		setChanged();
 		notifyObservers();
 	}

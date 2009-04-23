@@ -33,6 +33,7 @@ import ms.filesys.FileIO;
 import ms.server.ui.Constants;
 import ms.server.utils.ConfigHandler;
 import ms.server.utils.I18NManager;
+import ms.ui.dialogs.MessageDialog;
 
 /**
  * dialog to choose a destination, where the files should be copied

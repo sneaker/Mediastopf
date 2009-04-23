@@ -29,11 +29,11 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.filesys.FileIO;
+import ms.common.filesys.FileIO;
+import ms.common.ui.dialogs.MessageDialog;
 import ms.server.ui.Constants;
 import ms.server.utils.ConfigHandler;
 import ms.server.utils.I18NManager;
-import ms.ui.dialogs.MessageDialog;
 
 /**
  * dialog to choose a destination, where the files should be copied

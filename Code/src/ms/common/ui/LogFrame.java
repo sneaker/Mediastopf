@@ -1,4 +1,4 @@
-package ms.ui;
+package ms.common.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -29,8 +29,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.filesys.FileIO;
-import ms.log.Log;
+import ms.common.filesys.FileIO;
+import ms.common.log.Log;
 import ms.server.ui.Constants;
 import ms.server.utils.ConfigHandler;
 import ms.server.utils.I18NManager;

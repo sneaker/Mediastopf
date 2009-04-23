@@ -9,7 +9,8 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ms.filesys.FileIO;
+
+import ms.common.filesys.FileIO;
 
 
 public class FileIOTest {

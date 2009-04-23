@@ -1,4 +1,4 @@
-package ms.ui;
+package ms.common.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

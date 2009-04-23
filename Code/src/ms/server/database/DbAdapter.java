@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import ms.log.Log;
+import ms.common.log.Log;
 import ms.server.domain.*;
 
 import org.apache.log4j.Logger;

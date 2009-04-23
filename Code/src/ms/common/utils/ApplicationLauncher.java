@@ -1,8 +1,8 @@
-package ms.utils;
+package ms.common.utils;
 
 import java.io.IOException;
 
-import ms.log.Log;
+import ms.common.log.Log;
 
 import org.apache.log4j.Logger;
 

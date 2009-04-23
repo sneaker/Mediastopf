@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ms.client.Client;
-import ms.log.Log;
+import ms.common.log.Log;
 import ms.server.Server;
 import ms.server.networking.PortListener;
 

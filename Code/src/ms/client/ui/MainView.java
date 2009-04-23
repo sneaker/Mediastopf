@@ -38,12 +38,12 @@ import ms.client.ui.models.TaskComboBoxModel;
 import ms.client.ui.tables.TaskTable;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.I18NManager;
-import ms.logic.Task;
-import ms.ui.LogFrame;
-import ms.ui.SplashScreen;
-import ms.ui.dialogs.AboutDialog;
-import ms.ui.dialogs.MessageDialog;
-import ms.utils.ApplicationLauncher;
+import ms.common.logic.Task;
+import ms.common.ui.LogFrame;
+import ms.common.ui.SplashScreen;
+import ms.common.ui.dialogs.AboutDialog;
+import ms.common.ui.dialogs.MessageDialog;
+import ms.common.utils.ApplicationLauncher;
 
 /**
  * main window of mediastopf

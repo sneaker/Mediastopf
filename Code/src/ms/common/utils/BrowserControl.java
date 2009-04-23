@@ -1,5 +1,5 @@
 
-package ms.utils;
+package ms.common.utils;
 
 import java.io.IOException;
 

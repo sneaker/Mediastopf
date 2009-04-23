@@ -14,9 +14,9 @@ import ms.client.networking.ServerConnection;
 import ms.client.observer.DirectoryObserver;
 import ms.client.ui.MainView;
 import ms.client.utils.I18NManager;
-import ms.log.Log;
-import ms.logic.Task;
-import ms.ui.dialogs.MessageDialog;
+import ms.common.log.Log;
+import ms.common.logic.Task;
+import ms.common.ui.dialogs.MessageDialog;
 
 import org.apache.log4j.Logger;
 

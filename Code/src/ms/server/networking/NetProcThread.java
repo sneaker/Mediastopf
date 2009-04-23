@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.List;
 
-import ms.networking.BasicNetIO;
+import ms.common.networking.BasicNetIO;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
 

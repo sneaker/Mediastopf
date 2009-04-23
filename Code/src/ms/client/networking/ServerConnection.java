@@ -9,8 +9,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import ms.logic.Task;
-import ms.networking.BasicNetIO;
+import ms.common.logic.Task;
+import ms.common.networking.BasicNetIO;
 
 public class ServerConnection extends BasicNetIO {
 

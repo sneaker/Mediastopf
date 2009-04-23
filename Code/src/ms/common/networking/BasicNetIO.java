@@ -1,4 +1,4 @@
-package ms.networking;
+package ms.common.networking;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import ms.log.Log;
+import ms.common.log.Log;
 
 import org.apache.log4j.Logger;
 

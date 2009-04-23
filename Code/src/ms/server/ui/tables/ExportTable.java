@@ -7,10 +7,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ms.common.ui.dialogs.MessageDialog;
 import ms.server.ui.Constants;
 import ms.server.ui.models.TableModel;
 import ms.server.utils.I18NManager;
-import ms.ui.dialogs.MessageDialog;
 
 
 public class ExportTable extends Table {

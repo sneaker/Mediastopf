@@ -12,7 +12,7 @@ import ms.client.logic.TaskList;
 import ms.client.ui.Constants;
 import ms.client.ui.models.TaskTableModel;
 import ms.client.utils.I18NManager;
-import ms.ui.dialogs.MessageDialog;
+import ms.common.ui.dialogs.MessageDialog;
 
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.HighlighterFactory;

@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import ms.client.logic.TaskList;
 import ms.client.utils.I18NManager;
-import ms.logic.Task;
+import ms.common.logic.Task;
 
 
 public class TaskTableModel extends AbstractTableModel implements Observer {

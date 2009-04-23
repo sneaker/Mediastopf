@@ -1,4 +1,4 @@
-package ms.log;
+package ms.common.log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

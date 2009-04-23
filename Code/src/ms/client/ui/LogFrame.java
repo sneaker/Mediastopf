@@ -29,10 +29,10 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.client.filesys.FileContentWriter;
-import ms.client.log.Log;
 import ms.client.utils.ConfigHandler;
 import ms.client.utils.I18NManager;
+import ms.filesys.FileIO;
+import ms.log.Log;
 
 /**
  * show log information from logger
@@ -210,7 +210,7 @@ public class LogFrame extends JFrame implements Runnable {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
 			String file = addTXTPostfix(filename, path);
-			FileContentWriter.write(new File(file), textArea.getText().trim());
+			FileIO.write(new File(file), textArea.getText().trim());
 		}
 	}
 

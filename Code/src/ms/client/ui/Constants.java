@@ -22,7 +22,7 @@ public class Constants {
 	public static final String DEFAULTFOLDERCFG = "defaultfolder";
 	public static final String LOGCFG = "log.autorefresh";
 	
-	public static final String UIIMAGE = "/ms/client/ui/images/";
+	public static final String UIIMAGE = "/ms/ui/images/";
 	private static final String UILANGUAGE = "ms/client/ui/lang/";
 	
 	public static final String CONFIGFILE = "MediaStopf.cfg";

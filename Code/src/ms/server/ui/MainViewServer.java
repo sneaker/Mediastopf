@@ -40,6 +40,7 @@ import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.Table;
 import ms.server.utils.I18NManager;
+import ms.ui.SplashScreen;
 
 /**
  * main window of mediastopf server

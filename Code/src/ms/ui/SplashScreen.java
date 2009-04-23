@@ -1,4 +1,4 @@
-package ms.server.ui;
+package ms.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -31,14 +31,6 @@ public class SplashScreen extends JWindow implements Runnable {
 		close();
 	}
 
-	private JLabel setSplashImage() {
-		JLabel label = new JLabel(new ImageIcon(getClass().getResource(image)));
-		label.setBorder(LineBorder.createBlackLineBorder());
-		add(label);
-		pack();
-		return label;
-	}
-
 	private void sleep() {
 		try {
 			Thread.sleep(1600);
@@ -50,6 +42,14 @@ public class SplashScreen extends JWindow implements Runnable {
 	private void close() {
 		setVisible(false);
 		dispose();
+	}
+
+	private JLabel setSplashImage() {
+		JLabel label = new JLabel(new ImageIcon(getClass().getResource(image)));
+		label.setBorder(LineBorder.createBlackLineBorder());
+		add(label);
+		pack();
+		return label;
 	}
 
 	private void initWindow(JLabel label) {

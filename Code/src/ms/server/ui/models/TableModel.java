@@ -5,8 +5,8 @@ import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
+import ms.logic.Task;
 import ms.server.logic.RunningList;
-import ms.server.logic.Task;
 import ms.server.utils.I18NManager;
 
 

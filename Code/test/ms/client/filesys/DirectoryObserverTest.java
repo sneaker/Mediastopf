@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import ms.client.observer.DirectoryObserver;
+import ms.client.observer.FileChange;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

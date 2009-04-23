@@ -3,7 +3,7 @@ package ms.client.interfaces;
 import java.io.File;
 import java.util.ArrayList;
 
-import ms.client.logic.Task;
+import ms.logic.Task;
 
 /**
  * client interface

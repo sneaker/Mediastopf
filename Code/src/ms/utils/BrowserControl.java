@@ -1,4 +1,5 @@
-package ms.client.utils;
+
+package ms.utils;
 
 import java.io.IOException;
 
@@ -27,7 +28,7 @@ public class BrowserControl {
 	 *
 	 * @param url the file's url (the url must start with either "http://"
 	 * or "file://").
- */
+	 */
 	public static void displayURL(String url) {
 		boolean windows = isWindowsPlatform();
 		String cmd = null;

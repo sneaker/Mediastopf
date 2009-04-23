@@ -9,6 +9,8 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ms.filesys.FileIO;
+
 
 public class FileIOTest {
 	
@@ -81,10 +83,10 @@ public class FileIOTest {
 	}
 	
 	private void delDir(File file) {
-		if (file.isDirectory()) {
+		if(file.isDirectory()) {
 			File[] fileList = file.listFiles();
-			for (File f : fileList) {
-				if (f.isDirectory()) {
+			for(File f: fileList) {
+				if(f.isDirectory()) {
 					delDir(f);
 				}
 				f.delete();

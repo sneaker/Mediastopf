@@ -1,10 +1,10 @@
-package ms.client.utils;
+package ms.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import ms.client.log.Log;
+import ms.log.Log;
 
 import org.apache.log4j.Logger;
 

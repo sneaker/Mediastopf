@@ -1,33 +1,21 @@
 package ms.server.networking;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import ms.networking.BasicNetIO;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
-import ms.server.log.Log;
 
-import org.apache.log4j.Logger;
 
-public class NetworkServerThread implements Runnable {
+public class NetProcThread extends BasicNetIO implements Runnable {
 
-	private Socket clientSocket;
-
-	private BufferedReader receiver = null;
-
-	private PrintWriter sender = null;
-	private Logger logger = Log.getLogger();
-
-	public NetworkServerThread(Socket clientSocket) {
-		this.clientSocket = clientSocket;
+	public NetProcThread(Socket clientSocket) {
+		commSocket = clientSocket;
 	}
 
 	public void run() {
@@ -45,7 +33,6 @@ public class NetworkServerThread implements Runnable {
 				try {
 					sendMessage("END OK");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return;
@@ -92,7 +79,6 @@ public class NetworkServerThread implements Runnable {
 		try {
 			sendMessage("ENDINFO");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +87,7 @@ public class NetworkServerThread implements Runnable {
 		logger.info("Waiting for Filetransfer...");
 		int bytesread = 0;
 		byte[] filebuffer = new byte[size];
-		InputStream reader = clientSocket.getInputStream();
+		InputStream reader = commSocket.getInputStream();
 		FileOutputStream writer = new FileOutputStream(name + "_rec");
 		BufferedOutputStream bos = new BufferedOutputStream(writer);
 		while ((bytesread += reader.read(filebuffer, 0, filebuffer.length)) != -1) {
@@ -113,32 +99,5 @@ public class NetworkServerThread implements Runnable {
 		bos.flush();
 		bos.close();
 		writer.close();
-	}
-
-	private String receiveMessage() throws IOException {
-		try {
-			receiver = new BufferedReader(new InputStreamReader(clientSocket
-					.getInputStream()));
-		} catch (IOException e) {
-			logger.error("Error: Cannot get InputStream");
-			e.printStackTrace();
-		}
-
-		String rec = receiver.readLine();
-		logger.info("SERVER: Client message: " + rec);
-		return rec;
-	}
-
-	private void sendMessage(String reply) throws IOException {
-		try {
-			sender = new PrintWriter(new OutputStreamWriter(clientSocket
-					.getOutputStream()), false);
-			logger.info("SERVER: Server message: " + reply);
-		} catch (IOException e) {
-			logger.error("Error: Cannot get OutputStream");
-		}
-
-		sender.println(reply);
-		sender.flush();
 	}
 }

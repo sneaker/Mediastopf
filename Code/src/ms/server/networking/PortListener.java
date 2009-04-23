@@ -5,18 +5,18 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.server.log.Log;
+import ms.log.Log;
 
 import org.apache.log4j.Logger;
 
 
-public class NetworkServer implements Runnable {
+public class PortListener implements Runnable {
 
 	private ServerSocket mediastop_ServerSocket;
 	private Logger logger = Log.getLogger();
 	private int THREADCOUNT;
 	
-	public NetworkServer(int port, int thread_count) {
+	public PortListener(int port, int thread_count) {
 		try {
 			mediastop_ServerSocket = new ServerSocket(port);
 			THREADCOUNT = thread_count;
@@ -34,7 +34,7 @@ public class NetworkServer implements Runnable {
 
 		while (true) {
 			try {
-				exec.execute(new NetworkServerThread(mediastop_ServerSocket.accept()));
+				exec.execute(new NetProcThread(mediastop_ServerSocket.accept()));
 			} catch (IOException e) {
 				logger.error("Error on accepting connection");
 				e.printStackTrace();

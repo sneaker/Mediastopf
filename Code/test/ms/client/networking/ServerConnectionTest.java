@@ -13,9 +13,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ms.client.Client;
+import ms.log.Log;
 import ms.server.Server;
-import ms.server.log.Log;
-import ms.server.networking.NetworkServer;
+import ms.server.networking.PortListener;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -69,7 +69,7 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new NetworkServer(Client.PORT, Server.MAX_SERVER_THREADS));
+		exec.execute(new PortListener(Client.PORT, Server.MAX_SERVER_THREADS));
 	}
 
 	private void loadLog() {

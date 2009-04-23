@@ -21,7 +21,7 @@ public class Constants {
 	public static final String EXPORTCFG = "exportfolder";
 	public static final String LOGCFG = "log.autorefresh";
 	
-	public static final String UIIMAGE = "/ms/server/ui/images/";
+	public static final String UIIMAGE = "/ms/ui/images/";
 	private static final String UILANGUAGE = "ms/server/ui/lang/";
 	
 	public static final String CONFIGFILE = "MediaStopfServer.cfg";

@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ms.client.Client;
-import ms.common.log.Log;
 import ms.server.Server;
+import ms.server.log.ServerLog;
 import ms.server.networking.PortListener;
 
 import org.apache.log4j.Logger;
@@ -73,7 +73,7 @@ public class ServerConnectionTest {
 	}
 
 	private void loadLog() {
-		Logger logger = Log.getLogger();
+		Logger logger = ServerLog.getLogger();
 		logger.info("Starting network server...");
 	}
 	

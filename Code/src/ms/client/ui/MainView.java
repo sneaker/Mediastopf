@@ -36,14 +36,14 @@ import ms.client.ui.StatusMessage.StatusType;
 import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.models.TaskComboBoxModel;
 import ms.client.ui.tables.TaskTable;
-import ms.client.utils.ConfigHandler;
-import ms.client.utils.I18NManager;
 import ms.common.logic.Task;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
 import ms.common.ui.dialogs.AboutDialog;
 import ms.common.ui.dialogs.MessageDialog;
 import ms.common.utils.ApplicationLauncher;
+import ms.common.utils.ConfigHandler;
+import ms.common.utils.I18NManager;
 
 /**
  * main window of mediastopf
@@ -57,8 +57,8 @@ public class MainView extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private I18NManager manager = I18NManager.getManager();
-	private ConfigHandler config = ConfigHandler.getHandler();
+	private I18NManager manager = I18NManager.getClientManager();
+	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private TaskList taskList;
 	private TaskList runTaskList;
 	private JComboBox taskComboBox;
@@ -74,9 +74,9 @@ public class MainView extends JFrame {
 
 	public MainView() {
 		if (StartClient.DEBUG) {
-			setTitle(Constants.PROGRAM + " - Debug");
+			setTitle(ClientConstants.PROGRAM + " - Debug");
 		} else {
-			new SplashScreen(Constants.SPLASH);
+			new SplashScreen(ClientConstants.SPLASH);
 		}
 
 		initGUI();
@@ -94,12 +94,12 @@ public class MainView extends JFrame {
 	}
 
 	private void initFrame() {
-		setTitle(Constants.PROGRAM);
+		setTitle(ClientConstants.PROGRAM);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(600, 550);
 		setMinimumSize(new Dimension(400, 450));
 		setLayout(null);
-		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON)).getImage());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
@@ -221,7 +221,7 @@ public class MainView extends JFrame {
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { reload, run };
-		final String[] icons = { Constants.RELOAD, Constants.TICK };
+		final String[] icons = { ClientConstants.RELOAD, ClientConstants.TICK };
 		final Rectangle reloadBounds = new Rectangle(x, y, width, height);
 		final Rectangle runBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { reloadBounds, runBounds };
@@ -233,7 +233,7 @@ public class MainView extends JFrame {
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -258,7 +258,7 @@ public class MainView extends JFrame {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
-		String folder = getValueOf(Constants.DEFAULTFOLDERCFG);
+		String folder = getValueOf(ClientConstants.DEFAULTFOLDERCFG);
 		if(!new File(folder).exists()) {
 			askFolder(manager.getString("Main.choosedefaultfoldertitle"),
 			manager.getString("Main.choosedefaultfolder"));
@@ -267,7 +267,7 @@ public class MainView extends JFrame {
 		File task = new File(folder + File.separator + taskID);
 		task.mkdirs();
 		
-		String ripper = getValueOf(Constants.AUDIORIPPERCFG);
+		String ripper = getValueOf(ClientConstants.AUDIORIPPERCFG);
 		if(!new File(ripper).exists()) {
 			askFolder(manager.getString("Main.chooseaudiorippertitle"),
 			manager.getString("Main.chooseaudioripper"));
@@ -361,7 +361,7 @@ public class MainView extends JFrame {
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { send, cancel };
-		final String[] icons = { Constants.SEND, Constants.CANCEL };
+		final String[] icons = { ClientConstants.SEND, ClientConstants.CANCEL };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
@@ -373,7 +373,7 @@ public class MainView extends JFrame {
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -438,7 +438,7 @@ public class MainView extends JFrame {
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AboutDialog about = new AboutDialog();
+				AboutDialog about = new AboutDialog(ClientConstants.class);
 				about.setVisible(true);
 			}
 		});
@@ -470,7 +470,7 @@ public class MainView extends JFrame {
 					if (e.getActionCommand() == config) {
 						openConfigDialog();
 					} else if (e.getActionCommand() == log) {
-						LogFrame ld = new LogFrame();
+						LogFrame ld = new LogFrame(ClientConstants.class);
 						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
 						exit();

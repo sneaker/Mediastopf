@@ -1,6 +1,6 @@
 package ms.client.ui;
 
-import ms.client.utils.I18NManager;
+import ms.common.utils.I18NManager;
 
 
 /**
@@ -11,7 +11,7 @@ import ms.client.utils.I18NManager;
  */
 public class StatusMessage {
 	
-	private static I18NManager manager = I18NManager.getManager();
+	private static I18NManager manager = I18NManager.getClientManager();
 
 	public static enum StatusType {
 		RUNMESSAGE, SENDMESSAGE, RELOADMESSAGE, CANCELMESSAGE

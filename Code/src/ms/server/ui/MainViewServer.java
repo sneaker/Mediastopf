@@ -31,16 +31,17 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
+import ms.common.ui.Constants;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
 import ms.common.ui.dialogs.AboutDialog;
 import ms.common.ui.dialogs.MessageDialog;
+import ms.common.utils.I18NManager;
 import ms.server.StartServer;
 import ms.server.ui.dialogs.ExportDialog;
 import ms.server.ui.models.TaskComboBoxModel;
 import ms.server.ui.tables.ExportTable;
 import ms.server.ui.tables.Table;
-import ms.server.utils.I18NManager;
 
 /**
  * main window of mediastopf server
@@ -54,7 +55,7 @@ public class MainViewServer extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private I18NManager manager = I18NManager.getManager();
+	private I18NManager manager = I18NManager.getServerManager();
 	private TaskComboBoxModel boxModel;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
@@ -69,7 +70,7 @@ public class MainViewServer extends JFrame {
 	
 	public MainViewServer() {
 		if (StartServer.DEBUG) {
-			setTitle(Constants.PROGRAM + " - Debug");
+			setTitle(ServerConstants.PROGRAM + " - Debug");
 		} else {
 			new SplashScreen(Constants.SPLASH);
 		}
@@ -90,7 +91,7 @@ public class MainViewServer extends JFrame {
 	}
 
 	private void initFrame() {
-		setTitle(Constants.PROGRAM);
+		setTitle(ServerConstants.PROGRAM);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLayout(null);
 		setSize(600, 550);
@@ -345,7 +346,7 @@ public class MainViewServer extends JFrame {
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AboutDialog about = new AboutDialog();
+				AboutDialog about = new AboutDialog(ServerConstants.class);
 				about.setVisible(true);
 			}
 		});
@@ -374,7 +375,7 @@ public class MainViewServer extends JFrame {
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == log) {
-						LogFrame ld = new LogFrame();
+						LogFrame ld = new LogFrame(ServerConstants.class);
 						ld.setVisible(true);
 					} else if (e.getActionCommand() == exit) {
 						exit();

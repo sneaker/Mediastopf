@@ -31,9 +31,8 @@ import javax.swing.filechooser.FileFilter;
 
 import ms.common.filesys.FileIO;
 import ms.common.log.Log;
-import ms.server.ui.Constants;
-import ms.server.utils.ConfigHandler;
-import ms.server.utils.I18NManager;
+import ms.common.utils.ConfigHandler;
+import ms.common.utils.I18NManager;
 
 /**
  * show log information from logger
@@ -48,16 +47,18 @@ public class LogFrame extends JFrame implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private I18NManager manager = I18NManager.getManager();
-	private ConfigHandler config = ConfigHandler.getHandler();
+	private I18NManager manager = I18NManager.getClientManager();
+	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
 	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private final String save = manager.getString("save"), close = manager.getString("close");
 	private boolean suspendThread = false;
+	private Class<? extends Constants> constants;
 
-	public LogFrame() {
+	public LogFrame(Class<? extends Constants> constants) {
+		this.constants = constants;
 		initGUI();
 	}
 
@@ -74,7 +75,13 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void initFrame() {
-		setTitle(Constants.PROGRAM + " - " + manager.getString("Log.title"));
+		try {
+			setTitle(constants.getField("PROGRAM") + " - " + manager.getString("Log.title"));
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(500, 430);
 		setMinimumSize(new Dimension(getWidth(), getHeight()));
@@ -203,7 +210,13 @@ public class LogFrame extends JFrame implements Runnable {
 
 	private void saveAsTXT() {
 		JFileChooser fileChooser = getFileChooser();
-		fileChooser.setSelectedFile(new File(Constants.LOGFILE));
+		try {
+			fileChooser.setSelectedFile(new File(constants.getField("LOGFILE").toString()));
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
 		fileFilter(fileChooser);
 
 		int returnVal = fileChooser.showSaveDialog(null);

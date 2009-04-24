@@ -9,10 +9,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.ListSelectionModel;
 
 import ms.client.logic.TaskList;
-import ms.client.ui.Constants;
+import ms.client.ui.ClientConstants;
 import ms.client.ui.models.TaskTableModel;
-import ms.client.utils.I18NManager;
 import ms.common.ui.dialogs.MessageDialog;
+import ms.common.utils.I18NManager;
 
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
@@ -23,7 +23,7 @@ public class TaskTable extends JXTable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private I18NManager manager = I18NManager.getManager();
+	private I18NManager manager = I18NManager.getClientManager();
 	
 	public TaskTable(TaskList list) {
 		super(new TaskTableModel(list));
@@ -50,10 +50,10 @@ public class TaskTable extends JXTable {
 		
 		final String send = manager.getString("send"), cancel = manager.getString("cancel");
 		final String[] itemLabel = { send, cancel };
-		final String[] icons = { Constants.SEND, Constants.CANCEL };
+		final String[] icons = { ClientConstants.SEND, ClientConstants.CANCEL };
 		for (int i = 0; i < itemLabel.length; i++) {
 			JMenuItem menuItem = new JMenuItem(itemLabel[i]);
-			menuItem.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
+			menuItem.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
 			menuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
 					if (event.getActionCommand() == send) {

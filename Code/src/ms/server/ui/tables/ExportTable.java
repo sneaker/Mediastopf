@@ -7,17 +7,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ms.common.ui.Constants;
 import ms.common.ui.dialogs.MessageDialog;
-import ms.server.ui.Constants;
+import ms.common.utils.I18NManager;
 import ms.server.ui.models.TableModel;
-import ms.server.utils.I18NManager;
 
 
 public class ExportTable extends Table {
 
 	private static final long serialVersionUID = 1L;
 	
-	private I18NManager manager = I18NManager.getManager();
+	private I18NManager manager = I18NManager.getServerManager();
 
 	public ExportTable() {
 		super(new TableModel());

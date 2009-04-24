@@ -1,4 +1,4 @@
-package ms.server.utils;
+package ms.common.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,7 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import ms.server.ui.Constants;
+import ms.client.ui.ClientConstants;
+import ms.server.ui.ServerConstants;
 
 /**
  * save/load a configfile
@@ -22,11 +23,13 @@ public class ConfigHandler extends Properties {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static ConfigHandler handler = new ConfigHandler();
+	private static ConfigHandler client = new ConfigHandler(ClientConstants.CONFIGFILE);
+	private static ConfigHandler server = new ConfigHandler(ServerConstants.CONFIGFILE);
 	
-	private String filename = Constants.CONFIGFILE;
+	private String filename;
 	
-	private ConfigHandler() {
+	private ConfigHandler(String filename) {
+		this.filename = filename;
 		load();
 	}
 	
@@ -56,7 +59,11 @@ public class ConfigHandler extends Properties {
 		}
 	}
 	
-	public static ConfigHandler getHandler() {
-		return handler;
+	public static ConfigHandler getClientHandler() {
+		return client;
+	}
+	
+	public static ConfigHandler getServerHandler() {
+		return server;
 	}
 }

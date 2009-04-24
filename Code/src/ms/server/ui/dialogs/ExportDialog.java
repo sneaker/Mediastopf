@@ -30,10 +30,11 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.common.filesys.FileIO;
+import ms.common.ui.Constants;
 import ms.common.ui.dialogs.MessageDialog;
-import ms.server.ui.Constants;
-import ms.server.utils.ConfigHandler;
-import ms.server.utils.I18NManager;
+import ms.common.utils.ConfigHandler;
+import ms.common.utils.I18NManager;
+import ms.server.ui.ServerConstants;
 
 /**
  * dialog to choose a destination, where the files should be copied
@@ -48,8 +49,8 @@ public class ExportDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private ConfigHandler config = ConfigHandler.getHandler();
-	private I18NManager manager = I18NManager.getManager();
+	private ConfigHandler config = ConfigHandler.getClientHandler();
+	private I18NManager manager = I18NManager.getServerManager();
 	private final String exportFolder = manager.getString("Exporter.exportstorage");
 	private final String export = manager.getString("export"), close = manager.getString("close");
 	private JLabel folderNotValidLabel = getNotValidLabel(new Point(140, 10));
@@ -78,7 +79,7 @@ public class ExportDialog extends JDialog {
 	}
 
 	private void initDialog() {
-		setTitle(Constants.PROGRAM + " - " + export);
+		setTitle(ServerConstants.PROGRAM + " - " + export);
 		setSize(400, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);

@@ -2,11 +2,11 @@ package ms.common.ui.dialogs;
 
 import javax.swing.JOptionPane;
 
-import ms.server.utils.I18NManager;
+import ms.common.utils.I18NManager;
 
 public class MessageDialog {
 	
-	private static I18NManager manager = I18NManager.getManager();
+	private static I18NManager manager = I18NManager.getClientManager();
 	
 	/**
 	 * show a information dialog

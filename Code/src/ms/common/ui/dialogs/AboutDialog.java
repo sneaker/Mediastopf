@@ -22,9 +22,9 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import ms.common.ui.Constants;
 import ms.common.utils.BrowserControl;
-import ms.server.ui.Constants;
-import ms.server.utils.I18NManager;
+import ms.common.utils.I18NManager;
 
 /**
  * about dialog
@@ -36,9 +36,11 @@ public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
-	private I18NManager manager = I18NManager.getManager();
+	private I18NManager manager = I18NManager.getClientManager();
+	private Class<? extends Constants> constants;
 	
-	public AboutDialog() {
+	public AboutDialog(Class<? extends Constants> constants) {
+		this.constants = constants;
 		initGUI();
 	}
 	
@@ -55,7 +57,13 @@ public class AboutDialog extends JDialog {
 	}
 
 	private void initDialog() {
-		setTitle(Constants.PROGRAM + " - " + manager.getString("About.title"));
+		try {
+			setTitle(constants.getField("PROGRAM") + " - " + manager.getString("About.title"));
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
 		setSize(400, 250);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);

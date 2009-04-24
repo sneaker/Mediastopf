@@ -29,9 +29,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import ms.client.ui.Constants;
-import ms.client.utils.ConfigHandler;
-import ms.client.utils.I18NManager;
+import ms.client.ui.ClientConstants;
+import ms.common.utils.ConfigHandler;
+import ms.common.utils.I18NManager;
 
 /**
  * configuration dialog
@@ -48,8 +48,8 @@ public class ConfigDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private ConfigHandler config = ConfigHandler.getHandler();
-	private I18NManager manager = I18NManager.getManager();
+	private ConfigHandler config = ConfigHandler.getClientHandler();
+	private I18NManager manager = I18NManager.getClientManager();
 	private JTextField ripperTextField, folderTextField;
 	private final String audioripper = manager.getString("Config.audiograbber"), defaultfolder = manager.getString("Config.defaultfolder");
 	private final String save = manager.getString("save"), close = manager.getString("close");
@@ -77,7 +77,7 @@ public class ConfigDialog extends JDialog {
 	}
 
 	private void initDialog() {
-		setTitle(Constants.PROGRAM + " - " + manager.getString("Config.title"));
+		setTitle(ClientConstants.PROGRAM + " - " + manager.getString("Config.title"));
 		setSize(400, 230);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
@@ -85,12 +85,12 @@ public class ConfigDialog extends JDialog {
 		setResizable(false);
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
+		setIconImage(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON)).getImage());
 	}
 	
 	private void addPanels() {
 		final String[] label = { defaultfolder, audioripper };
-		final String[] icons = { Constants.DEFAULTFOLDER, Constants.AUDIORIPPER };
+		final String[] icons = { ClientConstants.DEFAULTFOLDER, ClientConstants.AUDIORIPPER };
 		final int x=0;
 		final int[] y= { 10, 85 };
 		for(int i=0; i<label.length;i++) {
@@ -149,7 +149,7 @@ public class ConfigDialog extends JDialog {
 	private JButton createOpenButton(String name, Rectangle rec) {
 		JButton button = new JButton();
 		button.setActionCommand(name);
-		button.setIcon(new ImageIcon(getClass().getResource(Constants.OPEN)));
+		button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.OPEN)));
 		button.setBounds(rec);
 		button.setToolTipText(manager.getString("choosedir"));
 		add(button);
@@ -200,7 +200,7 @@ public class ConfigDialog extends JDialog {
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { okBounds, cancelBounds };
 		final String[] buttonText = { save, close };
-		final String[] icons = { Constants.SAVE, Constants.CANCEL };
+		final String[] icons = { ClientConstants.SAVE, ClientConstants.CANCEL };
 		final int saveMnemonic = manager.getMnemonic("save"), cancelMnemonic = manager.getMnemonic("close");
 		final int[] mnemonic = { saveMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
@@ -208,7 +208,7 @@ public class ConfigDialog extends JDialog {
 			button.setBounds(bounds[i]);
 			button.setText(buttonText[i]);
 			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
+			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
@@ -239,19 +239,19 @@ public class ConfigDialog extends JDialog {
 	
 	private void saveValues() {
 		if(!ripperTextField.getText().isEmpty())
-			config.setProperty(Constants.AUDIORIPPERCFG, ripperTextField.getText());
+			config.setProperty(ClientConstants.AUDIORIPPERCFG, ripperTextField.getText());
 		if(!folderTextField.getText().isEmpty())
-			config.setProperty(Constants.DEFAULTFOLDERCFG, folderTextField.getText());
+			config.setProperty(ClientConstants.DEFAULTFOLDERCFG, folderTextField.getText());
 	}
 	
 	/**
 	 * load properties.
 	 */
 	private void loadProperties() {
-		if(config.containsKey(Constants.AUDIORIPPERCFG))
-			ripperTextField.setText(config.getProperty(Constants.AUDIORIPPERCFG).trim());
-		if(config.containsKey(Constants.DEFAULTFOLDERCFG))
-			folderTextField.setText(config.getProperty(Constants.DEFAULTFOLDERCFG).trim());
+		if(config.containsKey(ClientConstants.AUDIORIPPERCFG))
+			ripperTextField.setText(config.getProperty(ClientConstants.AUDIORIPPERCFG).trim());
+		if(config.containsKey(ClientConstants.DEFAULTFOLDERCFG))
+			folderTextField.setText(config.getProperty(ClientConstants.DEFAULTFOLDERCFG).trim());
 	}
 	
 	private void openAudioRipperDirChooser() {

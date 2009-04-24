@@ -11,8 +11,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 
+import ms.common.ui.Constants;
 import ms.common.ui.LogFrame;
-import ms.server.utils.I18NManager;
+import ms.common.utils.I18NManager;
 
 /**
  * show trayicon if possible
@@ -22,7 +23,7 @@ import ms.server.utils.I18NManager;
  */
 public class SystemTrayIcon {
 	
-	private I18NManager manager = I18NManager.getManager();
+	private I18NManager manager = I18NManager.getServerManager();
 	private MainViewServer server;
 
 	public SystemTrayIcon(MainViewServer server) {
@@ -41,7 +42,7 @@ public class SystemTrayIcon {
 
 	private TrayIcon getIcon(SystemTray tray) {
 		Image image = new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage();
-		TrayIcon trayIcon = new TrayIcon(image, Constants.PROGRAM, addPopUpMenu(tray));
+		TrayIcon trayIcon = new TrayIcon(image, ServerConstants.PROGRAM, addPopUpMenu(tray));
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -66,7 +67,7 @@ public class SystemTrayIcon {
 					if(e.getActionCommand() == toggle) {
 						server.setVisible(!server.isVisible());
 					} else if(e.getActionCommand() == log) {
-						LogFrame ld = new LogFrame();
+						LogFrame ld = new LogFrame(ServerConstants.class);
 						ld.setVisible(true);
 					} else if(e.getActionCommand() == exit){
 						server.exit();

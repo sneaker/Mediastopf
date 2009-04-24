@@ -3,7 +3,7 @@ package ms.common.log;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import ms.server.ui.Constants;
+import ms.common.ui.Constants;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.DailyRollingFileAppender;
@@ -29,6 +29,7 @@ public class Log {
 	static {
 		new Log();
 	}
+	
 	private Log() {
 		logger.setLevel(Level.ALL);
 		String pattern = "%d{ISO8601}: %m %n";
@@ -43,7 +44,6 @@ public class Log {
 		logger.addAppender(writeAppender);
 	}
 
-	
 	private void consoleLogger(PatternLayout layout) {
 		ConsoleAppender consoleAppender = new ConsoleAppender(layout);
 		consoleAppender.setFollow(true);
@@ -79,5 +79,4 @@ public class Log {
 	public static ByteArrayOutputStream getOutputStream() {
 		return bos;
 	}
-
 }

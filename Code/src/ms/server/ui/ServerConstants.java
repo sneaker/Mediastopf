@@ -18,5 +18,4 @@ public class ServerConstants extends Constants {
 	
 	public static final String CONFIGFILE = "MediaStopfServer.cfg";
 	public static final String LOGFILE = "logs/MediaStopfServer.log";
-	public static final String LANGUAGE = "ms/server/ui/lang/mediastopfserver";
 }

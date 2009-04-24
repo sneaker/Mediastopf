@@ -6,8 +6,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import ms.common.log.Log;
-import ms.server.domain.*;
+import ms.server.domain.Auftrag;
+import ms.server.domain.Einlesegeraet;
+import ms.server.domain.Einlesestation;
+import ms.server.domain.ImportMedium;
+import ms.server.domain.Mediensammlung;
+import ms.server.domain.Sammelstation;
+import ms.server.log.ServerLog;
 
 import org.apache.log4j.Logger;
 
@@ -17,7 +22,7 @@ public class DbAdapter {
 	static private String database = "jdbc:sqlite:db/db.sqlite";
 
 	public static Connection getConnection() throws SQLException {
-		Logger logger = Log.getLogger();
+		Logger logger = ServerLog.getLogger();
 		try {
 			if (connection == null || connection.isClosed()) {
 				Class.forName("org.sqlite.JDBC");

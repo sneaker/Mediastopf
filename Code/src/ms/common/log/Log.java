@@ -1,7 +1,6 @@
 package ms.common.log;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import ms.common.ui.Constants;
 
@@ -12,56 +11,42 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
 
-/**
- * Apache log4j Logger
- * three different logtypes:
- * - show in console
- * - write to a file (daily logging)
- * - put log information to a outputstream
- * 
- * @author david
- *
- */
-public class Log {
-	
-	private static Logger logger = Logger.getLogger(Log.class);
-	private static ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	static {
-		new Log();
-	}
-	
-	private Log() {
-		logger.setLevel(Level.ALL);
+public abstract class Log {
+
+	protected static Logger logger;
+	protected static ByteArrayOutputStream bos;
+
+
+	protected void initLogger(Class<? extends Constants> constants) {
 		String pattern = "%d{ISO8601}: %m %n";
 		PatternLayout layout = new PatternLayout(pattern);
-		consoleLogger(layout);
-		fileLogger(layout);
-		writeLogger(layout);
+		logger.setLevel(Level.ALL);
+		logger.addAppender(getConsoleLogger(layout));
+		logger.addAppender(getFileLogger(layout, constants));
+		logger.addAppender(getWriteLogger(layout));
 	}
 	
-	private void writeLogger(PatternLayout layout) {
-		WriterAppender writeAppender = new WriterAppender(layout, bos);
-		logger.addAppender(writeAppender);
-	}
-
-	private void consoleLogger(PatternLayout layout) {
+	private ConsoleAppender getConsoleLogger(PatternLayout layout) {
 		ConsoleAppender consoleAppender = new ConsoleAppender(layout);
 		consoleAppender.setFollow(true);
-		logger.addAppender(consoleAppender);
+		return consoleAppender;
 	}
 
-	private void fileLogger(PatternLayout layout) {
+	private WriterAppender getWriteLogger(PatternLayout layout) {
+		return new WriterAppender(layout, bos);
+	}
+
+	private DailyRollingFileAppender getFileLogger(PatternLayout layout, Class<? extends Constants> constants) {
 		DailyRollingFileAppender fileAppender = new DailyRollingFileAppender();
 		try {
-			fileAppender = new DailyRollingFileAppender(layout, Constants.LOGFILE, "'_'yyyy-MM-dd");
+			fileAppender = new DailyRollingFileAppender(layout, (String) constants.getField("LOGFILE").get(constants), "'_'yyyy-MM-dd");
 			fileAppender.setAppend(true);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			logger.info("Can't write Logfile");
 		}
-		logger.addAppender(fileAppender);
+		return fileAppender;
 	}
-
+	
 	/**
 	 * get logger
 	 * 
@@ -70,7 +55,7 @@ public class Log {
 	public static Logger getLogger() {
 		return logger;
 	}
-	
+
 	/**
 	 * get OutputStream with logged information
 	 * 

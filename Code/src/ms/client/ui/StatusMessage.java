@@ -11,7 +11,7 @@ import ms.common.utils.I18NManager;
  */
 public class StatusMessage {
 	
-	private static I18NManager manager = I18NManager.getClientManager();
+	private static I18NManager manager = I18NManager.getManager();
 
 	public static enum StatusType {
 		RUNMESSAGE, SENDMESSAGE, RELOADMESSAGE, CANCELMESSAGE

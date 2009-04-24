@@ -49,7 +49,7 @@ public class ConfigDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	
 	private ConfigHandler config = ConfigHandler.getClientHandler();
-	private I18NManager manager = I18NManager.getClientManager();
+	private I18NManager manager = I18NManager.getManager();
 	private JTextField ripperTextField, folderTextField;
 	private final String audioripper = manager.getString("Config.audiograbber"), defaultfolder = manager.getString("Config.defaultfolder");
 	private final String save = manager.getString("save"), close = manager.getString("close");

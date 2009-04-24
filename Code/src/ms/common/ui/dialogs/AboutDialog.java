@@ -36,7 +36,7 @@ public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
-	private I18NManager manager = I18NManager.getClientManager();
+	private I18NManager manager = I18NManager.getManager();
 	private Class<? extends Constants> constants;
 	
 	public AboutDialog(Class<? extends Constants> constants) {
@@ -58,10 +58,8 @@ public class AboutDialog extends JDialog {
 
 	private void initDialog() {
 		try {
-			setTitle(constants.getField("PROGRAM") + " - " + manager.getString("About.title"));
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
+			setTitle(constants.getField("PROGRAM").get(constants) + " - " + manager.getString("About.title"));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		setSize(400, 250);

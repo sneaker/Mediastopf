@@ -57,8 +57,8 @@ public class ImageWhiteFilter {
 			return false;
 		}
 		 int imageResolution = image.getWidth() * image.getHeight();
-		 if(imageResolution<1000*1000) {
-		 return analyzeSmallImage(image);
+		 if(imageResolution<500*500) {
+			 return analyzeSmallImage(image);
 		 }
 		 return analyzeLargeImage(image);
 	}

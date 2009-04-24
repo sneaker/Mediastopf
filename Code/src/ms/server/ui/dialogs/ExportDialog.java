@@ -50,7 +50,7 @@ public class ExportDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	
 	private ConfigHandler config = ConfigHandler.getClientHandler();
-	private I18NManager manager = I18NManager.getServerManager();
+	private I18NManager manager = I18NManager.getManager();
 	private final String exportFolder = manager.getString("Exporter.exportstorage");
 	private final String export = manager.getString("export"), close = manager.getString("close");
 	private JLabel folderNotValidLabel = getNotValidLabel(new Point(140, 10));

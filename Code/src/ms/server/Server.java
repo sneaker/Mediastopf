@@ -8,10 +8,10 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import ms.common.log.Log;
 import ms.common.logic.Task;
 import ms.server.database.DbAdapter;
 import ms.server.domain.Auftrag;
+import ms.server.log.ServerLog;
 import ms.server.networking.PortListener;
 import ms.server.ui.MainViewServer;
 
@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 public class Server {
 	
 	public static final int MAX_SERVER_THREADS = 10;
+	private Logger logger = ServerLog.getLogger();
 
 	public Server(int port) {
 		startServer(port);
@@ -36,7 +37,6 @@ public class Server {
 
 	private void startServer(int port) {
 		serverStartInfo();
-		Logger logger = Log.getLogger();
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
 		exec.execute(new PortListener(port, MAX_SERVER_THREADS));
@@ -54,7 +54,6 @@ public class Server {
 	
 	private void serverStartInfo() {
 		// TODO: ANPASSEN!
-		Logger logger = Log.getLogger();
 		logger.info("=======================================================");
 		logger.info("MediaStopf - Ein Softwaresystem zum Lieb haben ;)");
 		logger.info("=======================================================");

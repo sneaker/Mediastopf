@@ -23,7 +23,7 @@ import ms.common.utils.I18NManager;
  */
 public class SystemTrayIcon {
 	
-	private I18NManager manager = I18NManager.getServerManager();
+	private I18NManager manager = I18NManager.getManager();
 	private MainViewServer server;
 
 	public SystemTrayIcon(MainViewServer server) {

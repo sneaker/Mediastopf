@@ -23,7 +23,7 @@ public class TaskTable extends JXTable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private I18NManager manager = I18NManager.getClientManager();
+	private I18NManager manager = I18NManager.getManager();
 	
 	public TaskTable(TaskList list) {
 		super(new TaskTableModel(list));

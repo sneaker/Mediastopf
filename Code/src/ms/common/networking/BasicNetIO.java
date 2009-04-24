@@ -36,8 +36,7 @@ abstract public class BasicNetIO {
 		PrintWriter sender = null;
 		
 		try {
-			sender = new PrintWriter(new OutputStreamWriter(commSocket
-					.getOutputStream()), false);
+			sender = new PrintWriter(new OutputStreamWriter(commSocket.getOutputStream()), false);
 			logger.info("SERVER: Server message: " + message);
 		} catch (IOException e) {
 			logger.error("Error: Cannot get OutputStream");

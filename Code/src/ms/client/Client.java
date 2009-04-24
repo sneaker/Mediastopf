@@ -10,13 +10,13 @@ import java.util.Observer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import ms.client.log.ClientLog;
 import ms.client.networking.ServerConnection;
 import ms.client.observer.DirectoryObserver;
 import ms.client.ui.MainView;
-import ms.client.utils.I18NManager;
-import ms.common.log.Log;
 import ms.common.logic.Task;
 import ms.common.ui.dialogs.MessageDialog;
+import ms.common.utils.I18NManager;
 
 import org.apache.log4j.Logger;
 
@@ -34,7 +34,7 @@ public class Client {
 	public static final int PORT = 1337;
 	
 	private static I18NManager manager = I18NManager.getManager();
-	private static Logger logger = Log.getLogger();
+	private static Logger logger = ClientLog.getLogger();
 	private static ServerConnection client;
 	
 	

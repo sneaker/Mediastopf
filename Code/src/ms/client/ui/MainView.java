@@ -57,7 +57,7 @@ public class MainView extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private I18NManager manager = I18NManager.getClientManager();
+	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private TaskList taskList;
 	private TaskList runTaskList;

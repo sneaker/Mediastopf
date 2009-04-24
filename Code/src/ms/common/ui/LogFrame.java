@@ -47,7 +47,7 @@ public class LogFrame extends JFrame implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private I18NManager manager = I18NManager.getClientManager();
+	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
@@ -76,10 +76,8 @@ public class LogFrame extends JFrame implements Runnable {
 
 	private void initFrame() {
 		try {
-			setTitle(constants.getField("PROGRAM") + " - " + manager.getString("Log.title"));
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
+			setTitle(constants.getField("PROGRAM").get(constants) + " - " + manager.getString("Log.title"));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -211,10 +209,8 @@ public class LogFrame extends JFrame implements Runnable {
 	private void saveAsTXT() {
 		JFileChooser fileChooser = getFileChooser();
 		try {
-			fileChooser.setSelectedFile(new File(constants.getField("LOGFILE").toString()));
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
+			fileChooser.setSelectedFile(new File((String) constants.getField("LOGFILE").get(constants)));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		fileFilter(fileChooser);

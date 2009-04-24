@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.common.log.Log;
+import ms.server.log.ServerLog;
 
 import org.apache.log4j.Logger;
 
@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 public class PortListener implements Runnable {
 
 	private ServerSocket mediastop_ServerSocket;
-	private Logger logger = Log.getLogger();
+	private Logger logger = ServerLog.getLogger();
 	private int THREADCOUNT;
 	
 	public PortListener(int port, int thread_count) {

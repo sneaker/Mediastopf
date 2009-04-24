@@ -6,7 +6,7 @@ import ms.common.utils.I18NManager;
 
 public class MessageDialog {
 	
-	private static I18NManager manager = I18NManager.getClientManager();
+	private static I18NManager manager = I18NManager.getManager();
 	
 	/**
 	 * show a information dialog

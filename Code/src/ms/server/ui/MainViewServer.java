@@ -55,7 +55,7 @@ public class MainViewServer extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private I18NManager manager = I18NManager.getServerManager();
+	private I18NManager manager = I18NManager.getManager();
 	private TaskComboBoxModel boxModel;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;

@@ -31,13 +31,14 @@ import javax.swing.KeyStroke;
 
 import ms.client.Client;
 import ms.client.StartClient;
-import ms.client.ui.StatusMessage.StatusType;
 import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.tables.TaskTable;
 import ms.common.logic.Task;
 import ms.common.logic.TaskList;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
+import ms.common.ui.StatusMessage;
+import ms.common.ui.StatusMessage.StatusType;
 import ms.common.ui.dialogs.AboutDialog;
 import ms.common.ui.dialogs.MessageDialog;
 import ms.common.ui.models.TaskComboBoxModel;
@@ -283,7 +284,6 @@ public class MainView extends JFrame {
 	private void askFolder(String title, String message) {
 		MessageDialog.info(title, message + manager.getString("Config.defaultfolder"));
 		openConfigDialog();
-		runSelectedItem();
 	}
 
 	private String getValueOf(String key) {

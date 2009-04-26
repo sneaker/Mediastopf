@@ -1,4 +1,4 @@
-package ms.client.ui;
+package ms.common.ui;
 
 import ms.common.utils.I18NManager;
 

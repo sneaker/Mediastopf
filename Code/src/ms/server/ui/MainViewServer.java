@@ -1,5 +1,6 @@
 package ms.server.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -35,6 +36,8 @@ import ms.common.logic.TaskList;
 import ms.common.ui.Constants;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
+import ms.common.ui.StatusMessage;
+import ms.common.ui.StatusMessage.StatusType;
 import ms.common.ui.dialogs.AboutDialog;
 import ms.common.ui.dialogs.MessageDialog;
 import ms.common.ui.models.TaskComboBoxModel;
@@ -251,8 +254,7 @@ public class MainViewServer extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
 						taskList.updateList();
-						// TODO
-//						updateStatusBar(StatusType.RELOADMESSAGE);
+						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == export) {
 						exportSelectedItem();
 					}
@@ -293,6 +295,23 @@ public class MainViewServer extends JFrame {
 		tableScrollPane = new JScrollPane(exportTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());
 		tablePanel.add(tableScrollPane);
+	}
+	
+	private void updateStatusBar(StatusType type) {
+		statusBar.setForeground(Color.BLACK);
+		statusBar.setText(StatusMessage.getMessage(type));
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(4000);
+					statusBar.setForeground(Color.GRAY);
+					statusBar.setText(manager.getString("StatusMessage.copyright"));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		t.start();
 	}
 
 	void exit() {

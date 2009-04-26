@@ -1,4 +1,4 @@
-package ms.client.ui.models;
+package ms.common.ui.models;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -7,7 +7,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 
-import ms.client.logic.TaskList;
+import ms.common.logic.TaskList;
 
 
 public class TaskComboBoxModel extends AbstractListModel implements Observer, ComboBoxModel {
@@ -17,7 +17,7 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	 */
 	private static final long serialVersionUID = 1L;
 	private TaskList list;
-	private String taskID;
+	private int taskID = -1;
 	
 	public TaskComboBoxModel(TaskList list) {
 		this.list = list;
@@ -29,7 +29,7 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	}
 
 	public void setSelectedItem(Object anItem) {
-		taskID = (String)anItem;
+		taskID = (Integer)anItem;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	}
 
 	public Object getElementAt(int index) {
-		return list.get(index).getStatus();
+		return list.get(index).getID();
 	}
 
 	public int getSize() {

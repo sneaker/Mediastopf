@@ -31,16 +31,16 @@ import javax.swing.KeyStroke;
 
 import ms.client.Client;
 import ms.client.StartClient;
-import ms.client.logic.TaskList;
 import ms.client.ui.StatusMessage.StatusType;
 import ms.client.ui.dialogs.ConfigDialog;
-import ms.client.ui.models.TaskComboBoxModel;
 import ms.client.ui.tables.TaskTable;
 import ms.common.logic.Task;
+import ms.common.logic.TaskList;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
 import ms.common.ui.dialogs.AboutDialog;
 import ms.common.ui.dialogs.MessageDialog;
+import ms.common.ui.models.TaskComboBoxModel;
 import ms.common.utils.ApplicationLauncher;
 import ms.common.utils.ConfigHandler;
 import ms.common.utils.I18NManager;
@@ -59,8 +59,7 @@ public class MainView extends JFrame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
-	private TaskList taskList;
-	private TaskList runTaskList;
+	private TaskList taskList, runTaskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -69,8 +68,7 @@ public class MainView extends JFrame {
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = manager.getString("Main.run"), reload = manager.getString("Main.reload"),
-	send = manager.getString("send"), cancel = manager.getString("cancel"),
-	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
+	send = manager.getString("send"), runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
 
 	public MainView() {
 		if (StartClient.DEBUG) {
@@ -161,7 +159,6 @@ public class MainView extends JFrame {
 		tableScrollPane.revalidate();
 
 		buttonMap.get(send).setLocation(width - 250, height + 30);
-		buttonMap.get(cancel).setLocation(width - 125, height + 30);
 	}
 
 	private void addStatusBar() {
@@ -201,14 +198,13 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = new TaskList();
+		taskList = new TaskList(Client.class);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
-			public void layoutComboBox(Container parent,
-					MetalComboBoxLayoutManager manager) {
+			public void layoutComboBox(Container parent, MetalComboBoxLayoutManager manager) {
 				super.layoutComboBox(parent, manager);
 				arrowButton.setBounds(0, 0, 0, 0);
 			}
@@ -342,7 +338,7 @@ public class MainView extends JFrame {
 		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
-		runTaskList = new TaskList();
+		runTaskList = new TaskList(Client.class);
 		taskTable = new TaskTable(runTaskList);
 		tableScrollPane = new JScrollPane(taskTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());
@@ -356,40 +352,21 @@ public class MainView extends JFrame {
 	 *            JPanel
 	 */
 	private void addRunningTaskButtons(JPanel panel) {
-		int x = panel.getWidth() - 260;
-		int y = panel.getHeight() - 40;
-		int width = 115;
-		int height = 25;
-		final String[] buttonText = { send, cancel };
-		final String[] icons = { ClientConstants.SEND, ClientConstants.CANCEL };
-		final Rectangle sendBounds = new Rectangle(x, y, width, height);
-		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
-		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int sendAcc = manager.getMnemonic("send");
-		final int cancelAcc = manager.getMnemonic("cancel");
-		final int[] mnemonic = { sendAcc, cancelAcc };
-		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
-		    button.setVerticalTextPosition(JButton.CENTER);
-		    button.setHorizontalTextPosition(JButton.RIGHT);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == send) {
-						taskTable.send();
-						updateStatusBar(StatusType.SENDMESSAGE);
-					} else if (e.getActionCommand() == cancel) {
-						taskTable.cancel();
-						updateStatusBar(StatusType.CANCELMESSAGE);
-					}
-				}
-			});
-			panel.add(button);
-			buttonMap.put(buttonText[i], button);
-		}
+		JButton button = new JButton();
+		button.setBounds(panel.getWidth() - 135, panel.getHeight() - 40, 115, 25);
+		button.setText(send);
+		button.setMnemonic(manager.getMnemonic("send"));
+		button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.SEND)));
+		button.setVerticalTextPosition(JButton.CENTER);
+		button.setHorizontalTextPosition(JButton.RIGHT);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				taskTable.send();
+				updateStatusBar(StatusType.SENDMESSAGE);
+			}
+		});
+		panel.add(button);
+		buttonMap.put(send, button);
 	}
 
 	private void exit() {
@@ -470,8 +447,7 @@ public class MainView extends JFrame {
 					if (e.getActionCommand() == config) {
 						openConfigDialog();
 					} else if (e.getActionCommand() == log) {
-						LogFrame ld = new LogFrame(ClientConstants.class);
-						ld.setVisible(true);
+						openLogFrame();
 					} else if (e.getActionCommand() == exit) {
 						exit();
 					}
@@ -484,5 +460,10 @@ public class MainView extends JFrame {
 	private void openConfigDialog() {
 		ConfigDialog cd = new ConfigDialog();
 		cd.setVisible(true);
+	}
+
+	private void openLogFrame() {
+		LogFrame ld = new LogFrame(ClientConstants.class);
+		ld.setVisible(true);
 	}
 }

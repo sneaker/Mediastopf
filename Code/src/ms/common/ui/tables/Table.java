@@ -1,8 +1,9 @@
-package ms.server.ui.tables;
+package ms.common.ui.tables;
 
 import javax.swing.ListSelectionModel;
 
-import ms.server.ui.models.TableModel;
+import ms.common.logic.TaskList;
+import ms.common.ui.models.TaskTableModel;
 
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
@@ -13,16 +14,16 @@ public class Table extends JXTable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Table() {
-		super(new TableModel());
+	public Table(TaskList list) {
+		super(new TaskTableModel(list));
 		initTable();
 	}
 	
-	public Table(TableModel tableModel) {
-		super(tableModel);
+	public Table(TaskTableModel model) {
+		super(model);
 		initTable();
 	}
-
+	
 	/**
 	 * init Table
 	 */

@@ -2,14 +2,13 @@ package ms.server.ui;
 
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -19,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -26,22 +26,23 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
+import ms.client.ui.ClientConstants;
+import ms.common.logic.TaskList;
 import ms.common.ui.Constants;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
 import ms.common.ui.dialogs.AboutDialog;
 import ms.common.ui.dialogs.MessageDialog;
+import ms.common.ui.models.TaskComboBoxModel;
+import ms.common.ui.tables.Table;
 import ms.common.utils.I18NManager;
+import ms.server.Server;
 import ms.server.StartServer;
 import ms.server.ui.dialogs.ExportDialog;
-import ms.server.ui.models.TaskComboBoxModel;
-import ms.server.ui.tables.ExportTable;
-import ms.server.ui.tables.Table;
 
 /**
  * main window of mediastopf server
@@ -56,16 +57,16 @@ public class MainViewServer extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
-	private TaskComboBoxModel boxModel;
+	private TaskList taskList, runTaskList;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
-	private ExportTable exportTable;
+	private Table exportTable;
 	private JTextField statusBar;
-	private JTabbedPane tabPane;
+	private JScrollPane tableScrollPane;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
-	private final String export = manager.getString("export"), cancel = manager.getString("cancel"),
-	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"),
+	private final String export = manager.getString("export"),
+	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), reload = manager.getString("Main.reload"),
 	statusbar = manager.getString("Main.statusbar");
 	
 	public MainViewServer() {
@@ -74,7 +75,6 @@ public class MainViewServer extends JFrame {
 		} else {
 			new SplashScreen(Constants.SPLASH);
 		}
-		boxModel = new TaskComboBoxModel();
 
 		initGUI();
 	}
@@ -147,14 +147,12 @@ public class MainViewServer extends JFrame {
 	private void updateComponentBounds(JPanel runtask, JPanel task, JPanel status) {
 		buttonMap.get(export).setLocation(task.getWidth() - 140,task.getHeight() - 40);
 		
-		int width = runtask.getWidth() - 10;
-		int height = runtask.getHeight() - 40;
-		buttonMap.get(cancel).setLocation(width - 130, height);
-		tablePanel.setSize(width, height - 30);
+		tablePanel.setSize(runtask.getWidth() - 10, runtask.getHeight() - 20);
 		
 		taskComboBox.setSize(task.getWidth() - 20, 20);
 
-		tabPane.setSize(tablePanel.getWidth(), tablePanel.getHeight()-5);
+		tableScrollPane.setSize(tablePanel.getWidth(), tablePanel.getHeight());
+		tableScrollPane.revalidate();
 		
 		statusBar.setSize(status.getWidth(), status.getHeight());
 	}
@@ -182,25 +180,25 @@ public class MainViewServer extends JFrame {
 	 * add task panel
 	 */
 	private void addTaskPanel() {
-		addButtons();
 		addTaskComboBox();
 		addTaskTable();
 		
 		final int[] y = { 5, 100 };
 		final int[] height = { 90, getHeight() - 180 };
 		final String[] panelLabel = { tasks, runningTask };
-		final String[] buttonLabel = { export, cancel };
-		for(int i=0; i<panelLabel.length;i++) {
+		final JComponent[] comp = { taskComboBox, tablePanel };
+		for(int i=0; i<panelLabel.length; i++) {
 			JPanel panel = new JPanel();
 			panel.setLayout(null);
 			panel.setBounds(0, y[i], getWidth() - 10, height[i]);
 			panel.setBorder(BorderFactory.createTitledBorder(panelLabel[i]));
-			panel.add(buttonMap.get(buttonLabel[i]));
+			panel.add(comp[i]);
 			add(panel);
 			panelMap.put(panelLabel[i], panel);
 		}
-		panelMap.get(tasks).add(taskComboBox);
-		panelMap.get(runningTask).add(tablePanel);
+		
+		addButtons();
+		panelMap.get(tasks).add(buttonMap.get(export));
 	}
 	
 	/**
@@ -209,7 +207,8 @@ public class MainViewServer extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskComboBox = new JComboBox(boxModel);
+		taskList = new TaskList(Server.class);
+		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
@@ -227,33 +226,41 @@ public class MainViewServer extends JFrame {
 	 * @return JButton
 	 */
 	private void addButtons() {
-		final int x = getWidth() - 150;
-		final int[] y = { 50, getHeight() - 220 };
-		final int width = 115;
-		final int height = 25;
-		final String[] label = { export, cancel };
-		final String[] icons = { Constants.EXPORT_S, Constants.CANCEL };
-		final int[] events = { manager.getMnemonic("export"), manager.getMnemonic("cancel") };
-		for(int i=0;i<label.length;i++) {
+		JPanel panel = panelMap.get(tasks);
+		int x = panel.getWidth() - 260;
+		int y = panel.getHeight() - 40;
+		int width = 115;
+		int height = 25;
+		final String[] buttonText = { reload, export };
+		final String[] icons = { ClientConstants.RELOAD, ClientConstants.EXPORT_S };
+		final Rectangle reloadBounds = new Rectangle(x, y, width, height);
+		final Rectangle exportBounds = new Rectangle(x + width + 10, y, width, height);
+		final Rectangle[] bounds = { reloadBounds, exportBounds };
+		final int reloadMnemonic = KeyEvent.VK_F5;
+		final int exportMnemonic = manager.getMnemonic("export");
+		final int[] mnemonic = { reloadMnemonic, exportMnemonic };
+		for (int i = 0; i < buttonText.length; i++) {
 			JButton button = new JButton();
-			button.setBounds(x, y[i], width, height);
-			button.setText(label[i]);
-			button.setMnemonic(events[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
+			button.setBounds(bounds[i]);
+			button.setText(buttonText[i]);
+			button.setMnemonic(mnemonic[i]);
+			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
 		    button.setVerticalTextPosition(JButton.CENTER);
 		    button.setHorizontalTextPosition(JButton.RIGHT);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(e.getActionCommand() == export) {
+					if (e.getActionCommand() == reload) {
+						taskList.updateList();
+						// TODO
+//						updateStatusBar(StatusType.RELOADMESSAGE);
+					} else if (e.getActionCommand() == export) {
 						exportSelectedItem();
-					} else {
-						exportTable.cancel();
 					}
 				}
 			});
-			buttonMap.put(label[i], button);
+			panel.add(button);
+			buttonMap.put(buttonText[i], button);
 		}
-		buttonMap.get(cancel).setEnabled(false);
 	}
 	
 	private void exportSelectedItem() {
@@ -278,26 +285,14 @@ public class MainViewServer extends JFrame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
+		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 200);
 		tablePanel.setLayout(null);
 		
-		exportTable = new ExportTable();
-		
-		tabPane = new JTabbedPane();
-		tabPane.setBounds(0, 5, tablePanel.getWidth(), tablePanel.getHeight()-5);
-		tabPane.addTab(manager.getString("Main.import"), new JScrollPane(new Table()));
-		tabPane.addTab(manager.getString("Main.export"), new JScrollPane(exportTable));
-		tabPane.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if (tabPane.getSelectedIndex() == 0)
-					buttonMap.get(cancel).setEnabled(false);
-				else
-					buttonMap.get(cancel).setEnabled(true);
-			}
-		});
-
-		tablePanel.add(tabPane);
+		runTaskList = new TaskList(Server.class);
+		exportTable = new Table(runTaskList);
+		tableScrollPane = new JScrollPane(exportTable);
+		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());
+		tablePanel.add(tableScrollPane);
 	}
 
 	void exit() {
@@ -310,7 +305,6 @@ public class MainViewServer extends JFrame {
 			return;
 		}
 	}
-
 
 	/**
 	 * MenuBar

@@ -6,20 +6,16 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.ListSelectionModel;
 
-import ms.client.logic.TaskList;
 import ms.client.ui.ClientConstants;
-import ms.client.ui.models.TaskTableModel;
+import ms.common.logic.TaskList;
 import ms.common.ui.dialogs.MessageDialog;
+import ms.common.ui.models.TaskTableModel;
+import ms.common.ui.tables.Table;
 import ms.common.utils.I18NManager;
 
-import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.decorator.SortOrder;
 
-
-public class TaskTable extends JXTable {
+public class TaskTable extends Table {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -34,10 +30,7 @@ public class TaskTable extends JXTable {
 	 * init Table
 	 */
 	private void initTable() {
-		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setComponentPopupMenu(createPopupMenu());
-		setSortOrder(0, SortOrder.ASCENDING);
-		setHighlighters(HighlighterFactory.createSimpleStriping(HighlighterFactory.GENERIC_GRAY));
 	}
 	
 	/**
@@ -47,24 +40,14 @@ public class TaskTable extends JXTable {
 	 */
 	private JPopupMenu createPopupMenu() {
 		JPopupMenu popupMenu = new JPopupMenu();
-		
-		final String send = manager.getString("send"), cancel = manager.getString("cancel");
-		final String[] itemLabel = { send, cancel };
-		final String[] icons = { ClientConstants.SEND, ClientConstants.CANCEL };
-		for (int i = 0; i < itemLabel.length; i++) {
-			JMenuItem menuItem = new JMenuItem(itemLabel[i]);
-			menuItem.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand() == send) {
-						send();
-					} else if (event.getActionCommand() == cancel) {
-						cancel();
-					}
-				}
-			});
-			popupMenu.add(menuItem);
-		}
+		JMenuItem menuItem = new JMenuItem(manager.getString("send"));
+		menuItem.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.SEND)));
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				send();
+			}
+		});
+		popupMenu.add(menuItem);
 		return popupMenu;
 	}
 	
@@ -82,21 +65,5 @@ public class TaskTable extends JXTable {
 		String status = (String) getValueAt(row, 1);
 		
 		MessageDialog.info("Sending Tasknr: " + tasknum + " - with status: " + status, "Not sending anything, just a test");
-	}
-	
-	/**
-	 * cancel send transaction
-	 */
-	// TODO
-	public void cancel() {
-		int row = getSelectedRow();
-		if (row < 0) {
-			MessageDialog.noneSelectedDialog();
-			return;
-		}
-		int tasknum = (Integer) getValueAt(row, 0);
-		String status = (String) getValueAt(row, 1);
-		
-		MessageDialog.info("Canceling Tasknr: " + tasknum + " - with status: " + status, "Not sending anything, just a test");
 	}
 }

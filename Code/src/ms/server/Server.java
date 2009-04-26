@@ -42,13 +42,13 @@ public class Server {
 		exec.execute(new PortListener(port, MAX_SERVER_THREADS));
 	}
 
-	public static ArrayList<Task> getDataBase() {
+	public static ArrayList<Task> getTaskList() {
 		List<Auftrag> list = DbAdapter.getOrderList();
-		ArrayList<Task> tasks = new ArrayList<Task>();
+		ArrayList<Task> taskList = new ArrayList<Task>();
 		for(Auftrag a: list) {
-			tasks.add(new Task(a.getID(), Integer.toString(a.getStatus())));
+			taskList.add(new Task(a.getID(), Integer.toString(a.getStatus())));
 		}
-		return tasks;
+		return taskList;
 
 	}
 	

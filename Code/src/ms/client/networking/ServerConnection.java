@@ -78,7 +78,7 @@ public class ServerConnection extends BasicNetIO {
 		logger.info("Receiving Info data...");
 		String reply;
 		while (!(reply = receiveMessage()).equals("ENDINFO")) {
-			list.add(new Task(0, reply));
+			list.add(new Task(Integer.valueOf(reply), ""));
 			logger.info(reply);
 			sendMessage(OK);
 		}

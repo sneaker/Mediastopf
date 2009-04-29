@@ -9,6 +9,7 @@ import java.util.Random;
 import ms.common.domain.Auftrag;
 import ms.common.domain.MedienSammlung;
 import ms.server.domain.ServerAuftrag;
+import ms.server.domain.ServerExportMedium;
 import ms.server.domain.ServerMedienSammlung;
 
 
@@ -38,7 +39,7 @@ public class CreateDeleteDomainObjectsTest {
 		
 		
 		myAuftrag.addMedienSammlung(new ServerMedienSammlung(randomint, randomint, randomint + ""));
-		
+		myAuftrag.addExportMedium(new ServerExportMedium(randomint + "", randomint, randomint, randomint));
 		myAuftrag.save();
 		
 		

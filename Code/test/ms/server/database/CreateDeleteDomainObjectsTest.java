@@ -6,12 +6,16 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Random;
 
-import ms.server.domain.Auftrag;
+import ms.common.domain.Auftrag;
+import ms.common.domain.ExportMedium;
+import ms.common.domain.ImportMedium;
+import ms.common.domain.MedienSammlung;
+import ms.server.domain.ServerAuftrag;
 
 
-import ms.server.domain.ExportMedium;
-import ms.server.domain.ImportMedium;
-import ms.server.domain.Mediensammlung;
+import ms.server.domain.ServerExportMedium;
+import ms.server.domain.ServerImportMedium;
+import ms.server.domain.ServerMedienSammlung;
 
 
 
@@ -39,15 +43,15 @@ public class CreateDeleteDomainObjectsTest {
 
 	@Test
 	public void testAuftragDbTable() {
-		Auftrag myAuftrag = new Auftrag(randomint1);
+		ServerAuftrag myAuftrag = new ServerAuftrag(randomint1);
 		myAuftrag.save();		
 		String sql = "select * from Auftrag WHERE id = " + myAuftrag.getID();
-		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql, Auftrag.class);
+		List<ServerAuftrag> myList = ActiveRecordManager.getObjectList(sql, ServerAuftrag.class);
 		
 		for (Auftrag item: myList) assertEquals(myAuftrag, item);
 		
 		myAuftrag.delete();
-		assertTrue(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty());
+		assertTrue(ActiveRecordManager.getObjectList(sql, ServerAuftrag.class).isEmpty());
 	}
 	
 	
@@ -55,41 +59,41 @@ public class CreateDeleteDomainObjectsTest {
 	
 	@Test
 	public void testExportMediumDbTable() {
-		ExportMedium myExportMedium = new ExportMedium("Name" + randomint1, randomint2, randomint3, randomint1);
+		ServerExportMedium myExportMedium = new ServerExportMedium("Name" + randomint1, randomint2, randomint3, randomint1);
 		myExportMedium.save();		
 		String sql = "select * from Exportmedium WHERE id = " + myExportMedium.getID();
-		List<ExportMedium> myList = ActiveRecordManager.getObjectList(sql, ExportMedium.class);
+		List<ServerExportMedium> myList = ActiveRecordManager.getObjectList(sql, ServerExportMedium.class);
 		
 		for (ExportMedium item: myList) assertEquals(myExportMedium, item);
 		
 		myExportMedium.delete();
-		assertTrue(ActiveRecordManager.getObjectList(sql, ExportMedium.class).isEmpty());
+		assertTrue(ActiveRecordManager.getObjectList(sql, ServerExportMedium.class).isEmpty());
 	}
 	
 	@Test
 	public void testImportMediumDbTable() {
-		ImportMedium myImportMedium = new ImportMedium("Name" + randomint1, randomint2, randomint3);
+		ServerImportMedium myImportMedium = new ServerImportMedium("Name" + randomint1, randomint2, randomint3);
 		myImportMedium.save();		
 		String sql = "select * from Importmedium WHERE id = " + myImportMedium.getID();
-		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql, ImportMedium.class);
+		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql, ServerImportMedium.class);
 		
 		for (ImportMedium item: myList) assertEquals(myImportMedium, item);
 		
 		myImportMedium.delete();
-		assertTrue(ActiveRecordManager.getObjectList(sql, ImportMedium.class).isEmpty());
+		assertTrue(ActiveRecordManager.getObjectList(sql, ServerImportMedium.class).isEmpty());
 	}
 	
 	@Test
 	public void testMediensammlungDbTable() {
-		Mediensammlung myImportMedium = new Mediensammlung("Name" + randomint1, randomint2, randomint3);
+		ServerMedienSammlung myImportMedium = new ServerMedienSammlung("Name" + randomint1, randomint2, randomint3);
 		myImportMedium.save();		
 		String sql = "select * from Mediensammlung WHERE id = " + myImportMedium.getID();
-		List<Mediensammlung> myList = ActiveRecordManager.getObjectList(sql, Mediensammlung.class);
+		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql, ServerMedienSammlung.class);
 		
-		for (Mediensammlung item: myList) assertEquals(myImportMedium, item);
+		for (MedienSammlung item: myList) assertEquals(myImportMedium, item);
 		
 		myImportMedium.delete();
-		assertTrue(ActiveRecordManager.getObjectList(sql, Mediensammlung.class).isEmpty());
+		assertTrue(ActiveRecordManager.getObjectList(sql, ServerMedienSammlung.class).isEmpty());
 	}
 	
 	

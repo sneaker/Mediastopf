@@ -5,6 +5,10 @@ import java.util.List;
 
 
 
+import ms.common.domain.Auftrag;
+import ms.common.domain.ExportMedium;
+import ms.common.domain.ImportMedium;
+import ms.common.domain.MedienSammlung;
 import ms.server.domain.*;
 
 
@@ -140,22 +144,22 @@ public class DatabaseTester {
 		//Get data from DB direct via domain object and activerecord
 		System.out.println("Auftragliste:");
 		String sql = "select * from Auftrag";
-		List<Auftrag> AuftragsList = ActiveRecordManager.getObjectList(sql, Auftrag.class);
+		List<ServerAuftrag> AuftragsList = ActiveRecordManager.getObjectList(sql, ServerAuftrag.class);
 		for (Auftrag name: AuftragsList) System.out.println(name.toString());
 
 		System.out.println("Mediensammlungliste:");
 		sql = "select * from Mediensammlung";
-		List<Mediensammlung> MediensammlungList = ActiveRecordManager.getObjectList(sql, Mediensammlung.class);
-		for (Mediensammlung name: MediensammlungList) System.out.println(name.toString());
+		List<ServerMedienSammlung> MediensammlungList = ActiveRecordManager.getObjectList(sql, ServerMedienSammlung.class);
+		for (MedienSammlung name: MediensammlungList) System.out.println(name.toString());
 		
 		System.out.println("Importmediumliste:");
 		sql = "select * from Importmedium";
-		List<ImportMedium> ImportmediumList = ActiveRecordManager.getObjectList(sql, ImportMedium.class);
+		List<ServerImportMedium> ImportmediumList = ActiveRecordManager.getObjectList(sql, ServerImportMedium.class);
 		for (ImportMedium name: ImportmediumList) System.out.println(name.toString());
 	
 		System.out.println("Exportmediumliste:");
 		sql = "select * from Exportmedium";
-		List<ExportMedium> ExportmediumList = ActiveRecordManager.getObjectList(sql, ExportMedium.class);
+		List<ServerExportMedium> ExportmediumList = ActiveRecordManager.getObjectList(sql, ServerExportMedium.class);
 		for (ExportMedium name: ExportmediumList) System.out.println(name.toString());
 		
 		//Get data from DB via adapter class

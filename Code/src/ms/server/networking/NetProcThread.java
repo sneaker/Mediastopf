@@ -7,9 +7,10 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.List;
 
+import ms.common.domain.Auftrag;
 import ms.common.networking.BasicNetIO;
 import ms.server.database.DbAdapter;
-import ms.server.domain.Auftrag;
+import ms.server.domain.ServerAuftrag;
 
 
 public class NetProcThread extends BasicNetIO implements Runnable {
@@ -64,7 +65,7 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 	}
 
 	private void sendTaskList() {
-		List<Auftrag> lp = DbAdapter.getOrderList();
+		List<ServerAuftrag> lp = DbAdapter.getOrderList();
 
 		for (Auftrag name : lp) {
 			try {

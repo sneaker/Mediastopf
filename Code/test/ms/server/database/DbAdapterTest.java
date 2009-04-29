@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Random;
 
-import ms.server.domain.Auftrag;
-import ms.server.domain.ImportMedium;
-import ms.server.domain.Mediensammlung;
+import ms.common.domain.Auftrag;
+import ms.server.domain.ServerAuftrag;
+import ms.server.domain.ServerImportMedium;
+import ms.server.domain.ServerMedienSammlung;
 
 
 import org.junit.After;
@@ -34,7 +35,7 @@ public class DbAdapterTest {
 
 	@Test
 	public void testGetAuftragList() {
-		Auftrag myAuftrag = new Auftrag(randomint1);
+		ServerAuftrag myAuftrag = new ServerAuftrag(randomint1);
 		myAuftrag.save();		
 		
 		Auftrag DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
@@ -47,11 +48,11 @@ public class DbAdapterTest {
 	
 	@Test
 	public void testGetMediensammlungList() {
-		Auftrag myAuftrag = new Auftrag(randomint1);
+		ServerAuftrag myAuftrag = new ServerAuftrag(randomint1);
 		myAuftrag.save();
-		Mediensammlung myMediensammlung = new Mediensammlung("Name"+randomint1, 1, myAuftrag.getID());
+		ServerMedienSammlung myMediensammlung = new ServerMedienSammlung("Name"+randomint1, 1, myAuftrag.getID());
 		myMediensammlung.save();
-		List<Mediensammlung> MedienDbList = DbAdapter.getMediensammlungList(myAuftrag);
+		List<ServerMedienSammlung> MedienDbList = DbAdapter.getMediensammlungList(myAuftrag);
 		
 		assertEquals(myMediensammlung, MedienDbList.get(0));
 		

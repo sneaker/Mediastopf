@@ -8,9 +8,10 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import ms.common.domain.Auftrag;
 import ms.common.logic.Task;
 import ms.server.database.DbAdapter;
-import ms.server.domain.Auftrag;
+import ms.server.domain.ServerAuftrag;
 import ms.server.log.ServerLog;
 import ms.server.networking.PortListener;
 import ms.server.ui.MainViewServer;
@@ -43,7 +44,7 @@ public class Server {
 	}
 
 	public static ArrayList<Task> getTaskList() {
-		List<Auftrag> list = DbAdapter.getOrderList();
+		List<ServerAuftrag> list = DbAdapter.getOrderList();
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		for(Auftrag a: list) {
 			taskList.add(new Task(a.getID(), Integer.toString(a.getStatus())));

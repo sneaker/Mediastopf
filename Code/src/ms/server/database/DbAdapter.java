@@ -6,9 +6,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import ms.server.domain.Auftrag;
-import ms.server.domain.ImportMedium;
-import ms.server.domain.Mediensammlung;
+import ms.common.domain.Auftrag;
+import ms.common.domain.ImportMedium;
+import ms.common.domain.MedienSammlung;
+import ms.server.domain.ServerAuftrag;
+import ms.server.domain.ServerImportMedium;
+import ms.server.domain.ServerMedienSammlung;
 import ms.server.log.ServerLog;
 
 import org.apache.log4j.Logger;
@@ -36,14 +39,14 @@ public class DbAdapter {
 		return connection;
 	}
 
-	public static List<Auftrag> getOrderList() {
+	public static List<ServerAuftrag> getOrderList() {
 		return getAuftragList();
 	}
 
-	public static List<Auftrag> getAuftragList() {
+	public static List<ServerAuftrag> getAuftragList() {
 		String sql = "select * from Auftrag";
-		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql,
-				Auftrag.class);
+		List<ServerAuftrag> myList = ActiveRecordManager.getObjectList(sql,
+				ServerAuftrag.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -52,50 +55,50 @@ public class DbAdapter {
 
 	public static Auftrag getAuftrag(int AuftragId) {
 		String sql = "select * from Auftrag WHERE id = " + AuftragId;
-		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql,
-				Auftrag.class);
+		List<ServerAuftrag> myList = ActiveRecordManager.getObjectList(sql,
+				ServerAuftrag.class);
 		if (myList.isEmpty())
 			return null;
 		else
 			return myList.get(0);
 	}
 
-	public static List<Mediensammlung> getMediensammlungList() {
+	public static List<ServerMedienSammlung> getMediensammlungList() {
 		String sql = "select * from Mediensammlung";
-		List<Mediensammlung> myList = ActiveRecordManager.getObjectList(sql,
-				Mediensammlung.class);
+		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql,
+				ServerMedienSammlung.class);
 		if (myList.isEmpty())
 			return null;
 		else
 			return myList;
 	}
 
-	public static Mediensammlung getMediensammlung(int MediensammlungId) {
+	public static ServerMedienSammlung getMediensammlung(int MediensammlungId) {
 		String sql = "select * from Mediensammlung where id = "
 				+ MediensammlungId;
-		List<Mediensammlung> myList = ActiveRecordManager.getObjectList(sql,
-				Mediensammlung.class);
+		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql,
+				ServerMedienSammlung.class);
 		if (myList.isEmpty())
 			return null;
 		else
 			return myList.get(0);
 	}
 
-	public static List<Mediensammlung> getMediensammlungList(Auftrag myAuftrag) {
+	public static List<ServerMedienSammlung> getMediensammlungList(Auftrag myAuftrag) {
 		String sql = "select * from Mediensammlung where fk_Auftrag = "
 				+ myAuftrag.getID();
-		List<Mediensammlung> myList = ActiveRecordManager.getObjectList(sql,
-				Mediensammlung.class);
+		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql,
+				ServerMedienSammlung.class);
 		if (myList.isEmpty())
 			return null;
 		else
 			return myList;
 	}
 
-	public static List<ImportMedium> getImportMediumList() {
+	public static List<ServerImportMedium> getImportMediumList() {
 		String sql = "select * from ImportMedium";
-		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
-				ImportMedium.class);
+		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+				ServerImportMedium.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -104,20 +107,20 @@ public class DbAdapter {
 
 	public static ImportMedium getImportMediumList(int ImportMediumId) {
 		String sql = "select * from ImportMedium where id = " + ImportMediumId;
-		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
-				ImportMedium.class);
+		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+				ServerImportMedium.class);
 		if (myList.isEmpty())
 			return null;
 		else
 			return myList.get(0);
 	}
 
-	public static List<ImportMedium> getImportMediumList(
-			Mediensammlung myMediensammlung) {
+	public static List<ServerImportMedium> getImportMediumList(
+			MedienSammlung myMediensammlung) {
 		String sql = "select * from ImportMedium where fk_Mediensammlung = "
 				+ myMediensammlung.getID();
-		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
-				ImportMedium.class);
+		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+				ServerImportMedium.class);
 		if (myList.isEmpty())
 			return null;
 		else

@@ -152,43 +152,7 @@ public class DatabaseTester {
 		sql = "select * from Importmedium";
 		List<ImportMedium> ImportmediumList = ActiveRecordManager.getObjectList(sql, ImportMedium.class);
 		for (ImportMedium name: ImportmediumList) System.out.println(name.toString());
-		
-		System.out.println("Itemliste:");
-		sql = "select * from Item";
-		List<Item> ItemList = ActiveRecordManager.getObjectList(sql, Item.class);
-		for (Item name: ItemList) System.out.println(name.toString());
-		
-		System.out.println("BildItemliste:");
-		sql = "select Name, Importdatum, Speicherort, BildItem.id as id, Aufloesung, Aufnahmeort, fk_ImportMedium, fk_Container, Breite, Hoehe  from BildItem, Item WHERE BildItem.fk_Item = Item.id";
-		List<BildItem> BildItemList = ActiveRecordManager.getObjectList(sql, BildItem.class);
-		for (BildItem name: BildItemList) System.out.println(name.toString());
-		
-		System.out.println("MusikItemliste:");
-		sql = "select MusikItem.id as id, Dauer, Interpret, fk_ImportMedium, fk_Container, Name, Importdatum, Speicherort from MusikItem, Item WHERE MusikItem.fk_Item = Item.id";
-		List<MusikItem> MusikItemList = ActiveRecordManager.getObjectList(sql, MusikItem.class);
-		for (MusikItem name: MusikItemList) System.out.println(name.toString());
-		
-		
-		System.out.println("Containerliste:");
-		sql = "select * from Container";
-		List<Container> ContainerList = ActiveRecordManager.getObjectList(sql, Container.class);
-		for (Container name: ContainerList) System.out.println(name.toString());
-		
-		System.out.println("Einlesegeraetliste:");
-		sql = "select * from Einlesegeraet";
-		List<Einlesegeraet> EinlesegeraetList = ActiveRecordManager.getObjectList(sql, Einlesegeraet.class);
-		for (Einlesegeraet name: EinlesegeraetList) System.out.println(name.toString());
-		
-		System.out.println("Einlesestationliste:");
-		sql = "select * from Einlesestation";
-		List<Einlesestation> EinlesestationList = ActiveRecordManager.getObjectList(sql, Einlesestation.class);
-		for (Einlesestation name: EinlesestationList) System.out.println(name.toString());
-		
-		System.out.println("Sammelstationliste:");
-		sql = "select * from Sammelstation";
-		List<Sammelstation> SammelstationList = ActiveRecordManager.getObjectList(sql, Sammelstation.class);
-		for (Sammelstation name: SammelstationList) System.out.println(name.toString());
-		
+	
 		System.out.println("Exportmediumliste:");
 		sql = "select * from Exportmedium";
 		List<ExportMedium> ExportmediumList = ActiveRecordManager.getObjectList(sql, ExportMedium.class);

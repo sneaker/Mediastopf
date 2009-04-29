@@ -50,7 +50,7 @@ public class DbAdapterTest {
 	public void testGetMediensammlungList() {
 		ServerAuftrag myAuftrag = new ServerAuftrag(randomint1);
 		myAuftrag.save();
-		ServerMedienSammlung myMediensammlung = new ServerMedienSammlung("Name"+randomint1, 1, myAuftrag.getID());
+		ServerMedienSammlung myMediensammlung = new ServerMedienSammlung(myAuftrag.getID(), 1, "Name"+randomint1);
 		myMediensammlung.save();
 		List<ServerMedienSammlung> MedienDbList = DbAdapter.getMediensammlungList(myAuftrag);
 		

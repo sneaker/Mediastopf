@@ -50,7 +50,6 @@ public class Server {
 			taskList.add(new Task(a.getID(), Integer.toString(a.getStatus())));
 		}
 		return taskList;
-
 	}
 	
 	private void serverStartInfo() {

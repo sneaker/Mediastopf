@@ -37,7 +37,6 @@ public class Auftrag {
 		status = newstatus;
 		ListMediensammlung = new ArrayList<MedienSammlung>();
 		ListExportMedium = new ArrayList<ExportMedium>();
-	
 	}
 	
 	public Auftrag(int newstatus, ArrayList<MedienSammlung> newMSList, List<ExportMedium> newEMList ) {

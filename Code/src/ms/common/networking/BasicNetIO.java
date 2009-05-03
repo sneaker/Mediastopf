@@ -3,6 +3,8 @@ package ms.common.networking;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -16,6 +18,7 @@ abstract public class BasicNetIO {
 	protected Socket commSocket = null;
 	protected Logger logger = Log.getLogger();
 
+	@Deprecated
 	protected String receiveMessage() throws IOException {
 		BufferedReader receiver = null;
 		
@@ -32,6 +35,7 @@ abstract public class BasicNetIO {
 		return rec;
 	}
 
+	@Deprecated 
 	protected void sendMessage(String message) throws IOException {
 		PrintWriter sender = null;
 		
@@ -46,5 +50,30 @@ abstract public class BasicNetIO {
 		sender.flush();
 	}
 	
+	public void sendObject(Object o)
+	{
+		try {
+			ObjectOutputStream sender = new ObjectOutputStream(commSocket.getOutputStream());
+			sender.writeObject(o);
+			sender.writeObject("END");
+			sender.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Object receiveObject()
+	{
+		Object receivedObj = null;
+		try {
+			ObjectInputStream receiver = new ObjectInputStream(commSocket.getInputStream());
+			receivedObj = receiver.readObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return receivedObj;
+	}
 	
 }

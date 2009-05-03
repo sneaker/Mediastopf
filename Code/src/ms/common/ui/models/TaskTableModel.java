@@ -5,10 +5,9 @@ import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
-import ms.common.logic.Task;
-import ms.common.logic.TaskList;
+import ms.common.domain.AuftragsListe;
+import ms.common.domain.Auftrag;
 import ms.common.utils.I18NManager;
-
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
 
@@ -20,9 +19,9 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	private static I18NManager manager = I18NManager.getManager();
 	private static final String[] columns = { manager.getString("Model.task"), manager.getString("Model.status") };
 	
-	private TaskList list;
+	private AuftragsListe list;
 	
-	public TaskTableModel(TaskList list) {
+	public TaskTableModel(AuftragsListe list) {
 		this.list = list;
 		list.addObserver(this);
 	}
@@ -46,12 +45,12 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Task task = list.get(rowIndex);
+		Auftrag auftrag = list.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return task.getID();
+			return auftrag.getID();
 		case 1:
-			return task.getStatus();
+			return auftrag.getStatus();
 		default:
 			return "";
 		}

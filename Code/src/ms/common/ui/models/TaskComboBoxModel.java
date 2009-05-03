@@ -7,7 +7,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 
-import ms.common.logic.TaskList;
+import ms.common.domain.AuftragsListe;
 
 
 public class TaskComboBoxModel extends AbstractListModel implements Observer, ComboBoxModel {
@@ -16,10 +16,10 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private TaskList list;
+	private AuftragsListe list;
 	private int taskID = -1;
 	
-	public TaskComboBoxModel(TaskList list) {
+	public TaskComboBoxModel(AuftragsListe list) {
 		this.list = list;
 		list.addObserver(this);
 	}

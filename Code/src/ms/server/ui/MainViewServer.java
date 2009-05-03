@@ -32,7 +32,7 @@ import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.client.ui.ClientConstants;
-import ms.common.logic.TaskList;
+import ms.common.domain.AuftragsListe;
 import ms.common.ui.Constants;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
@@ -60,7 +60,7 @@ public class MainViewServer extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
-	private TaskList taskList, runTaskList;
+	private AuftragsListe taskList, runTaskList;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
 	private Table exportTable;
@@ -210,7 +210,7 @@ public class MainViewServer extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = new TaskList(Server.class);
+		taskList = new AuftragsListe(Server.class);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if(0<taskComboBox.getItemCount())
@@ -290,7 +290,7 @@ public class MainViewServer extends JFrame {
 		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 200);
 		tablePanel.setLayout(null);
 		
-		runTaskList = new TaskList(Server.class);
+		runTaskList = new AuftragsListe(Server.class);
 		exportTable = new Table(runTaskList);
 		tableScrollPane = new JScrollPane(exportTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());

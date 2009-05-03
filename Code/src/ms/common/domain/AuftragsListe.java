@@ -1,27 +1,31 @@
-package ms.common.logic;
+package ms.common.domain;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class TaskList extends Observable {
+import ms.common.domain.Auftrag;
 
-	private ArrayList<Task> list = new ArrayList<Task>();
+public class AuftragsListe extends Observable implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Auftrag> list = new ArrayList<Auftrag>();
 	private Class<?> network;
 
-	public TaskList(Class<?> network) {
+	public AuftragsListe(Class<?> network) {
 		this.network = network;
 		updateList();
 	}
 	
-	public void add(Task task) {
-		list.add(task);
+	public void add(Auftrag auftrag) {
+		list.add(auftrag);
 		setChanged();
 		notifyObservers();
 	}
 
-	public void remove(Task task) {
-		list.remove(task);
+	public void remove(Auftrag auftrag) {
+		list.remove(auftrag);
 		setChanged();
 		notifyObservers();
 	}
@@ -32,7 +36,7 @@ public class TaskList extends Observable {
 		notifyObservers();
 	}
 
-	public Task get(int index) {
+	public Auftrag get(int index) {
 		return list.get(index);
 	}
 
@@ -44,7 +48,7 @@ public class TaskList extends Observable {
 	public void updateList() {
 		try {
 			Method method = network.getDeclaredMethod("getTaskList", new Class[] {});
-			this.list = (ArrayList<Task>)method.invoke(null, new Object[] {});
+			this.list = (ArrayList<Auftrag>)method.invoke(null, new Object[] {});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

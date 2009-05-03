@@ -1,9 +1,11 @@
 package ms.common.domain;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Auftrag {
+public class Auftrag implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	protected int status = -1;
 	protected int id = -1;
 	protected ArrayList<MedienSammlung> ListMediensammlung;
@@ -56,5 +58,22 @@ public class Auftrag {
 	public int getID() {
 		return id;
 	}
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof Auftrag) {
+        	Auftrag task = (Auftrag) obj;
+        	//TODO: AUFTRAG - Anpassen auf neue statusmeldungen
+            /*return ((status == 0 ? task.getStatus() == 0 : status.equalsIgnoreCase(task.getStatus()) &&
+             *       (id == 0 ? task.getID() == 0 : id == task.getID())));
+             * 
+             * Quickfix:
+             */
+        	return ((task.getID() == this.id));
+        }
+        return false;
+    }
 
 }

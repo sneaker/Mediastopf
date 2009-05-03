@@ -14,7 +14,8 @@ import ms.client.log.ClientLog;
 import ms.client.networking.ServerConnection;
 import ms.client.observer.DirectoryObserver;
 import ms.client.ui.MainView;
-import ms.common.logic.Task;
+import ms.common.domain.Auftrag;
+import ms.common.domain.ImportMedium;
 import ms.common.ui.dialogs.MessageDialog;
 import ms.common.utils.I18NManager;
 
@@ -66,7 +67,13 @@ public class Client {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder.toString());
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
-				sendFiles(folder);
+				ImportMedium medium = null;
+				for(String filename : folder.list()) {
+					medium = new ImportMedium();
+					File f = new File(filename);
+					medium.addItem(f);
+				}
+				sendObject(medium);
 			}
 		});
 		new Thread(dirObserver).start();
@@ -75,27 +82,19 @@ public class Client {
 	}
 	
 	/**
-	 * send files from folder
+	 * sends whole objects over the network
 	 * 
-	 * @param folder with files
+	 * @param o
 	 */
-	public static void sendFiles(File folder) {
-		String[] fileList = folder.list();
-		for(String f: fileList) {
-			try {
-				client.sendFile(folder + File.separator + f);
-			} catch (IOException e) {
-				logger.warn(f + " not sent");
-				e.printStackTrace();
-			}
-		}
+	public static void sendObject(Object o) {
+		client.sendObject(o);
 	}
 	
 	/**
 	 * get Tasks from Database
 	 */
-	public static ArrayList<Task> getTaskList() {
-		ArrayList<Task> list = new ArrayList<Task>();
+	public static ArrayList<Auftrag> getTaskList() {
+		ArrayList<Auftrag> list = new ArrayList<Auftrag>();
 		try {
 			list = client.getTaskList();
 		} catch (IOException e) {

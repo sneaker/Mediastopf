@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ms.client.Client;
+import ms.common.domain.ImportMedium;
 import ms.server.Server;
 import ms.server.log.ServerLog;
 import ms.server.networking.PortListener;
@@ -42,14 +43,24 @@ public class ServerConnectionTest {
 
 	@Test
 	public void testSendFile() {
+		ImportMedium m = new ImportMedium();
 		String[] fileList = tempDir.list();
-		for(String f: fileList) {
-			try {
-				connection.sendFile(tempDir + File.separator + f);
-			} catch (IOException e) {
-				fail(e.getMessage());
-			}
+		for(String filename: fileList) {
+			File f = new File(tempDir + File.separator + filename);
+			m.addItem(f);
 		}
+		
+		try {
+			connection.sendImportMedium(m);
+			//filecopying needs time :)
+			Thread.sleep(5000);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		String[] transferedList = tempDir.list(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.contains("_rec");

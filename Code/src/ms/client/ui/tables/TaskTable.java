@@ -8,7 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import ms.client.ui.ClientConstants;
-import ms.common.logic.TaskList;
+import ms.common.domain.AuftragsListe;
 import ms.common.ui.dialogs.MessageDialog;
 import ms.common.ui.models.TaskTableModel;
 import ms.common.ui.tables.Table;
@@ -21,7 +21,7 @@ public class TaskTable extends Table {
 	
 	private I18NManager manager = I18NManager.getManager();
 	
-	public TaskTable(TaskList list) {
+	public TaskTable(AuftragsListe list) {
 		super(new TaskTableModel(list));
 		initTable();
 	}
@@ -54,7 +54,7 @@ public class TaskTable extends Table {
 	/**
 	 * send files to server
 	 */
-	//TODO
+	//TODO: what todo??
 	public void send() {
 		int row = getSelectedRow();
 		if (row < 0) {

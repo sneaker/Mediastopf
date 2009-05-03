@@ -33,8 +33,8 @@ import ms.client.Client;
 import ms.client.StartClient;
 import ms.client.ui.dialogs.ConfigDialog;
 import ms.client.ui.tables.TaskTable;
-import ms.common.logic.Task;
-import ms.common.logic.TaskList;
+import ms.common.domain.AuftragsListe;
+import ms.common.domain.Auftrag;
 import ms.common.ui.LogFrame;
 import ms.common.ui.SplashScreen;
 import ms.common.ui.StatusMessage;
@@ -60,7 +60,7 @@ public class MainView extends JFrame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
-	private TaskList taskList, runTaskList;
+	private AuftragsListe taskList, runTaskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -199,7 +199,7 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = new TaskList(Client.class);
+		taskList = new AuftragsListe(Client.class);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if (0 < taskComboBox.getItemCount())
@@ -248,7 +248,7 @@ public class MainView extends JFrame {
 		}
 	}
 
-	// TODO
+	// TODO what to do??
 	private void runSelectedItem() {
 		String taskID = (String) taskComboBox.getSelectedItem();
 		if(taskID == null) {
@@ -275,10 +275,11 @@ public class MainView extends JFrame {
 		updateStatusBar(StatusType.RUNMESSAGE);
 		Client.observeDir(task);
 		
-		// TODO
+		// TODO: What to do?? 
 		int id = Integer.valueOf(taskID);
 		taskList.remove(taskComboBox.getSelectedIndex());
-		runTaskList.add(new Task(id, "Warten"));
+		//TODO: AUFTRAG - Anpassen an neue Auftragsklasse
+		runTaskList.add(new Auftrag(id));
 	}
 
 	private void askFolder(String title, String message) {
@@ -338,7 +339,7 @@ public class MainView extends JFrame {
 		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
-		runTaskList = new TaskList(Client.class);
+		runTaskList = new AuftragsListe(Client.class);
 		taskTable = new TaskTable(runTaskList);
 		tableScrollPane = new JScrollPane(taskTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());

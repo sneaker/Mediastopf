@@ -18,7 +18,6 @@ abstract public class BasicNetIO {
 	protected Socket commSocket = null;
 	protected Logger logger = Log.getLogger();
 
-	@Deprecated
 	protected String receiveMessage() throws IOException {
 		BufferedReader receiver = null;
 		
@@ -34,8 +33,7 @@ abstract public class BasicNetIO {
 		logger.info("SERVER: Client message: " + rec);
 		return rec;
 	}
-
-	@Deprecated 
+ 
 	protected void sendMessage(String message) throws IOException {
 		PrintWriter sender = null;
 		

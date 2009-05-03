@@ -12,7 +12,8 @@ import ms.server.database.*;
 
 public class ServerImportMedium extends ImportMedium implements ActiveRecord {
 
-	
+	private static final long serialVersionUID = 1L;
+
 	public ServerImportMedium(String Name, int fk_Mediensammlung, int fk_Einlesegeraet) {
 		this.setName(Name);
 		this.fk_Mediensammlung = fk_Mediensammlung;

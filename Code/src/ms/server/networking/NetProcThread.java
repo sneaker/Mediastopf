@@ -1,17 +1,20 @@
 package ms.server.networking;
 
-import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
-import ms.common.domain.Auftrag;
+import ms.common.domain.ImportMedium;
 import ms.common.networking.BasicNetIO;
 import ms.server.database.DbAdapter;
 import ms.server.domain.ServerAuftrag;
-
 
 public class NetProcThread extends BasicNetIO implements Runnable {
 
@@ -22,83 +25,56 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 	public void run() {
 		String receivedMessage = null;
 		while (true) {
-		
+			
 			try {
 				receivedMessage = receiveMessage();
+				if(receivedMessage.equals("END"))
+					return;
 			} catch (IOException e) {
-				logger.error("Cannot read from receiver");
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			if (receivedMessage.equals("END")) {
-				try {
-					sendMessage("END OK");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			if (receivedMessage.equals("INFO")) {
+				sendTaskList();
 				return;
 			}
 
-			if (receivedMessage.equals("INFO")) {
-				sendTaskList();
-			}
-
 			if (receivedMessage.equals("TRANSFER")) {
-				try {
-					sendMessage("TRANSFER READY");
-
-					String namemsg = receiveMessage();
-					sendMessage("TRANSFER NAME OK");
-
-					String sizemsg = receiveMessage();
-					int size = Integer.parseInt(sizemsg);
-					sendMessage("TRANSFER SIZE OK");
-
-					receiveFile(namemsg, size);
-					sendMessage("ENDTRANSFER");
-				} catch (IOException e) {
-					logger.error("cannot write to sender");
-					e.printStackTrace();
-				}
+				ImportMedium m = (ImportMedium) receiveObject();
+				extractFiles(m);
+				return;
 			}
+		}
+	}
+
+	private void extractFiles(ImportMedium m) {
+		ArrayList<File> files = m.getItemsbyFile();
+		for(File source : files) {
+			File destination = new File(source.getAbsoluteFile().toString() + "_rec");
+			try {
+				InputStream in = new FileInputStream(source);
+				OutputStream out = new FileOutputStream(destination);
+				byte[] buf = new byte[1024];
+				int len;
+				while((len = in.read(buf)) > 0) {
+					out.write(buf, 0, len);
+				}
+				in.close();
+				out.close();
+				System.out.println("File " + source.getAbsolutePath().toString() + " copied to " + destination.getAbsolutePath());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 
 	private void sendTaskList() {
 		List<ServerAuftrag> lp = DbAdapter.getOrderList();
-
-		for (Auftrag name : lp) {
-			try {
-				sendMessage(String.valueOf(name.getID()));
-				if (!receiveMessage().equals("OK"))
-					logger.fatal("Error in Network protocol");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			sendMessage("ENDINFO");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void receiveFile(String name, int size) throws IOException {
-		logger.info("Waiting for Filetransfer...");
-		int bytesread = 0;
-		byte[] filebuffer = new byte[size];
-		InputStream reader = commSocket.getInputStream();
-		FileOutputStream writer = new FileOutputStream(name + "_rec");
-		BufferedOutputStream bos = new BufferedOutputStream(writer);
-		while ((bytesread += reader.read(filebuffer, 0, filebuffer.length)) != -1) {
-			if (bytesread >= size)
-				break;
-		}
-
-		bos.write(filebuffer, 0, size);
-		bos.flush();
-		bos.close();
-		writer.close();
+		sendObject(lp);
 	}
 }

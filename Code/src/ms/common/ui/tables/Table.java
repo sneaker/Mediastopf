@@ -2,7 +2,7 @@ package ms.common.ui.tables;
 
 import javax.swing.ListSelectionModel;
 
-import ms.common.logic.TaskList;
+import ms.common.domain.AuftragsListe;
 import ms.common.ui.models.TaskTableModel;
 
 import org.jdesktop.swingx.JXTable;
@@ -14,7 +14,7 @@ public class Table extends JXTable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Table(TaskList list) {
+	public Table(AuftragsListe list) {
 		super(new TaskTableModel(list));
 		initTable();
 	}

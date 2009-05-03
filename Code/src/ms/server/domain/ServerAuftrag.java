@@ -11,6 +11,11 @@ import ms.server.database.*;
 public class ServerAuftrag extends Auftrag implements ActiveRecord {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ServerAuftrag(int status) {
 		super(status);
 	}

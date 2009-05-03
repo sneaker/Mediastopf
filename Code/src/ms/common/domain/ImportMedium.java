@@ -1,16 +1,21 @@
 package ms.common.domain;
 
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
 
+public class ImportMedium implements Serializable {
 
-public class ImportMedium {
-
+	private static final long serialVersionUID = 1L;
 	protected String Name;
 	protected int fk_Mediensammlung;
 	protected int fk_Einlesegeraet;
 	protected int id = -1;
+	protected ArrayList<File> items;
 
 	public ImportMedium() {
 		super();
+		items = new ArrayList<File>();
 	}
 
 	public int getID() {
@@ -25,4 +30,13 @@ public class ImportMedium {
 		return Name;
 	}
 
+	public void addItem(File item)
+	{
+		items.add(item);
+	}
+	
+	public ArrayList<File> getItemsbyFile()
+	{
+		return items;
+	}
 }

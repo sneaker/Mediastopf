@@ -14,16 +14,16 @@ import java.util.Observable;
 public class DirectoryObserver extends Observable implements Runnable {
 
 	private static final int POLLING_INTERVAL = 2000;
-	private File _observedDirectory;
-	private File[] _lastDirectorySnapshot;
-	private ArrayList<Long> _lastFilesizes;
+	private File observedDirectory;
+	private File[] lastDirectorySnapshot;
+	private ArrayList<Long> lastFilesizes;
 
 	/**
 	 * @param directory
 	 *            Chose the directory that should be observed.
 	 */
 	public DirectoryObserver(String directory) {
-		_observedDirectory = new File(directory);
+		observedDirectory = new File(directory);
 		takeDirectorySnapshot();
 	}
 
@@ -48,10 +48,10 @@ public class DirectoryObserver extends Observable implements Runnable {
 	}
 
 	private void takeDirectorySnapshot() {
-		_lastDirectorySnapshot = _observedDirectory.listFiles();
-		_lastFilesizes = new ArrayList<Long>(); 
-		for (int i = 0; i < _lastDirectorySnapshot.length; i++) {
-			_lastFilesizes.add(i, _lastDirectorySnapshot[i].length()); 
+		lastDirectorySnapshot = observedDirectory.listFiles();
+		lastFilesizes = new ArrayList<Long>(); 
+		for (int i = 0; i < lastDirectorySnapshot.length; i++) {
+			lastFilesizes.add(i, lastDirectorySnapshot[i].length()); 
 		}
 	}
 
@@ -59,7 +59,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * Currently not scanning subdirectories!
 	 */
 	private List<FileChange> getDirectoryChanges() {
-		File[] newFileList = _observedDirectory.listFiles();
+		File[] newFileList = observedDirectory.listFiles();
 		ArrayList<FileChange> fc = new ArrayList<FileChange>();
 		boolean found = false;
 		
@@ -71,11 +71,11 @@ public class DirectoryObserver extends Observable implements Runnable {
 		 */
 		for (int i = 0; i < newFileList.length; i++) {
 			found = false;
-			for (int j = 0; j < _lastDirectorySnapshot.length; j++) {
-				if (_lastDirectorySnapshot[j].getName().equalsIgnoreCase(newFileList[i].getName())) {
+			for (int j = 0; j < lastDirectorySnapshot.length; j++) {
+				if (lastDirectorySnapshot[j].getName().equalsIgnoreCase(newFileList[i].getName())) {
 					found = true;
 
-					if (_lastFilesizes.get(j) != (newFileList[i].length())) {
+					if (lastFilesizes.get(j) != (newFileList[i].length())) {
 						fc.add(new FileChange(newFileList[i], FileChange.MODIFIED));
 					}
 				}

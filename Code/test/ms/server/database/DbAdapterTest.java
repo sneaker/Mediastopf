@@ -46,23 +46,7 @@ public class DbAdapterTest {
 		assertEquals(null, DbAuftrag);
 	}
 	
-	@Test
-	public void testGetMediensammlungList() {
-		ServerAuftrag myAuftrag = new ServerAuftrag(randomint1);
-		myAuftrag.save();
-		ServerMedienSammlung myMediensammlung = new ServerMedienSammlung(myAuftrag.getID(), 1, "Name"+randomint1);
-		myMediensammlung.save();
-		List<ServerMedienSammlung> MedienDbList = DbAdapter.getMediensammlungList(myAuftrag);
-		
-		//assertEquals(myMediensammlung, MedienDbList.get(0));
-		
-		myMediensammlung.delete();
-		myAuftrag.delete();
-		Auftrag DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
-		//assertEquals(null, DbAuftrag);
-		myMediensammlung = DbAdapter.getMediensammlung(myMediensammlung.getID());
-		//assertEquals(null, myMediensammlung);
-	}
+
 	
 	
 	

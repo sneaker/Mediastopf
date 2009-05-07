@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import ms.common.domain.Auftrag;
 import ms.common.domain.ExportMedium;
-import ms.common.domain.MedienSammlung;
+import ms.common.domain.ImportMedium;
 import ms.server.database.*;
 
 
@@ -48,13 +48,13 @@ public class ServerAuftrag extends Auftrag implements ActiveRecord {
 			return false;
 		}
 		
-		for (MedienSammlung mySammlung: ListMediensammlung) 
+		for (ImportMedium myImportMedium: ListImportMedium) 
 		{
-			try{ ((ServerMedienSammlung) mySammlung).save();
+			try{ ((ServerImportMedium) myImportMedium).save();
 			
 			} catch (Exception e) {
 				System.err.println(e);
-				System.err.println("Tried to save a Mediensammlung instead of a ServerMediensammlung");
+				System.err.println("Tried to save a ImportMedium instead of a ServerImportMedium");
 				return false;
 			}
 			

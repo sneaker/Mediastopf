@@ -1,26 +1,26 @@
 package ms.common.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Auftrag implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	protected int status = -1;
 	protected int id = -1;
-	protected ArrayList<MedienSammlung> ListMediensammlung;
-	protected List<ExportMedium> ListExportMedium;
+	protected ArrayList<ImportMedium> ListImportMedium;
+	protected ArrayList<ExportMedium> ListExportMedium;
 
-	public boolean addMedienSammlung(MedienSammlung newSammlung) {
-		return ListMediensammlung.add(newSammlung);
+	public boolean addImportMedium(ImportMedium newSammlung) {
+		return ListImportMedium.add(newSammlung);
 	}
 	
-	public MedienSammlung getMedienSammlung(int Index) {
-		return ListMediensammlung.get(Index);
+	public ImportMedium getImportMedium(int Index) {
+		return ListImportMedium.get(Index);
 	}
 	
-	public MedienSammlung removeMedienSammlung(int Index) {
-		return ListMediensammlung.remove(Index);
+	public ImportMedium removeImportMedium(int Index) {
+		return ListImportMedium.remove(Index);
 	}
 	
 	public boolean addExportMedium(ExportMedium newMedium) {
@@ -37,13 +37,13 @@ public class Auftrag implements Serializable {
 	
 	public Auftrag(int newstatus) {
 		status = newstatus;
-		ListMediensammlung = new ArrayList<MedienSammlung>();
+		ListImportMedium = new ArrayList<ImportMedium>();
 		ListExportMedium = new ArrayList<ExportMedium>();
 	}
 	
-	public Auftrag(int newstatus, ArrayList<MedienSammlung> newMSList, List<ExportMedium> newEMList ) {
+	public Auftrag(int newstatus, ArrayList<ImportMedium> newIMList, ArrayList<ExportMedium> newEMList ) {
 		status = newstatus;
-		ListMediensammlung = newMSList;
+		ListImportMedium = newIMList;
 		ListExportMedium = newEMList;
 	}
 

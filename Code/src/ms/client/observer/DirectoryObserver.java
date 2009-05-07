@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import ms.client.observer.DirectoryObserverTest.MockDirectory;
+
 /**
  * Updates its subscribers whenever a filesystem change occurred in the
  * specified directory.
  * 
- * @author MS
  */
 public class DirectoryObserver extends Observable implements Runnable {
 
@@ -24,6 +25,16 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 */
 	public DirectoryObserver(String directory) {
 		observedDirectory = new File(directory);
+		takeDirectorySnapshot();
+	}
+
+	/**
+	 * Constructor intended for test-purposes only.
+	 * @param dir
+	 */
+	protected DirectoryObserver(File dir) {
+		assert (dir.isDirectory());
+		observedDirectory = dir;
 		takeDirectorySnapshot();
 	}
 
@@ -68,6 +79,8 @@ public class DirectoryObserver extends Observable implements Runnable {
 		 * 			2) a ~b 	Datei gelöscht, bisher keine Aktion geplant
 		 * 			3) ~a b		Neue Datei hinzugekommen -> melden
 		 * 			4) ~a ~b	keine Änderung: kümmert uns nicht
+		 * 
+		 * FIXME: Iterator benutzen (MS)
 		 */
 		for (int i = 0; i < newFileList.length; i++) {
 			found = false;

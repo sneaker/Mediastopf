@@ -10,9 +10,9 @@ import java.util.Observer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import ms.client.filesys.DirectoryObserver;
 import ms.client.log.ClientLog;
 import ms.client.networking.ServerConnection;
-import ms.client.observer.DirectoryObserver;
 import ms.client.ui.MainView;
 import ms.common.domain.Auftrag;
 import ms.common.domain.ImportMedium;

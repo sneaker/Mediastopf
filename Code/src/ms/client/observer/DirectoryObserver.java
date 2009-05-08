@@ -17,7 +17,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 
 	private static final int POLLING_INTERVAL = 2000;
 	private File observedDirectory;
-	private File[] lastDirectorySnapshot;
+	private ArrayList<File> lastDirectorySnapshot;
 	private ArrayList<Long> lastFilesizes;
 
 	/**
@@ -48,9 +48,8 @@ public class DirectoryObserver extends Observable implements Runnable {
 			} catch (InterruptedException e) {
 			} catch (Exception e) {
 				// FIXME: Use Logger
-				System.err
-						.println("Warning: Files have been deleted from directory "
-								+ observedDirectory + ".");
+				System.err.println(e.getMessage() + " Directory="
+						+ observedDirectory);
 			}
 		}
 	}
@@ -66,41 +65,42 @@ public class DirectoryObserver extends Observable implements Runnable {
 	}
 
 	/**
+	 * Put the current contents of the observed directory into a sorted list.
+	 * 
 	 * Postcondition: Snapshot must be Sorted (for further comparison)
 	 */
 	private void takeDirectorySnapshot() {
-		lastDirectorySnapshot = observedDirectory.listFiles();
+		ArrayList<File> currentFiles = getSortedDirectorySnapshot();
+		for (File f : currentFiles)
+			lastDirectorySnapshot.add(f);
+
+		takeFilesizeSnapshot();
+	}
+
+	private void takeFilesizeSnapshot() {
 		lastFilesizes = new ArrayList<Long>();
-		for (int i = 0; i < lastDirectorySnapshot.length; i++) {
-			lastFilesizes.add(i, lastDirectorySnapshot[i].length());
-		}
-		Arrays.sort(lastDirectorySnapshot);
+		for (int i = 0; i < lastDirectorySnapshot.size(); i++)
+			lastFilesizes.add(i, lastDirectorySnapshot.get(i).length());
 	}
 
 	/**
 	 * Precondition: lastDirectorySnapshot is sorted
+	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	protected boolean directoryChanged() throws Exception {
-		ArrayList<File> alt = new ArrayList<File>();
-		ArrayList<File> neu = new ArrayList<File>();
-		File[] neu_array = observedDirectory.listFiles();
-		Arrays.sort(neu_array);
-		for (File f : lastDirectorySnapshot)
-			alt.add(f);
-		for (File f : neu_array)
-			neu.add(f);
-		
-		ListIterator<File> altIt = alt.listIterator();
-		ListIterator<File> neuIt = neu.listIterator();
-		
+	protected boolean directoryChanged() throws FilesRemovedException {
+		ArrayList<File> currentDirectorySnapshot = getSortedDirectorySnapshot();
+
+		ListIterator<File> altIt = lastDirectorySnapshot.listIterator();
+		ListIterator<File> neuIt = currentDirectorySnapshot.listIterator();
+
 		int deletedFiles = 0;
 		int newFiles = 0;
 
 		if (!neuIt.hasNext())
-			deletedFiles = alt.size();
-		
+			deletedFiles = lastDirectorySnapshot.size();
+
 		while (neuIt.hasNext()) {
 			if (!altIt.hasNext()) {
 				neuIt.next();
@@ -117,11 +117,56 @@ public class DirectoryObserver extends Observable implements Runnable {
 				deletedFiles++;
 			}
 		}
-		
+
 		if (deletedFiles > 0)
-			throw new Exception();
-		
+			throw new FilesRemovedException();
+
 		return newFiles > 0;
+	}
+
+	protected boolean testme () {
+		ArrayList<File> currentDirectorySnapshot = getSortedDirectorySnapshot();
+		if (currentDirectorySnapshot.containsAll(lastDirectorySnapshot) && lastDirectorySnapshot.containsAll(currentDirectorySnapshot))
+			return true;
+		return false;
+	}
+	
+	protected int getDeletedFiles() {
+		ArrayList<File> currentDirectorySnapshot = getSortedDirectorySnapshot();
+
+		ListIterator<File> altIt = lastDirectorySnapshot.listIterator();
+		ListIterator<File> neuIt = currentDirectorySnapshot.listIterator();
+
+		int deletedFiles = 0;
+
+		if (!neuIt.hasNext())
+			return lastDirectorySnapshot.size();
+
+		while (neuIt.hasNext()) {
+			if (!altIt.hasNext()) {
+				neuIt.next();
+				continue;
+			}
+
+			int compare = neuIt.next().compareTo(altIt.next());
+			if (compare < 0) {
+				altIt.previous(); //nötig
+			} else if (compare > 0) {
+				neuIt.previous();
+				deletedFiles++;
+			}
+		}
+
+		return deletedFiles;
+	}
+	
+	private ArrayList<File> getSortedDirectorySnapshot() {
+		File[] neu_array = observedDirectory.listFiles();
+		ArrayList<File> resultat = new ArrayList<File>();
+		Arrays.sort(neu_array);
+		for (File f : neu_array)
+			resultat.add(f);
+		return resultat;
 	}
 
 }
@@ -129,10 +174,10 @@ public class DirectoryObserver extends Observable implements Runnable {
 class FilesRemovedException extends Exception {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	public String getMessage() {
 		return "Files have been deleted from the directory which should not be the case in normal usage.";
 	}
-	
+
 }

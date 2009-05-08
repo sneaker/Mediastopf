@@ -2,7 +2,10 @@ package ms.client.observer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Observable;
 
 /**
@@ -53,21 +56,89 @@ public class DirectoryObserver extends Observable implements Runnable {
 	}
 
 	public void poll() throws Exception {
-		List<FileChange> fc = getDirectoryChanges();
-		if (fc.size() > 0) {
+		if (directoryChanged()) {
 			setChanged();
-			notifyObservers(fc);
+			// FIXME: Remove arguments, not needed anymore
+			notifyObservers(new ArrayList<FileChange>());
 		}
 
 		takeDirectorySnapshot();
 	}
 
+	/**
+	 * Postcondition: Snapshot must be Sorted (for further comparison)
+	 */
 	private void takeDirectorySnapshot() {
 		lastDirectorySnapshot = observedDirectory.listFiles();
 		lastFilesizes = new ArrayList<Long>();
 		for (int i = 0; i < lastDirectorySnapshot.length; i++) {
 			lastFilesizes.add(i, lastDirectorySnapshot[i].length());
 		}
+		Arrays.sort(lastDirectorySnapshot);
+	}
+
+	/**
+	 * Precondition: lastDirectorySnapshot is sorted
+	 * @return
+	 * @throws Exception 
+	 */
+	protected boolean directoryChanged() throws Exception {
+		ArrayList<File> alt = new ArrayList<File>();
+		ArrayList<File> neu = new ArrayList<File>();
+		File[] neu_array = observedDirectory.listFiles();
+		Arrays.sort(neu_array);
+		for (File f : lastDirectorySnapshot)
+			alt.add(f);
+		for (File f : neu_array)
+			neu.add(f);
+		
+		ListIterator<File> altIt = alt.listIterator();
+		ListIterator<File> neuIt = neu.listIterator();
+		
+		int deletedFiles = 0;
+		int newFiles = 0;
+
+		if (!neuIt.hasNext())
+			deletedFiles = alt.size();
+		
+		//System.out.println("size alt: " + alt.size() + ", neu: " + neu.size());
+		// BUG: Ohne diese Zeilen funktioniert das ganze nicht :-)
+		alt.size();
+		neu.size();
+		while (neuIt.hasNext()) {
+			if (!altIt.hasNext()) {
+				neuIt.next();
+				newFiles++;
+				continue;
+			}
+
+			File a = neuIt.next();
+			File b = altIt.next();
+			//int compare = neuIt.next().compareTo(altIt.next());
+			System.out.println(a.getPath() + ", " + b.getPath());
+			int compare = a.compareTo(b);
+			if (compare < 0) {
+				System.out.print("<");
+				altIt.previous();
+				newFiles++;
+			} else if (compare > 0) {
+				System.out.print(">");
+				neuIt.previous();
+				deletedFiles++;
+			} else
+				System.out.print("=");
+		}
+		
+		if (deletedFiles > 0) {
+			// FIXME: Use Logger
+			System.err.println("Warning: " + deletedFiles + " Files have been deleted and directory may be out of synch with server");
+			//throw new Exception();
+		}
+		
+		// FIXME: Remove this line
+		System.out.println("Before: " + alt.size() + ", after: " + neu.size() + "\nNew files: " + newFiles + ", deleted Files: " + deletedFiles);
+		
+		return newFiles > 0;
 	}
 
 	/**

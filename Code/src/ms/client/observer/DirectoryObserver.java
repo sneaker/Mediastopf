@@ -3,163 +3,135 @@ package ms.client.observer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Observable;
 
 /**
- * Updates its subscribers whenever a filesystem change occurred in the
- * specified directory.
+ * Teilt seinen SubscriberInnen mit, falls im überwachten Datei-Verzeichnis neue
+ * Dateien hinzugekommen sind. Falls Dateien gelöscht wurden wird gewarnt, damit
+ * entsprechende Aktualisierungs-Massnahmen getroffen werden können.
  * 
+ * Benutzung: Soll zum Beispiel das Temporäre Verzeichnis auf Änderungen
+ * überwacht werden, kann die Klasse folgendermassen verwendet werden:
+ * 
+ * <code>
+ * DirectoryObserver o = new DirectoryObserver("/tmp");
+ * changeScanner.addObserver(
+ * 		new Observer () { 
+ * 			public void update (Observable o, Object arg) { 
+ * 				// You action here
+ * 			});
+ * new Thread(o).start();
+ * </code>
  */
 public class DirectoryObserver extends Observable implements Runnable {
 
 	private static final int POLLING_INTERVAL = 2000;
-	private File observedDirectory;
-	private ArrayList<File> lastDirectorySnapshot;
-	private ArrayList<Long> lastFilesizes;
+	protected File observedDirectory;
+	protected ArrayList<File> lastDirectorySnapshot = new ArrayList<File>();
 
 	/**
+	 * Initialisiert den Observer mit dem aktuellen Verzeichnisinhalt.
+	 * 
 	 * @param directory
-	 *            Chose the directory that should be observed.
+	 *            Pfad zum Verzeichnis, welches überwacht werden soll
 	 */
 	public DirectoryObserver(String directory) {
-		observedDirectory = new File(directory);
-		takeDirectorySnapshot();
+		this(new File(directory));
 	}
 
 	/**
-	 * Constructor intended for test-purposes only.
+	 * Alternativer Kontruktor, falls das Verzeichnis bereits als {link File}
+	 * zur Verfügung steht.
 	 * 
-	 * @param dir
+	 * @param directory
+	 *            muss ein Verzeichnis sein, keine Datei
 	 */
-	protected DirectoryObserver(File dir) {
-		assert (dir.isDirectory());
-		observedDirectory = dir;
+	public DirectoryObserver(File directory) {
+		assert (directory.isDirectory());
+		observedDirectory = directory;
 		takeDirectorySnapshot();
 	}
 
 	public void run() {
-		while (true) {
-			try {
+		try {
+			while (checkStatus()) {
 				Thread.sleep(POLLING_INTERVAL);
-				poll();
-			} catch (InterruptedException e) {
-			} catch (Exception e) {
-				// FIXME: Use Logger
-				System.err.println(e.getMessage() + " Directory="
-						+ observedDirectory);
 			}
+		} catch (InterruptedException e) {
+			System.err.println("Warning: DirectoryObserver for "
+					+ observedDirectory + " got interrupted");
+		} catch (FilesRemovedException e) {
+			// FIXME: Use Logger
+			System.err.println(e.getMessage() + "\nObserved directory was"
+					+ observedDirectory);
 		}
+
 	}
 
-	public void poll() throws Exception {
+	/**
+	 * @throws FilesRemovedException
+	 *             wenn eine Datei gelöscht wurde und daher mit einer
+	 *             Inkonsistenz auf dem Server gerechnet werden muss
+	 */
+	protected boolean checkStatus() throws FilesRemovedException {
+		if (getDeletedFiles() > 0)
+			throw new FilesRemovedException(getDeletedFiles(),
+					observedDirectory);
+
 		if (directoryChanged()) {
 			setChanged();
-			// FIXME: Remove arguments, not needed anymore
-			notifyObservers(new ArrayList<FileChange>());
+			notifyObservers();
 		}
 
 		takeDirectorySnapshot();
+		return hasChanged();
 	}
 
 	/**
 	 * Put the current contents of the observed directory into a sorted list.
-	 * 
-	 * Postcondition: Snapshot must be Sorted (for further comparison)
 	 */
 	private void takeDirectorySnapshot() {
-		ArrayList<File> currentFiles = getSortedDirectorySnapshot();
-		for (File f : currentFiles)
-			lastDirectorySnapshot.add(f);
-
-		takeFilesizeSnapshot();
-	}
-
-	private void takeFilesizeSnapshot() {
-		lastFilesizes = new ArrayList<Long>();
-		for (int i = 0; i < lastDirectorySnapshot.size(); i++)
-			lastFilesizes.add(i, lastDirectorySnapshot.get(i).length());
+		lastDirectorySnapshot = getSortedDirectorySnapshot();
 	}
 
 	/**
-	 * Precondition: lastDirectorySnapshot is sorted
+	 * Prüft, ob eine neue Datei im überwachten Verzeichnis erstellt wurde.
+	 * 
+	 * @return den Status, ob seit der letzten Kontrolle eine neue Datei
+	 *         hinzugekommen ist.
+	 */
+	protected boolean directoryChanged() {
+		ArrayList<File> currentDirectorySnapshot = getSortedDirectorySnapshot();
+
+		if (currentDirectorySnapshot.containsAll(lastDirectorySnapshot)
+				&& lastDirectorySnapshot.containsAll(currentDirectorySnapshot))
+			return false;
+		return true;
+	}
+
+	/**
+	 * Ermittelt, wie viele Dateien seit der letzten Kontrolle des überwachten
+	 * Verzeichnisses gelöscht wurden.
+	 * 
+	 * @return Anzahl der gelöschten Dateien seit letzter Kontrolle
+	 */
+	protected int getDeletedFiles() {
+		ArrayList<File> copyOfLastSnapshot = new ArrayList<File>(
+				lastDirectorySnapshot);
+		copyOfLastSnapshot.removeAll(getSortedDirectorySnapshot());
+
+		return copyOfLastSnapshot.size();
+	}
+
+	/**
+	 * Liefert analog zu directory.listFiles() statt einem Array eine ArrayList
+	 * und sortiert diese, damit sie effizient mit einer anderen Liste
+	 * verglichen werden kann. <br />
+	 * Der Umweg über die ArrayList wurde gewählt, da diese bequeme
+	 * Vergleichsoperationen (z.B. für {@link getDeletedFiles}) anbietet.
 	 * 
 	 * @return
-	 * @throws Exception
 	 */
-	protected boolean directoryChanged() throws FilesRemovedException {
-		ArrayList<File> currentDirectorySnapshot = getSortedDirectorySnapshot();
-
-		ListIterator<File> altIt = lastDirectorySnapshot.listIterator();
-		ListIterator<File> neuIt = currentDirectorySnapshot.listIterator();
-
-		int deletedFiles = 0;
-		int newFiles = 0;
-
-		if (!neuIt.hasNext())
-			deletedFiles = lastDirectorySnapshot.size();
-
-		while (neuIt.hasNext()) {
-			if (!altIt.hasNext()) {
-				neuIt.next();
-				newFiles++;
-				continue;
-			}
-
-			int compare = neuIt.next().compareTo(altIt.next());
-			if (compare < 0) {
-				altIt.previous();
-				newFiles++;
-			} else if (compare > 0) {
-				neuIt.previous();
-				deletedFiles++;
-			}
-		}
-
-		if (deletedFiles > 0)
-			throw new FilesRemovedException();
-
-		return newFiles > 0;
-	}
-
-	protected boolean testme () {
-		ArrayList<File> currentDirectorySnapshot = getSortedDirectorySnapshot();
-		if (currentDirectorySnapshot.containsAll(lastDirectorySnapshot) && lastDirectorySnapshot.containsAll(currentDirectorySnapshot))
-			return true;
-		return false;
-	}
-	
-	protected int getDeletedFiles() {
-		ArrayList<File> currentDirectorySnapshot = getSortedDirectorySnapshot();
-
-		ListIterator<File> altIt = lastDirectorySnapshot.listIterator();
-		ListIterator<File> neuIt = currentDirectorySnapshot.listIterator();
-
-		int deletedFiles = 0;
-
-		if (!neuIt.hasNext())
-			return lastDirectorySnapshot.size();
-
-		while (neuIt.hasNext()) {
-			if (!altIt.hasNext()) {
-				neuIt.next();
-				continue;
-			}
-
-			int compare = neuIt.next().compareTo(altIt.next());
-			if (compare < 0) {
-				altIt.previous(); //nötig
-			} else if (compare > 0) {
-				neuIt.previous();
-				deletedFiles++;
-			}
-		}
-
-		return deletedFiles;
-	}
-	
 	private ArrayList<File> getSortedDirectorySnapshot() {
 		File[] neu_array = observedDirectory.listFiles();
 		ArrayList<File> resultat = new ArrayList<File>();
@@ -168,16 +140,27 @@ public class DirectoryObserver extends Observable implements Runnable {
 			resultat.add(f);
 		return resultat;
 	}
-
 }
 
+/**
+ * 
+ * 
+ */
 class FilesRemovedException extends Exception {
 
 	private static final long serialVersionUID = 1L;
+	private int count;
+	private File directory;
+
+	public FilesRemovedException(int count, File directory) {
+		this.count = count;
+		this.directory = directory;
+	}
 
 	@Override
 	public String getMessage() {
-		return "Files have been deleted from the directory which should not be the case in normal usage.";
+		return count + " files have been deleted from " + directory.getPath()
+				+ "!";
 	}
 
 }

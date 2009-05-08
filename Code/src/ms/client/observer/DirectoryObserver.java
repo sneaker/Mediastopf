@@ -101,10 +101,6 @@ public class DirectoryObserver extends Observable implements Runnable {
 		if (!neuIt.hasNext())
 			deletedFiles = alt.size();
 		
-		//System.out.println("size alt: " + alt.size() + ", neu: " + neu.size());
-		// BUG: Ohne diese Zeilen funktioniert das ganze nicht :-)
-		alt.size();
-		neu.size();
 		while (neuIt.hasNext()) {
 			if (!altIt.hasNext()) {
 				neuIt.next();
@@ -112,66 +108,31 @@ public class DirectoryObserver extends Observable implements Runnable {
 				continue;
 			}
 
-			File a = neuIt.next();
-			File b = altIt.next();
-			//int compare = neuIt.next().compareTo(altIt.next());
-			System.out.println(a.getPath() + ", " + b.getPath());
-			int compare = a.compareTo(b);
+			int compare = neuIt.next().compareTo(altIt.next());
 			if (compare < 0) {
-				System.out.print("<");
 				altIt.previous();
 				newFiles++;
 			} else if (compare > 0) {
-				System.out.print(">");
 				neuIt.previous();
 				deletedFiles++;
-			} else
-				System.out.print("=");
+			}
 		}
 		
-		if (deletedFiles > 0) {
-			// FIXME: Use Logger
-			System.err.println("Warning: " + deletedFiles + " Files have been deleted and directory may be out of synch with server");
-			//throw new Exception();
-		}
-		
-		// FIXME: Remove this line
-		System.out.println("Before: " + alt.size() + ", after: " + neu.size() + "\nNew files: " + newFiles + ", deleted Files: " + deletedFiles);
+		if (deletedFiles > 0)
+			throw new Exception();
 		
 		return newFiles > 0;
 	}
 
-	/**
-	 * Currently not scanning subdirectories!
-	 */
-	private List<FileChange> getDirectoryChanges() {
-		File[] newFileList = observedDirectory.listFiles();
-		ArrayList<FileChange> fc = new ArrayList<FileChange>();
-		boolean found = false;
+}
 
-		/*
-		 * 3 Fälle: 1) a b bisherige Datei, keine Änderung (ggf modified?) 2) a
-		 * ~b Datei gelöscht, bisher keine Aktion geplant 3) ~a b Neue Datei
-		 * hinzugekommen -> melden 4) ~a ~b keine Änderung: kümmert uns nicht
-		 * 
-		 * FIXME: Iterator benutzen (MS)
-		 */
-		for (int i = 0; i < newFileList.length; i++) {
-			found = false;
-			for (int j = 0; j < lastDirectorySnapshot.length; j++) {
-				if (lastDirectorySnapshot[j].getName().equalsIgnoreCase(
-						newFileList[i].getName())) {
-					found = true;
+class FilesRemovedException extends Exception {
 
-					if (lastFilesizes.get(j) != (newFileList[i].length())) {
-						fc.add(new FileChange(newFileList[i],
-								FileChange.MODIFIED));
-					}
-				}
-			}
-			if (!found)
-				fc.add(new FileChange(newFileList[i], FileChange.NEW));
-		}
-		return fc;
+	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public String getMessage() {
+		return "Files have been deleted from the directory which should not be the case in normal usage.";
 	}
+	
 }

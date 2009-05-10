@@ -29,22 +29,4 @@ public class ClientLog extends Log {
 		
 		initLogger(ClientConstants.class);
 	}
-	
-	/**
-	 * get logger
-	 * 
-	 * @return Logger
-	 */
-	public static Logger getLogger() {
-		return logger;
-	}
-
-	/**
-	 * get OutputStream with logged information
-	 * 
-	 * @return ByteArrayOutputStream
-	 */
-	public static ByteArrayOutputStream getOutputStream() {
-		return bos;
-	}
 }

@@ -1,4 +1,4 @@
-package ms.client.filesys;
+package ms.client.directoryobserver;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import ms.client.directoryobserver.FilesRemovedException;
+import ms.client.directoryobserver.DirectoryObserver;
+
 import org.junit.Before;
 import org.junit.Test;
 
 public class DirectoryObserverTest {
 
-	private DirectoryObserver changeScanner;
+	protected DirectoryObserver changeScanner;
 	private UpdateDetector notifyTester;
 	private MockDirectory dir;
 

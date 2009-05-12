@@ -7,11 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import ms.common.domain.Auftrag;
-import ms.common.domain.MedienSammlung;
 import ms.server.domain.ServerAuftrag;
 import ms.server.domain.ServerExportMedium;
-import ms.server.domain.ServerMedienSammlung;
-
 
 import org.junit.After;
 import org.junit.Before;

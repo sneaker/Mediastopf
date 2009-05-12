@@ -37,9 +37,6 @@ public class CreateDeleteDomainObjectsTest {
 	public void testAuftragDbTable() {
 		ServerAuftrag myAuftrag = new ServerAuftrag(randomint);
 		
-		
-		myAuftrag.addMedienSammlung(new ServerMedienSammlung(randomint, randomint, randomint + ""));
-		myAuftrag.addExportMedium(new ServerExportMedium(randomint + "", randomint, randomint, randomint));
 		myAuftrag.save();
 		
 		
@@ -52,18 +49,7 @@ public class CreateDeleteDomainObjectsTest {
 		assertTrue(ActiveRecordManager.getObjectList(sql, ServerAuftrag.class).isEmpty());
 	}
 	
-	@Test
-	public void testMedienSammlungDbTable() {
-		ServerMedienSammlung mySMedienSammlung = new ServerMedienSammlung(randomint, randomint, randomint + "");
-		mySMedienSammlung.save();		
-		String sql = "select * from Mediensammlung WHERE id = " + mySMedienSammlung.getID();
-		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql, ServerMedienSammlung.class);
-		
-		for (MedienSammlung item: myList) assertEquals(mySMedienSammlung, item);
-		
-		mySMedienSammlung.delete();
-		assertTrue(ActiveRecordManager.getObjectList(sql, ServerMedienSammlung.class).isEmpty());
-	}
+	
 	
 	
 	

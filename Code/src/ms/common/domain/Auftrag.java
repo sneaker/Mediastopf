@@ -2,18 +2,18 @@ package ms.common.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Auftrag implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	protected int status = -1;
 	protected int id = -1;
-	protected ArrayList<MedienSammlung> ListMediensammlung;
-	protected List<ExportMedium> ListExportMedium;
+	protected ArrayList<ImportMedium> ListImportMedium;
+	protected ArrayList<ExportMedium> ListExportMedium;
 
-	public boolean addMedienSammlung(MedienSammlung newSammlung) {
-		return ListMediensammlung.add(newSammlung);
+	public boolean addImportMedium(ImportMedium newSammlung) {
+		return ListImportMedium.add(newSammlung);
 	}
 
 	public MedienSammlung getMedienSammlung(int Index) {
@@ -38,14 +38,14 @@ public class Auftrag implements Serializable {
 
 	public Auftrag(int newstatus) {
 		status = newstatus;
-		ListMediensammlung = new ArrayList<MedienSammlung>();
+		ListImportMedium = new ArrayList<ImportMedium>();
 		ListExportMedium = new ArrayList<ExportMedium>();
 	}
 
 	public Auftrag(int newstatus, ArrayList<MedienSammlung> newMSList,
 			List<ExportMedium> newEMList) {
 		status = newstatus;
-		ListMediensammlung = newMSList;
+		ListImportMedium = newIMList;
 		ListExportMedium = newEMList;
 	}
 

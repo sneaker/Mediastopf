@@ -8,10 +8,8 @@ import java.util.List;
 
 import ms.common.domain.Auftrag;
 import ms.common.domain.ImportMedium;
-import ms.common.domain.MedienSammlung;
 import ms.server.domain.ServerAuftrag;
 import ms.server.domain.ServerImportMedium;
-import ms.server.domain.ServerMedienSammlung;
 import ms.server.log.ServerLog;
 
 import org.apache.log4j.Logger;
@@ -63,37 +61,6 @@ public class DbAdapter {
 			return myList.get(0);
 	}
 
-	public static List<ServerMedienSammlung> getMediensammlungList() {
-		String sql = "select * from Mediensammlung";
-		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql,
-				ServerMedienSammlung.class);
-		if (myList.isEmpty())
-			return null;
-		else
-			return myList;
-	}
-
-	public static ServerMedienSammlung getMediensammlung(int MediensammlungId) {
-		String sql = "select * from Mediensammlung where id = "
-				+ MediensammlungId;
-		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql,
-				ServerMedienSammlung.class);
-		if (myList.isEmpty())
-			return null;
-		else
-			return myList.get(0);
-	}
-
-	public static List<ServerMedienSammlung> getMediensammlungList(Auftrag myAuftrag) {
-		String sql = "select * from Mediensammlung where fk_Auftrag = "
-				+ myAuftrag.getID();
-		List<ServerMedienSammlung> myList = ActiveRecordManager.getObjectList(sql,
-				ServerMedienSammlung.class);
-		if (myList.isEmpty())
-			return null;
-		else
-			return myList;
-	}
 
 	public static List<ServerImportMedium> getImportMediumList() {
 		String sql = "select * from ImportMedium";
@@ -116,7 +83,7 @@ public class DbAdapter {
 	}
 
 	public static List<ServerImportMedium> getImportMediumList(
-			MedienSammlung myMediensammlung) {
+			ImportMedium myMediensammlung) {
 		String sql = "select * from ImportMedium where fk_Mediensammlung = "
 				+ myMediensammlung.getID();
 		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql,

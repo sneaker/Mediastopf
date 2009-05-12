@@ -10,7 +10,6 @@ import ms.common.domain.Auftrag;
 import ms.server.domain.ServerAuftrag;
 import ms.server.domain.ServerExportMedium;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,12 +45,4 @@ public class CreateDeleteDomainObjectsTest {
 		myAuftrag.delete();
 		assertTrue(ActiveRecordManager.getObjectList(sql, ServerAuftrag.class).isEmpty());
 	}
-	
-	
-	
-	
-	
-
-	
-	
 }

@@ -9,7 +9,6 @@ import ms.common.domain.Auftrag;
 import ms.server.domain.ServerAuftrag;
 import ms.server.domain.ServerImportMedium;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,10 +43,4 @@ public class DbAdapterTest {
 		DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
 		assertEquals(null, DbAuftrag);
 	}
-	
-
-	
-	
-	
-	
 }

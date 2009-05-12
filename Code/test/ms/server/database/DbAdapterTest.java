@@ -8,8 +8,6 @@ import java.util.Random;
 import ms.common.domain.Auftrag;
 import ms.server.domain.ServerAuftrag;
 import ms.server.domain.ServerImportMedium;
-import ms.server.domain.ServerMedienSammlung;
-
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,10 +43,4 @@ public class DbAdapterTest {
 		DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
 		assertEquals(null, DbAuftrag);
 	}
-	
-
-	
-	
-	
-	
 }

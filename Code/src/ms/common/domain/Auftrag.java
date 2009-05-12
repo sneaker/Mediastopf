@@ -16,12 +16,12 @@ public class Auftrag implements Serializable {
 		return ListImportMedium.add(newSammlung);
 	}
 
-	public MedienSammlung getMedienSammlung(int Index) {
-		return ListMediensammlung.get(Index);
+	public ImportMedium getImportMedium(int Index) {
+		return ListImportMedium.get(Index);
 	}
-
-	public MedienSammlung removeMedienSammlung(int Index) {
-		return ListMediensammlung.remove(Index);
+	
+	public ImportMedium removeImportMedium(int Index) {
+		return ListImportMedium.remove(Index);
 	}
 
 	public boolean addExportMedium(ExportMedium newMedium) {
@@ -41,9 +41,8 @@ public class Auftrag implements Serializable {
 		ListImportMedium = new ArrayList<ImportMedium>();
 		ListExportMedium = new ArrayList<ExportMedium>();
 	}
-
-	public Auftrag(int newstatus, ArrayList<MedienSammlung> newMSList,
-			List<ExportMedium> newEMList) {
+	
+	public Auftrag(int newstatus, ArrayList<ImportMedium> newIMList, ArrayList<ExportMedium> newEMList ) {
 		status = newstatus;
 		ListImportMedium = newIMList;
 		ListExportMedium = newEMList;
@@ -79,5 +78,4 @@ public class Auftrag implements Serializable {
 		}
 		return false;
 	}
-
 }

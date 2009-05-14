@@ -31,9 +31,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
+import ms.application.server.Server;
+import ms.application.server.StartServer;
 import ms.domain.AuftragsListe;
-import ms.server.Server;
-import ms.server.StartServer;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;

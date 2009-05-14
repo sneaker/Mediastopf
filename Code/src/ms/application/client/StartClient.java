@@ -1,4 +1,4 @@
-package ms.client;
+package ms.application.client;
 
 /**
  * start client

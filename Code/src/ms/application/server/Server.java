@@ -1,4 +1,4 @@
-package ms.server;
+package ms.application.server;
 
 import java.util.ArrayList;
 import java.util.List;

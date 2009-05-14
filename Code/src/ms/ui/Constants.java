@@ -22,8 +22,8 @@ public class Constants {
 	public static final String AUDIORIPPERCFG = "audioripper";
 	public static final String DEFAULTFOLDERCFG = "defaultfolder";
 	
-	public static final String UIIMAGE = "/ms/common/ui/images/";
-	public static final String LANGUAGE = "ms/common/ui/lang/mediastopf";
+	public static final String UIIMAGE = "/ms/ui/images/";
+	public static final String LANGUAGE = "ms/ui/lang/mediastopf";
 	
 	public static final String ICON = "icon.png";
 	public static final String CANCEL = "cancel.png";

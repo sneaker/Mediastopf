@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.client.Client;
+import ms.application.client.Client;
+import ms.application.server.Server;
 import ms.domain.ImportMedium;
-import ms.server.Server;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.client.ServerConnection;
 import ms.utils.networking.server.PortListener;

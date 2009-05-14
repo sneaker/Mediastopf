@@ -29,8 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.client.Client;
-import ms.client.StartClient;
+import ms.application.client.Client;
+import ms.application.client.StartClient;
 import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
 import ms.ui.LogFrame;

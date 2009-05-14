@@ -24,9 +24,9 @@ import ms.utils.I18NManager;
 public class SystemTrayIcon {
 	
 	private I18NManager manager = I18NManager.getManager();
-	private MainViewServer server;
+	private MainView server;
 
-	public SystemTrayIcon(MainViewServer server) {
+	public SystemTrayIcon(MainView server) {
 		if (!SystemTray.isSupported()) {
 			return;
 		}

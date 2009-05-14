@@ -10,7 +10,7 @@ import javax.swing.UIManager;
 
 import ms.domain.Auftrag;
 import ms.domain.server.ServerAuftrag;
-import ms.ui.server.MainViewServer;
+import ms.ui.server.MainView;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
 import ms.utils.server.database.DbAdapter;
@@ -77,7 +77,7 @@ public class Server {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainViewServer mediastopf = new MainViewServer();
+				MainView mediastopf = new MainView();
 				mediastopf.setVisible(true);
 			}
 		});

@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -17,6 +19,8 @@ import ms.ui.dialogs.MessageDialog;
 import ms.utils.I18NManager;
 import ms.utils.client.directoryobserver.DirectoryObserver;
 import ms.utils.log.client.ClientLog;
+import ms.utils.networking.client.AuftragslistenReceiver;
+import ms.utils.networking.client.ImportMediumSender;
 import ms.utils.networking.client.ServerConnection;
 
 import org.apache.log4j.Logger;
@@ -36,17 +40,20 @@ public class Client {
 	
 	private static I18NManager manager = I18NManager.getManager();
 	private static Logger logger = ClientLog.getLogger();
-	private static ServerConnection client;
+	private AuftragslistenReceiver rec; 
 	
 	
 	public Client() {
 		loadUI();
-		connectToServer();
+		setUpConnection();
 	}
 	
-	private void connectToServer() {
+	private void setUpConnection() {
 		try {
-			client = new ServerConnection(HOST, PORT);
+			rec = new AuftragslistenReceiver(HOST, PORT);
+			Executor exec = Executors.newSingleThreadExecutor();
+			exec.execute(rec);
+			exec.execute(new ImportMediumSender(HOST, PORT));
 		} catch (UnknownHostException e) {
 			logger.fatal("Unknown host");
 			e.printStackTrace();
@@ -96,7 +103,7 @@ public class Client {
 	public static ArrayList<Auftrag> getTaskList() {
 		ArrayList<Auftrag> list = new ArrayList<Auftrag>();
 		try {
-			list = client.getTaskList();
+			list = rec.getTaskList();
 		} catch (IOException e) {
 			logger.fatal("Can't get Tasks");
 			MessageDialog.info(manager.getString("Dialog.cantgettask"), manager.getString("Dialog.checkconnection"));

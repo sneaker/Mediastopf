@@ -14,10 +14,10 @@ import java.util.concurrent.Executors;
 
 import ms.client.Client;
 import ms.domain.ImportMedium;
-import ms.log.server.ServerLog;
-import ms.networking.client.ServerConnection;
-import ms.networking.server.PortListener;
 import ms.server.Server;
+import ms.utils.log.server.ServerLog;
+import ms.utils.networking.client.ServerConnection;
+import ms.utils.networking.server.PortListener;
 
 import org.apache.log4j.Logger;
 import org.junit.After;

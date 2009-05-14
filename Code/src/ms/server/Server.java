@@ -10,9 +10,9 @@ import javax.swing.UIManager;
 
 import ms.domain.Auftrag;
 import ms.domain.server.ServerAuftrag;
-import ms.log.server.ServerLog;
-import ms.networking.server.PortListener;
 import ms.ui.server.MainViewServer;
+import ms.utils.log.server.ServerLog;
+import ms.utils.networking.server.PortListener;
 import ms.utils.server.database.DbAdapter;
 
 import org.apache.log4j.Logger;

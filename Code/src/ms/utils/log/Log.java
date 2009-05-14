@@ -1,4 +1,4 @@
-package ms.log;
+package ms.utils.log;
 
 import java.io.ByteArrayOutputStream;
 

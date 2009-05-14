@@ -10,7 +10,7 @@ import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
 import ms.domain.server.ServerAuftrag;
 import ms.domain.server.ServerImportMedium;
-import ms.log.server.ServerLog;
+import ms.utils.log.server.ServerLog;
 
 import org.apache.log4j.Logger;
 

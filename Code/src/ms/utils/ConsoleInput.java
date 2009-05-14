@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import ms.log.Log;
+import ms.utils.log.Log;
 
 import org.apache.log4j.Logger;
 

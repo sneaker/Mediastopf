@@ -29,10 +29,10 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.filesys.FileIO;
-import ms.log.Log;
 import ms.utils.ConfigHandler;
 import ms.utils.I18NManager;
+import ms.utils.filesys.FileIO;
+import ms.utils.log.Log;
 
 /**
  * show log information from logger

@@ -1,4 +1,4 @@
-package ms.networking.client;
+package ms.utils.networking.client;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
-import ms.networking.BasicNetIO;
+import ms.utils.networking.BasicNetIO;
 
 public class ServerConnection extends BasicNetIO {
 

@@ -1,9 +1,9 @@
-package ms.log.client;
+package ms.utils.log.client;
 
 import java.io.ByteArrayOutputStream;
 
-import ms.log.Log;
 import ms.ui.client.ClientConstants;
+import ms.utils.log.Log;
 
 import org.apache.log4j.Logger;
 

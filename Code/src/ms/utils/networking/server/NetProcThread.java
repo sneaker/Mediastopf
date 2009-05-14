@@ -1,4 +1,4 @@
-package ms.networking.server;
+package ms.utils.networking.server;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import ms.domain.ImportMedium;
 import ms.domain.server.ServerAuftrag;
-import ms.networking.BasicNetIO;
+import ms.utils.networking.BasicNetIO;
 import ms.utils.server.database.DbAdapter;
 
 public class NetProcThread extends BasicNetIO implements Runnable {

@@ -2,7 +2,7 @@ package ms.utils;
 
 import java.io.IOException;
 
-import ms.log.Log;
+import ms.utils.log.Log;
 
 import org.apache.log4j.Logger;
 

@@ -12,12 +12,12 @@ import javax.swing.UIManager;
 
 import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
-import ms.filesys.client.DirectoryObserver;
-import ms.log.client.ClientLog;
-import ms.networking.client.ServerConnection;
 import ms.ui.client.MainView;
 import ms.ui.dialogs.MessageDialog;
 import ms.utils.I18NManager;
+import ms.utils.filesys.client.DirectoryObserver;
+import ms.utils.log.client.ClientLog;
+import ms.utils.networking.client.ServerConnection;
 
 import org.apache.log4j.Logger;
 

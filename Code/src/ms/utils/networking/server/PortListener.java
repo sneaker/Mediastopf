@@ -1,11 +1,11 @@
-package ms.networking.server;
+package ms.utils.networking.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.log.server.ServerLog;
+import ms.utils.log.server.ServerLog;
 
 import org.apache.log4j.Logger;
 

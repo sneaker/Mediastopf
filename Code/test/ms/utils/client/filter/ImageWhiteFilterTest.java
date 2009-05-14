@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ImageWhiteFilterTest {
+
 	
 	private static final String TEMPDIR = System.getProperty("java.io.tmpdir") + File.separator;
 	

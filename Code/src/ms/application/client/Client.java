@@ -15,7 +15,7 @@ import ms.domain.ImportMedium;
 import ms.ui.client.MainView;
 import ms.ui.dialogs.MessageDialog;
 import ms.utils.I18NManager;
-import ms.utils.filesys.client.DirectoryObserver;
+import ms.utils.client.directoryobserver.DirectoryObserver;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ServerConnection;
 

@@ -2,8 +2,8 @@ package ms;
 
 import junit.framework.TestCase;
 
-import ms.client.ClientTest;
-import ms.server.ServerTest;
+import ms.application.client.ClientTest;
+import ms.application.server.ServerTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

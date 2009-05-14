@@ -1,4 +1,4 @@
-package ms.server.database;
+package ms.utils.server.database;
 
 import static org.junit.Assert.assertEquals;
 

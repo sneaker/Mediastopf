@@ -1,8 +1,8 @@
-package ms.server;
+package ms.application.server;
 
-import ms.server.database.CreateDeleteDomainObjectsTest;
-import ms.server.database.DbAdapterTest;
-import ms.server.filesys.FileIOTest;
+import ms.utils.filesys.server.FileIOTest;
+import ms.utils.server.database.CreateDeleteDomainObjectsTest;
+import ms.utils.server.database.DbAdapterTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -1,4 +1,4 @@
-package ms.client.filter;
+package ms.utils.client.filter;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -1,8 +1,8 @@
-package ms.client;
+package ms.application.client;
 
-import ms.client.filter.ImageWhiteFilterTest;
-import ms.client.networking.ServerConnectionTest;
-import ms.utils.client.filesys.DirectoryObserverTest;
+import ms.utils.client.filter.ImageWhiteFilterTest;
+import ms.utils.filesys.client.DirectoryObserverTest;
+import ms.utils.networking.client.ServerConnectionTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

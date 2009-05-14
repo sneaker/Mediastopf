@@ -1,4 +1,4 @@
-package ms.client.networking;
+package ms.utils.networking.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

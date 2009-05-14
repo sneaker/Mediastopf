@@ -1,4 +1,4 @@
-package ms.server.filesys;
+package ms.utils.filesys.server;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

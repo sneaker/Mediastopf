@@ -6,9 +6,7 @@ import java.sql.SQLException;
 import ms.domain.Auftrag;
 import ms.domain.ExportMedium;
 import ms.domain.ImportMedium;
-import ms.server.database.*;
-import ms.utils.server.database.ActiveRecord;
-import ms.utils.server.database.ActiveRecordManager;
+import ms.utils.server.database.*;
 
 
 public class ServerAuftrag extends Auftrag implements ActiveRecord {

@@ -4,9 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import ms.domain.ImportMedium;
-import ms.server.database.*;
-import ms.utils.server.database.ActiveRecord;
-import ms.utils.server.database.ActiveRecordManager;
+import ms.utils.server.database.*;
 
 /**
  * Ein {@link ImportMedium}, welches persistent gesichert werden kann.

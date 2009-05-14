@@ -8,12 +8,12 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import ms.common.domain.Auftrag;
-import ms.server.database.DbAdapter;
-import ms.server.domain.ServerAuftrag;
-import ms.server.log.ServerLog;
-import ms.server.networking.PortListener;
-import ms.server.ui.MainViewServer;
+import ms.domain.Auftrag;
+import ms.domain.server.ServerAuftrag;
+import ms.log.server.ServerLog;
+import ms.networking.server.PortListener;
+import ms.ui.server.MainViewServer;
+import ms.utils.server.database.DbAdapter;
 
 import org.apache.log4j.Logger;
 

@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Random;
 
-import ms.common.domain.Auftrag;
-import ms.server.domain.ServerAuftrag;
-import ms.server.domain.ServerImportMedium;
+import ms.domain.Auftrag;
+import ms.domain.server.ServerAuftrag;
+import ms.domain.server.ServerImportMedium;
+import ms.utils.server.database.DbAdapter;
 
 import org.junit.After;
 import org.junit.Before;

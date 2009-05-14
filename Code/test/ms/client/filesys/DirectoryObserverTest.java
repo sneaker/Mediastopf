@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import ms.filesys.client.DirectoryObserver;
+import ms.filesys.client.FilesRemovedException;
+
 import org.junit.Before;
 import org.junit.Test;
 

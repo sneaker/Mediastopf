@@ -6,9 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Random;
 
-import ms.common.domain.Auftrag;
-import ms.server.domain.ServerAuftrag;
-import ms.server.domain.ServerExportMedium;
+import ms.domain.Auftrag;
+import ms.domain.server.ServerAuftrag;
+import ms.domain.server.ServerExportMedium;
+import ms.utils.server.database.ActiveRecordManager;
 
 import org.junit.After;
 import org.junit.Before;

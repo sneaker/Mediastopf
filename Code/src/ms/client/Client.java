@@ -10,14 +10,14 @@ import java.util.Observer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import ms.client.filesys.DirectoryObserver;
-import ms.client.log.ClientLog;
-import ms.client.networking.ServerConnection;
-import ms.client.ui.MainView;
-import ms.common.domain.Auftrag;
-import ms.common.domain.ImportMedium;
-import ms.common.ui.dialogs.MessageDialog;
-import ms.common.utils.I18NManager;
+import ms.domain.Auftrag;
+import ms.domain.ImportMedium;
+import ms.filesys.client.DirectoryObserver;
+import ms.log.client.ClientLog;
+import ms.networking.client.ServerConnection;
+import ms.ui.client.MainView;
+import ms.ui.dialogs.MessageDialog;
+import ms.utils.I18NManager;
 
 import org.apache.log4j.Logger;
 

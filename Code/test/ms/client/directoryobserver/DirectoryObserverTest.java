@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import ms.client.directoryobserver.FilesRemovedException;
-import ms.client.directoryobserver.DirectoryObserver;
+import ms.utils.client.directoryobserver.DirectoryObserver;
+import ms.utils.client.directoryobserver.FilesRemovedException;
 
 import org.junit.Before;
 import org.junit.Test;

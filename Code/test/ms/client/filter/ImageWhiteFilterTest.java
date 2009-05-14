@@ -13,6 +13,8 @@ import java.math.RoundingMode;
 
 import javax.imageio.ImageIO;
 
+import ms.utils.client.filter.ImageWhiteFilter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

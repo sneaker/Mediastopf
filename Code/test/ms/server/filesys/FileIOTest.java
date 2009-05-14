@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ms.common.filesys.FileIO;
+import ms.filesys.FileIO;
 
 
 public class FileIOTest {

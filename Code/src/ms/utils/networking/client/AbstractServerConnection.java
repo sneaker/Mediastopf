@@ -17,11 +17,11 @@ public abstract class AbstractServerConnection extends BasicNetIO {
 		this.host = host;
 	}
 
-	protected void connect() throws UnknownHostException, IOException {
+	public void connect() throws UnknownHostException, IOException {
 		commSocket = new Socket(host, port);
 	}
 
-	protected void disconnect() throws IOException {
+	public void disconnect() throws IOException {
 		commSocket.close();
 	}
 }

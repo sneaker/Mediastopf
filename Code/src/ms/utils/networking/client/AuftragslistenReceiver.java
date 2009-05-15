@@ -2,20 +2,19 @@ package ms.utils.networking.client;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
-import ms.domain.Auftrag;
+import ms.domain.AuftragsListe;
 
 public class AuftragslistenReceiver extends AbstractServerConnection implements Runnable{
 
-	ArrayList<Auftrag> list = null;;
+	AuftragsListe list = null;;
 	
 	public AuftragslistenReceiver(String host, int port)
 			throws UnknownHostException, IOException {
 		super(host, port);
 	}
 
-	public ArrayList<Auftrag> getTaskList() throws IOException {
+	public AuftragsListe getTaskList() throws IOException {
 		updateTaskList();
 		return list;
 	}
@@ -26,7 +25,7 @@ public class AuftragslistenReceiver extends AbstractServerConnection implements 
 		sendMessage("INFO");
 		logger.info("Receiving Info data...");
 		
-		list = (ArrayList<Auftrag>) receiveObject();
+		list = (AuftragsListe) receiveObject();
 		
 		disconnect();
 		logger.info("INFO transfer finished");		

@@ -1,7 +1,6 @@
 package ms.utils.log.client;
 
 import java.io.ByteArrayOutputStream;
-
 import ms.ui.client.ClientConstants;
 import ms.utils.log.Log;
 
@@ -18,10 +17,6 @@ import org.apache.log4j.Logger;
  *
  */
 public class ClientLog extends Log {
-	
-	static {
-		new ClientLog();
-	}
 	
 	private ClientLog() {
 		logger = Logger.getLogger(ClientLog.class);

@@ -29,7 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.application.client.Client;
+import ms.application.client.ClientController;
 import ms.application.client.StartClient;
 import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
@@ -199,7 +199,7 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = new AuftragsListe(Client.class);
+		taskList = new AuftragsListe(ClientController.class);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if (0 < taskComboBox.getItemCount())
@@ -273,7 +273,7 @@ public class MainView extends JFrame {
 		ApplicationLauncher.open(ripper);
 		
 		updateStatusBar(StatusType.RUNMESSAGE);
-		Client.observeDir(task);
+		ClientController.observeDir(task);
 		
 		// TODO: What to do?? 
 		int id = Integer.valueOf(taskID);
@@ -339,7 +339,7 @@ public class MainView extends JFrame {
 		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
 		tablePanel.setLayout(null);
 		
-		runTaskList = new AuftragsListe(Client.class);
+		runTaskList = new AuftragsListe(ClientController.class);
 		taskTable = new TaskTable(runTaskList);
 		tableScrollPane = new JScrollPane(taskTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.application.client.Client;
+import ms.application.client.ClientController;
 import ms.application.server.Server;
 import ms.domain.ImportMedium;
 import ms.utils.log.server.ServerLog;
@@ -31,7 +31,7 @@ public class ServerConnectionTest {
 	@Before
 	public void setUp() throws Exception {
 		startServer();
-		connection = new ServerConnection(Client.HOST, Client.PORT);
+		connection = new ServerConnection(Client.ClientController, Client.ClientController);
 		
 		makeDirs();
 		generateFiles();
@@ -86,7 +86,7 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new PortListener(Client.PORT, Server.MAX_SERVER_THREADS));
+		exec.execute(new PortListener(Client.ClientController, Server.MAX_SERVER_THREADS));
 	}
 
 	private void loadLog() {

@@ -26,7 +26,6 @@ public class ServerAuftrag extends Auftrag implements ActiveRecord {
 		this.id = row.getInt("id");
 	}
 
-	
 	public void setID(int id) {
 		this.id = id;
 	}

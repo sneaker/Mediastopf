@@ -20,6 +20,7 @@ public class StartClient {
 		if (0 < args.length && args[0].equalsIgnoreCase("-debug")) {
 			DEBUG = true;
 		}
-		new Client();
+		
+		new InitClient();
 	}
 }

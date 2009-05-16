@@ -1,10 +1,12 @@
 package ms.application.server;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import ms.domain.Auftrag;
 import ms.domain.server.ServerAuftrag;
+import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
 import ms.utils.server.database.DbAdapter;
 
@@ -20,7 +22,7 @@ import org.apache.log4j.Logger;
  */
 public class ServerController {
 	
-	private Logger logger = ServerLog.getLogger();
+	private static Logger logger = ServerLog.getLogger();
 
 	public static ArrayList<Auftrag> getTaskList() {
 		List<ServerAuftrag> list = DbAdapter.getOrderList();
@@ -31,4 +33,22 @@ public class ServerController {
 		}
 		return taskList;
 	}
+	
+	/**
+	 * copying files
+	 * 
+	 * @param folder sourceforlder
+	 * @param exportFolder destinationfolder
+	 * @return true if copying succeed
+	 */
+	public static boolean copyFiles(File[] folder, File exportFolder) {
+		boolean succeed = FileIO.copyFiles(folder, exportFolder);
+		if(succeed) {
+			logger.info("Filetransfer succeed");
+		} else {
+			logger.warn("Filetransfer failed");
+		}
+		return succeed;
+	}
+	
 }

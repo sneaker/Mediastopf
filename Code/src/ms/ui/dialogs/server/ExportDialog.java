@@ -29,7 +29,7 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import ms.application.server.Server;
+import ms.application.server.ServerController;
 import ms.ui.Constants;
 import ms.ui.dialogs.MessageDialog;
 import ms.ui.server.ServerConstants;
@@ -197,7 +197,7 @@ public class ExportDialog extends JDialog {
 	private void export() {
 		String exportFolder = exportTextField.getText().trim();
 		File file = new File(Integer.toString(taskID));
-		boolean done = Server.copyFiles(file.listFiles(), new File(exportFolder));
+		boolean done = ServerController.copyFiles(file.listFiles(), new File(exportFolder));
 		if(done) {
 			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
 		} else {

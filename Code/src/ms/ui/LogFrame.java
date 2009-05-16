@@ -282,7 +282,6 @@ public class LogFrame extends JFrame implements Observer {
 
 	private void readLogContent(ByteArrayOutputStream bos) {
 		textArea.setText(bos.toString());
-		textArea.setCaretPosition(textArea.getDocument().getLength());
 	}
 
 	@Override

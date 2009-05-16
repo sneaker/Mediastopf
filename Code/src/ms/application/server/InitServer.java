@@ -1,20 +1,18 @@
 package ms.application.server;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
-
 import ms.ui.server.MainView;
 import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
+
+import org.apache.log4j.Logger;
 
 public class InitServer {
 	

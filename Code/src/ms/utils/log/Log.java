@@ -53,11 +53,13 @@ public abstract class Log extends Observable implements Runnable {
 	
 	public void run() {
 		while(true) {
-			if(!Arrays.asList(bos.toByteArray()).containsAll(Arrays.asList(temp.toByteArray()))) {
-				temp = bos;
-				setChanged();
-				notifyObservers(bos);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
+			setChanged();
+			notifyObservers(bos);
 		}
 	}
 	

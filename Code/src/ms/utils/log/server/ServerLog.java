@@ -19,9 +19,7 @@ import org.apache.log4j.Logger;
  */
 public class ServerLog extends Log {
 	
-	static {
-		new ServerLog();
-	}
+	public static ServerLog log = new ServerLog();
 	
 	private ServerLog() {
 		logger = Logger.getLogger(ServerLog.class);
@@ -37,14 +35,5 @@ public class ServerLog extends Log {
 	 */
 	public static Logger getLogger() {
 		return logger;
-	}
-
-	/**
-	 * get OutputStream with logged information
-	 * 
-	 * @return ByteArrayOutputStream
-	 */
-	public static ByteArrayOutputStream getOutputStream() {
-		return bos;
 	}
 }

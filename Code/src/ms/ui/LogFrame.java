@@ -12,10 +12,11 @@ import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -29,10 +30,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import ms.utils.ConfigHandler;
 import ms.utils.FileIO;
 import ms.utils.I18NManager;
-import ms.utils.log.Log;
 
 /**
  * show log information from logger
@@ -40,7 +39,7 @@ import ms.utils.log.Log;
  * @author david
  *
  */
-public class LogFrame extends JFrame implements Runnable {
+public class LogFrame extends JFrame implements Observer {
 
 	/**
 	 * 
@@ -48,13 +47,10 @@ public class LogFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
-	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
-	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private final String save = manager.getString("save"), close = manager.getString("close");
-	private boolean suspendThread = false;
 	private Class<? extends Constants> constants;
 
 	public LogFrame(Class<? extends Constants> constants) {
@@ -66,12 +62,8 @@ public class LogFrame extends JFrame implements Runnable {
 		initFrame();
 
 		addButtons();
-		addRefreshBox();
 		addTextArea();
-		addLogListener();
 		addESCListener();
-		
-		loadProperties();
 	}
 
 	private void initFrame() {
@@ -104,10 +96,6 @@ public class LogFrame extends JFrame implements Runnable {
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
 			}
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				suspendListener();
-			}
 		});
 	}
 	
@@ -119,8 +107,6 @@ public class LogFrame extends JFrame implements Runnable {
 		
 		buttonMap.get(save).setLocation(width - 250, height);
 		buttonMap.get(close).setLocation(width - 125, height);
-		
-		box.setLocation(10, height + 5);
 	}
 
 	private void addTextArea() {
@@ -137,36 +123,6 @@ public class LogFrame extends JFrame implements Runnable {
 		scrollArea.setBounds(5, 5, 485, 350);
 
 		add(scrollArea);
-	}
-
-	private void addRefreshBox() {
-		box = new JCheckBox(manager.getString("Log.autorefresh"));
-		box.setSelected(true);
-		box.setBounds(10, 370, 150, 20);
-		box.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (box.isSelected()) {
-					resumeListener();
-				} else {
-					suspendListener();
-				}
-			}
-		});
-		add(box);
-	}
-
-	private void addLogListener() {
-		Thread logListener = new Thread(this);
-		logListener.start();
-	}
-
-	private void suspendListener() {
-		suspendThread = true;
-	}
-
-	private synchronized void resumeListener() {
-		suspendThread = false;
-		notify();
 	}
 
 	/**
@@ -277,28 +233,10 @@ public class LogFrame extends JFrame implements Runnable {
 		});
 	}
 	
-	private void saveProperties() {
-		saveValues();
-		config.save();
-	}
-	
-	private void saveValues() {
-		config.setProperty(Constants.LOGCFG, String.valueOf(box.isSelected()));
-	}
-	
-	/**
-	 * load properties.
-	 */
-	private void loadProperties() {
-		if(config.containsKey(Constants.LOGCFG))
-			box.setSelected(Boolean.parseBoolean(config.getProperty(Constants.LOGCFG)));
-	}
-
 	/**
 	 * close
 	 */
 	private void close() {
-		saveProperties();
 		setVisible(false);
 		dispose();
 	}
@@ -342,27 +280,15 @@ public class LogFrame extends JFrame implements Runnable {
 		return popupMenu;
 	}
 
-	public void run() {
-		while(true) {
-			try {
-				readLogContent();
-				Thread.sleep(2000);
-				synchronized (this) {
-					while (suspendThread) {
-						wait();
-					}
-				}
-			} catch (InterruptedException e) {
-			}
-		}
+	private void readLogContent(ByteArrayOutputStream bos) {
+		textArea.setText(bos.toString());
+		textArea.setCaretPosition(textArea.getDocument().getLength());
 	}
 
-	private void readLogContent() {
-		ByteArrayOutputStream bos = Log.getOutputStream();
-		textArea.setText(bos.toString());
-
-		if(box.isSelected()) {
-			textArea.setCaretPosition(textArea.getDocument().getLength());
+	@Override
+	public void update(Observable o, Object arg) {
+		if(arg instanceof ByteArrayOutputStream) {
+			readLogContent((ByteArrayOutputStream) arg);
 		}
 	}
 }

@@ -45,6 +45,7 @@ import ms.ui.tables.client.TaskTable;
 import ms.utils.ApplicationLauncher;
 import ms.utils.ConfigHandler;
 import ms.utils.I18NManager;
+import ms.utils.log.client.ClientLog;
 
 /**
  * main window of mediastopf
@@ -466,5 +467,6 @@ public class MainView extends JFrame {
 	private void openLogFrame() {
 		LogFrame ld = new LogFrame(ClientConstants.class);
 		ld.setVisible(true);
+		ClientLog.log.addObserver(ld);
 	}
 }

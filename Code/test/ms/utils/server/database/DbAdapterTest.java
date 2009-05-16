@@ -2,11 +2,9 @@ package ms.utils.server.database;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
 import java.util.Random;
 
 import ms.domain.Auftrag;
-import ms.domain.server.ServerImportMedium;
 import ms.utils.server.database.DbAdapter;
 
 import org.junit.After;

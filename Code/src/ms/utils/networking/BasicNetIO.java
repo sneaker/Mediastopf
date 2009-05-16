@@ -63,6 +63,7 @@ abstract public class BasicNetIO {
 	public Object receiveObject()
 	{
 		Object receivedObj = null;
+		String endstring = null;
 		try {
 			ObjectInputStream receiver = new ObjectInputStream(commSocket.getInputStream());
 			receivedObj = receiver.readObject();

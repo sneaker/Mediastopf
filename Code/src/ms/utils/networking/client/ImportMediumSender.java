@@ -67,9 +67,9 @@ public class ImportMediumSender extends AbstractServerConnection implements
 	 * @throws IOException
 	 */
 	private void sendImportMedium(ImportMedium m) throws IOException {
-		connect();
+		//connect();
 		sendMessage("TRANSFER");
 		sendObject(m);
-		disconnect();
+		//disconnect();
 	}
 }

@@ -10,27 +10,33 @@ import ms.domain.AuftragsListe;
 
 public class AuftragslistenReceiver extends AbstractServerConnection implements Runnable{
 
-	AuftragsListe list = new AuftragsListe(ClientController.class);
+	public AuftragsListe list = new AuftragsListe(ClientController.class);
 	
 	public AuftragslistenReceiver(String host, int port)
 			throws UnknownHostException, IOException {
 		super(host, port);
 	}
 
-	public AuftragsListe getTaskList() throws IOException {
+	public ArrayList<Auftrag> getTaskList() throws IOException {
 		updateTaskList();
-		return list;
+		ArrayList<Auftrag> result = new ArrayList<Auftrag>();
+		for(int i = 0; i < list.size(); ++i)
+		{
+			result.add(list.get(i));
+		}
+		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void updateTaskList() throws IOException {
-		connect();
 		sendMessage("INFO");
 		logger.info("Receiving Info data...");
 		
 		list.add((ArrayList<Auftrag>) receiveObject());
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+		}
 		
-		disconnect();
 		logger.info("INFO transfer finished");		
 	}
 

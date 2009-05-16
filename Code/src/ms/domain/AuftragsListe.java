@@ -51,7 +51,9 @@ public class AuftragsListe extends Observable implements Serializable {
 	@SuppressWarnings("unchecked")
 	public void updateList() {
 		try {
+			System.out.println("here");
 			System.out.println(network);
+			System.out.println(list);
 			Method method = network.getDeclaredMethod("getTaskList", new Class[] {});
 			this.list = (ArrayList<Auftrag>)method.invoke(null, new Object[] {});
 		} catch (Exception e) {

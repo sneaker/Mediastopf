@@ -2,10 +2,12 @@ package ms.domain;
 
 import java.io.File;
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Repräsentiert ein digitalisiertes Medium eines Kunden, welches nach dem
+ * Repraesentiert ein digitalisiertes Medium eines Kunden, welches nach dem
  * Import aus einzelnen Dateien besteht.
  */
 public class ImportMedium implements Serializable {
@@ -18,12 +20,38 @@ public class ImportMedium implements Serializable {
 	protected ArrayList<File> items;
 
 	/**
-	 * Vorbereitung, damit die einzelnen extrahierten Dateien hinzugefügt werden
-	 * können.
+	 * Vorbereitung, damit die einzelnen extrahierten Dateien hinzugefuegt werden
+	 * koennen.
 	 */
 	public ImportMedium() {
 		super();
 		items = new ArrayList<File>();
+	}
+	
+	public ImportMedium(ResultSet row) throws SQLException {
+		this.Name = row.getString("Name");
+		this.id = row.getInt("id");
+	}
+
+
+	public boolean isInDB() {
+		return id > -1;
+	}
+
+	public void setFk_Mediensammlung(int fk_Mediensammlung) {
+		this.fk_Mediensammlung = fk_Mediensammlung;
+	}
+
+	public int getFk_Mediensammlung() {
+		return fk_Mediensammlung;
+	}
+
+	public void setFk_Einlesegeraet(int fk_Einlesegeraet) {
+		this.fk_Einlesegeraet = fk_Einlesegeraet;
+	}
+
+	public int getFk_Einlesegeraet() {
+		return fk_Einlesegeraet;
 	}
 
 	/**
@@ -46,19 +74,19 @@ public class ImportMedium implements Serializable {
 	}
 
 	/**
-	 * Füge einen neu digitalisierten Track, ein Bild oder eben ein neues
-	 * Teilstück des Mediums hinzu.
+	 * FÃ¼ge einen neu digitalisierten Track, ein Bild oder eben ein neues
+	 * TeilstÃ¼ck des Mediums hinzu.
 	 * 
 	 * @param item
-	 *            Das neu eingelesene und digitalisierte Teilstück des Mediums,
-	 *            welches dem Import hinzugefügt werden soll.
+	 *            Das neu eingelesene und digitalisierte TeilstÃ¼ck des Mediums,
+	 *            welches dem Import hinzugefÃ¼gt werden soll.
 	 */
 	public void addItem(File item) {
 		items.add(item);
 	}
 
 	/**
-	 * Liefert alle bis zum aktuellen Zeitpunkt importierten Dateien zurück.
+	 * Liefert alle bis zum aktuellen Zeitpunkt importierten Dateien zurÃ¼ck.
 	 * 
 	 * @return Liste mit allen bisher importierten Dateien dieses Mediums
 	 */

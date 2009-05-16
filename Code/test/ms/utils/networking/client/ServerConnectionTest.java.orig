@@ -25,12 +25,12 @@ import org.junit.Test;
 
 public class ServerConnectionTest {
 	private final File tempDir = new File(System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator);
-	private ServerConnection connection;
+	//private ServerConnection connection;
 
 	@Before
 	public void setUp() throws Exception {
 		startServer();
-		connection = new ServerConnection(Client.ClientController, Client.ClientController);
+		//connection = new ServerConnection(Client.ClientController, Client.ClientController);
 		
 		makeDirs();
 		generateFiles();
@@ -85,7 +85,11 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
+<<<<<<< HEAD:Code/test/ms/utils/networking/client/ServerConnectionTest.java
 		exec.execute(new PortListener(Client.ClientController, ServerController.MAX_SERVER_THREADS));
+=======
+//		exec.execute(new PortListener(Client.ClientController, Server.MAX_SERVER_THREADS));
+>>>>>>> origin/marco:Code/test/ms/utils/networking/client/ServerConnectionTest.java
 	}
 
 	private void loadLog() {

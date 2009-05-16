@@ -7,6 +7,10 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+<<<<<<< HEAD:Code/src/ms/application/server/InitServer.java
+=======
+import ms.domain.Auftrag;
+>>>>>>> origin/marco:Code/src/ms/application/server/Server.java
 import ms.ui.server.MainView;
 import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
@@ -36,15 +40,8 @@ public class InitServer {
 		ExecutorService exec = Executors.newSingleThreadExecutor();
 		exec.execute(new PortListener(port, MAX_SERVER_THREADS));
 	}
-
-	public static ArrayList<Auftrag> getTaskList() {
-		List<ServerAuftrag> list = DbAdapter.getOrderList();
-		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
-		for(Auftrag a: list) {
-			taskList.add(new Auftrag(a.getID()));
-		}
-		return taskList;
-	}
+<<<<<<< HEAD:Code/src/ms/application/server/InitServer.java
+	
 	
 	/**
 	 * copying files
@@ -59,9 +56,7 @@ public class InitServer {
 			logger.info("Filetransfer succeed");
 		} else {
 			logger.warn("Filetransfer failed");
-		}
-		return succeed;
-	}
+=======
 
 	public static ArrayList<Auftrag> getTaskList() {
 		List<Auftrag> list = DbAdapter.getOrderList();
@@ -69,8 +64,9 @@ public class InitServer {
 		for(Auftrag a: list) {
 			//TODO: AUFTRAG - Anpassen für neue Auftragsklasse
 			taskList.add(new Auftrag(a.getID()));
+>>>>>>> origin/marco:Code/src/ms/application/server/Server.java
 		}
-		return taskList;
+		return succeed;
 	}
 	
 	private void serverStartInfo() {

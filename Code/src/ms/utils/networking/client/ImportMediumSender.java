@@ -2,7 +2,6 @@ package ms.utils.networking.client;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.*;
 
 import ms.domain.ImportMedium;
 import ms.domain.SendeListe;
@@ -24,7 +23,7 @@ import ms.domain.SendeListe;
 public class ImportMediumSender extends AbstractServerConnection implements
 		Runnable {
 
-	SendeListe mediumlist = new SendeListe();
+	SendeListe mediumlist; 
 	
 	public SendeListe getsendeliste()
 	{
@@ -34,6 +33,7 @@ public class ImportMediumSender extends AbstractServerConnection implements
 	public ImportMediumSender(String host, int port)
 			throws UnknownHostException, IOException {
 		super(host, port);
+		mediumlist = new SendeListe();
 	}
 
 	/**

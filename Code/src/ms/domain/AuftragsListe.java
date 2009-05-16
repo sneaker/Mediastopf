@@ -23,6 +23,10 @@ public class AuftragsListe extends Observable implements Serializable {
 		setChanged();
 		notifyObservers();
 	}
+	
+	public void add(ArrayList<Auftrag> al) {
+		list = al;
+	}
 
 	public void remove(Auftrag auftrag) {
 		list.remove(auftrag);
@@ -47,6 +51,7 @@ public class AuftragsListe extends Observable implements Serializable {
 	@SuppressWarnings("unchecked")
 	public void updateList() {
 		try {
+			System.out.println(network);
 			Method method = network.getDeclaredMethod("getTaskList", new Class[] {});
 			this.list = (ArrayList<Auftrag>)method.invoke(null, new Object[] {});
 		} catch (Exception e) {

@@ -1,5 +1,8 @@
 package ms.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 // TODO: Wäre hier eine Methode schreiben() sinvoll, welche alle Daten dieses 
 // 		 Mediums auf das ExportMedium schreibt? (MS, 5.5.09)
 
@@ -35,6 +38,26 @@ public class ExportMedium {
 
 	public int getID() {
 		return id;
+	}
+	
+	public ExportMedium(String name, int Speicherkapazitaet, int fk_Auftrag, int fk_Container) {
+		this.name = name;
+		this.Speicherkapazitaet = Speicherkapazitaet;
+		this.fk_Auftrag = fk_Auftrag;
+
+		
+	}
+
+	public ExportMedium(ResultSet row) throws SQLException {
+		this.id = row.getInt("id");
+		this.name = row.getString("name");
+		this.Speicherkapazitaet = row.getInt("Speicherkapazitaet");
+	}
+
+	
+	
+	public boolean isInDB() {
+		return id > -1;
 	}
 
 }

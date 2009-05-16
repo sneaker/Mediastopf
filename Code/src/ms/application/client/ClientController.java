@@ -7,7 +7,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import ms.domain.Auftrag;
-import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
 import ms.ui.dialogs.MessageDialog;
 import ms.utils.I18NManager;

@@ -8,8 +8,6 @@ import java.util.List;
 
 import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
-import ms.domain.server.ServerAuftrag;
-import ms.domain.server.ServerImportMedium;
 import ms.utils.log.server.ServerLog;
 
 import org.apache.log4j.Logger;
@@ -37,14 +35,14 @@ public class DbAdapter {
 		return connection;
 	}
 
-	public static List<ServerAuftrag> getOrderList() {
+	public static List<Auftrag> getOrderList() {
 		return getAuftragList();
 	}
 
-	public static List<ServerAuftrag> getAuftragList() {
+	public static List<Auftrag> getAuftragList() {
 		String sql = "select * from Auftrag";
-		List<ServerAuftrag> myList = ActiveRecordManager.getObjectList(sql,
-				ServerAuftrag.class);
+		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql,
+				Auftrag.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -53,8 +51,7 @@ public class DbAdapter {
 
 	public static Auftrag getAuftrag(int AuftragId) {
 		String sql = "select * from Auftrag WHERE id = " + AuftragId;
-		List<ServerAuftrag> myList = ActiveRecordManager.getObjectList(sql,
-				ServerAuftrag.class);
+		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql, Auftrag.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -62,10 +59,10 @@ public class DbAdapter {
 	}
 
 
-	public static List<ServerImportMedium> getImportMediumList() {
+	public static List<ImportMedium> getImportMediumList() {
 		String sql = "select * from ImportMedium";
-		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql,
-				ServerImportMedium.class);
+		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -74,26 +71,55 @@ public class DbAdapter {
 
 	public static ImportMedium getImportMediumList(int ImportMediumId) {
 		String sql = "select * from ImportMedium where id = " + ImportMediumId;
-		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql,
-				ServerImportMedium.class);
+		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
 		else
 			return myList.get(0);
 	}
 
-	public static List<ServerImportMedium> getImportMediumList(
+	public static List<ImportMedium> getImportMediumList(
 			ImportMedium myMediensammlung) {
 		String sql = "select * from ImportMedium where fk_Mediensammlung = "
 				+ myMediensammlung.getID();
-		List<ServerImportMedium> myList = ActiveRecordManager.getObjectList(sql,
-				ServerImportMedium.class);
+		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
 		else
 			return myList;
 	}
 
+	public static int saveAuftrag(Auftrag myAuftrag) {
+		int id;
+		try {
+			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
+			if(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty()) {
+				id = ActiveRecordManager.executeInsert("insert into Auftrag (status) values (?)", Integer.toString(myAuftrag.getStatus()));
+				myAuftrag.setID(id);
+				return id;
+			} else {
+				ActiveRecordManager.execute("UPDATE Auftrag SET status = ? WHERE id = ?", Integer.toString(myAuftrag.getStatus()), Integer.toString(myAuftrag.getID()));
+			}
+		} catch (SQLException e) {
+			System.err.println(e);
+		}
+		return -1;
+	}
 	
-
+	public static boolean deleteAuftrag(Auftrag myAuftrag) {
+		try {
+			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
+			if(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty()) {
+				return false;
+			} else {
+				ActiveRecordManager.execute("DELETE FROM Auftrag WHERE id=?;", Integer.toString(myAuftrag.getID()));
+				return true;
+			}
+		} catch (SQLException e) {
+			System.err.println(e);
+			return false;
+		}
+	}
 }

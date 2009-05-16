@@ -11,8 +11,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
-import ms.domain.server.ServerAuftrag;
 import ms.utils.networking.BasicNetIO;
 import ms.utils.server.database.DbAdapter;
 
@@ -74,7 +74,7 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 	}
 
 	private void sendTaskList() {
-		List<ServerAuftrag> lp = DbAdapter.getOrderList();
+		List<Auftrag> lp = DbAdapter.getOrderList();
 		sendObject(lp);
 	}
 }

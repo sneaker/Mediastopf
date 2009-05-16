@@ -8,6 +8,7 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
+import ms.domain.Auftrag;
 import ms.ui.server.MainView;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;

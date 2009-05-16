@@ -1,6 +1,8 @@
 package ms.domain;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -12,6 +14,11 @@ public class Auftrag implements Serializable {
 	protected ArrayList<ImportMedium> ListImportMedium;
 	protected ArrayList<ExportMedium> ListExportMedium;
 
+	public Auftrag(ResultSet row) throws SQLException {
+		this(row.getInt("status"));
+		this.id = row.getInt("id");
+	}
+	
 	public boolean addImportMedium(ImportMedium newSammlung) {
 		return ListImportMedium.add(newSammlung);
 	}
@@ -78,4 +85,10 @@ public class Auftrag implements Serializable {
 		}
 		return false;
 	}
+	
+	public void setID(int id) {
+		this.id = id;
+	}
+
+
 }

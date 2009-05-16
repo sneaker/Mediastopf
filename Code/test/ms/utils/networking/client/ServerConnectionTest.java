@@ -16,7 +16,6 @@ import ms.application.client.ClientController;
 import ms.application.server.Server;
 import ms.domain.ImportMedium;
 import ms.utils.log.server.ServerLog;
-import ms.utils.networking.client.ServerConnection;
 import ms.utils.networking.server.PortListener;
 
 import org.apache.log4j.Logger;
@@ -26,12 +25,12 @@ import org.junit.Test;
 
 public class ServerConnectionTest {
 	private final File tempDir = new File(System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator);
-	private ServerConnection connection;
+	//private ServerConnection connection;
 
 	@Before
 	public void setUp() throws Exception {
 		startServer();
-		connection = new ServerConnection(Client.ClientController, Client.ClientController);
+		//connection = new ServerConnection(Client.ClientController, Client.ClientController);
 		
 		makeDirs();
 		generateFiles();
@@ -86,7 +85,7 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new PortListener(Client.ClientController, Server.MAX_SERVER_THREADS));
+//		exec.execute(new PortListener(Client.ClientController, Server.MAX_SERVER_THREADS));
 	}
 
 	private void loadLog() {

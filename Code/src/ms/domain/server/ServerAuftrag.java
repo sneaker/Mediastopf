@@ -22,7 +22,7 @@ public class ServerAuftrag extends Auftrag implements ActiveRecord {
 	}
 
 	public ServerAuftrag(ResultSet row) throws SQLException {
-		this(row.getInt("fk_status"));
+		this(row.getInt("status"));
 		this.id = row.getInt("id");
 	}
 

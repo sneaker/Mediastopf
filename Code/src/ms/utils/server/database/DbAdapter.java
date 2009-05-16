@@ -94,6 +94,35 @@ public class DbAdapter {
 			return myList;
 	}
 
+	public static int saveAuftrag(ServerAuftrag myAuftrag) {
+		int id;
+		try {
+			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
+			if(ActiveRecordManager.getObjectList(sql, ServerAuftrag.class).isEmpty()) {
+				id = ActiveRecordManager.executeInsert("insert into Auftrag (status) values (?)", Integer.toString(myAuftrag.getStatus()));
+				myAuftrag.setID(id);
+				return id;
+			} else {
+				ActiveRecordManager.execute("UPDATE Auftrag SET status = ? WHERE id = ?", Integer.toString(myAuftrag.getStatus()), Integer.toString(myAuftrag.getID()));
+			}
+		} catch (SQLException e) {
+			System.err.println(e);
+		}
+		return -1;
+	}
 	
-
+	public static boolean deleteAuftrag(ServerAuftrag myAuftrag) {
+		try {
+			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
+			if(ActiveRecordManager.getObjectList(sql, ServerAuftrag.class).isEmpty()) {
+				return false;
+			} else {
+				ActiveRecordManager.execute("DELETE FROM Auftrag WHERE id=?;", Integer.toString(myAuftrag.getID()));
+				return true;
+			}
+		} catch (SQLException e) {
+			System.err.println(e);
+			return false;
+		}
+	}
 }

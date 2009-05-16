@@ -33,14 +33,17 @@ public class DbAdapterTest {
 	}
 
 	@Test
-	public void testGetAuftragList() {
+	public void testSaveGetDeleteAuftragList() {
 		ServerAuftrag myAuftrag = new ServerAuftrag(randomint1);
-		myAuftrag.save();		
+				
+		DbAdapter.saveAuftrag(myAuftrag);
 		
 		Auftrag DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
-		assertEquals(myAuftrag, DbAuftrag);
+		assertEquals(randomint1, DbAuftrag.getStatus());
+				
+		assertEquals(true, DbAdapter.deleteAuftrag(myAuftrag));
+		assertEquals(false, DbAdapter.deleteAuftrag(myAuftrag));
 		
-		myAuftrag.delete();
 		DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
 		assertEquals(null, DbAuftrag);
 	}

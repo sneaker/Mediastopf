@@ -8,7 +8,6 @@ import java.util.List;
 
 import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
-import ms.domain.server.ServerAuftrag;
 import ms.domain.server.ServerImportMedium;
 import ms.utils.log.server.ServerLog;
 
@@ -37,14 +36,14 @@ public class DbAdapter {
 		return connection;
 	}
 
-	public static List<ServerAuftrag> getOrderList() {
+	public static List<Auftrag> getOrderList() {
 		return getAuftragList();
 	}
 
-	public static List<ServerAuftrag> getAuftragList() {
+	public static List<Auftrag> getAuftragList() {
 		String sql = "select * from Auftrag";
-		List<ServerAuftrag> myList = ActiveRecordManager.getObjectList(sql,
-				ServerAuftrag.class);
+		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql,
+				Auftrag.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -53,8 +52,7 @@ public class DbAdapter {
 
 	public static Auftrag getAuftrag(int AuftragId) {
 		String sql = "select * from Auftrag WHERE id = " + AuftragId;
-		List<ServerAuftrag> myList = ActiveRecordManager.getObjectList(sql,
-				ServerAuftrag.class);
+		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql, Auftrag.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -94,11 +92,11 @@ public class DbAdapter {
 			return myList;
 	}
 
-	public static int saveAuftrag(ServerAuftrag myAuftrag) {
+	public static int saveAuftrag(Auftrag myAuftrag) {
 		int id;
 		try {
 			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
-			if(ActiveRecordManager.getObjectList(sql, ServerAuftrag.class).isEmpty()) {
+			if(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty()) {
 				id = ActiveRecordManager.executeInsert("insert into Auftrag (status) values (?)", Integer.toString(myAuftrag.getStatus()));
 				myAuftrag.setID(id);
 				return id;
@@ -111,10 +109,10 @@ public class DbAdapter {
 		return -1;
 	}
 	
-	public static boolean deleteAuftrag(ServerAuftrag myAuftrag) {
+	public static boolean deleteAuftrag(Auftrag myAuftrag) {
 		try {
 			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
-			if(ActiveRecordManager.getObjectList(sql, ServerAuftrag.class).isEmpty()) {
+			if(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty()) {
 				return false;
 			} else {
 				ActiveRecordManager.execute("DELETE FROM Auftrag WHERE id=?;", Integer.toString(myAuftrag.getID()));

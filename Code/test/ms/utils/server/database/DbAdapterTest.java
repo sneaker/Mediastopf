@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import ms.domain.Auftrag;
-import ms.domain.server.ServerAuftrag;
 import ms.domain.server.ServerImportMedium;
 import ms.utils.server.database.DbAdapter;
 
@@ -34,7 +33,7 @@ public class DbAdapterTest {
 
 	@Test
 	public void testSaveGetDeleteAuftragList() {
-		ServerAuftrag myAuftrag = new ServerAuftrag(randomint1);
+		Auftrag myAuftrag = new Auftrag(randomint1);
 				
 		DbAdapter.saveAuftrag(myAuftrag);
 		

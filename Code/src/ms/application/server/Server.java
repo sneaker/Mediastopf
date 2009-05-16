@@ -9,7 +9,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import ms.domain.Auftrag;
-import ms.domain.server.ServerAuftrag;
 import ms.ui.server.MainView;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
@@ -43,10 +42,10 @@ public class Server {
 	}
 
 	public static ArrayList<Auftrag> getTaskList() {
-		List<ServerAuftrag> list = DbAdapter.getOrderList();
+		List<Auftrag> list = DbAdapter.getOrderList();
 		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
 		for(Auftrag a: list) {
-			//TODO: AUFTRAG - Anpassen fÃ¼r neue Auftragsklasse
+			//TODO: AUFTRAG - Anpassen für neue Auftragsklasse
 			taskList.add(new Auftrag(a.getID()));
 		}
 		return taskList;

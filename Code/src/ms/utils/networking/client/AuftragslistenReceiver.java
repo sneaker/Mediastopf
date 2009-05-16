@@ -2,12 +2,15 @@ package ms.utils.networking.client;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
+import ms.application.client.ClientController;
+import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
 
 public class AuftragslistenReceiver extends AbstractServerConnection implements Runnable{
 
-	AuftragsListe list = null;;
+	AuftragsListe list = new AuftragsListe(ClientController.class);
 	
 	public AuftragslistenReceiver(String host, int port)
 			throws UnknownHostException, IOException {
@@ -25,7 +28,7 @@ public class AuftragslistenReceiver extends AbstractServerConnection implements 
 		sendMessage("INFO");
 		logger.info("Receiving Info data...");
 		
-		list = (AuftragsListe) receiveObject();
+		list.add((ArrayList<Auftrag>) receiveObject());
 		
 		disconnect();
 		logger.info("INFO transfer finished");		

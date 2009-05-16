@@ -33,6 +33,6 @@ public class StartServer {
 				}
 			}
 		}
-		new Server(PORT);
+		new InitServer(PORT);
 	}
 }

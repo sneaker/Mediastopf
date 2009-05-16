@@ -18,6 +18,10 @@ import org.apache.log4j.Logger;
  */
 public class ClientLog extends Log {
 	
+	static {
+		new ClientLog();
+	}
+	
 	private ClientLog() {
 		logger = Logger.getLogger(ClientLog.class);
 		bos = new ByteArrayOutputStream();

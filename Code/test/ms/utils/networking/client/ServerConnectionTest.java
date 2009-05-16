@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ms.application.client.ClientController;
-import ms.application.server.Server;
+import ms.application.server.ServerController;
 import ms.domain.ImportMedium;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.client.ServerConnection;
@@ -86,7 +86,7 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new PortListener(Client.ClientController, Server.MAX_SERVER_THREADS));
+		exec.execute(new PortListener(Client.ClientController, ServerController.MAX_SERVER_THREADS));
 	}
 
 	private void loadLog() {

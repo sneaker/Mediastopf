@@ -1,61 +1,43 @@
 package ms.application.server;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import ms.domain.Auftrag;
-import ms.domain.server.ServerAuftrag;
+import org.apache.log4j.Logger;
+
 import ms.ui.server.MainView;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
-import ms.utils.server.database.DbAdapter;
 
-import org.apache.log4j.Logger;
-
-
-/**
- * server classe
- * loading gui components and start server
- * 
- * @author david
- *
- */
-public class Server {
+public class InitServer {
 	
-	public static final int MAX_SERVER_THREADS = 10;
 	private Logger logger = ServerLog.getLogger();
-
-	public Server(int port) {
-		startServer(port);
+	
+	public InitServer(int port) {
+		serverStartInfo();
+		initNetwork(port);
+		initUI();
+	}
+	
+	private void initUI() {
+		setLookAndFeel();
 		loadUI();
 	}
 
-	private void startServer(int port) {
-		serverStartInfo();
+	public static final int MAX_SERVER_THREADS = 10;
+	
+	private void initNetwork(int port) {
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
 		exec.execute(new PortListener(port, MAX_SERVER_THREADS));
 	}
-
-	public static ArrayList<Auftrag> getTaskList() {
-		List<ServerAuftrag> list = DbAdapter.getOrderList();
-		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
-		for(Auftrag a: list) {
-			//TODO: AUFTRAG - Anpassen für neue Auftragsklasse
-			taskList.add(new Auftrag(a.getID()));
-		}
-		return taskList;
-	}
 	
 	private void serverStartInfo() {
-		// TODO: ANPASSEN!
 		logger.info("=======================================================");
-		logger.info("MediaStopf - Ein Softwaresystem zum Lieb haben ;)");
+		logger.info("MediaStopf - Ein Softwaresystem zum Medien Einlesen");
 		logger.info("=======================================================");
 		logger.info("Copyright (C)2009");
 		logger.info("Powered by NoMoreSecrets");

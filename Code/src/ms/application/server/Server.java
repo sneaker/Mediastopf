@@ -1,5 +1,6 @@
 package ms.application.server;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -11,6 +12,7 @@ import javax.swing.UIManager;
 import ms.domain.Auftrag;
 import ms.domain.server.ServerAuftrag;
 import ms.ui.server.MainView;
+import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
 import ms.utils.server.database.DbAdapter;
@@ -28,7 +30,7 @@ import org.apache.log4j.Logger;
 public class Server {
 	
 	public static final int MAX_SERVER_THREADS = 10;
-	private Logger logger = ServerLog.getLogger();
+	private static Logger logger = ServerLog.getLogger();
 
 	public Server(int port) {
 		startServer(port);
@@ -50,6 +52,24 @@ public class Server {
 			taskList.add(new Auftrag(a.getID()));
 		}
 		return taskList;
+	}
+	
+	
+	/**
+	 * copying files
+	 * 
+	 * @param folder sourceforlder
+	 * @param exportFolder destinationfolder
+	 * @return true if copying succeed
+	 */
+	public static boolean copyFiles(File[] folder, File exportFolder) {
+		boolean succeed = FileIO.copyFiles(folder, exportFolder);
+		if(succeed) {
+			logger.info("Filetransfer succeed");
+		} else {
+			logger.warn("Filetransfer failed");
+		}
+		return succeed;
 	}
 	
 	private void serverStartInfo() {

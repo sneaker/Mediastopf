@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ms.utils.filesys.FileIO;
+import ms.utils.FileIO;
 
 
 public class FileIOTest {
@@ -34,7 +34,7 @@ public class FileIOTest {
 	@Test
 	public void testFileListCount() {
 		File[] srclist = src.listFiles();
-		FileIO.transfer(srclist, dest);
+		FileIO.copyFiles(srclist, dest);
 		File[] destlist = dest.listFiles();
 		assertEquals(srclist.length, destlist.length);
 	}
@@ -42,7 +42,7 @@ public class FileIOTest {
 	@Test
 	public void testFileList() {
 		File[] srclist = src.listFiles();
-		FileIO.transfer(srclist, dest);
+		FileIO.copyFiles(srclist, dest);
 		File[] destlist = dest.listFiles();
 		for(int i=0; i < srclist.length; i++) {
 			assertEquals(srclist[i].getName(), destlist[i].getName());

@@ -1,4 +1,4 @@
-package ms.utils.client.filter;
+package ms.utils;
 
 import java.awt.Color;
 import java.awt.Rectangle;

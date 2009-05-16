@@ -12,6 +12,9 @@ import ms.domain.Auftrag;
 import ms.ui.server.MainView;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
+import ms.utils.server.database.SqlDbAdapter;
+
+import org.apache.log4j.Logger;
 
 public class InitServer {
 	

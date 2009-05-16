@@ -12,7 +12,7 @@ import ms.utils.log.server.ServerLog;
 
 import org.apache.log4j.Logger;
 
-public class DbAdapter {
+public class SqlDbAdapter {
 
 	static private Connection connection;
 	static private String database = "jdbc:sqlite:db/db.sqlite";
@@ -41,7 +41,7 @@ public class DbAdapter {
 
 	public static List<Auftrag> getAuftragList() {
 		String sql = "select * from Auftrag";
-		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql,
+		List<Auftrag> myList = SqlDbConnection.getObjectList(sql,
 				Auftrag.class);
 		if (myList.isEmpty())
 			return null;
@@ -51,7 +51,7 @@ public class DbAdapter {
 
 	public static Auftrag getAuftrag(int AuftragId) {
 		String sql = "select * from Auftrag WHERE id = " + AuftragId;
-		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql, Auftrag.class);
+		List<Auftrag> myList = SqlDbConnection.getObjectList(sql, Auftrag.class);
 		if (myList.isEmpty())
 			return null;
 		else
@@ -61,7 +61,7 @@ public class DbAdapter {
 
 	public static List<ImportMedium> getImportMediumList() {
 		String sql = "select * from ImportMedium";
-		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
 				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
@@ -71,7 +71,7 @@ public class DbAdapter {
 
 	public static ImportMedium getImportMediumList(int ImportMediumId) {
 		String sql = "select * from ImportMedium where id = " + ImportMediumId;
-		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
 				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
@@ -83,7 +83,7 @@ public class DbAdapter {
 			ImportMedium myMediensammlung) {
 		String sql = "select * from ImportMedium where fk_Mediensammlung = "
 				+ myMediensammlung.getID();
-		List<ImportMedium> myList = ActiveRecordManager.getObjectList(sql,
+		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
 				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
@@ -95,12 +95,12 @@ public class DbAdapter {
 		int id;
 		try {
 			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
-			if(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty()) {
-				id = ActiveRecordManager.executeInsert("insert into Auftrag (status) values (?)", Integer.toString(myAuftrag.getStatus()));
+			if(SqlDbConnection.getObjectList(sql, Auftrag.class).isEmpty()) {
+				id = SqlDbConnection.executeInsert("insert into Auftrag (status) values (?)", Integer.toString(myAuftrag.getStatus()));
 				myAuftrag.setID(id);
 				return id;
 			} else {
-				ActiveRecordManager.execute("UPDATE Auftrag SET status = ? WHERE id = ?", Integer.toString(myAuftrag.getStatus()), Integer.toString(myAuftrag.getID()));
+				SqlDbConnection.execute("UPDATE Auftrag SET status = ? WHERE id = ?", Integer.toString(myAuftrag.getStatus()), Integer.toString(myAuftrag.getID()));
 			}
 		} catch (SQLException e) {
 			System.err.println(e);
@@ -111,10 +111,10 @@ public class DbAdapter {
 	public static boolean deleteAuftrag(Auftrag myAuftrag) {
 		try {
 			String sql = "select * from Auftrag where id = " + myAuftrag.getID();
-			if(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty()) {
+			if(SqlDbConnection.getObjectList(sql, Auftrag.class).isEmpty()) {
 				return false;
 			} else {
-				ActiveRecordManager.execute("DELETE FROM Auftrag WHERE id=?;", Integer.toString(myAuftrag.getID()));
+				SqlDbConnection.execute("DELETE FROM Auftrag WHERE id=?;", Integer.toString(myAuftrag.getID()));
 				return true;
 			}
 		} catch (SQLException e) {

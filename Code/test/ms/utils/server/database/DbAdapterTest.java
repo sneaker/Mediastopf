@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import ms.domain.Auftrag;
-import ms.utils.server.database.DbAdapter;
+import ms.utils.server.database.SqlDbAdapter;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,15 +33,15 @@ public class DbAdapterTest {
 	public void testSaveGetDeleteAuftragList() {
 		Auftrag myAuftrag = new Auftrag(randomint1);
 				
-		DbAdapter.saveAuftrag(myAuftrag);
+		SqlDbAdapter.saveAuftrag(myAuftrag);
 		
-		Auftrag DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
+		Auftrag DbAuftrag = SqlDbAdapter.getAuftrag(myAuftrag.getID());
 		assertEquals(randomint1, DbAuftrag.getStatus());
 				
-		assertEquals(true, DbAdapter.deleteAuftrag(myAuftrag));
-		assertEquals(false, DbAdapter.deleteAuftrag(myAuftrag));
+		assertEquals(true, SqlDbAdapter.deleteAuftrag(myAuftrag));
+		assertEquals(false, SqlDbAdapter.deleteAuftrag(myAuftrag));
 		
-		DbAuftrag = DbAdapter.getAuftrag(myAuftrag.getID());
+		DbAuftrag = SqlDbAdapter.getAuftrag(myAuftrag.getID());
 		assertEquals(null, DbAuftrag);
 	}
 }

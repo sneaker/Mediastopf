@@ -14,7 +14,7 @@ import java.util.List;
 import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
 import ms.utils.networking.BasicNetIO;
-import ms.utils.server.database.DbAdapter;
+import ms.utils.server.database.SqlDbAdapter;
 
 public class NetProcThread extends BasicNetIO implements Runnable {
 
@@ -74,7 +74,7 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 	}
 
 	private void sendTaskList() {
-		List<Auftrag> lp = DbAdapter.getOrderList();
+		List<Auftrag> lp = SqlDbAdapter.getOrderList();
 		sendObject(lp);
 	}
 }

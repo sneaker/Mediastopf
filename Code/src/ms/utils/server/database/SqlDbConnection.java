@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActiveRecordManager {
+public class SqlDbConnection {
 
 	static private Connection connection;
 	static private String database = "jdbc:sqlite:db/db.sqlite";
@@ -42,7 +42,7 @@ public class ActiveRecordManager {
 	 * execute an insert statement.
 	 */
 	public static int executeInsert(String sql) throws SQLException {
-		int newId = ActiveRecord.NOTINDB;
+		int newId = -1;
 		Statement stat = getConnection().createStatement();
 		stat.execute(sql);
 		newId = getIdOfInsertedElement(stat);
@@ -52,7 +52,7 @@ public class ActiveRecordManager {
 
 	public static int executeInsert(String prepStmt, String... arguments)
 			throws SQLException {
-		int newId = ActiveRecord.NOTINDB;
+		int newId = -1;
 		Connection conn = getConnection();
 		PreparedStatement prep = createStatementWithArguments(prepStmt, conn,
 				arguments);
@@ -80,7 +80,7 @@ public class ActiveRecordManager {
 	}
 
 	/**
-	 * Execute the query sql and return the, resulting {@link ActiveRecord}s as a
+	 * Execute the query sql and return the, resulting as a
 	 * {@link List} of type returnedClass.<br>
 	 * 
 	 * @param returnedClass
@@ -131,7 +131,7 @@ public class ActiveRecordManager {
 
 	private static int getIdOfInsertedElement(Statement stat)
 			throws SQLException {
-		int newId = ActiveRecord.NOTINDB;
+		int newId = -1;
 		ResultSet res = stat.executeQuery("SELECT last_insert_rowid();");
 		if (res.next())
 			newId = res.getInt("last_insert_rowid()");

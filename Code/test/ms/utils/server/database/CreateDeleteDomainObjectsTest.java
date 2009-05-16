@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import ms.domain.Auftrag;
-import ms.utils.server.database.ActiveRecordManager;
+import ms.utils.server.database.SqlDbConnection;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,15 +33,15 @@ public class CreateDeleteDomainObjectsTest {
 	public void testAuftragDbTable() {
 		Auftrag myAuftrag = new Auftrag(randomint);
 		
-		DbAdapter.saveAuftrag(myAuftrag);
+		SqlDbAdapter.saveAuftrag(myAuftrag);
 		
 		
 		String sql = "select * from Auftrag WHERE id = " + myAuftrag.getID();
-		List<Auftrag> myList = ActiveRecordManager.getObjectList(sql, Auftrag.class);
+		List<Auftrag> myList = SqlDbConnection.getObjectList(sql, Auftrag.class);
 		
 		for (Auftrag item: myList) assertEquals(myAuftrag, item);
 		
-		DbAdapter.deleteAuftrag(myAuftrag);
-		assertTrue(ActiveRecordManager.getObjectList(sql, Auftrag.class).isEmpty());
+		SqlDbAdapter.deleteAuftrag(myAuftrag);
+		assertTrue(SqlDbConnection.getObjectList(sql, Auftrag.class).isEmpty());
 	}
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ms.domain.Auftrag;
-import ms.domain.server.ServerAuftrag;
 import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
 import ms.utils.server.database.DbAdapter;
@@ -25,7 +24,7 @@ public class ServerController {
 	private static Logger logger = ServerLog.getLogger();
 
 	public static ArrayList<Auftrag> getTaskList() {
-		List<ServerAuftrag> list = DbAdapter.getOrderList();
+		List<Auftrag> list = DbAdapter.getOrderList();
 		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
 		for(Auftrag a: list) {
 			//TODO: AUFTRAG - Anpassen für neue Auftragsklasse

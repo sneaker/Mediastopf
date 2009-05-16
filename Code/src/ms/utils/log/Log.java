@@ -1,7 +1,6 @@
 package ms.utils.log;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
 import java.util.Observable;
 
 import ms.ui.Constants;
@@ -17,7 +16,6 @@ public abstract class Log extends Observable implements Runnable {
 
 	protected static Logger logger;
 	protected static ByteArrayOutputStream bos;
-	private static ByteArrayOutputStream temp = new ByteArrayOutputStream();
 
 	protected void initLogger(Class<? extends Constants> constants) {
 		String pattern = "%d{ISO8601}: %m %n";

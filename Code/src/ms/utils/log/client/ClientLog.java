@@ -1,6 +1,7 @@
 package ms.utils.log.client;
 
 import java.io.ByteArrayOutputStream;
+
 import ms.ui.client.ClientConstants;
 import ms.utils.log.Log;
 

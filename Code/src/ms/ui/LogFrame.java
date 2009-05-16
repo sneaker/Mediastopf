@@ -31,6 +31,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
 import ms.utils.FileIO;
+import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 
 /**
@@ -72,13 +73,7 @@ public class LogFrame extends JFrame implements Observer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(500, 430);
-		setMinimumSize(new Dimension(getWidth(), getHeight()));
-		setLayout(null);
-		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		GUIComponents.initFrame(this, getClass().getResource(Constants.UIIMAGE + Constants.ICON));
 		
 		componentListener();
 	}

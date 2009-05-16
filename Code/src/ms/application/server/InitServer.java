@@ -1,22 +1,27 @@
 package ms.application.server;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import ms.domain.Auftrag;
 import ms.ui.server.MainView;
 import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
+import ms.utils.server.database.DbAdapter;
 
 import org.apache.log4j.Logger;
 
 public class InitServer {
 	
 	private static Logger logger = ServerLog.getLogger();
+	public static final int MAX_SERVER_THREADS = 10;
 	
 	public InitServer(int port) {
 		serverStartInfo();
@@ -29,8 +34,6 @@ public class InitServer {
 		loadUI();
 	}
 
-	public static final int MAX_SERVER_THREADS = 10;
-	
 	private void initNetwork(int port) {
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
@@ -38,7 +41,7 @@ public class InitServer {
 	}
 
 	public static ArrayList<Auftrag> getTaskList() {
-		List<ServerAuftrag> list = DbAdapter.getOrderList();
+		List<Auftrag> list = DbAdapter.getOrderList();
 		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
 		for(Auftrag a: list) {
 			taskList.add(new Auftrag(a.getID()));
@@ -63,16 +66,6 @@ public class InitServer {
 		return succeed;
 	}
 
-	public static ArrayList<Auftrag> getTaskList() {
-		List<Auftrag> list = DbAdapter.getOrderList();
-		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
-		for(Auftrag a: list) {
-			//TODO: AUFTRAG - Anpassen für neue Auftragsklasse
-			taskList.add(new Auftrag(a.getID()));
-		}
-		return taskList;
-	}
-	
 	private void serverStartInfo() {
 		logger.info("=======================================================");
 		logger.info("MediaStopf - Ein Softwaresystem zum Medien Einlesen");

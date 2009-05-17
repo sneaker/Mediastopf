@@ -1,29 +1,26 @@
-
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
-
-import ms.domain.Auftrag;
 import ms.ui.server.MainView;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
-import ms.utils.server.database.SqlDbAdapter;
 
 import org.apache.log4j.Logger;
 
 public class InitServer {
 	
 	private Logger logger = ServerLog.getLogger();
+	public static boolean DEBUG = false;
 	
-	public InitServer(int port) {
+	public InitServer(int port, boolean debug) {
+		DEBUG = debug;
 		serverStartInfo();
 		initNetwork(port);
 		initUI();
+		new ms.application.server.ServerController();
 	}
 	
 	private void initUI() {
@@ -63,7 +60,7 @@ public class InitServer {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainView mediastopf = new MainView();
+				MainView mediastopf = new MainView(DEBUG);
 				mediastopf.setVisible(true);
 			}
 		});

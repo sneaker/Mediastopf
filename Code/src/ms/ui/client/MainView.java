@@ -30,7 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.client.ClientController;
-import ms.application.client.StartClient;
 import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
 import ms.ui.LogFrame;
@@ -71,8 +70,8 @@ public class MainView extends JFrame {
 	private String run = manager.getString("Main.run"), reload = manager.getString("Main.reload"),
 	send = manager.getString("send"), runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
 
-	public MainView() {
-		if (StartClient.DEBUG) {
+	public MainView(boolean debug) {
+		if (debug) {
 			setTitle(ClientConstants.PROGRAM + " - Debug");
 		} else {
 			new SplashScreen(ClientConstants.SPLASH);

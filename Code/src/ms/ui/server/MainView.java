@@ -73,8 +73,8 @@ public class MainView extends JFrame {
 	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), reload = manager.getString("Main.reload"),
 	statusbar = manager.getString("Main.statusbar");
 	
-	public MainView() {
-		if (StartServer.DEBUG) {
+	public MainView(boolean debug) {
+		if (debug) {
 			setTitle(ServerConstants.PROGRAM + " - Debug");
 		} else {
 			new SplashScreen(Constants.SPLASH);

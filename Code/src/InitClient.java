@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import ms.application.client.ClientController;
 import ms.ui.client.MainView;
-
 import ms.utils.I18NManager;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.AuftragslistenReceiver;
@@ -20,14 +19,16 @@ public class InitClient {
 
 	public static final String HOST = "localhost";
 	public static final int PORT = 1337;
+	public static boolean DEBUG = false;
 
 	private static Logger logger;
-	private static I18NManager manager;
+	private I18NManager manager;
 	
 	AuftragslistenReceiver rec;
 	ImportMediumSender send;
 
-	public InitClient() {
+	public InitClient(boolean debug) {
+		DEBUG = debug;
 		initManager();
 		initLogger();
 		initNetwork();
@@ -45,7 +46,7 @@ public class InitClient {
 
 	private void initNetwork() {
 		try {
-			rec = new AuftragslistenReceiver(HOST, PORT);
+			rec = new AuftragslistenReceiver(HOST, PORT, ClientController.class);
 			send = new ImportMediumSender(HOST, PORT);
 			rec.connect();
 			send.connect();
@@ -82,7 +83,7 @@ public class InitClient {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainView mediastopf = new MainView();
+				MainView mediastopf = new MainView(DEBUG);
 				mediastopf.setVisible(true);
 			}
 		});

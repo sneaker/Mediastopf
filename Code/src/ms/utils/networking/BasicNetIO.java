@@ -29,7 +29,8 @@ abstract public class BasicNetIO {
 			e.printStackTrace();
 		}
 	
-		String rec = receiver.readLine();
+		String rec = "";
+		rec = receiver.readLine();
 		logger.info("SERVER: Client message: " + rec);
 		return rec;
 	}

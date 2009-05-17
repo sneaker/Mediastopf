@@ -8,8 +8,6 @@ import java.util.Observer;
 
 import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
-import ms.ui.dialogs.MessageDialog;
-import ms.utils.I18NManager;
 import ms.utils.client.directoryobserver.DirectoryObserver;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.AuftragslistenReceiver;
@@ -37,8 +35,7 @@ public class ClientController {
 	 * start directory observer
 	 * 
 	 * @param folder to observe
-	 */
-	
+	 */	
 	public static void observeDir(final File folder) {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder.toString());
 		dirObserver.addObserver(new Observer() {
@@ -70,17 +67,13 @@ public class ClientController {
 	 * get Tasks from Database
 	 */
 	public ArrayList<Auftrag> getTaskList() {
-		System.out.println("update called");
 		ArrayList<Auftrag> result = new ArrayList<Auftrag>();
 		try {
 			result = auftragreceiver.getTaskList();
 		} catch (IOException e) {
 			ClientLog.getLogger().fatal("Can't get Tasks");
-			MessageDialog.info(I18NManager.getManager().getString("Dialog.cantgettask"), I18NManager.getManager().getString("Dialog.checkconnection"));
+			//MessageDialog.info(I18NManager.getManager().getString("Dialog.cantgettask"), I18NManager.getManager().getString("Dialog.checkconnection"));
 		}
-		System.out.println("hallo");
-		System.out.println(result);
 		return result;
-		
 	}
 }

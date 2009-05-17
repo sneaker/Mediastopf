@@ -4,17 +4,19 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import ms.application.client.ClientController;
 import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
 
 public class AuftragslistenReceiver extends AbstractServerConnection implements Runnable{
 
-	public AuftragsListe list = new AuftragsListe(ClientController.class);
+	public static final int TIMEOUT = 10000;
 	
-	public AuftragslistenReceiver(String host, int port)
+	public AuftragsListe list;
+	
+	public AuftragslistenReceiver(String host, int port, Class<?> controller)
 			throws UnknownHostException, IOException {
 		super(host, port);
+		list = new AuftragsListe(controller);
 	}
 
 	public ArrayList<Auftrag> getTaskList() throws IOException {
@@ -33,8 +35,10 @@ public class AuftragslistenReceiver extends AbstractServerConnection implements 
 		logger.info("Receiving Info data...");
 		
 		list.add((ArrayList<Auftrag>) receiveObject());
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
+		if (list != null){
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i));
+			}
 		}
 		
 		logger.info("INFO transfer finished");		
@@ -45,7 +49,7 @@ public class AuftragslistenReceiver extends AbstractServerConnection implements 
 		while(true) {
 			try {
 				updateTaskList();
-				Thread.sleep(30000);
+				Thread.sleep(TIMEOUT);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

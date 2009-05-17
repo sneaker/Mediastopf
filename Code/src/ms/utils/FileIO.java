@@ -1,4 +1,4 @@
-package ms.utils.filesys;
+package ms.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

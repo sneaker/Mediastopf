@@ -30,8 +30,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
 import ms.utils.ConfigHandler;
+import ms.utils.FileIO;
 import ms.utils.I18NManager;
-import ms.utils.filesys.FileIO;
 import ms.utils.log.Log;
 
 /**

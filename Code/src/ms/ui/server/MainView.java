@@ -1,5 +1,7 @@
 package ms.ui.server;
 
+import StartServer;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -32,7 +34,6 @@ import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.application.server.ServerController;
-import ms.application.server.StartServer;
 import ms.domain.AuftragsListe;
 import ms.ui.Constants;
 import ms.ui.LogFrame;

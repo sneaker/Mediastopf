@@ -1,4 +1,5 @@
-package ms.application.server;
+
+
 
 /**
  * Main class for the MediaStopf Server instance. 

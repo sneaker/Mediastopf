@@ -1,5 +1,3 @@
-package ms.application.client;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.Executor;
@@ -10,6 +8,7 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
+import ms.application.client.ClientController;
 import ms.ui.client.MainView;
 
 import ms.utils.I18NManager;

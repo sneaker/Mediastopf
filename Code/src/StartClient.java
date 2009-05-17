@@ -1,4 +1,3 @@
-package ms.application.client;
 
 /**
  * start client

@@ -2,7 +2,6 @@ package ms.utils.log.client;
 
 import java.io.ByteArrayOutputStream;
 
-import ms.ui.client.ClientConstants;
 import ms.utils.log.Log;
 
 import org.apache.log4j.Logger;
@@ -19,13 +18,14 @@ import org.apache.log4j.Logger;
  */
 public class ClientLog extends Log {
 	
+	public static final String LOGFILE = "logs/MediaStopf.log";
 	public static ClientLog log = new ClientLog();
 	
 	private ClientLog() {
 		logger = Logger.getLogger(ClientLog.class);
 		bos = new ByteArrayOutputStream();
 		
-		initLogger(ClientConstants.class);
+		initLogger(LOGFILE);
 	}
 	
 	/**

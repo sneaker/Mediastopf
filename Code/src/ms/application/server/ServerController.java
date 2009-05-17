@@ -27,7 +27,6 @@ public class ServerController {
 		List<Auftrag> list = DbAdapter.getOrderList();
 		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
 		for(Auftrag a: list) {
-			//TODO: AUFTRAG - Anpassen für neue Auftragsklasse
 			taskList.add(new Auftrag(a.getID()));
 		}
 		return taskList;
@@ -50,4 +49,13 @@ public class ServerController {
 		return succeed;
 	}
 	
+	/**
+	 * write a file
+	 * 
+	 * @param file File
+	 * @param content Filecontent to write
+	 */
+	public static void writeFile(File file, String content) {
+		FileIO.write(file, content);
+	}
 }

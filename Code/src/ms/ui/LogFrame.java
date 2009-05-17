@@ -1,9 +1,7 @@
 package ms.ui;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -11,26 +9,23 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileFilter;
 
-import ms.utils.FileIO;
+import ms.application.server.ServerController;
 import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 
@@ -68,12 +63,15 @@ public class LogFrame extends JFrame implements Observer {
 	}
 
 	private void initFrame() {
+		String title = "";
 		try {
-			setTitle(constants.getField("PROGRAM").get(constants) + " - " + manager.getString("Log.title"));
+			title = constants.getField("PROGRAM").get(constants) + " - " + manager.getString("Log.title");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		GUIComponents.initFrame(this, getClass().getResource(Constants.UIIMAGE + Constants.ICON));
+		this.setTitle(title);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		GUIComponents.initFrame(this, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(500, 430));
 		
 		componentListener();
 	}
@@ -105,18 +103,9 @@ public class LogFrame extends JFrame implements Observer {
 	}
 
 	private void addTextArea() {
-		textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setBorder(LineBorder.createBlackLineBorder());
-		textArea.setWrapStyleWord(true);
-		textArea.setLineWrap(true);
-		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		textArea = GUIComponents.createTextArea();
 		textArea.setComponentPopupMenu(getPopUpMenu(textArea));
-		scrollArea = new JScrollPane(textArea);
-		scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollArea.setBounds(5, 5, 485, 350);
-
+		scrollArea = GUIComponents.createJScrollPane(textArea, new Rectangle(5, 5, 485, 350));
 		add(scrollArea);
 	}
 
@@ -129,20 +118,14 @@ public class LogFrame extends JFrame implements Observer {
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { save, close };
-		final String[] icons = { Constants.SAVE, Constants.CANCEL };
+		final URL[] icons = { getClass().getResource(Constants.UIIMAGE + Constants.SAVE), getClass().getResource(Constants.UIIMAGE + Constants.CANCEL) };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
 		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
-		    button.setVerticalTextPosition(JButton.CENTER);
-		    button.setHorizontalTextPosition(JButton.RIGHT);
+			JButton button = GUIComponents.createButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
@@ -158,20 +141,20 @@ public class LogFrame extends JFrame implements Observer {
 	}
 
 	private void saveAsTXT() {
-		JFileChooser fileChooser = getFileChooser();
+		JFileChooser fileChooser = GUIComponents.getFileChooser();
 		try {
 			fileChooser.setSelectedFile(new File((String) constants.getField("LOGFILE").get(constants)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		fileFilter(fileChooser);
+		GUIComponents.jFileFilter(fileChooser, ".txt");
 
 		int returnVal = fileChooser.showSaveDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
 			String file = addTXTPostfix(filename, path);
-			FileIO.write(new File(file), textArea.getText().trim());
+			ServerController.writeFile(new File(file), textArea.getText().trim());
 		}
 	}
 
@@ -181,51 +164,6 @@ public class LogFrame extends JFrame implements Observer {
 			file += ".txt";
 		}
 		return file;
-	}
-
-	private JFileChooser getFileChooser() {
-		JFileChooser fileChooser = new JFileChooser() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void approveSelection() {
-				File f = getSelectedFile();
-				if (f.exists() && getDialogType() == SAVE_DIALOG) {
-					int result = JOptionPane.showConfirmDialog(
-							getTopLevelAncestor(),
-							manager.getString("Log.fileoverwritemessage"),
-							manager.getString("Log.fileoverwritetitle"),
-							JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.QUESTION_MESSAGE);
-					switch (result) {
-					case JOptionPane.YES_OPTION:
-						super.approveSelection();
-						return;
-					case JOptionPane.NO_OPTION:
-						return;
-					case JOptionPane.CANCEL_OPTION:
-						cancelSelection();
-						return;
-					}
-				}
-				super.approveSelection();
-			}
-		};
-		return fileChooser;
-	}
-
-	private void fileFilter(JFileChooser fileChooser) {
-		fileChooser.setFileFilter(new FileFilter() {
-			public boolean accept(File file) {
-				return file.getName().toLowerCase().endsWith(".txt")
-						|| file.isDirectory();
-			}
-
-			public String getDescription() {
-				return "*.txt";
-			}
-		});
 	}
 	
 	/**

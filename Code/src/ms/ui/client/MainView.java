@@ -1,10 +1,8 @@
 package ms.ui.client;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -13,10 +11,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -44,6 +43,7 @@ import ms.ui.models.TaskComboBoxModel;
 import ms.ui.tables.client.TaskTable;
 import ms.utils.ApplicationLauncher;
 import ms.utils.ConfigHandler;
+import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 import ms.utils.log.client.ClientLog;
 
@@ -65,7 +65,7 @@ public class MainView extends JFrame {
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
-	private JTextField statusBar;
+	private JTextField statusBarField;
 	private TaskTable taskTable;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
@@ -91,17 +91,18 @@ public class MainView extends JFrame {
 		addStatusBar();
 		addTaskPanel();
 		addRunningTaskPanel();
+		
+		Iterator<JPanel> it = panelMap.values().iterator();
+		while (it.hasNext()) {
+			add((JPanel) it.next());
+		}
 	}
 
 	private void initFrame() {
-		setTitle(ClientConstants.PROGRAM);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setSize(600, 550);
+		this.setTitle(ClientConstants.PROGRAM);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		GUIComponents.initFrame(this, getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON), new Dimension(600, 550));
 		setMinimumSize(new Dimension(400, 450));
-		setLayout(null);
-		setIconImage(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON)).getImage());
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 		
 		componentListener();
@@ -152,7 +153,7 @@ public class MainView extends JFrame {
 		buttonMap.get(run).setLocation(taskPanel.getWidth() - 135, taskPanel.getHeight() - 40);
 
 		taskComboBox.setSize(taskPanel.getWidth() - 25, 20);
-		statusBar.setSize(statusPanel.getWidth(), statusPanel.getHeight());
+		statusBarField.setSize(statusPanel.getWidth(), statusPanel.getHeight());
 
 		int width = runtaskPanel.getWidth() - 10;
 		int height = runtaskPanel.getHeight() - 70;
@@ -164,18 +165,12 @@ public class MainView extends JFrame {
 	}
 
 	private void addStatusBar() {
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(0, getHeight() - 70, getWidth() - 10, 20);
+		JPanel panel = GUIComponents.createPanel(new Rectangle(0, getHeight() - 70, getWidth() - 10, 20));
 		panelMap.put(statusbar, panel);
 
-		statusBar = new JTextField(manager.getString("StatusMessage.copyright"));
-		statusBar.setBounds(0, 0, panel.getWidth(), panel.getHeight());
-		statusBar.setEditable(false);
-		statusBar.setFocusable(false);
-
-		panel.add(statusBar);
-		add(panel);
+		statusBarField = GUIComponents.createTextField(manager.getString("StatusMessage.copyright"), new Rectangle(0, 0, panel.getWidth(), panel.getHeight()));
+		statusBarField.setFocusable(false);
+		panel.add(statusBarField);
 	}
 
 	/**
@@ -184,13 +179,9 @@ public class MainView extends JFrame {
 	private void addTaskPanel() {
 		addTaskComboBox();	
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(0, 5, getWidth() - 10, 90);
-		panel.setBorder(BorderFactory.createTitledBorder(tasks));
+		JPanel panel = GUIComponents.createPanel(new Rectangle(0, 5, getWidth() - 10, 90));
 		panel.add(taskComboBox);
 		panelMap.put(tasks, panel);
-		add(panel);
 		addTaskButtons(panel);
 	}
 
@@ -201,16 +192,9 @@ public class MainView extends JFrame {
 	 */
 	private void addTaskComboBox() {
 		taskList = new AuftragsListe(ClientController.class);
-		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
-		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
+		taskComboBox = GUIComponents.createComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
-		taskComboBox.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
-			public void layoutComboBox(Container parent, MetalComboBoxLayoutManager manager) {
-				super.layoutComboBox(parent, manager);
-				arrowButton.setBounds(0, 0, 0, 0);
-			}
-		});
 	}
 	
 	private void addTaskButtons(JPanel panel) {
@@ -219,7 +203,7 @@ public class MainView extends JFrame {
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { reload, run };
-		final String[] icons = { ClientConstants.RELOAD, ClientConstants.TICK };
+		final URL[] icons = { getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.RELOAD), getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.TICK) };
 		final Rectangle reloadBounds = new Rectangle(x, y, width, height);
 		final Rectangle runBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { reloadBounds, runBounds };
@@ -227,13 +211,7 @@ public class MainView extends JFrame {
 		final int runMnemonic = manager.getMnemonic("Main.run");
 		final int[] mnemonic = { reloadMnemonic, runMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
-		    button.setVerticalTextPosition(JButton.CENTER);
-		    button.setHorizontalTextPosition(JButton.RIGHT);
+			JButton button = GUIComponents.createButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
@@ -296,14 +274,14 @@ public class MainView extends JFrame {
 	}
 	
 	private void updateStatusBar(StatusType type) {
-		statusBar.setForeground(Color.BLACK);
-		statusBar.setText(StatusMessage.getMessage(type));
+		statusBarField.setForeground(Color.BLACK);
+		statusBarField.setText(StatusMessage.getMessage(type));
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				try {
 					Thread.sleep(4000);
-					statusBar.setForeground(Color.GRAY);
-					statusBar.setText(manager.getString("StatusMessage.copyright"));
+					statusBarField.setForeground(Color.GRAY);
+					statusBarField.setText(manager.getString("StatusMessage.copyright"));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -318,16 +296,11 @@ public class MainView extends JFrame {
 	private void addRunningTaskPanel() {
 		addTaskTable();
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(0, 100, getWidth() - 10, getHeight() - 180);
-		panel.setBorder(BorderFactory.createTitledBorder(runningTask));
-
-		addRunningTaskButtons(panel);
-
+		JPanel panel = GUIComponents.createPanel(new Rectangle(0, 100, getWidth() - 10, getHeight() - 180), BorderFactory.createTitledBorder(runningTask));
 		panel.add(tablePanel);
 		panelMap.put(runningTask, panel);
-		add(panel);
+		
+		addRunningTaskButtons(panel);
 	}
 
 	/**
@@ -336,14 +309,11 @@ public class MainView extends JFrame {
 	 * @return JPanel
 	 */
 	private void addTaskTable() {
-		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 250);
-		tablePanel.setLayout(null);
+		tablePanel = GUIComponents.createPanel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 250));
 		
 		runTaskList = new AuftragsListe(ClientController.class);
 		taskTable = new TaskTable(runTaskList);
-		tableScrollPane = new JScrollPane(taskTable);
-		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());
+		tableScrollPane = GUIComponents.createJScrollPane(taskTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}
 
@@ -354,13 +324,8 @@ public class MainView extends JFrame {
 	 *            JPanel
 	 */
 	private void addRunningTaskButtons(JPanel panel) {
-		JButton button = new JButton();
-		button.setBounds(panel.getWidth() - 135, panel.getHeight() - 40, 115, 25);
-		button.setText(send);
-		button.setMnemonic(manager.getMnemonic("send"));
-		button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.SEND)));
-		button.setVerticalTextPosition(JButton.CENTER);
-		button.setHorizontalTextPosition(JButton.RIGHT);
+		Rectangle bounds = new Rectangle(panel.getWidth() - 135, panel.getHeight() - 40, 115, 25);
+		JButton button = GUIComponents.createButton(bounds, send, manager.getMnemonic("send"), getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.SEND));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				taskTable.send();
@@ -413,8 +378,7 @@ public class MainView extends JFrame {
 	 * @param helpMenu
 	 */
 	private void addHelpItems(JMenu helpMenu) {
-		JMenuItem aboutItem = new JMenuItem(manager.getString("Main.aboutitem"));
-		aboutItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
+		JMenuItem aboutItem = GUIComponents.createMenuItem(manager.getString("Main.aboutitem"), KeyStroke.getKeyStroke("F1"));
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AboutDialog about = new AboutDialog(ClientConstants.class);
@@ -441,9 +405,7 @@ public class MainView extends JFrame {
 			if (i == 2) {
 				fileMenu.addSeparator();
 			}
-			JMenuItem fileItem = new JMenuItem();
-			fileItem.setText(fileTitles[i]);
-			fileItem.setAccelerator(keyStrokes[i]);
+			JMenuItem fileItem = GUIComponents.createMenuItem(fileTitles[i], keyStrokes[i]);
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == config) {

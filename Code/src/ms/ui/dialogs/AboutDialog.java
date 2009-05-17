@@ -5,25 +5,21 @@ package ms.ui.dialogs;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 
 import ms.ui.Constants;
 import ms.utils.BrowserControl;
+import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 
 /**
@@ -57,19 +53,13 @@ public class AboutDialog extends JDialog {
 	}
 
 	private void initDialog() {
+		String title = "";
 		try {
-			setTitle(constants.getField("PROGRAM").get(constants) + " - " + manager.getString("About.title"));
+			title = constants.getField("PROGRAM").get(constants) + " - " + manager.getString("About.title");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setSize(400, 250);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - 400) / 2, (dim.height - 350) / 2);
-		setLayout(null);
-		setResizable(false);
-		setModal(true);
-		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		GUIComponents.initDialog(this, title, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(400, 250), JFrame.DISPOSE_ON_CLOSE);
 	}
 	
 
@@ -81,10 +71,7 @@ public class AboutDialog extends JDialog {
 		final int y = 190;
 		final int width = 100;
 		final int height = 20;
-		JButton button = new JButton();
-		button.setBounds(x + 105, y, width, height);
-		button.setText(manager.getString("close"));
-		button.setMnemonic(manager.getMnemonic("close"));
+		JButton button = GUIComponents.createButton(new Rectangle(x + 105, y, width, height), manager.getString("close"), manager.getMnemonic("close"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
@@ -121,12 +108,7 @@ public class AboutDialog extends JDialog {
 		final Rectangle hsrBounds = new Rectangle(165, 190, 110, 20);
 		final Rectangle[] bounds = { urlBounds, hsrBounds };
 		for(int i=0; i<texts.length; i++) {
-			JTextField textField = new JTextField(texts[i]);
-			textField.setHorizontalAlignment(JTextField.CENTER);
-			textField.setBounds(bounds[i]);
-			textField.setEditable(false);
-			textField.setOpaque(false);
-			textField.setToolTipText(tooltips[i]);
+			JTextField textField = GUIComponents.createTextField(texts[i], bounds[i], tooltips[i]);
 			textField.setComponentPopupMenu(addPopUpMenu(textField));
 			add(textField);
 		}
@@ -170,8 +152,7 @@ public class AboutDialog extends JDialog {
 				close();
 			}
 		};
-		JRootPane rootPane = getRootPane();
-		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		GUIComponents.addESCListener(this, cancelListener);
 	}
 
 	private void close() {

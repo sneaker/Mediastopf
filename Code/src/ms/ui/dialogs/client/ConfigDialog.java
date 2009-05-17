@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -31,6 +30,7 @@ import javax.swing.filechooser.FileFilter;
 
 import ms.ui.client.ClientConstants;
 import ms.utils.ConfigHandler;
+import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 
 /**
@@ -77,15 +77,8 @@ public class ConfigDialog extends JDialog {
 	}
 
 	private void initDialog() {
-		setTitle(ClientConstants.PROGRAM + " - " + manager.getString("Config.title"));
-		setSize(400, 230);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
-		setLayout(null);
-		setResizable(false);
-		setModal(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setIconImage(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON)).getImage());
+		String title = ClientConstants.PROGRAM + " - " + manager.getString("Config.title"); 
+		GUIComponents.initDialog(this, title, getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON), new Dimension(400, 230), JDialog.DISPOSE_ON_CLOSE);
 	}
 	
 	private void addPanels() {

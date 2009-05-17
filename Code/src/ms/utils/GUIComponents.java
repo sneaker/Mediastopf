@@ -77,8 +77,7 @@ public class GUIComponents {
 	}
 	
 	public static JComboBox createComboBox(ComboBoxModel model, Rectangle bounds) {
-		JComboBox box = new JComboBox();
-		box.setModel(model);
+		JComboBox box = new JComboBox(model);
 		box.setBounds(bounds);
 		box.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
 			public void layoutComboBox(Container parent, MetalComboBoxLayoutManager manager) {

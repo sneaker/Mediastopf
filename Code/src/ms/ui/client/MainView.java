@@ -178,7 +178,7 @@ public class MainView extends JFrame {
 	private void addTaskPanel() {
 		addTaskComboBox();	
 		
-		JPanel panel = GUIComponents.createPanel(new Rectangle(0, 5, getWidth() - 10, 90));
+		JPanel panel = GUIComponents.createPanel(new Rectangle(0, 5, getWidth() - 10, 90), BorderFactory.createTitledBorder(tasks));
 		panel.add(taskComboBox);
 		panelMap.put(tasks, panel);
 		addTaskButtons(panel);
@@ -228,8 +228,8 @@ public class MainView extends JFrame {
 
 	// TODO what to do??
 	private void runSelectedItem() {
-		String taskID = (String) taskComboBox.getSelectedItem();
-		if(taskID == null) {
+		int taskID = (Integer) taskComboBox.getSelectedItem();
+		if(taskID == -1) {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}

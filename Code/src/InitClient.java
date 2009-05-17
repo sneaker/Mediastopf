@@ -46,7 +46,7 @@ public class InitClient {
 
 	private void initNetwork() {
 		try {
-			rec = new AuftragslistenReceiver(HOST, PORT);
+			rec = new AuftragslistenReceiver(HOST, PORT, ClientController.class);
 			send = new ImportMediumSender(HOST, PORT);
 			rec.connect();
 			send.connect();

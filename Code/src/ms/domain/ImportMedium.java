@@ -14,9 +14,20 @@ public class ImportMedium implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	protected String Name;
-	protected int fk_Mediensammlung;
-	protected int fk_Einlesegeraet;
 	protected int id = -1;
+	protected int status = -1;
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	protected ArrayList<File> items;
 
 	/**
@@ -31,6 +42,7 @@ public class ImportMedium implements Serializable {
 	public ImportMedium(ResultSet row) throws SQLException {
 		this.Name = row.getString("Name");
 		this.id = row.getInt("id");
+		this.status = row.getInt("status");
 	}
 
 
@@ -38,22 +50,7 @@ public class ImportMedium implements Serializable {
 		return id > -1;
 	}
 
-	public void setFk_Mediensammlung(int fk_Mediensammlung) {
-		this.fk_Mediensammlung = fk_Mediensammlung;
-	}
-
-	public int getFk_Mediensammlung() {
-		return fk_Mediensammlung;
-	}
-
-	public void setFk_Einlesegeraet(int fk_Einlesegeraet) {
-		this.fk_Einlesegeraet = fk_Einlesegeraet;
-	}
-
-	public int getFk_Einlesegeraet() {
-		return fk_Einlesegeraet;
-	}
-
+	
 	/**
 	 * @return ID, mit welcher das reale Import-Medium gekennzeichnet ist, damit
 	 *         es eindeutig einem Auftrag zugeordnet werden kann.

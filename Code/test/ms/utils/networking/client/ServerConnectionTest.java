@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.application.client.InitClient;
-import ms.application.server.InitServer;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
 
@@ -82,11 +80,7 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-<<<<<<< HEAD:Code/test/ms/utils/networking/client/ServerConnectionTest.java
-		exec.execute(new PortListener(Client.ClientController, ServerController.MAX_SERVER_THREADS));
-=======
-		exec.execute(new PortListener(InitClient.PORT, InitServer.MAX_SERVER_THREADS));
->>>>>>> david:Code/test/ms/utils/networking/client/ServerConnectionTest.java
+		exec.execute(new PortListener(3117, 10));
 	}
 
 	private void loadLog() {

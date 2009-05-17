@@ -10,6 +10,8 @@ import ms.domain.AuftragsListe;
 
 public class AuftragslistenReceiver extends AbstractServerConnection implements Runnable{
 
+	public static final int TIMEOUT = 10000;
+	
 	public AuftragsListe list = new AuftragsListe(ClientController.class);
 	
 	public AuftragslistenReceiver(String host, int port)
@@ -45,7 +47,7 @@ public class AuftragslistenReceiver extends AbstractServerConnection implements 
 		while(true) {
 			try {
 				updateTaskList();
-				Thread.sleep(30000);
+				Thread.sleep(TIMEOUT);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

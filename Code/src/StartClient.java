@@ -1,5 +1,3 @@
-package ms.application.client;
-
 /**
  * start client
  * client in debugmode if args has a "-debug" flag
@@ -8,19 +6,18 @@ package ms.application.client;
  *
  */
 public class StartClient {
-	
-	public static boolean DEBUG = false;
-
 	/**
 	 * Start Client
 	 * 
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		boolean DEBUG = false;
+		
 		if (0 < args.length && args[0].equalsIgnoreCase("-debug")) {
 			DEBUG = true;
 		}
 		
-		new InitClient();
+		new InitClient(DEBUG);
 	}
 }

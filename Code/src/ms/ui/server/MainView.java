@@ -32,7 +32,6 @@ import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.application.server.ServerController;
-import ms.application.server.StartServer;
 import ms.domain.AuftragsListe;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
@@ -72,8 +71,8 @@ public class MainView extends JFrame {
 	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), reload = manager.getString("Main.reload"),
 	statusbar = manager.getString("Main.statusbar");
 	
-	public MainView() {
-		if (StartServer.DEBUG) {
+	public MainView(boolean debug) {
+		if (debug) {
 			setTitle(ServerConstants.PROGRAM + " - Debug");
 		} else {
 			new SplashScreen(Constants.SPLASH);

@@ -1,5 +1,3 @@
-package ms.application.server;
-
 /**
  * Main class for the MediaStopf Server instance. 
  * start server
@@ -11,7 +9,7 @@ package ms.application.server;
  */
 public class StartServer {
 
-	public static boolean DEBUG = false;
+	
 	public static int PORT = 1337;
 
 	/**
@@ -23,6 +21,8 @@ public class StartServer {
 	 *            more logging.
 	 */
 	public static void main(final String[] args) {
+		boolean DEBUG = false;
+		
 		if (0 < args.length) {
 			for (int i = 0; i < args.length; i++) {
 				if (args[i].equalsIgnoreCase("-port")) {
@@ -33,6 +33,6 @@ public class StartServer {
 				}
 			}
 		}
-		new InitServer(PORT);
+		new InitServer(PORT, DEBUG);
 	}
 }

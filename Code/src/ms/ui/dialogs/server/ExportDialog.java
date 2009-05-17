@@ -33,8 +33,8 @@ import ms.ui.Constants;
 import ms.ui.dialogs.MessageDialog;
 import ms.ui.server.ServerConstants;
 import ms.utils.ConfigHandler;
+import ms.utils.FileIO;
 import ms.utils.I18NManager;
-import ms.utils.filesys.FileIO;
 
 /**
  * dialog to choose a destination, where the files should be copied

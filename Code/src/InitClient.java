@@ -6,14 +6,14 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
-
 import ms.application.client.ClientController;
 import ms.ui.client.MainView;
 import ms.utils.I18NManager;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.AuftragslistenReceiver;
 import ms.utils.networking.client.ImportMediumSender;
+
+import org.apache.log4j.Logger;
 
 public class InitClient {
 

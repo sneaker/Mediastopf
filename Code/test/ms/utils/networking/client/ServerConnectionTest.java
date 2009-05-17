@@ -1,20 +1,17 @@
 package ms.utils.networking.client;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ms.application.client.ClientController;
-import ms.application.server.ServerController;
-import ms.domain.ImportMedium;
+import ms.application.client.InitClient;
+import ms.application.server.InitServer;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
 
@@ -25,12 +22,12 @@ import org.junit.Test;
 
 public class ServerConnectionTest {
 	private final File tempDir = new File(System.getProperty("java.io.tmpdir") + File.separator + "msclienttest" + File.separator);
-	//private ServerConnection connection;
+//	private ServerConnection connection;
 
 	@Before
 	public void setUp() throws Exception {
 		startServer();
-		//connection = new ServerConnection(Client.ClientController, Client.ClientController);
+//		connection = new ServerConnection(Client.ClientController, Client.ClientController);
 		
 		makeDirs();
 		generateFiles();
@@ -85,7 +82,11 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
+<<<<<<< HEAD:Code/test/ms/utils/networking/client/ServerConnectionTest.java
 		exec.execute(new PortListener(Client.ClientController, ServerController.MAX_SERVER_THREADS));
+=======
+		exec.execute(new PortListener(InitClient.PORT, InitServer.MAX_SERVER_THREADS));
+>>>>>>> david:Code/test/ms/utils/networking/client/ServerConnectionTest.java
 	}
 
 	private void loadLog() {

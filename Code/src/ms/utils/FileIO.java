@@ -41,7 +41,7 @@ public class FileIO {
 	 * @param destDir destination folder
 	 * @return boolean true, if transfer was done properly
 	 */
-	public static boolean transfer(File[] srcList, File destDir) {
+	public static boolean copyFiles(File[] srcList, File destDir) {
 		destDir.mkdirs();
 		
         FileInputStream source;
@@ -51,7 +51,7 @@ public class FileIO {
 				File destFile = new File(destDir + File.separator + file.getName());
 				if(file.isDirectory()) {
 					destFile.mkdirs();
-					transfer(file.listFiles(), destFile);
+					copyFiles(file.listFiles(), destFile);
 					continue;
 				}
 				source = new FileInputStream(file);

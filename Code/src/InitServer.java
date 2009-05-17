@@ -14,6 +14,7 @@ public class InitServer {
 	
 	private Logger logger = ServerLog.getLogger();
 	public static boolean DEBUG = false;
+	public static final int MAX_SERVER_THREADS = 10;
 	
 	public InitServer(int port, boolean debug) {
 		DEBUG = debug;
@@ -28,8 +29,6 @@ public class InitServer {
 		loadUI();
 	}
 
-	public static final int MAX_SERVER_THREADS = 10;
-	
 	private void initNetwork(int port) {
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();

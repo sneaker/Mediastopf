@@ -1,6 +1,7 @@
 package ms.utils.log;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Observable;
 
 import ms.ui.Constants;
 
@@ -11,11 +12,10 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
 
-public abstract class Log {
+public abstract class Log extends Observable implements Runnable {
 
 	protected static Logger logger;
 	protected static ByteArrayOutputStream bos;
-
 
 	protected void initLogger(Class<? extends Constants> constants) {
 		String pattern = "%d{ISO8601}: %m %n";
@@ -24,6 +24,8 @@ public abstract class Log {
 		logger.addAppender(getConsoleLogger(layout));
 		logger.addAppender(getFileLogger(layout, constants));
 		logger.addAppender(getWriteLogger(layout));
+		
+		new Thread(this).start();
 	}
 	
 	private ConsoleAppender getConsoleLogger(PatternLayout layout) {
@@ -47,6 +49,18 @@ public abstract class Log {
 		return fileAppender;
 	}
 	
+	public void run() {
+		while(true) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			setChanged();
+			notifyObservers(bos);
+		}
+	}
+	
 	/**
 	 * get logger
 	 * 
@@ -54,14 +68,5 @@ public abstract class Log {
 	 */
 	public static Logger getLogger() {
 		return logger;
-	}
-
-	/**
-	 * get OutputStream with logged information
-	 * 
-	 * @return ByteArrayOutputStream
-	 */
-	public static ByteArrayOutputStream getOutputStream() {
-		return bos;
 	}
 }

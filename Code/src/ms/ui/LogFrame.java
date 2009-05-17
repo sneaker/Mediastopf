@@ -1,9 +1,7 @@
 package ms.ui;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -11,28 +9,25 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileFilter;
 
-import ms.utils.ConfigHandler;
-import ms.utils.FileIO;
+import ms.application.server.ServerController;
+import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
-import ms.utils.log.Log;
 
 /**
  * show log information from logger
@@ -40,7 +35,7 @@ import ms.utils.log.Log;
  * @author david
  *
  */
-public class LogFrame extends JFrame implements Runnable {
+public class LogFrame extends JFrame implements Observer {
 
 	/**
 	 * 
@@ -48,13 +43,10 @@ public class LogFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
-	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
-	private JCheckBox box;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private final String save = manager.getString("save"), close = manager.getString("close");
-	private boolean suspendThread = false;
 	private Class<? extends Constants> constants;
 
 	public LogFrame(Class<? extends Constants> constants) {
@@ -66,27 +58,20 @@ public class LogFrame extends JFrame implements Runnable {
 		initFrame();
 
 		addButtons();
-		addRefreshBox();
 		addTextArea();
-		addLogListener();
 		addESCListener();
-		
-		loadProperties();
 	}
 
 	private void initFrame() {
+		String title = "";
 		try {
-			setTitle(constants.getField("PROGRAM").get(constants) + " - " + manager.getString("Log.title"));
+			title = constants.getField("PROGRAM").get(constants) + " - " + manager.getString("Log.title");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(500, 430);
-		setMinimumSize(new Dimension(getWidth(), getHeight()));
-		setLayout(null);
-		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
+		this.setTitle(title);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		GUIComponents.initFrame(this, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(500, 430));
 		
 		componentListener();
 	}
@@ -104,10 +89,6 @@ public class LogFrame extends JFrame implements Runnable {
 			public void componentShown(ComponentEvent e) {
 				isShown = true;
 			}
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				suspendListener();
-			}
 		});
 	}
 	
@@ -119,54 +100,13 @@ public class LogFrame extends JFrame implements Runnable {
 		
 		buttonMap.get(save).setLocation(width - 250, height);
 		buttonMap.get(close).setLocation(width - 125, height);
-		
-		box.setLocation(10, height + 5);
 	}
 
 	private void addTextArea() {
-		textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setBorder(LineBorder.createBlackLineBorder());
-		textArea.setWrapStyleWord(true);
-		textArea.setLineWrap(true);
-		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		textArea = GUIComponents.createTextArea();
 		textArea.setComponentPopupMenu(getPopUpMenu(textArea));
-		scrollArea = new JScrollPane(textArea);
-		scrollArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollArea.setBounds(5, 5, 485, 350);
-
+		scrollArea = GUIComponents.createJScrollPane(textArea, new Rectangle(5, 5, 485, 350));
 		add(scrollArea);
-	}
-
-	private void addRefreshBox() {
-		box = new JCheckBox(manager.getString("Log.autorefresh"));
-		box.setSelected(true);
-		box.setBounds(10, 370, 150, 20);
-		box.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (box.isSelected()) {
-					resumeListener();
-				} else {
-					suspendListener();
-				}
-			}
-		});
-		add(box);
-	}
-
-	private void addLogListener() {
-		Thread logListener = new Thread(this);
-		logListener.start();
-	}
-
-	private void suspendListener() {
-		suspendThread = true;
-	}
-
-	private synchronized void resumeListener() {
-		suspendThread = false;
-		notify();
 	}
 
 	/**
@@ -178,20 +118,14 @@ public class LogFrame extends JFrame implements Runnable {
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { save, close };
-		final String[] icons = { Constants.SAVE, Constants.CANCEL };
+		final URL[] icons = { getClass().getResource(Constants.UIIMAGE + Constants.SAVE), getClass().getResource(Constants.UIIMAGE + Constants.CANCEL) };
 		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { sendBounds, cancelBounds };
 		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(Constants.UIIMAGE + icons[i])));
-		    button.setVerticalTextPosition(JButton.CENTER);
-		    button.setHorizontalTextPosition(JButton.RIGHT);
+			JButton button = GUIComponents.createButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
@@ -207,20 +141,20 @@ public class LogFrame extends JFrame implements Runnable {
 	}
 
 	private void saveAsTXT() {
-		JFileChooser fileChooser = getFileChooser();
+		JFileChooser fileChooser = GUIComponents.getFileChooser();
 		try {
 			fileChooser.setSelectedFile(new File((String) constants.getField("LOGFILE").get(constants)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		fileFilter(fileChooser);
+		GUIComponents.jFileFilter(fileChooser, ".txt");
 
 		int returnVal = fileChooser.showSaveDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
 			String file = addTXTPostfix(filename, path);
-			FileIO.write(new File(file), textArea.getText().trim());
+			ServerController.writeFile(new File(file), textArea.getText().trim());
 		}
 	}
 
@@ -231,74 +165,11 @@ public class LogFrame extends JFrame implements Runnable {
 		}
 		return file;
 	}
-
-	private JFileChooser getFileChooser() {
-		JFileChooser fileChooser = new JFileChooser() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void approveSelection() {
-				File f = getSelectedFile();
-				if (f.exists() && getDialogType() == SAVE_DIALOG) {
-					int result = JOptionPane.showConfirmDialog(
-							getTopLevelAncestor(),
-							manager.getString("Log.fileoverwritemessage"),
-							manager.getString("Log.fileoverwritetitle"),
-							JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.QUESTION_MESSAGE);
-					switch (result) {
-					case JOptionPane.YES_OPTION:
-						super.approveSelection();
-						return;
-					case JOptionPane.NO_OPTION:
-						return;
-					case JOptionPane.CANCEL_OPTION:
-						cancelSelection();
-						return;
-					}
-				}
-				super.approveSelection();
-			}
-		};
-		return fileChooser;
-	}
-
-	private void fileFilter(JFileChooser fileChooser) {
-		fileChooser.setFileFilter(new FileFilter() {
-			public boolean accept(File file) {
-				return file.getName().toLowerCase().endsWith(".txt")
-						|| file.isDirectory();
-			}
-
-			public String getDescription() {
-				return "*.txt";
-			}
-		});
-	}
 	
-	private void saveProperties() {
-		saveValues();
-		config.save();
-	}
-	
-	private void saveValues() {
-		config.setProperty(Constants.LOGCFG, String.valueOf(box.isSelected()));
-	}
-	
-	/**
-	 * load properties.
-	 */
-	private void loadProperties() {
-		if(config.containsKey(Constants.LOGCFG))
-			box.setSelected(Boolean.parseBoolean(config.getProperty(Constants.LOGCFG)));
-	}
-
 	/**
 	 * close
 	 */
 	private void close() {
-		saveProperties();
 		setVisible(false);
 		dispose();
 	}
@@ -342,27 +213,14 @@ public class LogFrame extends JFrame implements Runnable {
 		return popupMenu;
 	}
 
-	public void run() {
-		while(true) {
-			try {
-				readLogContent();
-				Thread.sleep(2000);
-				synchronized (this) {
-					while (suspendThread) {
-						wait();
-					}
-				}
-			} catch (InterruptedException e) {
-			}
-		}
+	private void readLogContent(ByteArrayOutputStream bos) {
+		textArea.setText(bos.toString());
 	}
 
-	private void readLogContent() {
-		ByteArrayOutputStream bos = Log.getOutputStream();
-		textArea.setText(bos.toString());
-
-		if(box.isSelected()) {
-			textArea.setCaretPosition(textArea.getDocument().getLength());
+	@Override
+	public void update(Observable o, Object arg) {
+		if(arg instanceof ByteArrayOutputStream) {
+			readLogContent((ByteArrayOutputStream) arg);
 		}
 	}
 }

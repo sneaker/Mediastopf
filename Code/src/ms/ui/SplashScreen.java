@@ -3,10 +3,10 @@ package ms.ui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
-import javax.swing.border.LineBorder;
+
+import ms.utils.GUIComponents;
 
 /**
  * splash screen
@@ -33,7 +33,7 @@ public class SplashScreen extends JWindow implements Runnable {
 
 	private void sleep() {
 		try {
-			Thread.sleep(1600);
+			Thread.sleep(1750);
 		} catch (InterruptedException e) {
 			System.out.println(e);
 		}
@@ -45,8 +45,7 @@ public class SplashScreen extends JWindow implements Runnable {
 	}
 
 	private JLabel setSplashImage() {
-		JLabel label = new JLabel(new ImageIcon(getClass().getResource(image)));
-		label.setBorder(LineBorder.createBlackLineBorder());
+		JLabel label = GUIComponents.createJLabel(getClass().getResource(image));
 		add(label);
 		pack();
 		return label;

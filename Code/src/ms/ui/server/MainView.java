@@ -45,6 +45,7 @@ import ms.ui.dialogs.server.ExportDialog;
 import ms.ui.models.TaskComboBoxModel;
 import ms.ui.tables.Table;
 import ms.utils.I18NManager;
+import ms.utils.log.server.ServerLog;
 
 /**
  * main window of mediastopf server
@@ -387,8 +388,7 @@ public class MainView extends JFrame {
 			fileItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == log) {
-						LogFrame ld = new LogFrame(ServerConstants.class);
-						ld.setVisible(true);
+						openLogFrame();
 					} else if (e.getActionCommand() == exit) {
 						exit();
 					}
@@ -396,5 +396,11 @@ public class MainView extends JFrame {
 			});
 			fileMenu.add(fileItem);
 		}
+	}
+
+	private void openLogFrame() {
+		LogFrame ld = new LogFrame(ServerConstants.class);
+		ld.setVisible(true);
+		ServerLog.log.addObserver(ld);
 	}
 }

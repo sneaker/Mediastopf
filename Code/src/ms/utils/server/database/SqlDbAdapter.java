@@ -59,38 +59,6 @@ public class SqlDbAdapter {
 	}
 
 
-	public static List<ImportMedium> getImportMediumList() {
-		String sql = "select * from ImportMedium";
-		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
-				ImportMedium.class);
-		if (myList.isEmpty())
-			return null;
-		else
-			return myList;
-	}
-
-	public static ImportMedium getImportMediumList(int ImportMediumId) {
-		String sql = "select * from ImportMedium where id = " + ImportMediumId;
-		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
-				ImportMedium.class);
-		if (myList.isEmpty())
-			return null;
-		else
-			return myList.get(0);
-	}
-
-	public static List<ImportMedium> getImportMediumList(
-			ImportMedium myMediensammlung) {
-		String sql = "select * from ImportMedium where fk_Mediensammlung = "
-				+ myMediensammlung.getID();
-		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
-				ImportMedium.class);
-		if (myList.isEmpty())
-			return null;
-		else
-			return myList;
-	}
-
 	public static int saveAuftrag(Auftrag myAuftrag) {
 		int id;
 		try {
@@ -122,4 +90,55 @@ public class SqlDbAdapter {
 			return false;
 		}
 	}
+	
+	public static List<ImportMedium> getImportMediumList() {
+		String sql = "select * from ImportMedium";
+		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
+				ImportMedium.class);
+		if (myList.isEmpty())
+			return null;
+		else
+			return myList;
+	}
+
+	public static ImportMedium getImportMediumList(int ImportMediumId) {
+		String sql = "select * from ImportMedium where id = " + ImportMediumId;
+		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
+				ImportMedium.class);
+		if (myList.isEmpty())
+			return null;
+		else
+			return myList.get(0);
+	}
+
+	public static List<ImportMedium> getImportMediumList(
+			ImportMedium myMediensammlung) {
+		String sql = "select * from ImportMedium where fk_Mediensammlung = "
+				+ myMediensammlung.getID();
+		List<ImportMedium> myList = SqlDbConnection.getObjectList(sql,
+				ImportMedium.class);
+		if (myList.isEmpty())
+			return null;
+		else
+			return myList;
+	}
+	
+	public static int saveImportMedium(ImportMedium myMedium) {
+		int id;
+		try {
+			String sql = "select * from ImportMedium where id = " + myMedium.getID();
+			if(SqlDbConnection.getObjectList(sql, Auftrag.class).isEmpty()) {
+				id = SqlDbConnection.executeInsert("insert into ImportMedium (status, name) values (?, ?)", Integer.toString(myMedium.getID()), myMedium.getName());
+				myMedium.setId(id);
+				return id;
+			} else {
+				SqlDbConnection.execute("UPDATE ImportMedium SET status = ?, name = ? WHERE id = ?", Integer.toString(myMedium.getStatus()), myMedium.getName(), Integer.toString(myMedium.getID()));
+			}
+		} catch (SQLException e) {
+			System.err.println(e);
+		}
+		return -1;
+	}
+	
+	
 }

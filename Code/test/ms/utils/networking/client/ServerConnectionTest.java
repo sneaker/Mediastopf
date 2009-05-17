@@ -85,7 +85,7 @@ public class ServerConnectionTest {
 	private void startServer() {
 		loadLog();
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new PortListener(Client.ClientController, ServerController.MAX_SERVER_THREADS));
+		exec.execute(new PortListener(1337, 10));
 	}
 
 	private void loadLog() {

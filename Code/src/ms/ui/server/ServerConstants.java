@@ -17,5 +17,4 @@ public class ServerConstants extends Constants {
 	public static final String PROGRAM = "MediaStopf Server";
 	
 	public static final String CONFIGFILE = "MediaStopfServer.cfg";
-	public static final String LOGFILE = "logs/MediaStopfServer.log";
 }

@@ -3,8 +3,6 @@ package ms.utils.log;
 import java.io.ByteArrayOutputStream;
 import java.util.Observable;
 
-import ms.ui.Constants;
-
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Level;
@@ -17,12 +15,12 @@ public abstract class Log extends Observable implements Runnable {
 	protected static Logger logger;
 	protected static ByteArrayOutputStream bos;
 
-	protected void initLogger(Class<? extends Constants> constants) {
+	protected void initLogger(String logfile) {
 		String pattern = "%d{ISO8601}: %m %n";
 		PatternLayout layout = new PatternLayout(pattern);
 		logger.setLevel(Level.ALL);
 		logger.addAppender(getConsoleLogger(layout));
-		logger.addAppender(getFileLogger(layout, constants));
+		logger.addAppender(getFileLogger(layout, logfile));
 		logger.addAppender(getWriteLogger(layout));
 		
 		new Thread(this).start();
@@ -38,10 +36,10 @@ public abstract class Log extends Observable implements Runnable {
 		return new WriterAppender(layout, bos);
 	}
 
-	private DailyRollingFileAppender getFileLogger(PatternLayout layout, Class<? extends Constants> constants) {
+	private DailyRollingFileAppender getFileLogger(PatternLayout layout, String logfile) {
 		DailyRollingFileAppender fileAppender = new DailyRollingFileAppender();
 		try {
-			fileAppender = new DailyRollingFileAppender(layout, (String) constants.getField("LOGFILE").get(constants), "'_'yyyy-MM-dd");
+			fileAppender = new DailyRollingFileAppender(layout, logfile, "'_'yyyy-MM-dd");
 			fileAppender.setAppend(true);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -4,6 +4,7 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import ms.application.server.ServerController;
 import ms.domain.AuftragsListe;
 import ms.ui.server.MainView;
 import ms.utils.AuftragslistenReceiver;
@@ -16,16 +17,14 @@ import org.apache.log4j.Logger;
 public class InitServer {
 	
 	private Logger logger = ServerLog.getLogger();
-	public static boolean DEBUG = false;
 	public static final int MAX_SERVER_THREADS = 10;
 	
-	public InitServer(int port, boolean debug) {
-		DEBUG = debug;
+	public InitServer(int port) {
 		serverStartInfo();
 		initAuftragVerwaltung();
 		initNetwork(port);
 		initUI();
-		new ms.application.server.ServerController();
+		new ServerController();
 	}
 	
 	private void initAuftragVerwaltung() {
@@ -69,7 +68,7 @@ public class InitServer {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainView mediastopf = new MainView(DEBUG);
+				MainView mediastopf = new MainView();
 				mediastopf.setVisible(true);
 			}
 		});

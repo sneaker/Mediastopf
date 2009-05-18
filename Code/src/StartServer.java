@@ -8,9 +8,9 @@
  *
  */
 public class StartServer {
-
 	
 	public static int PORT = 1337;
+	public static boolean DEBUG = false;
 
 	/**
 	 * Start Server
@@ -21,8 +21,6 @@ public class StartServer {
 	 *            more logging.
 	 */
 	public static void main(final String[] args) {
-		boolean DEBUG = false;
-		
 		if (0 < args.length) {
 			for (int i = 0; i < args.length; i++) {
 				if (args[i].equalsIgnoreCase("-port")) {
@@ -33,6 +31,6 @@ public class StartServer {
 				}
 			}
 		}
-		new InitServer(PORT, DEBUG);
+		new InitServer(PORT);
 	}
 }

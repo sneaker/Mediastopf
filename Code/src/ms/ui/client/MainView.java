@@ -40,7 +40,6 @@ import ms.ui.dialogs.MessageDialog;
 import ms.ui.dialogs.client.ConfigDialog;
 import ms.ui.models.TaskComboBoxModel;
 import ms.ui.tables.client.TaskTable;
-import ms.utils.ApplicationLauncher;
 import ms.utils.ConfigHandler;
 import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
@@ -71,12 +70,8 @@ public class MainView extends JFrame {
 	private String run = manager.getString("Main.run"), reload = manager.getString("Main.reload"),
 	send = manager.getString("send"), runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
 
-	public MainView(boolean debug) {
-		if (debug) {
-			setTitle(ClientConstants.PROGRAM + " - Debug");
-		} else {
-			new SplashScreen(ClientConstants.SPLASH);
-		}
+	public MainView() {
+		new SplashScreen(ClientConstants.SPLASH);
 
 		initGUI();
 	}

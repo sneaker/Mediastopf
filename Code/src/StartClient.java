@@ -6,18 +6,19 @@
  *
  */
 public class StartClient {
+	
+	public static boolean DEBUG = false;
+	
 	/**
 	 * Start Client
 	 * 
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		boolean DEBUG = false;
-		
 		if (0 < args.length && args[0].equalsIgnoreCase("-debug")) {
 			DEBUG = true;
 		}
 		
-		new InitClient(DEBUG);
+		new InitClient();
 	}
 }

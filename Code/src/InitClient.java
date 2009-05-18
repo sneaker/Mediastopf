@@ -10,7 +10,6 @@ import ms.application.client.ClientController;
 import ms.domain.AuftragsListe;
 import ms.ui.client.MainView;
 import ms.utils.AuftragslistenReceiver;
-import ms.utils.I18NManager;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ClientAuftragslistenUpdater;
 import ms.utils.networking.client.ImportMediumSender;
@@ -21,30 +20,16 @@ public class InitClient {
 
 	public static final String HOST = "localhost";
 	public static final int PORT = 1337;
-	public static boolean DEBUG = false;
 
-	private static Logger logger;
-	@SuppressWarnings("unused")
-	private I18NManager manager;
+	private Logger logger = ClientLog.getLogger();;
 	
 	AuftragslistenReceiver rec;
 	ImportMediumSender send;
 
-	public InitClient(boolean debug) {
-		DEBUG = debug;
-		initManager();
-		initLogger();
+	public InitClient() {
 		initNetwork();
-		initGui();
+		initUI();
 		new ClientController(rec, send);
-	}
-
-	private void initManager() {
-		manager = I18NManager.getManager();
-	}
-
-	private void initLogger() {
-		logger = ClientLog.getLogger();
 	}
 
 	private void initNetwork() {
@@ -59,7 +44,6 @@ public class InitClient {
 
 			exec.execute(rec);
 			exec.execute(send);
-
 		} catch (UnknownHostException e) {
 			logger.fatal("Unknown host");
 			e.printStackTrace();
@@ -71,10 +55,6 @@ public class InitClient {
 		}
 	}
 
-	private void initGui() {
-		loadUI();
-	}
-
 	private void setLookAndFeel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -83,11 +63,11 @@ public class InitClient {
 		}
 	}
 
-	private void loadUI() {
+	private void initUI() {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainView mediastopf = new MainView(DEBUG);
+				MainView mediastopf = new MainView();
 				mediastopf.setVisible(true);
 			}
 		});

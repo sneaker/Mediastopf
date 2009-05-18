@@ -248,7 +248,7 @@ public class MainView extends JFrame {
 			manager.getString("Main.chooseaudioripper"));
 			return;
 		}
-		ApplicationLauncher.open(ripper);
+		ClientController.openApplication(ripper);
 		
 		updateStatusBar(StatusType.RUNMESSAGE);
 		ClientController.observeDir(task);

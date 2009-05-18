@@ -4,9 +4,12 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import ms.domain.AuftragsListe;
 import ms.ui.server.MainView;
+import ms.utils.AuftragslistenReceiver;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
+import ms.utils.server.database.ServerAuftragslistenUpdater;
 
 import org.apache.log4j.Logger;
 
@@ -19,11 +22,18 @@ public class InitServer {
 	public InitServer(int port, boolean debug) {
 		DEBUG = debug;
 		serverStartInfo();
+		initAuftragVerwaltung();
 		initNetwork(port);
 		initUI();
 		new ms.application.server.ServerController();
 	}
 	
+	private void initAuftragVerwaltung() {
+		ServerAuftragslistenUpdater updater = new ServerAuftragslistenUpdater();
+		AuftragslistenReceiver rec = new AuftragslistenReceiver(updater);
+		AuftragsListe.getInstance(rec);
+	}
+
 	private void initUI() {
 		setLookAndFeel();
 		loadUI();

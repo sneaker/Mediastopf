@@ -190,7 +190,7 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = ClientController.auftragreceiver.list;
+		taskList = AuftragsListe.getInstance(null);
 		taskComboBox = GUIComponents.createComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
@@ -247,11 +247,11 @@ public class MainView extends JFrame {
 			askFolder(manager.getString("Main.chooseaudiorippertitle"),
 			manager.getString("Main.chooseaudioripper"));
 			return;
-		}
-		ApplicationLauncher.open(ripper);
-		
+		}		
 		updateStatusBar(StatusType.RUNMESSAGE);
 		ClientController.observeDir(task);
+		
+		ApplicationLauncher.open(ripper);
 		
 		// TODO: What to do?? 
 		int id = Integer.valueOf(taskID);
@@ -310,7 +310,7 @@ public class MainView extends JFrame {
 	private void addTaskTable() {
 		tablePanel = GUIComponents.createPanel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 250));
 		
-		runTaskList = new AuftragsListe(ClientController.class);
+		runTaskList = AuftragsListe.getInstance(null);
 		taskTable = new TaskTable(runTaskList);
 		tableScrollPane = GUIComponents.createJScrollPane(taskTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);

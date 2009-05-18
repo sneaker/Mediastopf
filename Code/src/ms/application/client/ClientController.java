@@ -1,16 +1,14 @@
 package ms.application.client;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import ms.domain.Auftrag;
+import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
+import ms.utils.AuftragslistenReceiver;
 import ms.utils.client.directoryobserver.DirectoryObserver;
 import ms.utils.log.client.ClientLog;
-import ms.utils.networking.client.AuftragslistenReceiver;
 import ms.utils.networking.client.ImportMediumSender;
 
 /**
@@ -66,14 +64,8 @@ public class ClientController {
 	/**
 	 * get Tasks from Database
 	 */
-	public ArrayList<Auftrag> getTaskList() {
-		ArrayList<Auftrag> result = new ArrayList<Auftrag>();
-		try {
-			result = auftragreceiver.getTaskList();
-		} catch (IOException e) {
-			ClientLog.getLogger().fatal("Can't get Tasks");
-			//MessageDialog.info(I18NManager.getManager().getString("Dialog.cantgettask"), I18NManager.getManager().getString("Dialog.checkconnection"));
-		}
-		return result;
+	
+	public static AuftragsListe getTaskList() {
+		return AuftragsListe.getInstance(null);
 	}
 }

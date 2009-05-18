@@ -25,16 +25,13 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 	public void run() {
 		String receivedMessage = null;
 		while (true) {
-			
+
 			try {
 				receivedMessage = receiveMessage();
-				if(receivedMessage.equals("END"))
-					return;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			if (receivedMessage.equals("INFO")) {
 				sendTaskList();
 				return;
@@ -50,26 +47,29 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 
 	private void extractFiles(ImportMedium m) {
 		ArrayList<File> files = m.getItemsbyFile();
-		for(File source : files) {
-			File destination = new File(source.getAbsoluteFile().toString() + "_rec");
+		for (File source : files) {
+			File destination = new File(source.getAbsoluteFile().toString()
+					+ "_rec");
 			try {
 				InputStream in = new FileInputStream(source);
 				OutputStream out = new FileOutputStream(destination);
 				byte[] buf = new byte[1024];
 				int len;
-				while((len = in.read(buf)) > 0) {
+				while ((len = in.read(buf)) > 0) {
 					out.write(buf, 0, len);
 				}
 				in.close();
 				out.close();
-				System.out.println("File " + source.getAbsolutePath().toString() + " copied to " + destination.getAbsolutePath());
+				System.out.println("File "
+						+ source.getAbsolutePath().toString() + " copied to "
+						+ destination.getAbsolutePath());
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
 

@@ -1,13 +1,9 @@
 package ms.application.server;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import ms.domain.Auftrag;
 import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
-import ms.utils.server.database.SqlDbAdapter;
 
 import org.apache.log4j.Logger;
 
@@ -22,15 +18,6 @@ import org.apache.log4j.Logger;
 public class ServerController {
 	
 	private static Logger logger = ServerLog.getLogger();
-
-	public static ArrayList<Auftrag> getTaskList() {
-		List<Auftrag> list = SqlDbAdapter.getOrderList();
-		ArrayList<Auftrag> taskList = new ArrayList<Auftrag>();
-		for(Auftrag a: list) {
-			taskList.add(new Auftrag(a.getID()));
-		}
-		return taskList;
-	}
 	
 	/**
 	 * copying files

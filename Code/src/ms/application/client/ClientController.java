@@ -64,6 +64,20 @@ public class ClientController {
 		mediumsender.addMediumForTransfer((ImportMedium) o);
 	}
 	
+	/**
+	 * get Tasks from Database
+	 */
+	public ArrayList<Auftrag> getTaskList() {
+		ArrayList<Auftrag> result = new ArrayList<Auftrag>();
+		try {
+			result = auftragreceiver.getTaskList();
+		} catch (IOException e) {
+			ClientLog.getLogger().fatal("Can't get Tasks");
+			//MessageDialog.info(I18NManager.getManager().getString("Dialog.cantgettask"), I18NManager.getManager().getString("Dialog.checkconnection"));
+		}
+		return result;
+	}
+	
 	public static void openApplication(String app) {
 		ApplicationLauncher.open(app);
 	}

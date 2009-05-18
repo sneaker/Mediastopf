@@ -38,9 +38,6 @@ import ms.utils.I18NManager;
 
 /**
  * dialog to choose a destination, where the files should be copied
- * 
- * @author david
- *
  */
 public class ExportDialog extends JDialog {
 

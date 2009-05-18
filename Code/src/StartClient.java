@@ -1,9 +1,6 @@
 /**
  * start client
  * client in debugmode if args has a "-debug" flag
- * 
- * @author david
- *
  */
 public class StartClient {
 	

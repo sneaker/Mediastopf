@@ -16,9 +16,6 @@ import javax.imageio.ImageIO;
  * - NOT white tolerance of 95% (default) => rgb 242-255 are all "white"
  * - image NOT white tolerance of 5% (default)
  * => if more than 5% of the pixels are not white => image is NOT white
- * 
- * @author david
- * 
  */
 public class ImageWhiteFilter {
 

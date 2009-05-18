@@ -8,9 +8,6 @@ import ms.ui.Constants;
  * - icons
  * - files
  * - etc.
- * 
- * @author david
- *
  */
 public class ClientConstants extends Constants {
 	

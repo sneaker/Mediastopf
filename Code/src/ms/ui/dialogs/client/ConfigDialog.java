@@ -37,9 +37,6 @@ import ms.utils.I18NManager;
  * configuration dialog
  * - custom cdripper
  * - custom import folder
- * 		
- * @author david
- *
  */
 public class ConfigDialog extends JDialog {
 

@@ -31,9 +31,6 @@ import ms.utils.I18NManager;
 
 /**
  * show log information from logger
- * 
- * @author david
- *
  */
 public class LogFrame extends JFrame implements Observer {
 

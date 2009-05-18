@@ -6,9 +6,6 @@ package ms.ui;
  * - icons
  * - files
  * - etc.
- * 
- * @author david
- *
  */
 public class Constants {
 	

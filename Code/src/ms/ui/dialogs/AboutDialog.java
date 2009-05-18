@@ -24,9 +24,6 @@ import ms.utils.I18NManager;
 
 /**
  * about dialog
- * 
- * @author david
- *
  */
 public class AboutDialog extends JDialog {
 

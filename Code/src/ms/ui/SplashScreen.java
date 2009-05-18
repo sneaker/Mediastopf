@@ -10,9 +10,6 @@ import ms.utils.GUIComponents;
 
 /**
  * splash screen
- * 
- * @author david
- *
  */
 public class SplashScreen extends JWindow implements Runnable {
 	

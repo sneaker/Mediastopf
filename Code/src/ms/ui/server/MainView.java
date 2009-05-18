@@ -48,9 +48,6 @@ import ms.utils.log.server.ServerLog;
 
 /**
  * main window of mediastopf server
- * 
- * @author david
- *
  */
 public class MainView extends JFrame {
 	/**

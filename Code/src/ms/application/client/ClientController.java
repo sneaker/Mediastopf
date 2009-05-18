@@ -17,8 +17,6 @@ import ms.utils.networking.client.ImportMediumSender;
  * used to load gui components and connecting to server,
  * also included a directory observer, which automatically trigger "sendFiles"
  * 
- * @author david
- *
  */
 public class ClientController {
 	

@@ -3,9 +3,6 @@
  * start server
  * server in debugmode if args has "-debug" flag and
  * possibility to change port with the "-port" flag
- * 
- * @author david
- *
  */
 public class StartServer {
 	

@@ -11,9 +11,6 @@ import org.apache.log4j.Logger;
 /**
  * server classe
  * loading gui components and start server
- * 
- * @author david
- *
  */
 public class ServerController {
 	

@@ -17,9 +17,6 @@ import ms.utils.I18NManager;
 
 /**
  * show trayicon if possible
- * 
- * @author david
- *
  */
 public class SystemTrayIcon {
 	

@@ -5,9 +5,6 @@ import ms.utils.I18NManager;
 
 /**
  * statusmessages
- * 
- * @author david
- *
  */
 public class StatusMessage {
 	

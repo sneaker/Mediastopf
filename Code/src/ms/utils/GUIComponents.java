@@ -35,6 +35,12 @@ public class GUIComponents {
 	
 	private static I18NManager manager = I18NManager.getManager();
 	
+	/**
+	 * create a JLabel with a icon
+	 * 
+	 * @param url iconstring
+	 * @return jlabel
+	 */
 	public static JLabel createJLabel(URL url) {
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon(url));
@@ -42,6 +48,13 @@ public class GUIComponents {
 		return label;
 	}
 	
+	/**
+	 * init a jframe
+	 * 
+	 * @param frame jframe to init
+	 * @param url iconstring
+	 * @param dim dimension of frame
+	 */
 	public static void initFrame(JFrame frame, URL url, Dimension dim) {
 		frame.setSize(dim);
 		frame.setIconImage(new ImageIcon(url).getImage());
@@ -51,6 +64,15 @@ public class GUIComponents {
 		frame.setMinimumSize(new Dimension(frame.getWidth(), frame.getHeight()));
 	}
 	
+	/**
+	 * init a dialog
+	 * 
+	 * @param dialog jdialog to init
+	 * @param title of jdialog
+	 * @param url icon of dialog
+	 * @param size of dialog
+	 * @param closeOperation of dialog
+	 */
 	public static void initDialog(JDialog dialog, String title, URL url, Dimension size, int closeOperation) {
 		dialog.setTitle(title);
 		dialog.setSize(size);
@@ -63,6 +85,12 @@ public class GUIComponents {
 		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
+	/**
+	 * create jpanel
+	 * 
+	 * @param bounds of jpanel
+	 * @return jpanel
+	 */
 	public static JPanel createPanel(Rectangle bounds) {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
@@ -70,12 +98,26 @@ public class GUIComponents {
 		return panel;
 	}
 	
+	/**
+	 * create jpanel with a border
+	 * 
+	 * @param bounds of jpanel
+	 * @param border of jpanel
+	 * @return jpanel
+	 */
 	public static JPanel createPanel(Rectangle bounds, TitledBorder border) {
 		JPanel panel = createPanel(bounds);
 		panel.setBorder(border);
 		return panel;
 	}
 	
+	/**
+	 * create jcombobox
+	 * 
+	 * @param model which jcombobox should use
+	 * @param bounds of jcombobox
+	 * @return jcombobox
+	 */
 	public static JComboBox createComboBox(ComboBoxModel model, Rectangle bounds) {
 		JComboBox box = new JComboBox(model);
 		box.setBounds(bounds);
@@ -88,6 +130,13 @@ public class GUIComponents {
 		return box;
 	}
 	
+	/**
+	 * create jtextfield
+	 * 
+	 * @param text of jtextfield
+	 * @param bounds of jtextfield
+	 * @return jtextfield
+	 */
 	public static JTextField createTextField(String text, Rectangle bounds) {
 		JTextField textField = new JTextField();
 		textField.setText(text);
@@ -96,6 +145,14 @@ public class GUIComponents {
 		return textField;
 	}
 	
+	/**
+	 * create jtextfield with a tooltip
+	 * 
+	 * @param text of jtextfield
+	 * @param bounds of jtextfield
+	 * @param tooltip of jtextfield
+	 * @return jtextfield
+	 */
 	public static JTextField createTextField(String text, Rectangle bounds, String tooltip) {
 		JTextField textField = createTextField(text, bounds);
 		textField.setHorizontalAlignment(JTextField.CENTER);
@@ -103,6 +160,11 @@ public class GUIComponents {
 		return textField;
 	}
 	
+	/**
+	 * create a textarea
+	 * 
+	 * @return jtextarea
+	 */
 	public static JTextArea createTextArea() {
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
@@ -112,7 +174,14 @@ public class GUIComponents {
 		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		return textArea;
 	}
-	
+
+	/**
+	 * create a jscrollpane
+	 * 
+	 * @param comp which use a jscrollpane
+	 * @param bounds of jscrollpane
+	 * @return jscrollpane
+	 */
 	public static JScrollPane createJScrollPane(JComponent comp, Rectangle bounds) {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(comp);
@@ -122,12 +191,29 @@ public class GUIComponents {
 		return scrollPane;
 	}
 	
+	/**
+	 * create a jbutton wit an icon
+	 * 
+	 * @param bounds of jbutton
+	 * @param buttonText of jbutton
+	 * @param mnemonic of jbutton
+	 * @param url icon of jbutton
+	 * @return jbutton
+	 */
 	public static JButton createButton(Rectangle bounds, String buttonText, int mnemonic, URL url) {
 		JButton button = createButton(bounds, buttonText, mnemonic);
 		button.setIcon(new ImageIcon(url));
 	    return button;
 	}
 	
+	/**
+	 * create a jbutton
+	 * 
+	 * @param bounds of jbutton
+	 * @param buttonText of jbutton
+	 * @param mnemonic of jbutton
+	 * @return jbutton
+	 */
 	public static JButton createButton(Rectangle bounds, String buttonText, int mnemonic) {
 		JButton button = new JButton();
 		button.setBounds(bounds);
@@ -138,6 +224,11 @@ public class GUIComponents {
 	    return button;
 	}
 	
+	/**
+	 * create a jfilechooser
+	 * 
+	 * @return jfilechooser
+	 */
 	public static JFileChooser getFileChooser() {
 		JFileChooser fileChooser = new JFileChooser() {
 
@@ -170,6 +261,12 @@ public class GUIComponents {
 		return fileChooser;
 	}
 	
+	/**
+	 * jfilechooser filefilter
+	 * 
+	 * @param fileChooser jfilechooser
+	 * @param postfix to filter
+	 */
 	public static void jFileFilter(JFileChooser fileChooser, final String postfix) {
 		fileChooser.setFileFilter(new FileFilter() {
 			public boolean accept(File file) {
@@ -183,11 +280,24 @@ public class GUIComponents {
 		});
 	}
 	
+	/**
+	 * an esc listener to dialog
+	 * 
+	 * @param dialog jdialog
+	 * @param listener actionlistener
+	 */
 	public static void addESCListener(JDialog dialog, ActionListener listener) {
 		JRootPane rootPane = dialog.getRootPane();
 		rootPane.registerKeyboardAction(listener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 	
+	/**
+	 * create jmenuitem
+	 * 
+	 * @param text of jmenuitem
+	 * @param acc accelerator of jmenuitem
+	 * @return jmenuitem
+	 */
 	public static JMenuItem createMenuItem(String text, KeyStroke acc) {
 		JMenuItem menuItem = new JMenuItem();
 		menuItem.setText(text);

@@ -12,9 +12,6 @@ import java.nio.channels.FileChannel;
  * File Input/Output:
  * - write a content to a file
  * - copying files from a source to a destionation
- * 
- * @author david
- *
  */
 public class FileIO {
 	

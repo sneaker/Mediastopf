@@ -47,9 +47,6 @@ import ms.utils.log.client.ClientLog;
 
 /**
  * main window of mediastopf
- * 
- * @author david
- *
  */
 public class MainView extends JFrame {
 	/**

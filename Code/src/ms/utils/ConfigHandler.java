@@ -12,9 +12,6 @@ import ms.ui.server.ServerConstants;
 
 /**
  * save/load a configfile
- * 
- * @author david
- *
  */
 public class ConfigHandler extends Properties {
 	

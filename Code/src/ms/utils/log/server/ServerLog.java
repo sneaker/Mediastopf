@@ -12,9 +12,6 @@ import org.apache.log4j.Logger;
  * - show in console
  * - write to a file (daily logging)
  * - put log information to a outputstream
- * 
- * @author david
- *
  */
 public class ServerLog extends Log {
 	

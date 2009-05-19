@@ -7,10 +7,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import ms.application.client.ClientController;
+import ms.domain.AuftragsListe;
 import ms.ui.client.MainView;
+import ms.utils.AuftragslistenReceiver;
 import ms.utils.I18NManager;
 import ms.utils.log.client.ClientLog;
-import ms.utils.networking.client.AuftragslistenReceiver;
+import ms.utils.networking.client.ClientAuftragslistenUpdater;
 import ms.utils.networking.client.ImportMediumSender;
 
 import org.apache.log4j.Logger;
@@ -22,6 +24,7 @@ public class InitClient {
 	public static boolean DEBUG = false;
 
 	private static Logger logger;
+	@SuppressWarnings("unused")
 	private I18NManager manager;
 	
 	AuftragslistenReceiver rec;
@@ -46,9 +49,10 @@ public class InitClient {
 
 	private void initNetwork() {
 		try {
-			rec = new AuftragslistenReceiver(HOST, PORT, ClientController.class);
+			ClientAuftragslistenUpdater clientupdater = new ClientAuftragslistenUpdater(HOST, PORT);
+			rec = new AuftragslistenReceiver(clientupdater);
+			AuftragsListe.getInstance(rec);
 			send = new ImportMediumSender(HOST, PORT);
-			rec.connect();
 			send.connect();
 			
 			Executor exec = Executors.newSingleThreadExecutor();

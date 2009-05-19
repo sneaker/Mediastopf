@@ -31,7 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
-import ms.application.server.ServerController;
 import ms.domain.AuftragsListe;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
@@ -210,7 +209,8 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = new AuftragsListe(ServerController.class);
+		//XC3
+		taskList = AuftragsListe.getInstance(null);
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if(0<taskComboBox.getItemCount())
@@ -290,7 +290,7 @@ public class MainView extends JFrame {
 		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 200);
 		tablePanel.setLayout(null);
 		
-		runTaskList = new AuftragsListe(ServerController.class);
+		runTaskList = AuftragsListe.getInstance(null);
 		exportTable = new Table(runTaskList);
 		tableScrollPane = new JScrollPane(exportTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());

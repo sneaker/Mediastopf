@@ -1,29 +1,36 @@
 package ms.domain;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Observable;
 
 import ms.domain.Auftrag;
+import ms.utils.AuftragslistenReceiver;
 
-public class AuftragsListe extends Observable implements Serializable {
+public class AuftragsListe extends Observable {
 
-	private static final long serialVersionUID = 1L;
 	private ArrayList<Auftrag> list = new ArrayList<Auftrag>();
-	private Class<?> network;
 
-	public AuftragsListe(Class<?> network) {
-		this.network = network;
-		updateList();
+	private AuftragslistenReceiver rec;
+	
+	private static AuftragsListe _instance;
+
+	public static AuftragsListe getInstance(AuftragslistenReceiver rec) {
+		if (_instance == null)
+			_instance = new AuftragsListe(rec);
+		return _instance;
 	}
 	
+	private AuftragsListe(AuftragslistenReceiver rec) {
+		this.rec = rec;
+		updateList();
+	}
+
 	public void add(Auftrag auftrag) {
 		list.add(auftrag);
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public void add(ArrayList<Auftrag> al) {
 		list = al;
 	}
@@ -47,18 +54,11 @@ public class AuftragsListe extends Observable implements Serializable {
 	public int size() {
 		return list.size();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void updateList() {
-		try {
-			System.out.println("here");
-			System.out.println(network);
-			System.out.println(list);
-			Method method = network.getDeclaredMethod("getTaskList", new Class[] {});
-			this.list = (ArrayList<Auftrag>)method.invoke(null, new Object[] {});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		rec.updateTaskList();
+		this.list = rec.getTaskList();
 		setChanged();
 		notifyObservers();
 	}

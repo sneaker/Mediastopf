@@ -6,6 +6,8 @@ import java.util.Observable;
 /**
  * Verwaltet Dateien, welche zur Übertragung auf den Server bereit sind.
  * 
+ * @see ms.utils.networking.client.ImportMediumSender;
+ * 
  */
 public class SendeListe extends Observable {
 

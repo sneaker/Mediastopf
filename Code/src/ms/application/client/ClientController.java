@@ -37,7 +37,7 @@ public class ClientController {
 	 * @param folder to observe
 	 */	
 	public static void observeDir(final File folder) {
-		DirectoryObserver dirObserver = new DirectoryObserver(folder.toString());
+		DirectoryObserver dirObserver = new DirectoryObserver(folder);
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
 				ImportMedium medium = null;

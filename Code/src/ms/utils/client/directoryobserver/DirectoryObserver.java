@@ -75,6 +75,8 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * @throws FilesRemovedException
 	 *             wenn eine Datei gelöscht wurde und daher mit einer
 	 *             Inkonsistenz auf dem Server gerechnet werden muss
+	 * @return true wenn der Importvorgang noch läuft und weitere Dateien hinzugekommen sind
+	 * @return false wenn seit einem Timeout 
 	 */
 	protected boolean checkStatus() throws FilesRemovedException {
 		if (getDeletedFiles() > 0)

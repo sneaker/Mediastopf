@@ -21,7 +21,7 @@ public class InitClient {
 	public static final String HOST = "localhost";
 	public static final int PORT = 1337;
 
-	private Logger logger = ClientLog.getLogger();;
+	private Logger logger = ClientLog.getLogger();
 	
 	AuftragslistenReceiver rec;
 	ImportMediumSender send;

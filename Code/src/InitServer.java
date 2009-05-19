@@ -33,11 +33,6 @@ public class InitServer {
 		AuftragsListe.getInstance(rec);
 	}
 
-	private void initUI() {
-		setLookAndFeel();
-		loadUI();
-	}
-
 	private void initNetwork(int port) {
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
@@ -64,7 +59,7 @@ public class InitServer {
 		}
 	}
 
-	private void loadUI() {
+	private void initUI() {
 		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

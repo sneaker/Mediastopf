@@ -78,6 +78,7 @@
 		<mkdir dir="${doc.dir}" />
 		<javadoc destdir="${doc.dir}"
 			package="true"
+			locale="de_CH"
             windowtitle="MediaStopf API"
             doctitle="MediaStopf API"
 			version="true" >

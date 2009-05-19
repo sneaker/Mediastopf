@@ -1,3 +1,4 @@
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,6 +31,8 @@ public class InitServer {
 	private void initAuftragVerwaltung() {
 		ServerAuftragslistenUpdater updater = new ServerAuftragslistenUpdater();
 		AuftragslistenReceiver rec = new AuftragslistenReceiver(updater);
+		Executor exec = Executors.newSingleThreadExecutor();
+		exec.execute(rec);
 		AuftragsListe.getInstance(rec);
 	}
 

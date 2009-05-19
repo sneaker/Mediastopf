@@ -54,7 +54,6 @@ abstract public class BasicNetIO {
 		try {
 			ObjectOutputStream sender = new ObjectOutputStream(commSocket.getOutputStream());
 			sender.writeObject(o);
-			sender.writeObject("END");
 			sender.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

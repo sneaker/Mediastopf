@@ -25,7 +25,6 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 	public void run() {
 		String receivedMessage = null;
 		while (true) {
-
 			try {
 				receivedMessage = receiveMessage();
 			} catch (IOException e) {
@@ -34,13 +33,11 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 
 			if (receivedMessage.equals("INFO")) {
 				sendTaskList();
-				return;
 			}
 
 			if (receivedMessage.equals("TRANSFER")) {
 				ImportMedium m = (ImportMedium) receiveObject();
 				extractFiles(m);
-				return;
 			}
 		}
 	}

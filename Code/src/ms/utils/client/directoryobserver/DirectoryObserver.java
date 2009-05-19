@@ -72,11 +72,18 @@ public class DirectoryObserver extends Observable implements Runnable {
 	}
 
 	/**
+	 * Prüft, ob im überwachten Verzeichnis seit einem gewissen Zeitintervall
+	 * keine Änderung mehr aufgetreten ist. Falls Dateien neu aus dem
+	 * Verzeichnis gelöscht wurden, wird eine Exception geworfen, da dies unter
+	 * Umständen zu einer Dateninkonsistenz führen kann, wenn jemand Dateien
+	 * manuell aus dem Auftragsverzeichnis löscht.
+	 * 
 	 * @throws FilesRemovedException
 	 *             wenn eine Datei gelöscht wurde und daher mit einer
 	 *             Inkonsistenz auf dem Server gerechnet werden muss
-	 * @return true wenn der Importvorgang noch läuft und weitere Dateien hinzugekommen sind
-	 * @return false wenn seit einem Timeout 
+	 * @return true wenn der Importvorgang noch läuft und weitere Dateien
+	 *         hinzugekommen sind
+	 * @return false wenn seit einem bestimmten Intervall keine Änderung aufgetreten ist.
 	 */
 	protected boolean checkStatus() throws FilesRemovedException {
 		if (getDeletedFiles() > 0)

@@ -45,7 +45,6 @@ public class ImportMediumSender extends AbstractServerConnection implements
 		mediumlist.add(m);
 	}
 
-	@Override
 	public void run() {
 		while (true) {
 			for (ImportMedium m : mediumlist.getList()) {

@@ -54,7 +54,7 @@ public class TaskTable extends Table {
 	/**
 	 * send files to server
 	 */
-	//TODO: what todo??
+	//TODO: add functionality
 	public void send() {
 		int row = getSelectedRow();
 		if (row < 0) {
@@ -62,7 +62,7 @@ public class TaskTable extends Table {
 			return;
 		}
 		int tasknum = (Integer) getValueAt(row, 0);
-		String status = (String) getValueAt(row, 1);
+		String status = getValueAt(row, 1).toString();
 		
 		MessageDialog.info("Sending Tasknr: " + tasknum + " - with status: " + status, "Not sending anything, just a test");
 	}

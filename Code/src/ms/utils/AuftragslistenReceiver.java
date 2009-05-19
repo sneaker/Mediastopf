@@ -1,9 +1,10 @@
 package ms.utils;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 
-public class AuftragslistenReceiver implements Runnable{
+public class AuftragslistenReceiver extends Observable implements Runnable{
 
 	public static final int TIMEOUT = 10000;
 	
@@ -32,6 +33,8 @@ public class AuftragslistenReceiver implements Runnable{
 			try {
 				System.out.println("Threads updates itself");
 				updateTaskList();
+				setChanged();
+				notifyObservers();
 				Thread.sleep(TIMEOUT);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

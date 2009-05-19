@@ -99,6 +99,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 		return hasChanged();
 	}
 
+	//TODO: refactor magic numbers
 	private boolean recentChange() {
 		return getLastModifyDate() > System.currentTimeMillis() - updateTimeout
 				* 60 * 1000;

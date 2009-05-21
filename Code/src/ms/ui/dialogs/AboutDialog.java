@@ -21,7 +21,6 @@ import javax.swing.KeyStroke;
 
 import ms.ui.Constants;
 import ms.utils.BrowserControl;
-import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 import ms.utils.ui.Button;
 import ms.utils.ui.Dialog;

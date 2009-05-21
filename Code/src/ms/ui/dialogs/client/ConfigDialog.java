@@ -25,7 +25,6 @@ import javax.swing.KeyStroke;
 
 import ms.ui.client.ClientConstants;
 import ms.utils.ConfigHandler;
-import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 import ms.utils.ui.Button;
 import ms.utils.ui.Dialog;

@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JLabel;
 import javax.swing.JWindow;
+import javax.swing.border.LineBorder;
 
 import ms.utils.GUIComponents;
 
@@ -42,7 +43,7 @@ public class SplashScreen extends JWindow implements Runnable {
 	}
 
 	private JLabel setSplashImage() {
-		JLabel label = GUIComponents.createJLabel(getClass().getResource(image));
+		JLabel label = GUIComponents.createJLabel(getClass().getResource(image), LineBorder.createBlackLineBorder());
 		add(label);
 		pack();
 		return label;

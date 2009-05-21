@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -13,10 +13,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -43,6 +44,7 @@ import ms.ui.dialogs.MessageDialog;
 import ms.ui.dialogs.server.ExportDialog;
 import ms.ui.models.TaskComboBoxModel;
 import ms.ui.tables.Table;
+import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 import ms.utils.log.server.ServerLog;
 
@@ -83,17 +85,18 @@ public class MainView extends JFrame {
 		addTrayIcon();
 		addStatusBar();
 		addTaskPanel();
+		
+		Iterator<JPanel> it = panelMap.values().iterator();
+		while (it.hasNext()) {
+			add((JPanel) it.next());
+		}
 	}
 
 	private void initFrame() {
-		setTitle(ServerConstants.PROGRAM);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setLayout(null);
-		setSize(600, 550);
+		URL icon = getClass().getResource(Constants.UIIMAGE + Constants.ICON);
+		
+		GUIComponents.initJFrame(this, ServerConstants.PROGRAM, icon, new Dimension(600, 550), JFrame.DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(400, 450));
-		setIconImage(new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage());
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((dim.width - getWidth()) / 2, (dim.height - getHeight()) / 2);
 		setJMenuBar(createMenuBar());
 		
 		componentListener();
@@ -153,22 +156,22 @@ public class MainView extends JFrame {
 	}
 	
 	private void addTrayIcon() {
+		if (!SystemTray.isSupported()) {
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			return;
+		}
 		new SystemTrayIcon(this);
 	}
 	
 	private void addStatusBar() {
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBounds(0, getHeight() - 70, getWidth() - 10, 20);
+		JPanel panel = GUIComponents.createJPanel(new Rectangle(0, getHeight() - 70, getWidth() - 10, 20));
 		panelMap.put(statusbar, panel);
 		
-		statusBar = new JTextField(manager.getString("Main.copyright"));
-		statusBar.setBounds(0, 0, panel.getWidth(), panel.getHeight());
+		statusBar = GUIComponents.createJTextField(manager.getString("Main.copyright"), new Rectangle(0, 0, panel.getWidth(), panel.getHeight()));
 		statusBar.setEditable(false);
 		statusBar.setFocusable(false);
 		
 		panel.add(statusBar);
-		add(panel);
 	}
 
 	/**
@@ -183,12 +186,8 @@ public class MainView extends JFrame {
 		final String[] panelLabel = { tasks, runningTask };
 		final JComponent[] comp = { taskComboBox, tablePanel };
 		for(int i=0; i<panelLabel.length; i++) {
-			JPanel panel = new JPanel();
-			panel.setLayout(null);
-			panel.setBounds(0, y[i], getWidth() - 10, height[i]);
-			panel.setBorder(BorderFactory.createTitledBorder(panelLabel[i]));
+			JPanel panel = GUIComponents.createPanel(new Rectangle(0, y[i], getWidth() - 10, height[i]), BorderFactory.createTitledBorder(panelLabel[i]));
 			panel.add(comp[i]);
-			add(panel);
 			panelMap.put(panelLabel[i], panel);
 		}
 		
@@ -202,10 +201,8 @@ public class MainView extends JFrame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		//XC3
 		taskList = AuftragsListe.getInstance(null);
-		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
-		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
+		taskComboBox = GUIComponents.createJComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new MetalComboBoxUI() {
@@ -228,7 +225,7 @@ public class MainView extends JFrame {
 		int width = 115;
 		int height = 25;
 		final String[] buttonText = { reload, export };
-		final String[] icons = { ClientConstants.RELOAD, ClientConstants.EXPORT_S };
+		final URL[] icons = { getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.RELOAD), getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.EXPORT_S) };
 		final Rectangle reloadBounds = new Rectangle(x, y, width, height);
 		final Rectangle exportBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { reloadBounds, exportBounds };
@@ -236,13 +233,7 @@ public class MainView extends JFrame {
 		final int exportMnemonic = manager.getMnemonic("export");
 		final int[] mnemonic = { reloadMnemonic, exportMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
-		    button.setVerticalTextPosition(JButton.CENTER);
-		    button.setHorizontalTextPosition(JButton.RIGHT);
+			JButton button = GUIComponents.createJButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
@@ -279,14 +270,11 @@ public class MainView extends JFrame {
 	 * @return JPanel
 	 */
 	private void addTaskTable() {
-		tablePanel = new JPanel();
-		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 200);
-		tablePanel.setLayout(null);
+		tablePanel = GUIComponents.createJPanel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 200));
 		
 		runTaskList = AuftragsListe.getInstance(null);
 		exportTable = new Table(runTaskList);
-		tableScrollPane = new JScrollPane(exportTable);
-		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());
+		tableScrollPane = GUIComponents.createJScrollPane(exportTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}
 	

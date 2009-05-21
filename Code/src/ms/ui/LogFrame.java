@@ -66,9 +66,7 @@ public class LogFrame extends JFrame implements Observer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.setTitle(title);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		GUIComponents.initFrame(this, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(500, 430));
+		GUIComponents.initJFrame(this, title, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(500, 430), JFrame.DISPOSE_ON_CLOSE);
 		
 		componentListener();
 	}
@@ -100,7 +98,7 @@ public class LogFrame extends JFrame implements Observer {
 	}
 
 	private void addTextArea() {
-		textArea = GUIComponents.createTextArea();
+		textArea = GUIComponents.createJTextArea();
 		textArea.setComponentPopupMenu(getPopUpMenu(textArea));
 		scrollArea = GUIComponents.createJScrollPane(textArea, new Rectangle(5, 5, 485, 350));
 		add(scrollArea);
@@ -122,7 +120,7 @@ public class LogFrame extends JFrame implements Observer {
 		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
 		final int[] mnemonic = { okMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = GUIComponents.createButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
+			JButton button = GUIComponents.createJButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
@@ -138,13 +136,13 @@ public class LogFrame extends JFrame implements Observer {
 	}
 
 	private void saveAsTXT() {
-		JFileChooser fileChooser = GUIComponents.getFileChooser();
+		JFileChooser fileChooser = GUIComponents.getJFileChooser();
 		try {
 			fileChooser.setSelectedFile(new File((String) constants.getField("LOGFILE").get(constants)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		GUIComponents.jFileFilter(fileChooser, ".txt");
+		GUIComponents.getFileFilter(fileChooser, "txt");
 
 		int returnVal = fileChooser.showSaveDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -210,14 +208,10 @@ public class LogFrame extends JFrame implements Observer {
 		return popupMenu;
 	}
 
-	private void readLogContent(ByteArrayOutputStream bos) {
-		textArea.setText(bos.toString());
-	}
-
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof ByteArrayOutputStream) {
-			readLogContent((ByteArrayOutputStream) arg);
+			textArea.setText(((ByteArrayOutputStream) arg).toString());
 		}
 	}
 }

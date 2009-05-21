@@ -8,6 +8,7 @@ import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
+import ms.utils.ImageWhiteFilter;
 import ms.utils.client.directoryobserver.DirectoryObserver;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ImportMediumSender;
@@ -64,6 +65,11 @@ public class ClientController {
 				for (String filename : folder.list()) {
 					medium = new ImportMedium();
 					File f = new File(filename);
+					if (isImage(f)) {
+						if (isWhite(f)) {
+							continue;
+						}
+					}
 					medium.addItem(f);
 				}
 				addImportMedium(medium);
@@ -72,6 +78,23 @@ public class ClientController {
 		new Thread(dirObserver).start();
 
 		ClientLog.getLogger().info("Directory Observer started in " + folder);
+	}
+
+	private static boolean isImage(File file) {
+		String[] extensions = { "jpg", "jpeg", "gif", "png" };
+		for (int i = 0; i < extensions.length; i++) {
+			if (file.getName().endsWith(extensions[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isWhite(File image) {
+		if (ImageWhiteFilter.analyzeImageFile(image)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -94,7 +117,7 @@ public class ClientController {
 	public static AuftragsListe getTaskList() {
 		return AuftragsListe.getInstance(null);
 	}
-	
+
 	public static void openApplication(String app) {
 		ApplicationLauncher.open(app);
 	}

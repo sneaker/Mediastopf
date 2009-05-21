@@ -1,5 +1,6 @@
 package ms.utils;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URL;
 
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,98 +29,79 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 
 public class GUIComponents {
 	
 	private static I18NManager manager = I18NManager.getManager();
 	
-	/**
-	 * create a JLabel with a icon
-	 * 
-	 * @param url iconstring
-	 * @return jlabel
-	 */
-	public static JLabel createJLabel(URL url) {
-		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(url));
-		label.setBorder(LineBorder.createBlackLineBorder());
+	public static JLabel createJLabel(URL url, Border border) {
+		JLabel label = createJLabel(url);
+		label.setBorder(border);
 		return label;
 	}
 	
-	/**
-	 * init a jframe
-	 * 
-	 * @param frame jframe to init
-	 * @param url iconstring
-	 * @param dim dimension of frame
-	 */
-	public static void initFrame(JFrame frame, URL url, Dimension dim) {
-		frame.setSize(dim);
-		frame.setIconImage(new ImageIcon(url).getImage());
-		Dimension dim1 = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setLocation((dim1.width - frame.getWidth()) / 2, (dim1.height - frame.getHeight()) / 2);
-		frame.setLayout(null);
-		frame.setMinimumSize(new Dimension(frame.getWidth(), frame.getHeight()));
+	private static JLabel createJLabel(URL url) {
+		JLabel label = new JLabel();
+		label.setIcon(new ImageIcon(url));
+		return label;
 	}
 	
-	/**
-	 * init a dialog
-	 * 
-	 * @param dialog jdialog to init
-	 * @param title of jdialog
-	 * @param url icon of dialog
-	 * @param size of dialog
-	 * @param closeOperation of dialog
-	 */
-	public static void initDialog(JDialog dialog, String title, URL url, Dimension size, int closeOperation) {
+	public static JLabel createJLabel(URL url, Rectangle bounds) {
+		JLabel label = createJLabel(url);
+		label.setBounds(bounds);
+		return label;
+	}
+	
+	public static JLabel createJLabel(String text, Rectangle bounds) {
+		JLabel label = new JLabel(text);
+		label.setBounds(bounds);
+		label.setForeground(Color.RED);
+		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setBorder(BorderFactory.createLineBorder(Color.RED));
+		return label;
+	}
+	
+	public static void initJFrame(JFrame frame, String title, URL url, Dimension size, int closeOperation) {
+		frame.setTitle(title);
+		frame.setSize(size);
+		frame.setIconImage(new ImageIcon(url).getImage());
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setLocation((screenSize.width - frame.getWidth()) / 2, (screenSize.height - frame.getHeight()) / 2);
+		frame.setLayout(null);
+		frame.setMinimumSize(new Dimension(frame.getWidth(), frame.getHeight()));
+		frame.setDefaultCloseOperation(closeOperation);
+	}
+	
+	public static void initJDialog(JDialog dialog, String title, URL url, Dimension size) {
 		dialog.setTitle(title);
 		dialog.setSize(size);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		dialog.setLocation((dim.width - dialog.getWidth()) / 2, (dim.height - dialog.getHeight()) / 2);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		dialog.setLocation((screenSize.width - dialog.getWidth()) / 2, (screenSize.height - dialog.getHeight()) / 2);
 		dialog.setLayout(null);
 		dialog.setResizable(false);
 		dialog.setModal(true);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setIconImage(new ImageIcon(url).getImage());
-		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
-	/**
-	 * create jpanel
-	 * 
-	 * @param bounds of jpanel
-	 * @return jpanel
-	 */
-	public static JPanel createPanel(Rectangle bounds) {
+	public static JPanel createJPanel(Rectangle bounds) {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBounds(bounds);
 		return panel;
 	}
 	
-	/**
-	 * create jpanel with a border
-	 * 
-	 * @param bounds of jpanel
-	 * @param border of jpanel
-	 * @return jpanel
-	 */
-	public static JPanel createPanel(Rectangle bounds, TitledBorder border) {
-		JPanel panel = createPanel(bounds);
+	public static JPanel createPanel(Rectangle bounds, Border border) {
+		JPanel panel = createJPanel(bounds);
 		panel.setBorder(border);
 		return panel;
 	}
 	
-	/**
-	 * create jcombobox
-	 * 
-	 * @param model which jcombobox should use
-	 * @param bounds of jcombobox
-	 * @return jcombobox
-	 */
-	public static JComboBox createComboBox(ComboBoxModel model, Rectangle bounds) {
+	public static JComboBox createJComboBox(ComboBoxModel model, Rectangle bounds) {
 		JComboBox box = new JComboBox(model);
 		box.setBounds(bounds);
 		box.setUI(new javax.swing.plaf.metal.MetalComboBoxUI() {
@@ -130,42 +113,25 @@ public class GUIComponents {
 		return box;
 	}
 	
-	/**
-	 * create jtextfield
-	 * 
-	 * @param text of jtextfield
-	 * @param bounds of jtextfield
-	 * @return jtextfield
-	 */
-	public static JTextField createTextField(String text, Rectangle bounds) {
+	public static JTextField createJTextField(Rectangle bounds) {
+		return createJTextField("", bounds);
+	}
+	
+	public static JTextField createJTextField(String text, Rectangle bounds) {
 		JTextField textField = new JTextField();
 		textField.setText(text);
 		textField.setBounds(bounds);
-		textField.setEditable(false);
 		return textField;
 	}
 	
-	/**
-	 * create jtextfield with a tooltip
-	 * 
-	 * @param text of jtextfield
-	 * @param bounds of jtextfield
-	 * @param tooltip of jtextfield
-	 * @return jtextfield
-	 */
-	public static JTextField createTextField(String text, Rectangle bounds, String tooltip) {
-		JTextField textField = createTextField(text, bounds);
+	public static JTextField createJTextField(String text, Rectangle bounds, String tooltip) {
+		JTextField textField = createJTextField(text, bounds);
 		textField.setHorizontalAlignment(JTextField.CENTER);
 		textField.setOpaque(false);
 		return textField;
 	}
 	
-	/**
-	 * create a textarea
-	 * 
-	 * @return jtextarea
-	 */
-	public static JTextArea createTextArea() {
+	public static JTextArea createJTextArea() {
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setBorder(LineBorder.createBlackLineBorder());
@@ -175,13 +141,6 @@ public class GUIComponents {
 		return textArea;
 	}
 
-	/**
-	 * create a jscrollpane
-	 * 
-	 * @param comp which use a jscrollpane
-	 * @param bounds of jscrollpane
-	 * @return jscrollpane
-	 */
 	public static JScrollPane createJScrollPane(JComponent comp, Rectangle bounds) {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(comp);
@@ -191,32 +150,20 @@ public class GUIComponents {
 		return scrollPane;
 	}
 	
-	/**
-	 * create a jbutton wit an icon
-	 * 
-	 * @param bounds of jbutton
-	 * @param buttonText of jbutton
-	 * @param mnemonic of jbutton
-	 * @param url icon of jbutton
-	 * @return jbutton
-	 */
-	public static JButton createButton(Rectangle bounds, String buttonText, int mnemonic, URL url) {
-		JButton button = createButton(bounds, buttonText, mnemonic);
+	public static JButton createJButton(Rectangle bounds, String command) {
+		JButton button = createJButton(bounds);
+		button.setActionCommand(command);
+		return button;
+	}
+	
+	public static JButton createJButton(Rectangle bounds, String buttonText, int mnemonic, URL url) {
+		JButton button = createJButton(bounds, buttonText, mnemonic);
 		button.setIcon(new ImageIcon(url));
 	    return button;
 	}
 	
-	/**
-	 * create a jbutton
-	 * 
-	 * @param bounds of jbutton
-	 * @param buttonText of jbutton
-	 * @param mnemonic of jbutton
-	 * @return jbutton
-	 */
-	public static JButton createButton(Rectangle bounds, String buttonText, int mnemonic) {
-		JButton button = new JButton();
-		button.setBounds(bounds);
+	public static JButton createJButton(Rectangle bounds, String buttonText, int mnemonic) {
+		JButton button = createJButton(bounds, buttonText);
 		button.setText(buttonText);
 		button.setMnemonic(mnemonic);
 	    button.setVerticalTextPosition(JButton.CENTER);
@@ -224,16 +171,31 @@ public class GUIComponents {
 	    return button;
 	}
 	
-	/**
-	 * create a jfilechooser
-	 * 
-	 * @return jfilechooser
-	 */
-	public static JFileChooser getFileChooser() {
+	private static JButton createJButton(Rectangle bounds) {
+		JButton button = new JButton();
+		button.setBounds(bounds);
+	    return button;
+	}
+	
+	private static JButton createJButton(Rectangle bounds, String command, URL url) {
+		JButton button = createJButton(bounds, command);
+		button.setIcon(new ImageIcon(url));
+	    return button;
+	}
+	
+	public static JButton createJButton(Rectangle bounds, String command, URL url, String tooltip) {
+		JButton button = createJButton(bounds, command, url);
+		button.setToolTipText(tooltip);
+		return button;
+	}
+	
+	public static JButton createJButton(Rectangle bounds, URL url, String tooltip) {
+		return createJButton(bounds, "", url, tooltip);
+	}
+	
+	public static JFileChooser getJFileChooser() {
 		JFileChooser fileChooser = new JFileChooser() {
-
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void approveSelection() {
 				File f = getSelectedFile();
@@ -261,44 +223,25 @@ public class GUIComponents {
 		return fileChooser;
 	}
 	
-	/**
-	 * jfilechooser filefilter
-	 * 
-	 * @param fileChooser jfilechooser
-	 * @param postfix to filter
-	 */
-	public static void jFileFilter(JFileChooser fileChooser, final String postfix) {
+	public static void getFileFilter(JFileChooser fileChooser, final String postfix) {
 		fileChooser.setFileFilter(new FileFilter() {
 			public boolean accept(File file) {
-				return file.getName().toLowerCase().endsWith(postfix)
+				return file.getName().toLowerCase().endsWith("." + postfix)
 						|| file.isDirectory();
 			}
 
 			public String getDescription() {
-				return "*" + postfix;
+				return "*." + postfix;
 			}
 		});
 	}
 	
-	/**
-	 * an esc listener to dialog
-	 * 
-	 * @param dialog jdialog
-	 * @param listener actionlistener
-	 */
 	public static void addESCListener(JDialog dialog, ActionListener listener) {
 		JRootPane rootPane = dialog.getRootPane();
 		rootPane.registerKeyboardAction(listener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 	
-	/**
-	 * create jmenuitem
-	 * 
-	 * @param text of jmenuitem
-	 * @param acc accelerator of jmenuitem
-	 * @return jmenuitem
-	 */
-	public static JMenuItem createMenuItem(String text, KeyStroke acc) {
+	public static JMenuItem createJMenuItem(String text, KeyStroke acc) {
 		JMenuItem menuItem = new JMenuItem();
 		menuItem.setText(text);
 		menuItem.setAccelerator(acc);

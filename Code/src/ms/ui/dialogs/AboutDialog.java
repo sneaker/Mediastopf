@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -56,7 +55,7 @@ public class AboutDialog extends JDialog {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		GUIComponents.initDialog(this, title, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(400, 250), JFrame.DISPOSE_ON_CLOSE);
+		GUIComponents.initJDialog(this, title, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(400, 250));
 	}
 	
 
@@ -68,7 +67,7 @@ public class AboutDialog extends JDialog {
 		final int y = 190;
 		final int width = 100;
 		final int height = 20;
-		JButton button = GUIComponents.createButton(new Rectangle(x + 105, y, width, height), manager.getString("close"), manager.getMnemonic("close"));
+		JButton button = GUIComponents.createJButton(new Rectangle(x + 105, y, width, height), manager.getString("close"), manager.getMnemonic("close"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
@@ -105,7 +104,7 @@ public class AboutDialog extends JDialog {
 		final Rectangle hsrBounds = new Rectangle(165, 190, 110, 20);
 		final Rectangle[] bounds = { urlBounds, hsrBounds };
 		for(int i=0; i<texts.length; i++) {
-			JTextField textField = GUIComponents.createTextField(texts[i], bounds[i], tooltips[i]);
+			JTextField textField = GUIComponents.createJTextField(texts[i], bounds[i], tooltips[i]);
 			textField.setComponentPopupMenu(addPopUpMenu(textField));
 			add(textField);
 		}

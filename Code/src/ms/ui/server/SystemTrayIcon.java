@@ -16,18 +16,15 @@ import ms.ui.LogFrame;
 import ms.utils.I18NManager;
 
 /**
- * show trayicon if possible
+ * show trayicon
  */
 public class SystemTrayIcon {
 	
 	private I18NManager manager = I18NManager.getManager();
-	private MainView server;
+	private MainView view;
 
-	public SystemTrayIcon(MainView server) {
-		if (!SystemTray.isSupported()) {
-			return;
-		}
-		this.server = server;
+	public SystemTrayIcon(MainView view) {
+		this.view = view;
 
 		SystemTray tray = SystemTray.getSystemTray();
 		try {
@@ -43,7 +40,7 @@ public class SystemTrayIcon {
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				server.setVisible(!server.isVisible());
+				view.setVisible(!view.isVisible());
 			}
 		});
 		return trayIcon;
@@ -62,12 +59,12 @@ public class SystemTrayIcon {
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(e.getActionCommand() == toggle) {
-						server.setVisible(!server.isVisible());
+						view.setVisible(!view.isVisible());
 					} else if(e.getActionCommand() == log) {
 						LogFrame ld = new LogFrame(ServerConstants.class);
 						ld.setVisible(true);
 					} else if(e.getActionCommand() == exit){
-						server.exit();
+						view.exit();
 					}
 				}
 			});

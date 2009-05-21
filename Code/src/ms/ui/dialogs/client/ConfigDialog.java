@@ -13,25 +13,33 @@ import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import ms.ui.client.ClientConstants;
 import ms.utils.ConfigHandler;
 import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
+import ms.utils.ui.Button;
+import ms.utils.ui.Dialog;
+import ms.utils.ui.FileChooser;
+import ms.utils.ui.Label;
+import ms.utils.ui.Panel;
+import ms.utils.ui.TextField;
 
 /**
  * configuration dialog
  * - custom cdripper
  * - custom import folder
  */
-public class ConfigDialog extends JDialog {
+public class ConfigDialog extends Dialog {
 
 	/**
 	 * 
@@ -66,7 +74,7 @@ public class ConfigDialog extends JDialog {
 
 	private void initDialog() {
 		String title = ClientConstants.PROGRAM + " - " + manager.getString("Config.title"); 
-		GUIComponents.initJDialog(this, title, getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON), new Dimension(400, 230));
+		super.initDialog(title, getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON), new Dimension(400, 230));
 	}
 	
 	private void addPanels() {
@@ -75,11 +83,11 @@ public class ConfigDialog extends JDialog {
 		final int x=0;
 		final int[] y= { 10, 85 };
 		for(int i=0; i<labels.length;i++) {
-			JPanel panel = GUIComponents.createPanel(new Rectangle(x, y[i], 395, 70), BorderFactory.createTitledBorder(labels[i]));
+			JPanel panel = new Panel(new Rectangle(x, y[i], 395, 70), BorderFactory.createTitledBorder(labels[i]));
 			panel.setOpaque(false);
 			add(panel);
 			
-			add(GUIComponents.createJLabel(icons[i], new Rectangle(x+12, y[i]+20, 40, 40)));
+			add(new Label(icons[i], new Rectangle(x+12, y[i]+20, 40, 40)));
 			
 			createOpenButton(labels[i], new Rectangle(355, y[i]+30, 22, 22));
 		}
@@ -118,7 +126,7 @@ public class ConfigDialog extends JDialog {
 	private void createOpenButton(String command, Rectangle bounds) {
 		URL icon = getClass().getResource(ClientConstants.OPEN);
 		String tooltip = manager.getString("choosedir");
-		JButton button = GUIComponents.createJButton(bounds, command, icon, tooltip);
+		JButton button = new Button(bounds, command, icon, tooltip);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand() == defaultfolder) {
@@ -132,7 +140,7 @@ public class ConfigDialog extends JDialog {
 	}
 
 	private JTextField createTextField(int x, int y) {
-		final JTextField textField = GUIComponents.createJTextField(new Rectangle(x, y, 290, 22));
+		final JTextField textField = new TextField(new Rectangle(x, y, 290, 22));
 		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
@@ -161,7 +169,7 @@ public class ConfigDialog extends JDialog {
 		final int saveMnemonic = manager.getMnemonic("save"), cancelMnemonic = manager.getMnemonic("close");
 		final int[] mnemonic = { saveMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = GUIComponents.createJButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
+			JButton button = new Button(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
@@ -206,13 +214,13 @@ public class ConfigDialog extends JDialog {
 	}
 	
 	private void openAudioRipperDirChooser() {
-		JFileChooser fileChooser = new JFileChooser();
+		FileChooser fileChooser = new FileChooser();
 		fileFilter(fileChooser);
 		openDialog(fileChooser, ripperTextField);
 	}
 	
 	private void openDefaultFolderFileChooser() {
-		JFileChooser dirChooser = new JFileChooser();
+		FileChooser dirChooser = new FileChooser();
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
 		openDialog(dirChooser, folderTextField);
@@ -230,15 +238,15 @@ public class ConfigDialog extends JDialog {
 	}
 	
 	private JLabel getNotValidLabel(int x, int y) {
-		JLabel label = GUIComponents.createJLabel(manager.getString("Config.notvalid"), new Rectangle(x, y, 120, 25)); 
+		JLabel label = new Label(manager.getString("Config.notvalid"), new Rectangle(x, y, 120, 25)); 
 		label.setVisible(true);
 		add(label, 0);
 		return label;
 	}
 
-	private void fileFilter(JFileChooser fileChooser) {
+	private void fileFilter(FileChooser fileChooser) {
 		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-			GUIComponents.getFileFilter(fileChooser, "exe");
+			fileChooser.setFileFilter("exe");
 		}
 	}
 	
@@ -251,7 +259,8 @@ public class ConfigDialog extends JDialog {
 				close();
 			}
 		};
-		GUIComponents.addESCListener(this, cancelListener);
+		JRootPane rootPane = this.getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
 	/**

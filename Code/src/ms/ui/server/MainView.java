@@ -44,14 +44,19 @@ import ms.ui.dialogs.MessageDialog;
 import ms.ui.dialogs.server.ExportDialog;
 import ms.ui.models.TaskComboBoxModel;
 import ms.ui.tables.Table;
-import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
 import ms.utils.log.server.ServerLog;
+import ms.utils.ui.Button;
+import ms.utils.ui.ComboBox;
+import ms.utils.ui.Frame;
+import ms.utils.ui.Panel;
+import ms.utils.ui.ScrollPane;
+import ms.utils.ui.TextField;
 
 /**
  * main window of mediastopf server
  */
-public class MainView extends JFrame {
+public class MainView extends Frame {
 	/**
 	 * 
 	 */
@@ -93,9 +98,7 @@ public class MainView extends JFrame {
 	}
 
 	private void initFrame() {
-		URL icon = getClass().getResource(Constants.UIIMAGE + Constants.ICON);
-		
-		GUIComponents.initJFrame(this, ServerConstants.PROGRAM, icon, new Dimension(600, 550), JFrame.DO_NOTHING_ON_CLOSE);
+		super.initFrame(ServerConstants.PROGRAM, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(600, 550), JFrame.DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(400, 450));
 		setJMenuBar(createMenuBar());
 		
@@ -164,10 +167,10 @@ public class MainView extends JFrame {
 	}
 	
 	private void addStatusBar() {
-		JPanel panel = GUIComponents.createJPanel(new Rectangle(0, getHeight() - 70, getWidth() - 10, 20));
+		JPanel panel = new Panel(new Rectangle(0, getHeight() - 70, getWidth() - 10, 20));
 		panelMap.put(statusbar, panel);
 		
-		statusBar = GUIComponents.createJTextField(manager.getString("Main.copyright"), new Rectangle(0, 0, panel.getWidth(), panel.getHeight()));
+		statusBar = new TextField(manager.getString("Main.copyright"), new Rectangle(0, 0, panel.getWidth(), panel.getHeight()));
 		statusBar.setEditable(false);
 		statusBar.setFocusable(false);
 		
@@ -186,7 +189,7 @@ public class MainView extends JFrame {
 		final String[] panelLabel = { tasks, runningTask };
 		final JComponent[] comp = { taskComboBox, tablePanel };
 		for(int i=0; i<panelLabel.length; i++) {
-			JPanel panel = GUIComponents.createPanel(new Rectangle(0, y[i], getWidth() - 10, height[i]), BorderFactory.createTitledBorder(panelLabel[i]));
+			JPanel panel = new Panel(new Rectangle(0, y[i], getWidth() - 10, height[i]), BorderFactory.createTitledBorder(panelLabel[i]));
 			panel.add(comp[i]);
 			panelMap.put(panelLabel[i], panel);
 		}
@@ -202,7 +205,7 @@ public class MainView extends JFrame {
 	 */
 	private void addTaskComboBox() {
 		taskList = AuftragsListe.getInstance(null);
-		taskComboBox = GUIComponents.createJComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
+		taskComboBox = new ComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
 		taskComboBox.setUI(new MetalComboBoxUI() {
@@ -233,7 +236,7 @@ public class MainView extends JFrame {
 		final int exportMnemonic = manager.getMnemonic("export");
 		final int[] mnemonic = { reloadMnemonic, exportMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = GUIComponents.createJButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
+			JButton button = new Button(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
@@ -270,11 +273,11 @@ public class MainView extends JFrame {
 	 * @return JPanel
 	 */
 	private void addTaskTable() {
-		tablePanel = GUIComponents.createJPanel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 200));
+		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 200));
 		
 		runTaskList = AuftragsListe.getInstance(null);
 		exportTable = new Table(runTaskList);
-		tableScrollPane = GUIComponents.createJScrollPane(exportTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
+		tableScrollPane = new ScrollPane(exportTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}
 	

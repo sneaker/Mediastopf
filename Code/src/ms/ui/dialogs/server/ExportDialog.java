@@ -13,13 +13,15 @@ import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import ms.application.server.ServerController;
 import ms.ui.Constants;
@@ -28,11 +30,16 @@ import ms.ui.server.ServerConstants;
 import ms.utils.ConfigHandler;
 import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
+import ms.utils.ui.Button;
+import ms.utils.ui.Dialog;
+import ms.utils.ui.Label;
+import ms.utils.ui.Panel;
+import ms.utils.ui.TextField;
 
 /**
  * dialog to choose a destination, where the files should be copied
  */
-public class ExportDialog extends JDialog {
+public class ExportDialog extends Dialog {
 
 	/**
 	 * 
@@ -71,15 +78,15 @@ public class ExportDialog extends JDialog {
 	private void initDialog() {
 		String title = ServerConstants.PROGRAM + " - " + export;
 		URL icon = getClass().getResource(Constants.UIIMAGE + Constants.ICON);
-		GUIComponents.initJDialog(this, title, icon, new Dimension(400, 150));
+		super.initDialog(title, icon, new Dimension(400, 150));
 	}
 
 	private void addDefaultFolderPanel() {
-		JPanel panel = GUIComponents.createPanel(new Rectangle(0, 10, 395, 70), BorderFactory.createTitledBorder(exportFolder));
+		JPanel panel = new Panel(new Rectangle(0, 10, 395, 70), BorderFactory.createTitledBorder(exportFolder));
 		panel.setOpaque(false);
 		add(panel);
 		
-		add(GUIComponents.createJLabel(getClass().getResource(Constants.UIIMAGE + Constants.EXPORT_L), new Rectangle(12, 30, 40, 40)));
+		add(new Label(getClass().getResource(Constants.UIIMAGE + Constants.EXPORT_L), new Rectangle(12, 30, 40, 40)));
 		
 		exportTextField = createTextField(60, 40);
 		exportTextField.addKeyListener(new KeyAdapter() {
@@ -99,7 +106,7 @@ public class ExportDialog extends JDialog {
 	}
 	
 	private void createOpenButton(Rectangle bounds) {
-		JButton button = GUIComponents.createJButton(bounds, getClass().getResource(Constants.OPEN), manager.getString("Exporter.choosedir"));
+		JButton button = new Button(bounds, getClass().getResource(Constants.OPEN), manager.getString("Exporter.choosedir"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openExportFileChooser();
@@ -109,7 +116,7 @@ public class ExportDialog extends JDialog {
 	}
 
 	private JTextField createTextField(int x, int y) {
-		final JTextField textField = GUIComponents.createJTextField(new Rectangle(x, y, 290, 22));
+		final JTextField textField = new TextField(new Rectangle(x, y, 290, 22));
 		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
@@ -139,7 +146,7 @@ public class ExportDialog extends JDialog {
 		final int exportMnemonic = manager.getMnemonic("export"), cancelMnemonic = manager.getMnemonic("close");
 		final int[] mnemonic = { exportMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = GUIComponents.createJButton(bounds[i], buttonText[i], mnemonic[i], icons[i]);
+			JButton button = new Button(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == export) {
@@ -257,7 +264,8 @@ public class ExportDialog extends JDialog {
 				close();
 			}
 		};
-		GUIComponents.addESCListener(this, cancelListener);
+		JRootPane rootPane = this.getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
 	private void close() {
@@ -267,7 +275,7 @@ public class ExportDialog extends JDialog {
 	
 	private JLabel getNotValidLabel(int x, int y) {
 		String text = manager.getString("Exporter.notvalid");
-		JLabel label = GUIComponents.createJLabel(text, new Rectangle(x, y, 120, 25));
+		JLabel label = new Label(text, new Rectangle(x, y, 120, 25));
 		label.setVisible(true);
 		add(label, 0);
 		return label;

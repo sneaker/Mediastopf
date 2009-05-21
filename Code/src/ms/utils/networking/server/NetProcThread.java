@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,12 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 				receivedMessage = receiveMessage();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+			
+			if (receivedMessage == null) {
+				SocketAddress remoteaddr = commSocket.getRemoteSocketAddress();
+				logger.info("Client " + remoteaddr.toString() + " has disconnected");
+				return;
 			}
 
 			if (receivedMessage.equals("INFO")) {

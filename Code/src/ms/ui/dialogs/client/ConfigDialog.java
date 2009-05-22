@@ -1,9 +1,6 @@
 package ms.ui.dialogs.client;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +9,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -26,19 +22,23 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
 
 import ms.ui.client.ClientConstants;
 import ms.utils.ConfigHandler;
-import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
+import ms.utils.ui.Button;
+import ms.utils.ui.Dialog;
+import ms.utils.ui.FileChooser;
+import ms.utils.ui.Label;
+import ms.utils.ui.Panel;
+import ms.utils.ui.TextField;
 
 /**
  * configuration dialog
  * - custom cdripper
  * - custom import folder
  */
-public class ConfigDialog extends JDialog {
+public class ConfigDialog extends Dialog {
 
 	/**
 	 * 
@@ -50,8 +50,7 @@ public class ConfigDialog extends JDialog {
 	private JTextField ripperTextField, folderTextField;
 	private final String audioripper = manager.getString("Config.audiograbber"), defaultfolder = manager.getString("Config.defaultfolder");
 	private final String save = manager.getString("save"), close = manager.getString("close");
-	private JLabel folderNotValidLabel = getNotValidLabel(new Point(100, 10));
-	private JLabel ripperNotValidLabel = getNotValidLabel(new Point(100, 85));
+	private JLabel folderNotValidLabel = getNotValidLabel(100, 10);
 
 	public ConfigDialog() {
 		initGUI();
@@ -70,40 +69,33 @@ public class ConfigDialog extends JDialog {
 		loadProperties();
 		
 		showPathNotValidLabel();
-		showFileNotValidLabel();
 	}
 
 	private void initDialog() {
 		String title = ClientConstants.PROGRAM + " - " + manager.getString("Config.title"); 
-		GUIComponents.initDialog(this, title, getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON), new Dimension(400, 230), JDialog.DISPOSE_ON_CLOSE);
+		super.initDialog(title, getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.ICON), new Dimension(400, 230));
 	}
 	
 	private void addPanels() {
-		final String[] label = { defaultfolder, audioripper };
-		final String[] icons = { ClientConstants.DEFAULTFOLDER, ClientConstants.AUDIORIPPER };
+		final String[] labels = { defaultfolder, audioripper };
+		final URL[] icons = { getClass().getResource(ClientConstants.DEFAULTFOLDER), getClass().getResource(ClientConstants.AUDIORIPPER) };
 		final int x=0;
 		final int[] y= { 10, 85 };
-		for(int i=0; i<label.length;i++) {
-			createBorder(label[i], new Rectangle(x, y[i], 395, 70));
-			createLabel(icons[i], new Rectangle(x+12, y[i]+20, 40, 40));
+		for(int i=0; i<labels.length;i++) {
+			JPanel panel = new Panel(new Rectangle(x, y[i], 395, 70), BorderFactory.createTitledBorder(labels[i]));
+			panel.setOpaque(false);
+			add(panel);
 			
-			JButton icon = createOpenButton(label[i], new Rectangle(355, y[i]+30, 22, 22));
-			icon.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(e.getActionCommand() == defaultfolder) {
-						openDefaultFolderFileChooser();
-					} else {
-						openAudioRipperDirChooser();
-					}
-				}
-			});
+			add(new Label(icons[i], new Rectangle(x+12, y[i]+20, 40, 40)));
+			
+			createOpenButton(labels[i], new Rectangle(355, y[i]+30, 22, 22));
 		}
 		addDefaultFolderTextField();
 		addAudioRipperTextField();
 	}
 
 	private void addDefaultFolderTextField() {
-		folderTextField = createTextField(new Point(60, 40));
+		folderTextField = createTextField(60, 40);
 		folderTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -120,13 +112,7 @@ public class ConfigDialog extends JDialog {
 	}
 
 	private void addAudioRipperTextField() {
-		ripperTextField = createTextField(new Point(60, 115));
-		ripperTextField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				showFileNotValidLabel();
-			}
-		});
+		ripperTextField = createTextField(60, 115);
 		ripperTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mousePressed(MouseEvent e) {
@@ -136,36 +122,24 @@ public class ConfigDialog extends JDialog {
 		});
 	}
 	
-	private JButton createOpenButton(String name, Rectangle rec) {
-		JButton button = new JButton();
-		button.setActionCommand(name);
-		button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.OPEN)));
-		button.setBounds(rec);
-		button.setToolTipText(manager.getString("choosedir"));
+	private void createOpenButton(String command, Rectangle bounds) {
+		URL icon = getClass().getResource(ClientConstants.OPEN);
+		String tooltip = manager.getString("choosedir");
+		JButton button = new Button(bounds, command, icon, tooltip);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand() == defaultfolder) {
+					openDefaultFolderFileChooser();
+				} else {
+					openAudioRipperDirChooser();
+				}
+			}
+		});
 		add(button);
-		return button;
 	}
 
-	private void createLabel(String icon, Rectangle rec) {
-		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(getClass().getResource(icon)));
-		label.setBounds(rec);
-		add(label);
-	}
-
-	private void createBorder(String border, Rectangle rec) {
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBorder(BorderFactory.createTitledBorder(border));
-		panel.setOpaque(false);
-		panel.setBounds(rec);
-		add(panel);
-	}
-
-	private JTextField createTextField(Point p) {
-		final JTextField textField = new JTextField();
-		textField.setSize(290, 22);
-		textField.setLocation(p);
+	private JTextField createTextField(int x, int y) {
+		final JTextField textField = new TextField(new Rectangle(x, y, 290, 22));
 		textField.setComponentPopupMenu(addPopUpMenu(textField));
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
@@ -190,17 +164,11 @@ public class ConfigDialog extends JDialog {
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
 		final Rectangle[] bounds = { okBounds, cancelBounds };
 		final String[] buttonText = { save, close };
-		final String[] icons = { ClientConstants.SAVE, ClientConstants.CANCEL };
+		final URL[] icons = { getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.SAVE), getClass().getResource(ClientConstants.UIIMAGE + ClientConstants.CANCEL) };
 		final int saveMnemonic = manager.getMnemonic("save"), cancelMnemonic = manager.getMnemonic("close");
 		final int[] mnemonic = { saveMnemonic, cancelMnemonic };
 		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new JButton();
-			button.setBounds(bounds[i]);
-			button.setText(buttonText[i]);
-			button.setMnemonic(mnemonic[i]);
-			button.setIcon(new ImageIcon(getClass().getResource(ClientConstants.UIIMAGE + icons[i])));
-		    button.setVerticalTextPosition(JButton.CENTER);
-		    button.setHorizontalTextPosition(JButton.RIGHT);
+			JButton button = new Button(bounds[i], buttonText[i], mnemonic[i], icons[i]);
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == save) {
@@ -245,14 +213,13 @@ public class ConfigDialog extends JDialog {
 	}
 	
 	private void openAudioRipperDirChooser() {
-		JFileChooser fileChooser = new JFileChooser();
+		FileChooser fileChooser = new FileChooser();
 		fileFilter(fileChooser);
 		openDialog(fileChooser, ripperTextField);
-		showFileNotValidLabel();
 	}
 	
 	private void openDefaultFolderFileChooser() {
-		JFileChooser dirChooser = new JFileChooser();
+		FileChooser dirChooser = new FileChooser();
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		dirChooser.setAcceptAllFileFilterUsed(false);
 		openDialog(dirChooser, folderTextField);
@@ -269,29 +236,16 @@ public class ConfigDialog extends JDialog {
 		}
 	}
 	
-	private JLabel getNotValidLabel(Point p) {
-		JLabel label = new JLabel(manager.getString("Config.notvalid"));
-		label.setSize(120, 25);
-		label.setLocation(p);
-		label.setForeground(Color.RED);
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		label.setHorizontalAlignment(JLabel.CENTER);
-		label.setBorder(BorderFactory.createLineBorder(Color.RED));
+	private JLabel getNotValidLabel(int x, int y) {
+		JLabel label = new Label(manager.getString("Config.notvalid"), new Rectangle(x, y, 120, 25)); 
 		label.setVisible(true);
 		add(label, 0);
 		return label;
 	}
 
-	private void fileFilter(JFileChooser fileChooser) {
+	private void fileFilter(FileChooser fileChooser) {
 		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-			fileChooser.setFileFilter(new FileFilter() {
-				public boolean accept(File file) {
-					return file.getName().toLowerCase().endsWith(".exe") || file.isDirectory();
-				}
-				public String getDescription() {
-					return "*.exe";
-				}
-			});
+			fileChooser.setFileFilter("exe");
 		}
 	}
 	
@@ -304,7 +258,7 @@ public class ConfigDialog extends JDialog {
 				close();
 			}
 		};
-		JRootPane rootPane = getRootPane();
+		JRootPane rootPane = this.getRootPane();
 		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
@@ -359,20 +313,6 @@ public class ConfigDialog extends JDialog {
 			folderNotValidLabel.setVisible(false);
 		} else {
 			folderNotValidLabel.setVisible(true);
-		}
-	}
-	
-	private void showFileNotValidLabel() {
-		String text = ripperTextField.getText();
-		File f = new File(text);
-		if(System.getProperty("os.name").equalsIgnoreCase("windows") && !text.endsWith("exe")) {
-			ripperNotValidLabel.setVisible(false);
-			return;
-		}
-		if(f.exists() && f.isFile()) {
-			ripperNotValidLabel.setVisible(false);
-		} else {
-			ripperNotValidLabel.setVisible(true);
 		}
 	}
 }

@@ -10,6 +10,7 @@ import ms.domain.ImportMedium;
 import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
+import ms.utils.ImageWhiteFilter;
 import ms.utils.client.directoryobserver.DirectoryObserver;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ImportMediumSender;
@@ -107,7 +108,7 @@ public class ClientController {
 	public static MSListen getTaskList() {
 		return auftragliste;
 	}
-	
+
 	public static void openApplication(String app) {
 		ApplicationLauncher.open(app);
 	}

@@ -2,6 +2,7 @@ package ms.ui.client;
 
 import ms.ui.Constants;
 
+
 /**
  * definitions:
  * - programname
@@ -12,6 +13,5 @@ import ms.ui.Constants;
 public class ClientConstants extends Constants {
 	
 	public static final String PROGRAM = "MediaStopf";
-	
 	public static final String CONFIGFILE = PROGRAM + ".cfg";
 }

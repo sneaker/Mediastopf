@@ -7,25 +7,29 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import ms.ui.Constants;
 import ms.utils.BrowserControl;
-import ms.utils.GUIComponents;
 import ms.utils.I18NManager;
+import ms.utils.ui.Button;
+import ms.utils.ui.Dialog;
+import ms.utils.ui.TextField;
 
 /**
  * about dialog
  */
-public class AboutDialog extends JDialog {
+public class AboutDialog extends Dialog {
 
 	private static final long serialVersionUID = 9535632795379520L;
 	
@@ -56,7 +60,7 @@ public class AboutDialog extends JDialog {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		GUIComponents.initDialog(this, title, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(400, 250), JFrame.DISPOSE_ON_CLOSE);
+		super.initDialog(title, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(400, 250));
 	}
 	
 
@@ -68,7 +72,7 @@ public class AboutDialog extends JDialog {
 		final int y = 190;
 		final int width = 100;
 		final int height = 20;
-		JButton button = GUIComponents.createButton(new Rectangle(x + 105, y, width, height), manager.getString("close"), manager.getMnemonic("close"));
+		JButton button = new Button(new Rectangle(x + 105, y, width, height), manager.getString("close"), manager.getMnemonic("close"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
@@ -105,7 +109,7 @@ public class AboutDialog extends JDialog {
 		final Rectangle hsrBounds = new Rectangle(165, 190, 110, 20);
 		final Rectangle[] bounds = { urlBounds, hsrBounds };
 		for(int i=0; i<texts.length; i++) {
-			JTextField textField = GUIComponents.createTextField(texts[i], bounds[i], tooltips[i]);
+			JTextField textField = new TextField(texts[i], bounds[i], tooltips[i]);
 			textField.setComponentPopupMenu(addPopUpMenu(textField));
 			add(textField);
 		}
@@ -149,7 +153,8 @@ public class AboutDialog extends JDialog {
 				close();
 			}
 		};
-		GUIComponents.addESCListener(this, cancelListener);
+		JRootPane rootPane = this.getRootPane();
+		rootPane.registerKeyboardAction(cancelListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
 	private void close() {

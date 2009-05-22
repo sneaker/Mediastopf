@@ -1,25 +1,22 @@
 package ms.domain;
 
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
-import java.nio.channels.WritableByteChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import ms.utils.ImageWhiteFilter;
 
 /**
  * Repraesentiert ein digitalisiertes Medium eines Kunden, welches nach dem
@@ -63,16 +60,17 @@ public class ImportMedium implements Serializable {
 			names.add(filename);
 			FileInputStream fis;
 			File f = new File(folder + File.separator + filename);
-			System.out.println(f.length());
+			if (isImage(f)) {
+				if (isWhite(f)) {
+					continue;
+				}
+			}
 			Integer length = (int) f.length();
-			System.out.println("Filelength: " + length);
 			ByteBuffer buffer = ByteBuffer.allocate(length);
 			try {
 				fis = new FileInputStream(f);
 				FileChannel fc = fis.getChannel();
-				
-				int bytesread = fc.read(buffer);
-				System.out.println("bytesread: " + bytesread);
+				fc.read(buffer);
 				buffer.flip();
 				fc.close();
 			} catch (FileNotFoundException e) {
@@ -198,5 +196,22 @@ public class ImportMedium implements Serializable {
 			}
 			writer.close();
 		}
+	}
+	
+	private static boolean isImage(File file) {
+		String[] extensions = { "jpg", "jpeg", "gif", "png" };
+		for (int i = 0; i < extensions.length; i++) {
+			if (file.getName().endsWith(extensions[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isWhite(File image) {
+		if (ImageWhiteFilter.analyzeImageFile(image)) {
+			return true;
+		}
+		return false;
 	}
 }

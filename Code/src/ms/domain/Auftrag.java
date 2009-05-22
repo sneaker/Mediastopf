@@ -18,8 +18,8 @@ public class Auftrag implements Serializable {
 	protected ArrayList<ImportMedium> ListImportMedium;
 	protected ArrayList<ExportMedium> ListExportMedium;
 
-	public Auftrag(int newstatus) {
-		status = newstatus;
+	public Auftrag(int id) {
+		this.id = id;
 		ListImportMedium = new ArrayList<ImportMedium>();
 		ListExportMedium = new ArrayList<ExportMedium>();
 	}

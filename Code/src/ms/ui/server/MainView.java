@@ -31,7 +31,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
+import ms.application.server.ServerController;
 import ms.domain.AuftragsListe;
+import ms.domain.LaufendeAuftragsListe;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
@@ -56,7 +58,8 @@ public class MainView extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
-	private AuftragsListe taskList, runTaskList;
+	private AuftragsListe taskList;
+	private LaufendeAuftragsListe runTaskList;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
 	private Table exportTable;
@@ -70,7 +73,7 @@ public class MainView extends JFrame {
 	
 	public MainView() {
 		new SplashScreen(Constants.SPLASH);
-
+		
 		initGUI();
 	}
 
@@ -203,7 +206,7 @@ public class MainView extends JFrame {
 	 */
 	private void addTaskComboBox() {
 		//XC3
-		taskList = AuftragsListe.getInstance(null);
+		taskList = ServerController.auftragsListe;
 		taskComboBox = new JComboBox(new TaskComboBoxModel(taskList));
 		taskComboBox.setBounds(10, 20, getWidth() - 30, 20);
 		if(0<taskComboBox.getItemCount())
@@ -265,6 +268,7 @@ public class MainView extends JFrame {
 			return;
 		}
 		File file = new File(Integer.toString(taskID));
+		System.out.println(file);
 		if(!file.isDirectory()) {
 			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
 			return;
@@ -283,7 +287,7 @@ public class MainView extends JFrame {
 		tablePanel.setBounds(5, 15, getWidth() - 20, getHeight() - 200);
 		tablePanel.setLayout(null);
 		
-		runTaskList = AuftragsListe.getInstance(null);
+		runTaskList = new LaufendeAuftragsListe();
 		exportTable = new Table(runTaskList);
 		tableScrollPane = new JScrollPane(exportTable);
 		tableScrollPane.setBounds(0, 0, tablePanel.getWidth(), tablePanel.getHeight());

@@ -19,8 +19,10 @@ public class SendeListe extends Observable {
 	 * @param m
 	 *            eine Sammlung von importierten Dateien
 	 */
-	public void add(ImportMedium m) {
-		list.add(m);
+	public synchronized void add(ImportMedium m) {
+		synchronized (list) {
+			list.add(m);
+		}
 	}
 
 	/**
@@ -29,8 +31,10 @@ public class SendeListe extends Observable {
 	 * 
 	 * @param m
 	 */
-	public void remove(ImportMedium m) {
-		list.remove(m);
+	public synchronized void remove(ImportMedium m) {
+		synchronized (list) {
+			list.remove(m);
+		}
 	}
 
 	/**
@@ -39,8 +43,10 @@ public class SendeListe extends Observable {
 	 * 
 	 * @return die Liste der ImportMedien, welche zum Versand bereit sind.
 	 */
-	public ArrayList<ImportMedium> getList() {
-		return list;
+	public synchronized ArrayList<ImportMedium> getList() {
+		synchronized (list) {
+			return list;
+		}
 	}
 
 }

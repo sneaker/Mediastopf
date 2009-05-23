@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import ms.domain.AuftragsListe;
+import ms.domain.TaskList;
 import ms.ui.client.ClientConstants;
 import ms.ui.dialogs.MessageDialog;
 import ms.ui.models.TaskTableModel;
@@ -21,8 +21,8 @@ public class TaskTable extends Table {
 	
 	private I18NManager manager = I18NManager.getManager();
 	
-	public TaskTable(AuftragsListe list) {
-		super(new TaskTableModel(list));
+	public TaskTable(TaskList exportTaskList) {
+		super(new TaskTableModel(exportTaskList));
 		initTable();
 	}
 	

@@ -1,6 +1,7 @@
 package ms.application.client;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -62,14 +63,14 @@ public class ClientController {
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
 				ImportMedium medium = null;
-				for (String filename : folder.list()) {
+				for (File f : folder.listFiles()) {
 					medium = new ImportMedium();
-					File f = new File(filename);
-					if (isImage(f)) {
-						if (isWhite(f)) {
-							continue;
-						}
-					}
+//					if (isImage(f)) {
+//						if (isWhite(f)) {
+//							continue;
+//						}
+//					}
+					ClientLog.getLogger().info("add file " + f);
 					medium.addItem(f);
 				}
 				addImportMedium(medium);
@@ -96,7 +97,7 @@ public class ClientController {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Fügt die Dateien eines abgeschlossenen Importvorganges in die Liste der
 	 * zu übermittelnden Dateien, welche dann automatisch zum Server übertragen

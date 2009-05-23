@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,8 +25,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.server.ServerController;
+import ms.domain.Task;
+import ms.domain.TaskList;
 import ms.ui.Constants;
-import ms.ui.dialogs.MessageDialog;
 import ms.ui.server.ServerConstants;
 import ms.utils.ConfigHandler;
 import ms.utils.I18NManager;
@@ -52,9 +54,11 @@ public class ExportDialog extends Dialog {
 	private JLabel folderNotValidLabel = getNotValidLabel(140, 10);
 	private JTextField exportTextField;
 	private int taskID;
+	private TaskList exportTaskList;
 
-	public ExportDialog(int taskID) {
+	public ExportDialog(int taskID, TaskList exportTaskList) {
 		this.taskID = taskID;
+		this.exportTaskList = exportTaskList;
 		
 		initGUI();
 	}
@@ -161,14 +165,34 @@ public class ExportDialog extends Dialog {
 	}
 	
 	private void export() {
-		String exportFolder = exportTextField.getText().trim();
-		File file = new File(Integer.toString(taskID));
-		boolean done = ServerController.copyFiles(file.listFiles(), new File(exportFolder));
-		if(done) {
-			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
-		} else {
-			MessageDialog.info(manager.getString("Exporter.exportfailedtitle"), manager.getString("Exporter.exportfailed"));
-		}
+		final File exportFolder = new File(exportTextField.getText().trim());
+		final File file = new File(Integer.toString(taskID));
+		final Task task = new Task(taskID, "In Bearbeitung");
+		exportTaskList.add(task);
+		Thread copyThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ServerController.copyFiles(file.listFiles(), exportFolder);
+			}
+		});
+		copyThread.start();
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if(file.listFiles().length == exportFolder.listFiles().length) {
+						exportTaskList.remove(task);
+						break;
+					}
+				}
+			}
+		});
+		t.start();
 	}
 	
 	/**

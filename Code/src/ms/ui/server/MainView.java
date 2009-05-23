@@ -33,6 +33,7 @@ import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.domain.AuftragsListe;
+import ms.domain.TaskList;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
@@ -63,7 +64,9 @@ public class MainView extends Frame {
 	private static final long serialVersionUID = 1L;
 
 	private I18NManager manager = I18NManager.getManager();
-	private AuftragsListe taskList, runTaskList;
+	private AuftragsListe taskList;
+
+	private TaskList exportTaskList;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
 	private Table exportTable;
@@ -263,7 +266,7 @@ public class MainView extends Frame {
 			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
 			return;
 		}
-		ExportDialog ed = new ExportDialog(taskID);
+		ExportDialog ed = new ExportDialog(taskID, exportTaskList);
 		ed.setVisible(true);
 	}
 
@@ -275,8 +278,8 @@ public class MainView extends Frame {
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 200));
 		
-		runTaskList = AuftragsListe.getInstance(null);
-		exportTable = new Table(runTaskList);
+		exportTaskList = new TaskList();
+		exportTable = new Table(exportTaskList);
 		tableScrollPane = new ScrollPane(exportTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}
@@ -298,7 +301,7 @@ public class MainView extends Frame {
 		t.start();
 	}
 
-	void exit() {
+	protected void exit() {
 		int result = MessageDialog.yesNoDialog(manager.getString("Main.exittitle"), manager.getString("Main.exitmessage"));
 		switch(result) {
 		case JOptionPane.YES_OPTION:

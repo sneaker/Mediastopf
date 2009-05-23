@@ -29,8 +29,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.client.ClientController;
-import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
+import ms.domain.Task;
+import ms.domain.TaskList;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
 import ms.ui.StatusMessage;
@@ -62,7 +63,8 @@ public class MainView extends Frame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
-	private AuftragsListe taskList, runTaskList;
+	private AuftragsListe taskList;
+	private TaskList exportTaskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -223,7 +225,6 @@ public class MainView extends Frame {
 		}
 	}
 
-	// TODO what to do??
 	private void runSelectedItem() {
 		int taskID = (Integer) taskComboBox.getSelectedItem();
 		if(taskID == -1) {
@@ -232,32 +233,57 @@ public class MainView extends Frame {
 		}
 		String folder = getValueOf(ClientConstants.DEFAULTFOLDERCFG);
 		if(!new File(folder).exists()) {
-			askFolder(manager.getString("Main.choosedefaultfoldertitle"),
+			pathNotSet(manager.getString("Main.choosedefaultfoldertitle"),
 			manager.getString("Main.choosedefaultfolder"));
 			return;
 		}
-		File task = new File(folder + File.separator + taskID);
-		task.mkdirs();
+		final File taskFolder = new File(folder + File.separator + taskID);
+		taskFolder.mkdirs();
 		
 		String ripper = getValueOf(ClientConstants.AUDIORIPPERCFG);
 		if(!new File(ripper).exists()) {
-			askFolder(manager.getString("Main.chooseaudiorippertitle"),
+			pathNotSet(manager.getString("Main.chooseaudiorippertitle"),
 			manager.getString("Main.chooseaudioripper"));
 			return;
 		}
 		ClientController.openApplication(ripper);
 
 		updateStatusBar(StatusType.RUNMESSAGE);
-		ClientController.observeDir(task);
+		ClientController.observeDir(taskFolder);
 		
-		// TODO: What to do?? 
 		int id = Integer.valueOf(taskID);
-		taskList.remove(taskComboBox.getSelectedIndex());
-		//TODO: AUFTRAG - Anpassen an neue Auftragsklasse
-		runTaskList.add(new Auftrag(id));
+		taskList.remove(taskID);
+		final Task task = new Task(id, "In Bearbeitung");
+		exportTaskList.add(task);
+		observeDir(taskFolder, task);
 	}
 
-	private void askFolder(String title, String message) {
+	private void observeDir(final File taskFolder, final Task task) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				while(true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if(taskFolder.listFiles().length < 0) {
+						exportTaskList.remove(task);
+						break;
+					}
+				}
+			}
+		});
+		t.start();
+	}
+
+	private void pathNotSet(String title, String message) {
 		MessageDialog.info(title, message + manager.getString("Config.defaultfolder"));
 		openConfigDialog();
 	}
@@ -307,8 +333,8 @@ public class MainView extends Frame {
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 250));
 		
-		runTaskList = AuftragsListe.getInstance(null);
-		taskTable = new TaskTable(runTaskList);
+		exportTaskList = new TaskList();
+		taskTable = new TaskTable(exportTaskList);
 		tableScrollPane = new ScrollPane(taskTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}

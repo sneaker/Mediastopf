@@ -26,14 +26,13 @@ public class ServerController {
 	 * @return true wenn das Kopieren geklappt hat und genügend Platz vorhanden
 	 *         war für die kopierten Dateien
 	 */
-	public static boolean copyFiles(File[] folder, File exportFolder) {
+	public static void copyFiles(File[] folder, File exportFolder) {
 		boolean succeed = FileIO.copyFiles(folder, exportFolder);
 		if (succeed) {
 			logger.info("Filetransfer succeed");
 		} else {
 			logger.warn("Filetransfer failed");
 		}
-		return succeed;
 	}
 
 	/**

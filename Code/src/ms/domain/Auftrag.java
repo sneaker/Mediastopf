@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * ReprÃ¤sentiert einen Kunden-Auftrag, welcher aus einzelnen ImportMedien
+ * Repraesentiert einen Kunden-Auftrag, welcher aus einzelnen ImportMedien
  * besteht.
  * 
  */
@@ -71,6 +71,15 @@ public class Auftrag implements Serializable {
 
 	public int getStatus() {
 		return status;
+	}
+	
+	public String getStatusText() {
+		switch (status) {
+	        case 1:  return "Auftrag bereit für Import";
+	        case 2:  return "ganzer Auftrag importiert";
+	        case 3:  return "Auftrag exportiert";
+	        default:  return "Status nicht definiert ";
+		}
 	}
 
 	public void setStatus(int status) {

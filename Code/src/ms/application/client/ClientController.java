@@ -11,7 +11,7 @@ import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
 import ms.utils.ImageWhiteFilter;
-import ms.utils.client.directoryobserver.DirectoryObserver;
+import ms.utils.client.directorypoller.DirectoryPoller;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ImportMediumSender;
 
@@ -66,7 +66,7 @@ public class ClientController {
 	public static void observeDirForAuftrag(File folder, int auftrag_id) {
 		final File _folder = folder;
 		final int _auftrag_id = auftrag_id;
-		DirectoryObserver dirObserver = new DirectoryObserver(folder);
+		DirectoryPoller dirObserver = new DirectoryPoller(folder);
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
 				for (File f : _folder.listFiles()) {

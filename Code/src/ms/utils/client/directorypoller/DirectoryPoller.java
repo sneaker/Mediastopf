@@ -1,4 +1,4 @@
-package ms.utils.client.directoryobserver;
+package ms.utils.client.directorypoller;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.Observable;
  * new Thread(o).start();
  * </code>
  */
-public class DirectoryObserver extends Observable implements Runnable {
+public class DirectoryPoller extends Observable implements Runnable {
 
 	private static final int POLLING_INTERVAL = 2000;
 	private File observedDirectory;
@@ -40,7 +40,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * @param directory
 	 *            Pfad zum Verzeichnis, welches überwacht werden soll
 	 */
-	public DirectoryObserver(String directory) {
+	public DirectoryPoller(String directory) {
 		this(new File(directory));
 	}
 
@@ -51,7 +51,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * @param directory
 	 *            muss ein Verzeichnis sein, keine Datei
 	 */
-	public DirectoryObserver(File directory) {
+	public DirectoryPoller(File directory) {
 		assert (directory.isDirectory());
 		observedDirectory = directory;
 		takeDirectorySnapshot();

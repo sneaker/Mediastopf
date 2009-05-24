@@ -1,4 +1,4 @@
-package ms.utils.client.directoryobserver;
+package ms.utils.client.directorypoller;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import ms.utils.client.directoryobserver.DirectoryObserver;
-import ms.utils.client.directoryobserver.FilesRemovedException;
+import ms.utils.client.directorypoller.DirectoryPoller;
+import ms.utils.client.directorypoller.FilesRemovedException;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class DirectoryObserverTest {
 
-	protected DirectoryObserver changeScanner;
+	protected DirectoryPoller changeScanner;
 	private UpdateDetector notifyTester;
 	private MockDirectory dir;
 
@@ -24,7 +24,7 @@ public class DirectoryObserverTest {
 	public void setUp() {
 		dir = new MockDirectory();
 		notifyTester = new UpdateDetector();
-		changeScanner = new DirectoryObserver(dir);
+		changeScanner = new DirectoryPoller(dir);
 		changeScanner.addObserver(notifyTester);
 	}
 

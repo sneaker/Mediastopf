@@ -452,8 +452,14 @@ public class MainView extends Frame {
 	}
 
 	private void openLogFrame() {
-		LogFrame ld = new LogFrame(ClientConstants.class);
-		ld.setVisible(true);
-		ClientLog.log.addObserver(ld);
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				LogFrame ld = new LogFrame(ClientConstants.class);
+				ld.setVisible(true);
+				ClientLog.log.addObserver(ld);
+			}
+		});
+		t.start();
 	}
 }

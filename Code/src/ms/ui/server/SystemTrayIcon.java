@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
 import ms.utils.I18NManager;
+import ms.utils.log.server.ServerLog;
 
 /**
  * show trayicon
@@ -36,7 +37,7 @@ public class SystemTrayIcon {
 
 	private TrayIcon getIcon(SystemTray tray) {
 		Image image = new ImageIcon(getClass().getResource(Constants.UIIMAGE + Constants.ICON)).getImage();
-		TrayIcon trayIcon = new TrayIcon(image, ServerConstants.PROGRAM, addPopUpMenu(tray));
+		TrayIcon trayIcon = new TrayIcon(image, ServerConstants.PROGRAM, addPopUpMenu());
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -46,7 +47,7 @@ public class SystemTrayIcon {
 		return trayIcon;
 	}
 
-	private PopupMenu addPopUpMenu(SystemTray tray) {
+	private PopupMenu addPopUpMenu() {
 		PopupMenu menu = new PopupMenu();
 
 		final String toggle = manager.getString("Tray.minimize"), log = manager.getString("Tray.log"), exit = manager.getString("exit");
@@ -61,8 +62,15 @@ public class SystemTrayIcon {
 					if(e.getActionCommand() == toggle) {
 						view.setVisible(!view.isVisible());
 					} else if(e.getActionCommand() == log) {
-						LogFrame ld = new LogFrame(ServerConstants.class);
-						ld.setVisible(true);
+						Thread t = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								LogFrame ld = new LogFrame(ServerConstants.class);
+								ld.setVisible(true);
+								ServerLog.log.addObserver(ld);
+							}
+						});
+						t.start();
 					} else if(e.getActionCommand() == exit){
 						view.exit();
 					}

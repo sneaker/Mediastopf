@@ -43,7 +43,7 @@ public abstract class MSListen extends Observable implements Observer {
 	{
 		for(Auftrag a: list) {
 			if (a.id == id) {
-				list.remove(a);
+				remove(a);
 				return true;
 			}
 		}

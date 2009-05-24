@@ -24,8 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.server.ServerController;
-import ms.domain.Task;
-import ms.domain.TaskList;
+import ms.domain.Auftrag;
+import ms.domain.AuftragsListe;
 import ms.ui.Constants;
 import ms.ui.server.ServerConstants;
 import ms.utils.ConfigHandler;
@@ -53,10 +53,11 @@ public class ExportDialog extends Dialog {
 	private JLabel folderNotValidLabel = getNotValidLabel(140, 10);
 	private JTextField exportTextField;
 	private int taskID;
-	private TaskList exportTaskList;
+	private AuftragsListe taskList, exportTaskList;
 
-	public ExportDialog(int taskID, TaskList exportTaskList) {
+	public ExportDialog(int taskID, AuftragsListe taskList, AuftragsListe exportTaskList) {
 		this.taskID = taskID;
+		this.taskList = taskList;
 		this.exportTaskList = exportTaskList;
 		
 		initGUI();
@@ -166,7 +167,8 @@ public class ExportDialog extends Dialog {
 	private void export() {
 		final File exportFolder = new File(exportTextField.getText().trim());
 		final File file = new File(Integer.toString(taskID));
-		final Task task = new Task(taskID, "In Bearbeitung");
+		final Auftrag task = new Auftrag(taskID, 3);
+		taskList.removebyId(taskID);
 		exportTaskList.add(task);
 		Thread copyThread = new Thread(new Runnable() {
 			@Override

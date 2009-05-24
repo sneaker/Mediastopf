@@ -29,9 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.client.ClientController;
+import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
-import ms.domain.Task;
-import ms.domain.TaskList;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
 import ms.ui.StatusMessage;
@@ -63,8 +62,7 @@ public class MainView extends Frame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
-	private AuftragsListe taskList;
-	private TaskList sendTaskList;
+	private AuftragsListe taskList, sendTaskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -77,7 +75,7 @@ public class MainView extends Frame {
 
 	public MainView() {
 		initGUI();
-
+		
 		new SplashScreen(ClientConstants.SPLASH);
 	}
 
@@ -245,8 +243,8 @@ public class MainView extends Frame {
 		ClientController.observeDirForAuftrag(taskFolder, taskID);
 		updateStatusBar(StatusType.RUNMESSAGE);
 
-		taskList.remove(taskID);
-		Task task = new Task(Integer.valueOf(taskID), "In Bearbeitung");
+		taskList.removebyId(taskID);
+		Auftrag task = new Auftrag(Integer.valueOf(taskID), 2);
 		sendTaskList.add(task);
 		checkDirStatus(taskFolder, task);
 	}
@@ -260,7 +258,7 @@ public class MainView extends Frame {
 		ClientController.openApplication(ripper);
 	}
 
-	private void checkDirStatus(final File taskFolder, final Task task) {
+	private void checkDirStatus(final File taskFolder, final Auftrag task) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -334,7 +332,7 @@ public class MainView extends Frame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 250));
-		sendTaskList = new TaskList();
+		sendTaskList = new AuftragsListe();
 		taskTable = new TaskTable(sendTaskList);
 		tableScrollPane = new ScrollPane(taskTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);

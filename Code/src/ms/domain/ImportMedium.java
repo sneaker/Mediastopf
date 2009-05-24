@@ -61,7 +61,7 @@ public class ImportMedium implements Serializable {
 			FileInputStream fis;
 			File f = new File(folder + File.separator + filename);
 			if (isImage(f)) {
-				if (isWhite(f)) {
+				if(ImageWhiteFilter.analyzeImageFile(f)) {
 					continue;
 				}
 			}
@@ -204,13 +204,6 @@ public class ImportMedium implements Serializable {
 			if (file.getName().endsWith(extensions[i])) {
 				return true;
 			}
-		}
-		return false;
-	}
-
-	private static boolean isWhite(File image) {
-		if (ImageWhiteFilter.analyzeImageFile(image)) {
-			return true;
 		}
 		return false;
 	}

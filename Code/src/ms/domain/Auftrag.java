@@ -28,6 +28,11 @@ public class Auftrag implements Serializable {
 		this(row.getInt("status"));
 		this.id = row.getInt("id");
 	}
+	
+	public Auftrag(int id, int status) {
+		this.id = id;
+		this.status = status;
+	}
 
 	/**
 	 * Neues Importmedium hinzufügen, welches für diesen Auftrag verarbeitet
@@ -75,9 +80,9 @@ public class Auftrag implements Serializable {
 	
 	public String getStatusText() {
 		switch (status) {
-	        case 1:  return "Auftrag bereit f�r Import";
-	        case 2:  return "ganzer Auftrag importiert";
-	        case 3:  return "Auftrag exportiert";
+	        case 1:  return "Auftrag bereit fuerr Import";
+	        case 2:  return "Auftrag in Bearbeitung";
+	        case 3:  return "Auftrag wird exportiert";
 	        default:  return "Status nicht definiert ";
 		}
 	}

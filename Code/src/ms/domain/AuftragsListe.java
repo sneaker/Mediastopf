@@ -13,6 +13,10 @@ public class AuftragsListe extends MSListen {
 		this.rec = rec;
 		updateList();
 	}
+	
+	public AuftragsListe() {
+		
+	}
 
 	public void add(ArrayList<Auftrag> al) {
 		list = al;

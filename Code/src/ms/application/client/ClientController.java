@@ -10,7 +10,6 @@ import ms.domain.ImportMedium;
 import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
-import ms.utils.ImageWhiteFilter;
 import ms.utils.client.directorypoller.DirectoryPoller;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ImportMediumSender;
@@ -69,16 +68,7 @@ public class ClientController {
 		DirectoryPoller dirObserver = new DirectoryPoller(folder);
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
-				for (File f : _folder.listFiles()) {
-					if (isImage(f)) {
-						if (isWhite(f)) {
-//							TODO: starte bildbearbeitung
-							continue;
-						}
-					}
-				}
 				generateImportMedium(_folder, _auftrag_id);
-				addForSending(_auftrag_id);
 			}
 		});
 		new Thread(dirObserver).start();
@@ -92,23 +82,7 @@ public class ClientController {
 		ImportMedium medium = new ImportMedium(folder);
 		medium.setId(auftrag_id);
 		readylist.put(auftrag_id, medium);
-	}
-	
-	private static boolean isImage(File file) {
-		String[] extensions = { "jpg", "jpeg", "gif", "png" };
-		for (int i = 0; i < extensions.length; i++) {
-			if (file.getName().endsWith(extensions[i])) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static boolean isWhite(File image) {
-		if (ImageWhiteFilter.analyzeImageFile(image)) {
-			return true;
-		}
-		return false;
+		addForSending(auftrag_id);
 	}
 
 	/**

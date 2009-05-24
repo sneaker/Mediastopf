@@ -59,7 +59,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 
 	public void run() {
 		try {
-			while (!isfinished()) {
+			while (!checkStatus()) {
 				Thread.sleep(POLLING_INTERVAL);
 			}
 		} catch (InterruptedException e) {
@@ -85,7 +85,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 *         hinzugekommen sind
 	 * @return false wenn seit einem bestimmten Intervall keine Änderung aufgetreten ist.
 	 */
-	protected boolean isfinished() throws FilesRemovedException {
+	protected boolean checkStatus() throws FilesRemovedException {
 		if (getDeletedFiles() > 0)
 			throw new FilesRemovedException(getDeletedFiles(),
 					observedDirectory);

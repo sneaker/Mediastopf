@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
@@ -35,7 +33,6 @@ import javax.swing.plaf.metal.MetalComboBoxUI;
 import ms.application.server.ServerController;
 import ms.domain.AuftragsListe;
 import ms.domain.TaskList;
-import ms.domain.LaufendeAuftragsListe;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
@@ -67,9 +64,7 @@ public class MainView extends Frame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private AuftragsListe taskList;
-// TODO
 	private TaskList exportTaskList;
-	private LaufendeAuftragsListe runTaskList;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
 	private Table exportTable;
@@ -82,9 +77,9 @@ public class MainView extends Frame {
 	statusbar = manager.getString("Main.statusbar");
 	
 	public MainView() {
-		new SplashScreen(Constants.SPLASH);
-		
 		initGUI();
+		
+		new SplashScreen(Constants.SPLASH);
 	}
 
 	/**
@@ -101,24 +96,15 @@ public class MainView extends Frame {
 		while (it.hasNext()) {
 			add((JPanel) it.next());
 		}
+		setVisible(true);
 	}
 
 	private void initFrame() {
-		super.initFrame(ServerConstants.PROGRAM, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(600, 550), JFrame.DO_NOTHING_ON_CLOSE);
+		super.initFrame(ServerConstants.PROGRAM, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(600, 550), JFrame.HIDE_ON_CLOSE);
 		setMinimumSize(new Dimension(400, 450));
 		setJMenuBar(createMenuBar());
-		
-		componentListener();
-		windowListener();
-	}
 
-	private void windowListener() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-			}
-		});
+		componentListener();
 	}
 
 	private void componentListener() {
@@ -260,7 +246,7 @@ public class MainView extends Frame {
 	
 	private void exportSelectedItem() {
 		int taskID = (Integer)taskComboBox.getSelectedItem();
-		if(taskID == -1) {
+		if(taskID < 0) {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
@@ -280,11 +266,8 @@ public class MainView extends Frame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 200));
-		// TODO
 		exportTaskList = new TaskList();
 		exportTable = new Table(exportTaskList);
-		runTaskList = new LaufendeAuftragsListe();
-		exportTable = new Table(runTaskList);
 		tableScrollPane = new ScrollPane(exportTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}

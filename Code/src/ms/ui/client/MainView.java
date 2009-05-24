@@ -32,8 +32,6 @@ import ms.application.client.ClientController;
 import ms.domain.AuftragsListe;
 import ms.domain.Task;
 import ms.domain.TaskList;
-//TODO: move somewhere else. doesnt need to be here
-import ms.domain.LaufendeAuftragsListe;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
 import ms.ui.StatusMessage;
@@ -65,10 +63,8 @@ public class MainView extends Frame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
-// TODO
 	private AuftragsListe taskList;
-	private TaskList exportTaskList;
-	private LaufendeAuftragsListe runTaskList;
+	private TaskList sendTaskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
@@ -80,9 +76,9 @@ public class MainView extends Frame {
 	send = manager.getString("send"), runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
 
 	public MainView() {
-		new SplashScreen(ClientConstants.SPLASH);
-
 		initGUI();
+
+		new SplashScreen(ClientConstants.SPLASH);
 	}
 
 	/**
@@ -99,6 +95,7 @@ public class MainView extends Frame {
 		while (it.hasNext()) {
 			add((JPanel) it.next());
 		}
+		setVisible(true);
 	}
 
 	private void initFrame() {
@@ -220,7 +217,7 @@ public class MainView extends Frame {
 						taskList.updateList();
 						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == run) {
-						runSelectedItem();
+						processAuftrag();
 					}
 				}
 			});
@@ -229,49 +226,46 @@ public class MainView extends Frame {
 		}
 	}
 
-	private void runSelectedItem() {
+	private void processAuftrag() {
 		int taskID = (Integer) taskComboBox.getSelectedItem();
-		if(taskID == -1) {
+		if(taskID < 0) {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
 		
-		//TODO: Move this to ClientController or somewhere else
 		String folder = getValueOf(ClientConstants.DEFAULTFOLDERCFG);
 		if(!new File(folder).exists()) {
-			pathNotSet(manager.getString("Main.choosedefaultfoldertitle"),
-			manager.getString("Main.choosedefaultfolder"));
+			pathNotSet(manager.getString("Main.choosedefaultfoldertitle"), manager.getString("Main.choosedefaultfolder"));
 			return;
 		}
-		final File taskFolder = new File(folder + File.separator + taskID);
+		File taskFolder = new File(folder + File.separator + taskID);
 		taskFolder.mkdirs();
 		
-		//TODO: Move this too
+		startApplication();
+		ClientController.observeDirForAuftrag(taskFolder, taskID);
+		updateStatusBar(StatusType.RUNMESSAGE);
+
+		taskList.remove(taskID);
+		Task task = new Task(Integer.valueOf(taskID), "In Bearbeitung");
+		sendTaskList.add(task);
+		checkDirStatus(taskFolder, task);
+	}
+
+	private void startApplication() {
 		String ripper = getValueOf(ClientConstants.AUDIORIPPERCFG);
 		if(!new File(ripper).exists()) {
-			pathNotSet(manager.getString("Main.chooseaudiorippertitle"),
-			manager.getString("Main.chooseaudioripper"));
+			pathNotSet(manager.getString("Main.chooseaudiorippertitle"), manager.getString("Main.chooseaudioripper"));
 			return;
 		}
 		ClientController.openApplication(ripper);
-
-		updateStatusBar(StatusType.RUNMESSAGE);
-		
-		ClientController.observeDirForAuftrag(task, taskID);
-
-		int id = Integer.valueOf(taskID);
-		taskList.remove(taskID);
-		final Task task = new Task(id, "In Bearbeitung");
-		exportTaskList.add(task);
-		observeDir(taskFolder, task);
 	}
 
-	private void observeDir(final File taskFolder, final Task task) {
+	private void checkDirStatus(final File taskFolder, final Task task) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(30000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -281,17 +275,14 @@ public class MainView extends Frame {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					if(taskFolder.listFiles().length < 0) {
-						exportTaskList.remove(task);
+					if(taskFolder.listFiles().length <= 0) {
+						sendTaskList.remove(task);
 						break;
 					}
 				}
 			}
 		});
 		t.start();
-		//TODO: which one we need? at least one i think
-		taskComboBox.validate();
-		validate();
 	}
 
 	private void pathNotSet(String title, String message) {
@@ -343,11 +334,8 @@ public class MainView extends Frame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 250));
-		// TODO
-		exportTaskList = new TaskList();
-		taskTable = new TaskTable(exportTaskList);
-		runTaskList = new LaufendeAuftragsListe();
-		taskTable = new TaskTable(runTaskList);
+		sendTaskList = new TaskList();
+		taskTable = new TaskTable(sendTaskList);
 		tableScrollPane = new ScrollPane(taskTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}
@@ -364,9 +352,8 @@ public class MainView extends Frame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int idtoremove = taskTable.send();
-				taskList.add(runTaskList.getbyAuftragsNr(idtoremove));
-				if (idtoremove >= 0 && idtoremove < runTaskList.size() )
-					runTaskList.remove(idtoremove);
+				if(0 <= idtoremove && idtoremove < sendTaskList.size() )
+					sendTaskList.remove(idtoremove);
 				updateStatusBar(StatusType.SENDMESSAGE);
 			}
 		});

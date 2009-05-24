@@ -1,7 +1,6 @@
 package ms.application.client;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -38,7 +37,7 @@ public class ClientController {
 	public static ImportMediumSender mediumsender;
 
 	public static AuftragsListe auftragliste;
-	
+
 	/**
 	 * Nach der Initialisierungsphase können hier die Referenzen auf
 	 * initialisierte Objekte hier übergeben werden.
@@ -48,7 +47,8 @@ public class ClientController {
 	 * @param send
 	 *            der Thread, der neue Dateien versendet
 	 */
-	public ClientController(AuftragslistenReceiver rec, ImportMediumSender send, AuftragsListe aliste) {
+	public ClientController(AuftragslistenReceiver rec,
+			ImportMediumSender send, AuftragsListe aliste) {
 		auftragreceiver = rec;
 		mediumsender = send;
 		auftragliste = aliste;
@@ -64,39 +64,44 @@ public class ClientController {
 	 *            Nummer des Auftrages)
 	 */
 	public static void observeDirForAuftrag(File folder, int auftrag_id) {
-		//inner classes need final arguments
 		final File _folder = folder;
 		final int _auftrag_id = auftrag_id;
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
-//				ImportMedium medium = null;
-//				for (File f : folder.listFiles()) {
-//					medium = new ImportMedium();
-//					if (isImage(f)) {
-//						if (isWhite(f)) {
-//							continue;
-//						}
-//					}
-//					ClientLog.getLogger().info("add file " + f);
-//					medium.addItem(f);
-//				}
-//				addImportMedium(medium);
+				for (File f : _folder.listFiles()) {
+					if (isImage(f)) {
+						if (isWhite(f)) {
+//							TODO: starte bildbearbeitung
+							continue;
+						}
+					}
+				}
 				generateImportMedium(_folder, _auftrag_id);
+				addForSending(_auftrag_id);
 			}
 		});
 		new Thread(dirObserver).start();
 
 		ClientLog.getLogger().info("Directory Observer started in " + folder);
 	}
-	
+
 	private static HashMap<Integer, ImportMedium> readylist = new HashMap<Integer, ImportMedium>();
-	
-	private static void generateImportMedium(File folder, final int auftrag_id)
-	{
+
+	private static void generateImportMedium(File folder, final int auftrag_id) {
 		ImportMedium medium = new ImportMedium(folder);
 		medium.setId(auftrag_id);
 		readylist.put(auftrag_id, medium);
+	}
+	
+	private static boolean isImage(File file) {
+		String[] extensions = { "jpg", "jpeg", "gif", "png" };
+		for (int i = 0; i < extensions.length; i++) {
+			if (file.getName().endsWith(extensions[i])) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static boolean isWhite(File image) {
@@ -105,6 +110,7 @@ public class ClientController {
 		}
 		return false;
 	}
+
 	/**
 	 * Fügt die Dateien eines abgeschlossenen Importvorganges in die Liste der
 	 * zu übermittelnden Dateien, welche dann automatisch zum Server übertragen

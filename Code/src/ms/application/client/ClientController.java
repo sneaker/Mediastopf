@@ -2,11 +2,13 @@ package ms.application.client;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
+import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
 import ms.utils.ImageWhiteFilter;
@@ -35,6 +37,8 @@ public class ClientController {
 	 */
 	public static ImportMediumSender mediumsender;
 
+	public static AuftragsListe auftragliste;
+	
 	/**
 	 * Nach der Initialisierungsphase können hier die Referenzen auf
 	 * initialisierte Objekte hier übergeben werden.
@@ -44,9 +48,10 @@ public class ClientController {
 	 * @param send
 	 *            der Thread, der neue Dateien versendet
 	 */
-	public ClientController(AuftragslistenReceiver rec, ImportMediumSender send) {
+	public ClientController(AuftragslistenReceiver rec, ImportMediumSender send, AuftragsListe aliste) {
 		auftragreceiver = rec;
 		mediumsender = send;
+		auftragliste = aliste;
 	}
 
 	/**
@@ -58,37 +63,40 @@ public class ClientController {
 	 *            welcher überwacht werden soll (Importverzeichnis plus die
 	 *            Nummer des Auftrages)
 	 */
-	public static void observeDir(final File folder) {
+	public static void observeDirForAuftrag(File folder, int auftrag_id) {
+		//inner classes need final arguments
+		final File _folder = folder;
+		final int _auftrag_id = auftrag_id;
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
-				ImportMedium medium = null;
-				for (File f : folder.listFiles()) {
-					medium = new ImportMedium();
+//				ImportMedium medium = null;
+//				for (File f : folder.listFiles()) {
+//					medium = new ImportMedium();
 //					if (isImage(f)) {
 //						if (isWhite(f)) {
 //							continue;
 //						}
 //					}
-					ClientLog.getLogger().info("add file " + f);
-					medium.addItem(f);
-				}
-				addImportMedium(medium);
+//					ClientLog.getLogger().info("add file " + f);
+//					medium.addItem(f);
+//				}
+//				addImportMedium(medium);
+				generateImportMedium(_folder, _auftrag_id);
 			}
 		});
 		new Thread(dirObserver).start();
 
 		ClientLog.getLogger().info("Directory Observer started in " + folder);
 	}
-
-	private static boolean isImage(File file) {
-		String[] extensions = { "jpg", "jpeg", "gif", "png" };
-		for (int i = 0; i < extensions.length; i++) {
-			if (file.getName().endsWith(extensions[i])) {
-				return true;
-			}
-		}
-		return false;
+	
+	private static HashMap<Integer, ImportMedium> readylist = new HashMap<Integer, ImportMedium>();
+	
+	private static void generateImportMedium(File folder, final int auftrag_id)
+	{
+		ImportMedium medium = new ImportMedium(folder);
+		medium.setId(auftrag_id);
+		readylist.put(auftrag_id, medium);
 	}
 
 	private static boolean isWhite(File image) {
@@ -97,7 +105,6 @@ public class ClientController {
 		}
 		return false;
 	}
-	
 	/**
 	 * Fügt die Dateien eines abgeschlossenen Importvorganges in die Liste der
 	 * zu übermittelnden Dateien, welche dann automatisch zum Server übertragen
@@ -106,8 +113,10 @@ public class ClientController {
 	 * @param o
 	 *            ein ImportMedium mit Dateien drin
 	 */
-	public static void addImportMedium(Object o) {
-		mediumsender.addMediumForTransfer((ImportMedium) o);
+	public static void addForSending(int auftrag_id) {
+		ImportMedium m = readylist.get(auftrag_id);
+		mediumsender.addMediumForTransfer(m);
+		readylist.remove(auftrag_id);
 	}
 
 	/**
@@ -115,8 +124,8 @@ public class ClientController {
 	 * Liste, welche noch abgerufen werden konnte, falls der Server nicht
 	 * erreichbar ist.
 	 */
-	public static AuftragsListe getTaskList() {
-		return AuftragsListe.getInstance(null);
+	public static MSListen getTaskList() {
+		return auftragliste;
 	}
 
 	public static void openApplication(String app) {

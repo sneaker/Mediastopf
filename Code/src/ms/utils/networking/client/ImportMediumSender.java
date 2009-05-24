@@ -2,6 +2,7 @@ package ms.utils.networking.client;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 
 import ms.domain.ImportMedium;
 import ms.domain.SendeListe;
@@ -23,11 +24,12 @@ import ms.domain.SendeListe;
 public class ImportMediumSender extends AbstractServerConnection implements
 		Runnable {
 
-	SendeListe mediumlist; 
-	
-	public SendeListe getsendeliste()
-	{
+	SendeListe mediumlist;
+
+	public SendeListe getsendeliste() {
+
 		return mediumlist;
+
 	}
 
 	public ImportMediumSender(String host, int port)
@@ -42,20 +44,32 @@ public class ImportMediumSender extends AbstractServerConnection implements
 	 * @param m
 	 */
 	public void addMediumForTransfer(ImportMedium m) {
+
 		mediumlist.add(m);
+
 	}
 
-	public void run() {
+	public synchronized void run() {
 		while (true) {
-			for (ImportMedium m : mediumlist.getList()) {
-				try {
-					sendImportMedium(m);
-					mediumlist.remove(m);
-				} catch (IOException e) {
-					e.printStackTrace();
+			synchronized (mediumlist) {
+				Iterator<ImportMedium> it = mediumlist.getList().iterator();
+				while (it.hasNext()) {
+					ImportMedium m = it.next();
+					try {
+						sendImportMedium(m);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					it.remove();
 				}
 			}
 			Thread.yield();
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -66,9 +80,7 @@ public class ImportMediumSender extends AbstractServerConnection implements
 	 * @throws IOException
 	 */
 	private void sendImportMedium(ImportMedium m) throws IOException {
-		//connect();
 		sendMessage("TRANSFER");
 		sendObject(m);
-		//disconnect();
 	}
 }

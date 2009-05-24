@@ -7,7 +7,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ms.domain.AuftragsListe;
 import ms.domain.TaskList;
+import ms.application.client.ClientController;
+import ms.domain.MSListen;
 import ms.ui.client.ClientConstants;
 import ms.ui.dialogs.MessageDialog;
 import ms.ui.models.TaskTableModel;
@@ -23,6 +26,8 @@ public class TaskTable extends Table {
 	
 	public TaskTable(TaskList exportTaskList) {
 		super(new TaskTableModel(exportTaskList));
+//	public TaskTable(MSListen list) {
+//		super(new TaskTableModel(list));
 		initTable();
 	}
 	
@@ -54,16 +59,21 @@ public class TaskTable extends Table {
 	/**
 	 * send files to server
 	 */
-	//TODO: add functionality
-	public void send() {
+	//TODO: add send functionality
+	public int send() {
 		int row = getSelectedRow();
 		if (row < 0) {
 			MessageDialog.noneSelectedDialog();
-			return;
+			return -1;
 		}
 		int tasknum = (Integer) getValueAt(row, 0);
 		String status = getValueAt(row, 1).toString();
 		
-		MessageDialog.info("Sending Tasknr: " + tasknum + " - with status: " + status, "Not sending anything, just a test");
+		ClientController.addForSending(tasknum);
+		
+		//MessageDialog.info("Sending Tasknr: " + tasknum + " - with status: " + status, "added to sending list");
+		return row;
+		//TODO: remove the id from the list
+		//TODO: dont forget to remove the files
 	}
 }

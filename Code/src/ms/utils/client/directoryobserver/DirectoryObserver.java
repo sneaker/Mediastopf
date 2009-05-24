@@ -32,7 +32,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * Time in minutes this thread waits for new changes until he calls update()
 	 * on his subscribers.
 	 */
-	public int updateTimeout = 10;
+	public int updateTimeout = 2;
 
 	/**
 	 * Initialisiert den Observer mit dem aktuellen Verzeichnisinhalt.
@@ -59,14 +59,14 @@ public class DirectoryObserver extends Observable implements Runnable {
 
 	public void run() {
 		try {
-			while (checkStatus()) {
+			while (!isfinished()) {
 				Thread.sleep(POLLING_INTERVAL);
 			}
 		} catch (InterruptedException e) {
 			System.err.println("Warning: DirectoryObserver for "
 					+ observedDirectory + " got interrupted");
 		} catch (FilesRemovedException e) {
-			System.err.println(e.getMessage() + "\nObserved directory was"
+			System.err.println(e.getMessage() + "\nObserved directory was "
 					+ observedDirectory);
 		}
 	}
@@ -85,18 +85,20 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 *         hinzugekommen sind
 	 * @return false wenn seit einem bestimmten Intervall keine Änderung aufgetreten ist.
 	 */
-	protected boolean checkStatus() throws FilesRemovedException {
+	protected boolean isfinished() throws FilesRemovedException {
 		if (getDeletedFiles() > 0)
 			throw new FilesRemovedException(getDeletedFiles(),
 					observedDirectory);
 
 		if (!recentChange() && observedDirectory.listFiles().length > 0) {
+			System.out.println("finished");
 			setChanged();
 			notifyObservers();
+			return true;
 		}
 
 		takeDirectorySnapshot();
-		return hasChanged();
+		return false;
 	}
 
 	//TODO: refactor magic numbers
@@ -139,7 +141,8 @@ public class DirectoryObserver extends Observable implements Runnable {
 				lastDirectorySnapshot);
 		copyOfLastSnapshot.removeAll(getSortedDirectorySnapshot());
 
-		return copyOfLastSnapshot.size();
+		System.out.println(copyOfLastSnapshot.size());
+		return 0;
 	}
 
 	private long getLastModifyDate() {

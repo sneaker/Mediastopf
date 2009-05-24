@@ -25,25 +25,27 @@ public class InitClient {
 	
 	AuftragslistenReceiver rec;
 	ImportMediumSender send;
+	AuftragsListe liste;
 
 	public InitClient() {
 		initNetwork();
 		initUI();
-		new ClientController(rec, send);
+		new ClientController(rec, send, liste);
 	}
 
 	private void initNetwork() {
 		try {
 			ClientAuftragslistenUpdater clientupdater = new ClientAuftragslistenUpdater(HOST, PORT);
 			rec = new AuftragslistenReceiver(clientupdater);
-			AuftragsListe.getInstance(rec);
+			liste = new AuftragsListe(rec);
 			send = new ImportMediumSender(HOST, PORT);
 			send.connect();
 			
-			Executor exec = Executors.newSingleThreadExecutor();
-
-			exec.execute(rec);
-			exec.execute(send);
+			Executor exec_rec = Executors.newSingleThreadExecutor();
+			Executor exec_send = Executors.newSingleThreadExecutor();
+			
+			exec_rec.execute(rec);
+			exec_send.execute(send);
 		} catch (UnknownHostException e) {
 			logger.fatal("Unknown host");
 			e.printStackTrace();

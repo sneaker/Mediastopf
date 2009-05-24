@@ -19,13 +19,14 @@ public class InitServer {
 	
 	private Logger logger = ServerLog.getLogger();
 	public static final int MAX_SERVER_THREADS = 10;
+	AuftragsListe liste;
 	
 	public InitServer(int port) {
 		serverStartInfo();
 		initAuftragVerwaltung();
 		initNetwork(port);
 		initUI();
-		new ServerController();
+		new ServerController(liste);
 	}
 	
 	private void initAuftragVerwaltung() {
@@ -33,7 +34,7 @@ public class InitServer {
 		AuftragslistenReceiver rec = new AuftragslistenReceiver(updater);
 		Executor exec = Executors.newSingleThreadExecutor();
 		exec.execute(rec);
-		AuftragsListe.getInstance(rec);
+		liste = new AuftragsListe(rec);
 	}
 
 	private void initNetwork(int port) {

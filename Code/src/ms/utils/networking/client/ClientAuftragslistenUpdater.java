@@ -25,16 +25,8 @@ public class ClientAuftragslistenUpdater extends AbstractServerConnection implem
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		logger.info("Receiving Info data...");
-		
+		logger.info("Receiving INFO data...");
 		list = ((ArrayList) receiveObject());
-		
-		//debug
-		if (list != null){
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i));
-			}
-		}
 		logger.info("INFO transfer finished");
 		return list;
 	}

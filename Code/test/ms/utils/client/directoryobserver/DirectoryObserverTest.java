@@ -32,49 +32,49 @@ public class DirectoryObserverTest {
 	public void testDeleteFileGivesWarning() throws Exception {
 		dir.addMockFiles(5);
 		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 		dir.removeFile(3);
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 	}
 
 	@Test(expected = FilesRemovedException.class)
 	public void testRenameGivesWarning() throws Exception {
 		dir.addMockFiles(21);
 		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 		dir.removeFiles(21);
 		dir.addMockFiles(21);
 		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 	}
 
 	@Test
 	public void testUpdate() throws Exception {
 		dir.addMockFile();
 		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 		assertTrue("Update erwartet", notifyTester.isUpdated);
 	}
 
 	@Test
 	public void testNoChangeMakesNoUpdate() throws Exception {
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 		assertFalse(notifyTester.isUpdated);
 	}
 
 	@Test
 	public void testNoMoreNewFilesImpliesUpdate() throws Exception {
 		dir.addMockFile();
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 		assertTrue(notifyTester.isUpdated);
 	}
 
 	@Test
 	public void testDontUpdateBeforeTimeout () throws FilesRemovedException {
 		dir.addMockFile();
-		changeScanner.checkStatus();
+		changeScanner.isfinished();
 		assertFalse(notifyTester.isUpdated);
 	}
 	

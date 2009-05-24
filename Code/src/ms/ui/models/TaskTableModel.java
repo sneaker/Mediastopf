@@ -5,8 +5,12 @@ import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
+import ms.domain.Auftrag;
+import ms.domain.AuftragsListe;
 import ms.domain.Task;
 import ms.domain.TaskList;
+import ms.domain.Auftrag;
+import ms.domain.MSListen;
 import ms.utils.I18NManager;
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
@@ -20,8 +24,10 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	private static final String[] columns = { manager.getString("Model.task"), manager.getString("Model.status") };
 	
 	private TaskList list;
+//	private MSListen list;
 	
 	public TaskTableModel(TaskList list) {
+//	public TaskTableModel(MSListen list) {
 		this.list = list;
 		list.addObserver(this);
 	}

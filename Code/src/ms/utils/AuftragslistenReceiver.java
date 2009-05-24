@@ -31,7 +31,6 @@ public class AuftragslistenReceiver extends Observable implements Runnable{
 	public void run() {
 		while(true) {
 			try {
-				System.out.println("Threads updates itself");
 				updateTaskList();
 				setChanged();
 				notifyObservers();

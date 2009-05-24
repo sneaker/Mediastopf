@@ -2,6 +2,7 @@ package ms.application.server;
 
 import java.io.File;
 
+import ms.domain.AuftragsListe;
 import ms.utils.FileIO;
 import ms.utils.log.server.ServerLog;
 
@@ -12,8 +13,15 @@ import org.apache.log4j.Logger;
  */
 public class ServerController {
 
+	public static AuftragsListe auftragsListe;
+	
 	private static Logger logger = ServerLog.getLogger();
 
+	public ServerController(AuftragsListe alist)
+	{
+		auftragsListe = alist;
+	}
+	
 	/**
 	 * Kopiert die importierten Dateien eines Auftrages vom "Sammelordner" in
 	 * ein Exportverzeichnis, welches entweder auf eine CD/DVD gebrannt werden

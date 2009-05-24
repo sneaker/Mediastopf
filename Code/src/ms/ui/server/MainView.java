@@ -32,8 +32,10 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
+import ms.application.server.ServerController;
 import ms.domain.AuftragsListe;
 import ms.domain.TaskList;
+import ms.domain.LaufendeAuftragsListe;
 import ms.ui.Constants;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
@@ -65,8 +67,9 @@ public class MainView extends Frame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private AuftragsListe taskList;
-
+// TODO
 	private TaskList exportTaskList;
+	private LaufendeAuftragsListe runTaskList;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
 	private Table exportTable;
@@ -80,7 +83,7 @@ public class MainView extends Frame {
 	
 	public MainView() {
 		new SplashScreen(Constants.SPLASH);
-
+		
 		initGUI();
 	}
 
@@ -207,7 +210,7 @@ public class MainView extends Frame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = AuftragsListe.getInstance(null);
+		taskList = ServerController.auftragsListe;
 		taskComboBox = new ComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
@@ -277,9 +280,11 @@ public class MainView extends Frame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 200));
-		
+		// TODO
 		exportTaskList = new TaskList();
 		exportTable = new Table(exportTaskList);
+		runTaskList = new LaufendeAuftragsListe();
+		exportTable = new Table(runTaskList);
 		tableScrollPane = new ScrollPane(exportTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}

@@ -22,7 +22,8 @@ abstract public class BasicNetIO {
 		BufferedReader receiver = null;
 		
 		try {
-			receiver = new BufferedReader(new InputStreamReader(commSocket
+			if (commSocket.isConnected())
+				receiver = new BufferedReader(new InputStreamReader(commSocket
 					.getInputStream()));
 		} catch (IOException e) {
 			logger.error("Error: Cannot get InputStream");

@@ -20,7 +20,8 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 		String receivedMessage = null;
 		while (true) {
 			try {
-				receivedMessage = receiveMessage();
+				if (commSocket.isConnected())
+					receivedMessage = receiveMessage();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

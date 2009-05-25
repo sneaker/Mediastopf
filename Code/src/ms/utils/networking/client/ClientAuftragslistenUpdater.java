@@ -30,5 +30,14 @@ public class ClientAuftragslistenUpdater extends AbstractServerConnection implem
 		logger.info("INFO transfer finished");
 		return list;
 	}
+
+	@Override
+	public void stop() {
+		try {
+			commSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

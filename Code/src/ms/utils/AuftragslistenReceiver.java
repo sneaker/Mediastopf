@@ -41,4 +41,8 @@ public class AuftragslistenReceiver extends Observable implements Runnable{
 			}
 		}
 	}
+	
+	public void disconnect() {
+		updater.stop();
+	}
 }

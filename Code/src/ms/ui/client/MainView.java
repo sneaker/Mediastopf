@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -346,6 +347,12 @@ public class MainView extends Frame {
 	private void exit() {
 		int result = MessageDialog.yesNoDialog(manager.getString("Main.exittitle"),
 				manager.getString("Main.exitmessage"));
+		try {
+			ClientController.mediumsender.disconnect();
+			ClientController.auftragreceiver.disconnect();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		switch (result) {
 		case JOptionPane.YES_OPTION:
 			System.exit(0);

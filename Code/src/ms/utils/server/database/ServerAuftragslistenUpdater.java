@@ -12,4 +12,10 @@ public class ServerAuftragslistenUpdater implements AuftragslistenUpdater{
 		return (ArrayList<Auftrag>) DbAuftragsManager.getAuftragList();
 	}
 
+	@Override
+	public void stop() {
+		//disconnect from datanase
+	}
+
+	
 }

@@ -27,7 +27,6 @@ public class AuftragsListe extends MSListen {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void update(Observable o, Object arg) {
 		this.list = (ArrayList<Auftrag>) arg;
 		setChanged();

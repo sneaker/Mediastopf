@@ -2,11 +2,13 @@ package ms.application.client;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 
 import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
+import ms.domain.LaufendeAuftragsListe;
 import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
@@ -37,6 +39,8 @@ public class ClientController {
 	public static ImportMediumSender mediumsender;
 
 	public static AuftragsListe auftragliste;
+
+	public static Hashtable<Integer, DirectoryObserver> dirPollers;
 	
 	/**
 	 * Nach der Initialisierungsphase können hier die Referenzen auf
@@ -51,6 +55,7 @@ public class ClientController {
 		auftragreceiver = rec;
 		mediumsender = send;
 		auftragliste = aliste;
+		dirPollers = new Hashtable<Integer, DirectoryObserver>();
 	}
 
 	/**
@@ -69,9 +74,14 @@ public class ClientController {
 		DirectoryObserver dirObserver = new DirectoryObserver(folder);
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
+				dirPollers.remove(_auftrag_id);
 				generateImportMedium(_folder, _auftrag_id);
+				auftragliste.getbyAuftragsNr(_auftrag_id).setStatus(2);
 			}
 		});
+		
+		dirPollers.put(auftrag_id, dirObserver);
+		
 		new Thread(dirObserver).start();
 
 		ClientLog.getLogger().info("Directory Observer started in " + folder);

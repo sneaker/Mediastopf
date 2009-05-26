@@ -33,6 +33,7 @@ import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.application.server.ServerController;
+import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
 import ms.domain.LaufendeAuftragsListe;
 import ms.ui.Constants;
@@ -46,6 +47,7 @@ import ms.ui.dialogs.MessageDialog;
 import ms.ui.dialogs.server.ExportDialog;
 import ms.ui.models.TaskComboBoxModel;
 import ms.ui.tables.Table;
+import ms.ui.tables.client.TaskTable;
 import ms.utils.I18NManager;
 import ms.utils.log.server.ServerLog;
 import ms.utils.ui.Button;
@@ -245,6 +247,7 @@ public class MainView extends Frame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
 						taskList.updateList();
+						runTaskList.clean();
 						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == export) {
 						exportSelectedItem();
@@ -268,8 +271,12 @@ public class MainView extends Frame {
 			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
 			return;
 		}
-		ExportDialog ed = new ExportDialog(taskID);
+		Auftrag auftrag = taskList.getbyAuftragsNr(taskID);
+		auftrag.setStatus(4);
+		ExportDialog ed = new ExportDialog(auftrag);
+		runTaskList.add(auftrag);
 		ed.setVisible(true);
+		validate();
 	}
 
 	/**

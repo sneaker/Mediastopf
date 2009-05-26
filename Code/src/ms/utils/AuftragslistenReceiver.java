@@ -27,7 +27,6 @@ public class AuftragslistenReceiver extends Observable implements Runnable{
 		list = updater.updateList();
 	}
 
-	@Override
 	public void run() {
 		while(true) {
 			try {

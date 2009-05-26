@@ -70,7 +70,7 @@ public class MainView extends Frame {
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
-	private JTextField statusBarField;
+	private JTextField statusBarField;	
 	private TaskTable taskTable;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
@@ -259,8 +259,7 @@ public class MainView extends Frame {
 		ClientController.observeDirForAuftrag(task, taskID);
 		 
 		int id = Integer.valueOf(taskID);
-		taskList.remove(taskComboBox.getSelectedIndex());
-		runTaskList.add(new Auftrag(id));
+		runTaskList.add(taskList.getbyAuftragsNr(id));
 		//TODO: which one we need? at least one i think
 		taskComboBox.validate();
 		validate();

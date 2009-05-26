@@ -55,7 +55,6 @@ public class TaskTable extends Table {
 	/**
 	 * send files to server
 	 */
-	//TODO: add send functionality
 	public int send() {
 		int row = getSelectedRow();
 		if (row < 0) {
@@ -67,9 +66,7 @@ public class TaskTable extends Table {
 		
 		ClientController.addForSending(tasknum);
 		
-		//MessageDialog.info("Sending Tasknr: " + tasknum + " - with status: " + status, "added to sending list");
 		return row;
-		//TODO: remove the id from the list
 		//TODO: dont forget to remove the files
 	}
 }

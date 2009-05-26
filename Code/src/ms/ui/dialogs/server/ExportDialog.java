@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.server.ServerController;
+import ms.domain.Auftrag;
 import ms.ui.Constants;
 import ms.ui.dialogs.MessageDialog;
 import ms.ui.server.ServerConstants;
@@ -51,10 +52,11 @@ public class ExportDialog extends Dialog {
 	private final String export = manager.getString("export"), close = manager.getString("close");
 	private JLabel folderNotValidLabel = getNotValidLabel(140, 10);
 	private JTextField exportTextField;
-	private int taskID;
-
-	public ExportDialog(int taskID) {
-		this.taskID = taskID;
+	private Auftrag auftrag;
+	
+	public ExportDialog(Auftrag auftrag)
+	{
+		this.auftrag = auftrag;
 		
 		initGUI();
 	}
@@ -162,10 +164,11 @@ public class ExportDialog extends Dialog {
 	
 	private void export() {
 		String exportFolder = exportTextField.getText().trim();
-		File file = new File(Integer.toString(taskID));
+		File file = new File(Integer.toString(auftrag.getID()));
 		boolean done = ServerController.copyFiles(file.listFiles(), new File(exportFolder));
 		if(done) {
 			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
+			auftrag.setStatus(3);
 		} else {
 			MessageDialog.info(manager.getString("Exporter.exportfailedtitle"), manager.getString("Exporter.exportfailed"));
 		}

@@ -212,7 +212,6 @@ public class LogFrame extends Frame implements Observer {
 		return popupMenu;
 	}
 
-	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof ByteArrayOutputStream) {
 			textArea.setText(((ByteArrayOutputStream) arg).toString());

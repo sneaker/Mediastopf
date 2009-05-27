@@ -42,7 +42,7 @@ public class LogFrame extends Frame implements Observer {
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
 	private JButton cancelButton;
-	private final String close = manager.getString("close");
+	private String close = manager.getString("close");
 	private Class<? extends Constants> constants;
 
 	public LogFrame(Class<? extends Constants> constants) {

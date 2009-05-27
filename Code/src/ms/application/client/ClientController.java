@@ -8,7 +8,6 @@ import java.util.Observer;
 
 import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
-import ms.domain.LaufendeAuftragsListe;
 import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
@@ -39,7 +38,7 @@ public class ClientController {
 
 	public static AuftragsListe auftragliste;
 
-	public static Hashtable<Integer, DirectoryObserver> dirPollers;
+	public static Hashtable<Integer, DirectoryPoller> dirPollers = new Hashtable<Integer, DirectoryPoller>();;
 	
 	/**
 	 * Nach der Initialisierungsphase können hier die Referenzen auf
@@ -54,7 +53,6 @@ public class ClientController {
 		auftragreceiver = rec;
 		mediumsender = send;
 		auftragliste = aliste;
-		dirPollers = new Hashtable<Integer, DirectoryObserver>();
 	}
 
 	/**
@@ -66,11 +64,11 @@ public class ClientController {
 	 *            welcher überwacht werden soll (Importverzeichnis plus die
 	 *            Nummer des Auftrages)
 	 */
-	public static void observeDirForAuftrag(File folder, int auftrag_id) {
+	public static void pollDirForAuftrag(File folder, int auftrag_id) {
 		final File _folder = folder;
 		final int _auftrag_id = auftrag_id;
-		DirectoryPoller dirObserver = new DirectoryPoller(folder);
-		dirObserver.addObserver(new Observer() {
+		DirectoryPoller dirPoller = new DirectoryPoller(folder);
+		dirPoller.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
 				dirPollers.remove(_auftrag_id);
 				generateImportMedium(_folder, _auftrag_id);
@@ -78,13 +76,13 @@ public class ClientController {
 			}
 		});
 		
-		dirPollers.put(auftrag_id, dirObserver);
+		dirPollers.put(auftrag_id, dirPoller);
 		
-		new Thread(dirObserver).start();
+		new Thread(dirPoller).start();
 
-		ClientLog.getLogger().info("Directory Observer started in " + folder);
+		ClientLog.getLogger().info(DirectoryPoller.class.getSimpleName() + " started in " + folder);
 	}
-
+	
 	private static HashMap<Integer, ImportMedium> readylist = new HashMap<Integer, ImportMedium>();
 
 	private static void generateImportMedium(File folder, final int auftrag_id) {
@@ -105,6 +103,7 @@ public class ClientController {
 		ImportMedium m = readylist.get(auftrag_id);
 		mediumsender.addMediumForTransfer(m);
 		readylist.remove(auftrag_id);
+		deleteFiles(new File(Integer.toString(auftrag_id)));
 	}
 
 	/**
@@ -114,6 +113,25 @@ public class ClientController {
 	 */
 	public static MSListen getTaskList() {
 		return auftragliste;
+	}
+	
+	private static void deleteFiles(final File file) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if (file.isDirectory()) {
+					File[] fileList = file.listFiles();
+					for (File f : fileList) {
+						if (f.isDirectory()) {
+							deleteFiles(f);
+						}
+						f.delete();
+					}
+				}
+				file.delete();
+			}
+		});
+		t.start();
 	}
 
 	public static void openApplication(String app) {

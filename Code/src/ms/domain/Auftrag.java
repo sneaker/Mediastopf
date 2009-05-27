@@ -80,10 +80,18 @@ public class Auftrag implements Serializable {
 	
 	public String getStatusText() {
 		switch (status) {
-	        case 1:  return "Auftrag bereit fuerr Import";
-	        case 2:  return "Auftrag in Bearbeitung";
-	        case 3:  return "Auftrag wird exportiert";
-	        default:  return "Status nicht definiert ";
+		case 0:
+			return "Neu";
+		case 1:
+			return "Bereit fuer Import";
+		case 2:
+			return "Auftrag importiert, sendebereit";
+		case 3:
+			return "Auftrag abgeschlossen";
+		case 4:
+			return "Auftrag Exportbereit";
+		default:
+			return "Status nicht definiert";
 		}
 	}
 

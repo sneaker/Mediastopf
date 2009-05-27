@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 
+import ms.utils.log.Log;
+
+import org.apache.log4j.Logger;
+
 /**
  * Teilt seinen SubscriberInnen mit, falls im überwachten Datei-Verzeichnis neue
  * Dateien hinzugekommen sind. Falls Dateien gelöscht wurden wird gewarnt, damit
@@ -26,6 +30,7 @@ import java.util.Observable;
 public class DirectoryPoller extends Observable implements Runnable {
 
 	private static final int POLLING_INTERVAL = 2000;
+	private Logger logger = Log.getLogger();
 	private File observedDirectory;
 	private ArrayList<File> lastDirectorySnapshot = new ArrayList<File>();
 	/**
@@ -61,14 +66,14 @@ public class DirectoryPoller extends Observable implements Runnable {
 		try {
 			while (!checkStatus()) {
 				Thread.sleep(POLLING_INTERVAL);
-				System.out.println("DObserver: still observing "
+				logger.info(getClass().getSimpleName() + ": still observing "
 						+ observedDirectory.getAbsolutePath());
 			}
 		} catch (InterruptedException e) {
-			System.err.println("Warning: DirectoryObserver for "
+			logger.warn("Warning: " + getClass().getSimpleName() + " for "
 					+ observedDirectory + " got interrupted");
 		} catch (FilesRemovedException e) {
-			System.err.println(e.getMessage() + "\nObserved directory was "
+			logger.warn(e.getMessage() + "\nObserved directory was "
 					+ observedDirectory);
 		}
 	}
@@ -94,19 +99,19 @@ public class DirectoryPoller extends Observable implements Runnable {
 					observedDirectory);
 
 		if (!recentChange() && observedDirectory.listFiles().length > 0) {
-			System.out.println("finished");
+			logger.info(getClass().getSimpleName() + ": finished");
 			setChanged();
 			notifyObservers();
 			return true;
 		}
 
 		takeDirectorySnapshot();
-		System.out.println("nothing changed");
+		logger.info(getClass().getSimpleName() + "nothing changed");
 		return false;
 	}
 
 	private boolean recentChange() {
-		System.out.println("DPoll: Autocommit in "
+		logger.info(getClass().getSimpleName() + ": Autocommit in "
 					    + getRemainingTime()
 					    + " seconds.");
 		return getLastModifyDate() > System.currentTimeMillis() - updateTimeout
@@ -152,7 +157,7 @@ public class DirectoryPoller extends Observable implements Runnable {
 				lastDirectorySnapshot);
 		copyOfLastSnapshot.removeAll(getSortedDirectorySnapshot());
 
-		System.out.println(copyOfLastSnapshot.size());
+		logger.info(getClass().getSimpleName() + ": " + copyOfLastSnapshot.size());
 		return 0;
 	}
 

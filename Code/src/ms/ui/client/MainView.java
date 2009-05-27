@@ -241,7 +241,7 @@ public class MainView extends Frame {
 		taskFolder.mkdirs();
 		
 		startApplication();
-		ClientController.observeDirForAuftrag(taskFolder, taskID);
+		ClientController.pollDirForAuftrag(taskFolder, taskID);
 		updateStatusBar(StatusType.RUNMESSAGE);
 
 		taskList.removebyId(taskID);

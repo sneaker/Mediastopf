@@ -59,6 +59,7 @@ public class SqlDbAdapter {
 	}
 
 
+	//TODO: Fix this test!
 	public static int saveAuftrag(Auftrag myAuftrag) {
 		int id;
 		try {

@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 public class InitClient {
 
-	public static final String HOST = "localhost";
+	public static final String HOST = "localhost"; //"152.96.235.146";
 	public static final int PORT = 1337;
 
 	private Logger logger = ClientLog.getLogger();

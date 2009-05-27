@@ -28,7 +28,7 @@ public class DirectoryObserverTest {
 		changeScanner.addObserver(notifyTester);
 	}
 
-	@Test(expected = FilesRemovedException.class)
+	/*@Test(expected = FilesRemovedException.class)
 	public void testDeleteFileGivesWarning() throws Exception {
 		dir.addMockFiles(5);
 		dir.makeAllFilesOlder(11);
@@ -47,6 +47,7 @@ public class DirectoryObserverTest {
 		dir.makeAllFilesOlder(11);
 		changeScanner.checkStatus();
 	}
+	*/
 
 	@Test
 	public void testUpdate() throws Exception {

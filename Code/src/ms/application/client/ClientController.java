@@ -2,11 +2,13 @@ package ms.application.client;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 
 import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
+import ms.domain.LaufendeAuftragsListe;
 import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
@@ -37,6 +39,8 @@ public class ClientController {
 
 	public static AuftragsListe auftragliste;
 
+	public static Hashtable<Integer, DirectoryObserver> dirPollers;
+	
 	/**
 	 * Nach der Initialisierungsphase können hier die Referenzen auf
 	 * initialisierte Objekte hier übergeben werden.
@@ -46,11 +50,11 @@ public class ClientController {
 	 * @param send
 	 *            der Thread, der neue Dateien versendet
 	 */
-	public ClientController(AuftragslistenReceiver rec,
-			ImportMediumSender send, AuftragsListe aliste) {
+	public ClientController(AuftragslistenReceiver rec, ImportMediumSender send, AuftragsListe aliste) {
 		auftragreceiver = rec;
 		mediumsender = send;
 		auftragliste = aliste;
+		dirPollers = new Hashtable<Integer, DirectoryObserver>();
 	}
 
 	/**
@@ -68,9 +72,14 @@ public class ClientController {
 		DirectoryPoller dirObserver = new DirectoryPoller(folder);
 		dirObserver.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
+				dirPollers.remove(_auftrag_id);
 				generateImportMedium(_folder, _auftrag_id);
+				auftragliste.getbyAuftragsNr(_auftrag_id).setStatus(2);
 			}
 		});
+		
+		dirPollers.put(auftrag_id, dirObserver);
+		
 		new Thread(dirObserver).start();
 
 		ClientLog.getLogger().info("Directory Observer started in " + folder);
@@ -82,7 +91,6 @@ public class ClientController {
 		ImportMedium medium = new ImportMedium(folder);
 		medium.setId(auftrag_id);
 		readylist.put(auftrag_id, medium);
-		addForSending(auftrag_id);
 	}
 
 	/**

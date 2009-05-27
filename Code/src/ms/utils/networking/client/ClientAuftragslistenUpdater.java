@@ -16,7 +16,6 @@ public class ClientAuftragslistenUpdater extends AbstractServerConnection implem
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public ArrayList<Auftrag> updateList() {
 		ArrayList list;
 		try {
@@ -31,7 +30,6 @@ public class ClientAuftragslistenUpdater extends AbstractServerConnection implem
 		return list;
 	}
 
-	@Override
 	public void stop() {
 		try {
 			commSocket.close();

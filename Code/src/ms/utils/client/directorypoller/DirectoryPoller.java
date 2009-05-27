@@ -29,10 +29,10 @@ public class DirectoryPoller extends Observable implements Runnable {
 	private File observedDirectory;
 	private ArrayList<File> lastDirectorySnapshot = new ArrayList<File>();
 	/**
-	 * Time in minutes this thread waits for new changes until he calls update()
+	 * Time in seconds this thread waits for new changes until he calls update()
 	 * on his subscribers.
 	 */
-	public int updateTimeout = 2;
+	public int updateTimeout = 120;
 
 	/**
 	 * Initialisiert den Observer mit dem aktuellen Verzeichnisinhalt.
@@ -61,6 +61,8 @@ public class DirectoryPoller extends Observable implements Runnable {
 		try {
 			while (!checkStatus()) {
 				Thread.sleep(POLLING_INTERVAL);
+				System.out.println("DObserver: still observing "
+						+ observedDirectory.getAbsolutePath());
 			}
 		} catch (InterruptedException e) {
 			System.err.println("Warning: DirectoryObserver for "
@@ -83,7 +85,8 @@ public class DirectoryPoller extends Observable implements Runnable {
 	 *             Inkonsistenz auf dem Server gerechnet werden muss
 	 * @return true wenn der Importvorgang noch läuft und weitere Dateien
 	 *         hinzugekommen sind
-	 * @return false wenn seit einem bestimmten Intervall keine Änderung aufgetreten ist.
+	 * @return false wenn seit einem bestimmten Intervall keine Änderung
+	 *         aufgetreten ist.
 	 */
 	protected boolean checkStatus() throws FilesRemovedException {
 		if (getDeletedFiles() > 0)
@@ -98,13 +101,21 @@ public class DirectoryPoller extends Observable implements Runnable {
 		}
 
 		takeDirectorySnapshot();
+		System.out.println("nothing changed");
 		return false;
 	}
 
-	//TODO: refactor magic numbers
 	private boolean recentChange() {
+		System.out.println("DPoll: Autocommit in "
+					    + getRemainingTime()
+					    + " seconds.");
 		return getLastModifyDate() > System.currentTimeMillis() - updateTimeout
-				* 60 * 1000;
+				 * 1000;
+	}
+
+	public int getRemainingTime() {
+		int result = (int) ((updateTimeout * 1000 - (System.currentTimeMillis() - getLastModifyDate())) / 1000);
+		return (result > 0 ? result : 0);
 	}
 
 	/**

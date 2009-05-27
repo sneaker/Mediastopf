@@ -65,5 +65,8 @@ public class TaskTable extends Table {
 		
 		ClientController.addForSending(tasknum);
 		return convertRowIndexToModel(row);
+		
+		return row;
+		//TODO: dont forget to remove the files
 	}
 }

@@ -7,35 +7,49 @@ import ms.domain.ImportMedium;
 
 public class DbAuftragsManager {
 	
-	public static List<Auftrag> getAuftragList() {
+	private static DbAuftragsManager instance;
+	
+	private DbAuftragsManager() {
+		instance = this;
+	}
+	
+	public static DbAuftragsManager getinstance()
+	{
+		if (instance == null)
+			instance = new DbAuftragsManager();
+		
+		return instance;
+	}
+	
+	public List<Auftrag> getAuftragList() {
 		return SqlDbAdapter.getAuftragList();
 	}
 	
-	public static Auftrag getAuftrag(int AuftragId) {
+	public Auftrag getAuftrag(int AuftragId) {
 		return SqlDbAdapter.getAuftrag(AuftragId);
 	}
 	
-	public static int saveAuftrag(Auftrag myAuftrag) {
+	public int saveAuftrag(Auftrag myAuftrag) {
 		return SqlDbAdapter.saveAuftrag(myAuftrag);
 	}
 	
-	public static boolean deleteAuftrag(Auftrag myAuftrag) {
+	public boolean deleteAuftrag(Auftrag myAuftrag) {
 		return SqlDbAdapter.deleteAuftrag(myAuftrag);
 	}
 	
-	public static int saveImportMedium(ImportMedium myMedium) {
+	public int saveImportMedium(ImportMedium myMedium) {
 		return SqlDbAdapter.saveImportMedium(myMedium);
 	}
 	
-	public static List<ImportMedium> getImportMediumList() {
+	public List<ImportMedium> getImportMediumList() {
 		return SqlDbAdapter.getImportMediumList();
 	}
 
-	public static ImportMedium getImportMediumList(int ImportMediumId) {
+	public ImportMedium getImportMediumList(int ImportMediumId) {
 		return SqlDbAdapter.getImportMediumList(ImportMediumId);
 	}
 
-	public static List<ImportMedium> getImportMediumList(ImportMedium myMediensammlung) {
+	public List<ImportMedium> getImportMediumList(ImportMedium myMediensammlung) {
 		return SqlDbAdapter.getImportMediumList(myMediensammlung);
 	}
 }

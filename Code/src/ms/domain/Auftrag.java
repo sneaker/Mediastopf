@@ -34,7 +34,7 @@ public class Auftrag implements Serializable {
 	 * werden soll.
 	 * 
 	 * @param newSammlung
-	 *            das neue Medium 
+	 *            das neue Medium
 	 * @return true, falls die Datenbank das neue Medium aufnehmen konnte.
 	 */
 	public boolean addImportMedium(ImportMedium newSammlung) {
@@ -61,7 +61,6 @@ public class Auftrag implements Serializable {
 		return ListExportMedium.remove(Index);
 	}
 
-
 	public Auftrag(int newstatus, ArrayList<ImportMedium> newIMList,
 			ArrayList<ExportMedium> newEMList) {
 		status = newstatus;
@@ -70,6 +69,32 @@ public class Auftrag implements Serializable {
 	}
 
 	public int getStatus() {
+		return status;
+	}
+
+	public String getStatusMessage() {
+		String status;
+		switch (getStatus()) {
+		case -1:
+		case 0:
+			status = "Neu";
+			break;
+		case 1:
+			status = "Bereit für Import";
+			break;
+		case 2:
+			status = "Auftrag importiert, sendebereit";
+			break;
+		case 3:
+			status = "Auftrag abgeschlossen";
+			break;
+		case 4:
+			status = "Auftrag Exportbereit";
+			break;
+		default:
+			status = "unknown " + getStatus();
+			break;
+		}
 		return status;
 	}
 

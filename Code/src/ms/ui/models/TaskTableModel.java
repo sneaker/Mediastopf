@@ -48,38 +48,22 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Auftrag auftrag = list.get(rowIndex);
 		ClientController clientcontroller = ClientController.getClientController();
+		
 		switch (columnIndex) {
 		case 0:
 			return auftrag.getID();
 		case 1:
+			String status = auftrag.getStatusMessage();
+			
 			String text = "";
+			
+			//TODO: Can we get this updated regularly?
 			if (clientcontroller.dirPollers != null && clientcontroller.dirPollers.get(auftrag.getID()) != null) {
 				text = ", in Bearbeitung (" + clientcontroller.dirPollers.get(auftrag.getID()).getRemainingTime() + " Seconds)";
 			}
-			String status = "unknown";
-			System.out.println(" auftragsid bei switch: " + auftrag.getStatus());
-			switch (auftrag.getStatus()) {
-				case -1:
-				case 0:
-					status = "Neu";
-					break;
-				case 1:
-					status = "Bereit für Import";
-					break;
-				case 2:
-					status = "Auftrag importiert, sendebereit";
-					break;
-				case 3:
-					status = "Auftrag abgeschlossen";
-					break;
-				case 4:
-					status = "Auftrag Exportbereit";
-					break;
-				default:
-					status = "unknown " + auftrag.getStatus();
-					break;
-			}
+			
 			return status + text;
+			
 		default:
 			return "";
 		}

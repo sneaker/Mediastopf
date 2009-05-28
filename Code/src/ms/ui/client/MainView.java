@@ -30,9 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.client.ClientController;
-import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
-//TODO: move somewhere else. doesnt need to be here
 import ms.domain.LaufendeAuftragsListe;
 import ms.ui.LogFrame;
 import ms.ui.SplashScreen;
@@ -76,9 +74,11 @@ public class MainView extends Frame {
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
 	private String run = manager.getString("Main.run"), reload = manager.getString("Main.reload"),
 	send = manager.getString("send"), runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
+	private ClientController clientcontroller;
 
 	public MainView() {
 		new SplashScreen(ClientConstants.SPLASH);
+		clientcontroller = ClientController.getClientController();
 
 		initGUI();
 	}
@@ -191,7 +191,7 @@ public class MainView extends Frame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		taskList = ClientController.auftragliste;
+		taskList = clientcontroller.auftragliste;
 		taskComboBox = new ComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
 		if (0 < taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
@@ -252,11 +252,11 @@ public class MainView extends Frame {
 			manager.getString("Main.chooseaudioripper"));
 			return;
 		}
-		ClientController.openApplication(ripper);
+		clientcontroller.openApplication(ripper);
 
 		updateStatusBar(StatusType.RUNMESSAGE);
 		
-		ClientController.observeDirForAuftrag(task, taskID);
+		clientcontroller.observeDirForAuftrag(task, taskID);
 		 
 		int id = Integer.valueOf(taskID);
 		runTaskList.add(taskList.getbyAuftragsNr(id));
@@ -347,8 +347,8 @@ public class MainView extends Frame {
 		int result = MessageDialog.yesNoDialog(manager.getString("Main.exittitle"),
 				manager.getString("Main.exitmessage"));
 		try {
-			ClientController.mediumsender.disconnect();
-			ClientController.auftragreceiver.disconnect();
+			clientcontroller.mediumsender.disconnect();
+			clientcontroller.auftragreceiver.disconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -8,11 +8,9 @@ import java.util.Observer;
 
 import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
-import ms.domain.LaufendeAuftragsListe;
 import ms.domain.MSListen;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
-import ms.utils.ImageWhiteFilter;
 import ms.utils.client.directoryobserver.DirectoryObserver;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ImportMediumSender;
@@ -30,18 +28,22 @@ public class ClientController {
 	 * Referenz für die GUI, wo die aktuelle Auftragsliste abgerufen werden
 	 * kann.
 	 */
-	public static AuftragslistenReceiver auftragreceiver;
+	public AuftragslistenReceiver auftragreceiver;
 
 	/**
 	 * Ermöglicht, die Dateien von abgeschlossenen Aufträgen auf den Server zu
 	 * übermitteln.
 	 */
-	public static ImportMediumSender mediumsender;
+	public ImportMediumSender mediumsender;
 
-	public static AuftragsListe auftragliste;
+	public AuftragsListe auftragliste;
 
-	public static Hashtable<Integer, DirectoryObserver> dirPollers;
+	public Hashtable<Integer, DirectoryObserver> dirPollers;
 	
+	private HashMap<Integer, ImportMedium> readylist;
+	
+	private static ClientController instance;
+
 	/**
 	 * Nach der Initialisierungsphase können hier die Referenzen auf
 	 * initialisierte Objekte hier übergeben werden.
@@ -55,7 +57,9 @@ public class ClientController {
 		auftragreceiver = rec;
 		mediumsender = send;
 		auftragliste = aliste;
+		readylist = new HashMap<Integer, ImportMedium>();
 		dirPollers = new Hashtable<Integer, DirectoryObserver>();
+		instance = this;
 	}
 
 	/**
@@ -67,7 +71,7 @@ public class ClientController {
 	 *            welcher überwacht werden soll (Importverzeichnis plus die
 	 *            Nummer des Auftrages)
 	 */
-	public static void observeDirForAuftrag(File folder, int auftrag_id) {
+	public void observeDirForAuftrag(File folder, int auftrag_id) {
 		//inner classes need final arguments
 		final File _folder = folder;
 		final int _auftrag_id = auftrag_id;
@@ -87,9 +91,8 @@ public class ClientController {
 		ClientLog.getLogger().info("Directory Observer started in " + folder);
 	}
 	
-	private static HashMap<Integer, ImportMedium> readylist = new HashMap<Integer, ImportMedium>();
 	
-	private static void generateImportMedium(File folder, final int auftrag_id)
+	private void generateImportMedium(File folder, final int auftrag_id)
 	{
 		ImportMedium medium = new ImportMedium(folder);
 		medium.setId(auftrag_id);
@@ -104,7 +107,7 @@ public class ClientController {
 	 * @param o
 	 *            ein ImportMedium mit Dateien drin
 	 */
-	public static void addForSending(int auftrag_id) {
+	public void addForSending(int auftrag_id) {
 		ImportMedium m = readylist.get(auftrag_id);
 		mediumsender.addMediumForTransfer(m);
 		readylist.remove(auftrag_id);
@@ -115,11 +118,16 @@ public class ClientController {
 	 * Liste, welche noch abgerufen werden konnte, falls der Server nicht
 	 * erreichbar ist.
 	 */
-	public static MSListen getTaskList() {
+	public MSListen getTaskList() {
 		return auftragliste;
 	}
 
-	public static void openApplication(String app) {
+	public void openApplication(String app) {
 		ApplicationLauncher.open(app);
+	}
+	
+	public static ClientController getClientController()
+	{
+		return instance;
 	}
 }

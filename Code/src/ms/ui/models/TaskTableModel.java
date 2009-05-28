@@ -47,13 +47,14 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Auftrag auftrag = list.get(rowIndex);
+		ClientController clientcontroller = ClientController.getClientController();
 		switch (columnIndex) {
 		case 0:
 			return auftrag.getID();
 		case 1:
 			String text = "";
-			if (ClientController.dirPollers != null && ClientController.dirPollers.get(auftrag.getID()) != null) {
-				text = ", in Bearbeitung (" + ClientController.dirPollers.get(auftrag.getID()).getRemainingTime() + " Seconds)";
+			if (clientcontroller.dirPollers != null && clientcontroller.dirPollers.get(auftrag.getID()) != null) {
+				text = ", in Bearbeitung (" + clientcontroller.dirPollers.get(auftrag.getID()).getRemainingTime() + " Seconds)";
 			}
 			String status = "unknown";
 			System.out.println(" auftragsid bei switch: " + auftrag.getStatus());

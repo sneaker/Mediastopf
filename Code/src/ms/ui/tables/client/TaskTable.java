@@ -62,9 +62,8 @@ public class TaskTable extends Table {
 			return -1;
 		}
 		int tasknum = (Integer) getValueAt(row, 0);
-		String status = getValueAt(row, 1).toString();
 		
-		ClientController.addForSending(tasknum);
+		ClientController.getClientController().addForSending(tasknum);
 		
 		return row;
 		//TODO: dont forget to remove the files

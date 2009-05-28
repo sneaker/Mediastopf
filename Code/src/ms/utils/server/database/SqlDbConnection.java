@@ -13,14 +13,14 @@ import java.util.List;
 
 public class SqlDbConnection {
 
-	static private Connection connection;
-	static private String database = "jdbc:sqlite:db/db.sqlite";
+	private Connection connection;
+	private String database = "jdbc:sqlite:db/db.sqlite";
 
-	public static void setDatabase(String jdbcName) {
+	public void setDatabase(String jdbcName) {
 		database = jdbcName;
 	}
 
-	public static Connection getConnection() throws SQLException {
+	private Connection getConnection() throws SQLException {
 		try {
 			if (connection == null || connection.isClosed()) {
 				Class.forName("org.sqlite.JDBC");
@@ -41,7 +41,7 @@ public class SqlDbConnection {
 	/**
 	 * execute an insert statement.
 	 */
-	public static int executeInsert(String sql) throws SQLException {
+	public int executeInsert(String sql) throws SQLException {
 		int newId = -1;
 		Statement stat = getConnection().createStatement();
 		stat.execute(sql);
@@ -50,7 +50,7 @@ public class SqlDbConnection {
 		return newId;
 	}
 
-	public static int executeInsert(String prepStmt, String... arguments)
+	public int executeInsert(String prepStmt, String... arguments)
 			throws SQLException {
 		int newId = -1;
 		Connection conn = getConnection();
@@ -63,14 +63,14 @@ public class SqlDbConnection {
 		return newId;
 	}
 
-	public static void execute(String sql) throws SQLException {
+	public void execute(String sql) throws SQLException {
 		Connection conn = getConnection();
 		Statement stat = conn.createStatement();
 		stat.execute(sql);
 		stat.close();
 	}
 
-	public static void execute(String prepStmt, String... arguments)
+	public void execute(String prepStmt, String... arguments)
 			throws SQLException {
 		Connection conn = getConnection();
 		PreparedStatement prep = createStatementWithArguments(prepStmt, conn,
@@ -87,7 +87,7 @@ public class SqlDbConnection {
 	 *            : <b>MUST</b> implement a constructor with a {@link ResultSet}
 	 *            as the only parameter.
 	 */
-	public static <T> List<T> getObjectList(String sql, Class<T> returnedClass) {
+	public <T> List<T> getObjectList(String sql, Class<T> returnedClass) {
 		ArrayList<T> list = new ArrayList<T>();
 		try {
 			Connection conn = getConnection();
@@ -112,7 +112,7 @@ public class SqlDbConnection {
 		return list;
 	}
 
-	public static List<String> getStringList(String sql) {
+	public List<String> getStringList(String sql) {
 		List<String> resultlist = new ArrayList<String>();
 		Connection conn;
 		try {
@@ -129,7 +129,7 @@ public class SqlDbConnection {
 		return resultlist;
 	}
 
-	private static int getIdOfInsertedElement(Statement stat)
+	private int getIdOfInsertedElement(Statement stat)
 			throws SQLException {
 		int newId = -1;
 		ResultSet res = stat.executeQuery("SELECT last_insert_rowid();");
@@ -138,7 +138,7 @@ public class SqlDbConnection {
 		return newId;
 	}
 
-	private static PreparedStatement createStatementWithArguments(
+	private  PreparedStatement createStatementWithArguments(
 			String prepStmt, Connection conn, String... arguments)
 			throws SQLException {
 		PreparedStatement prep = conn.prepareStatement(prepStmt);

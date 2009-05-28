@@ -11,15 +11,17 @@ import ms.ui.server.MainView;
 import ms.utils.AuftragslistenReceiver;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
+import ms.utils.server.database.DbAdapter;
 import ms.utils.server.database.ServerAuftragslistenUpdater;
+import ms.utils.server.database.SqlDbAdapter;
 
 import org.apache.log4j.Logger;
 
 public class InitServer {
 	
 	private Logger logger = ServerLog.getLogger();
-	public static final int MAX_SERVER_THREADS = 10;
-	AuftragsListe liste;
+	private final int MAX_SERVER_THREADS = 10;
+	private AuftragsListe liste;
 	
 	public InitServer(int port) {
 		serverStartInfo();
@@ -30,7 +32,8 @@ public class InitServer {
 	}
 	
 	private void initAuftragVerwaltung() {
-		ServerAuftragslistenUpdater updater = new ServerAuftragslistenUpdater();
+		DbAdapter sqladapter = new SqlDbAdapter();
+		ServerAuftragslistenUpdater updater = new ServerAuftragslistenUpdater(sqladapter);
 		AuftragslistenReceiver rec = new AuftragslistenReceiver(updater);
 		Executor exec = Executors.newSingleThreadExecutor();
 		exec.execute(rec);

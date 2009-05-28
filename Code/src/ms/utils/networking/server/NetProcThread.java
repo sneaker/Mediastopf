@@ -8,7 +8,7 @@ import java.util.List;
 import ms.domain.Auftrag;
 import ms.domain.ImportMedium;
 import ms.utils.networking.BasicNetIO;
-import ms.utils.server.database.SqlDbAdapter;
+import ms.utils.server.database.DbAuftragsManager;
 
 public class NetProcThread extends BasicNetIO implements Runnable {
 
@@ -43,7 +43,7 @@ public class NetProcThread extends BasicNetIO implements Runnable {
 	}
 
 	private void sendTaskList() {
-		List<Auftrag> lp = SqlDbAdapter.getOrderList();
+		List<Auftrag> lp = DbAuftragsManager.getinstance(null).getAuftragList();
 		sendObject(lp);
 	}
 }

@@ -7,8 +7,12 @@ import ms.utils.AuftragslistenUpdater;
 
 public class ServerAuftragslistenUpdater implements AuftragslistenUpdater{
 	
-	DbAuftragsManager dbauftragsmanager = DbAuftragsManager.getinstance();
+	DbAuftragsManager dbauftragsmanager;
 
+	public ServerAuftragslistenUpdater(DbAdapter dbadapter) {
+		dbauftragsmanager = DbAuftragsManager.getinstance(dbadapter);
+	}
+	
 	public ArrayList<Auftrag> updateList() {
 		return (ArrayList<Auftrag>) dbauftragsmanager.getAuftragList();
 	}

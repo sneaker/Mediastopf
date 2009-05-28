@@ -161,7 +161,7 @@ public class ExportDialog extends Dialog {
 	private void export() {
 		String exportFolder = exportTextField.getText().trim();
 		File file = new File(Integer.toString(auftrag.getID()));
-		boolean done = ServerController.copyFiles(file.listFiles(), new File(exportFolder));
+		boolean done = ServerController.getInstance().copyFiles(file.listFiles(), new File(exportFolder));
 		if(done) {
 			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
 			auftrag.setStatus(3);

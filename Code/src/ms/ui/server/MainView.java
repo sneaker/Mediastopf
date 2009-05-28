@@ -47,7 +47,6 @@ import ms.ui.dialogs.MessageDialog;
 import ms.ui.dialogs.server.ExportDialog;
 import ms.ui.models.TaskComboBoxModel;
 import ms.ui.tables.Table;
-import ms.ui.tables.client.TaskTable;
 import ms.utils.I18NManager;
 import ms.utils.log.server.ServerLog;
 import ms.utils.ui.Button;
@@ -79,9 +78,11 @@ public class MainView extends Frame {
 	private final String export = manager.getString("export"),
 	runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), reload = manager.getString("Main.reload"),
 	statusbar = manager.getString("Main.statusbar");
+	private ServerController servercontroller;
 	
 	public MainView() {
 		new SplashScreen(Constants.SPLASH);
+		servercontroller = ServerController.getInstance();
 		
 		initGUI();
 	}
@@ -209,8 +210,7 @@ public class MainView extends Frame {
 	 * @return JComboBox
 	 */
 	private void addTaskComboBox() {
-		//XC3
-		taskList = ServerController.auftragsListe;
+		taskList = servercontroller.auftragsListe;
 		taskComboBox = new ComboBox(new TaskComboBoxModel(taskList), new Rectangle(10, 20, getWidth() - 30, 20));
 		if(0<taskComboBox.getItemCount())
 			taskComboBox.setSelectedIndex(0);
@@ -248,6 +248,7 @@ public class MainView extends Frame {
 					if (e.getActionCommand() == reload) {
 						taskList.updateList();
 						runTaskList.clean();
+						exportTable.revalidate();
 						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == export) {
 						exportSelectedItem();

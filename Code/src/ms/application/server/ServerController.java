@@ -13,13 +13,21 @@ import org.apache.log4j.Logger;
  */
 public class ServerController {
 
-	public static AuftragsListe auftragsListe;
+	public AuftragsListe auftragsListe;
 	
-	private static Logger logger = ServerLog.getLogger();
+	private static ServerController instance;
+	
+	private Logger logger = ServerLog.getLogger();
 
 	public ServerController(AuftragsListe alist)
 	{
 		auftragsListe = alist;
+		instance = this;
+	}
+	
+	public static ServerController getInstance()
+	{
+		return instance;
 	}
 	
 	/**
@@ -34,7 +42,7 @@ public class ServerController {
 	 * @return true wenn das Kopieren geklappt hat und genügend Platz vorhanden
 	 *         war für die kopierten Dateien
 	 */
-	public static boolean copyFiles(File[] folder, File exportFolder) {
+	public boolean copyFiles(File[] folder, File exportFolder) {
 		boolean succeed = FileIO.copyFiles(folder, exportFolder);
 		if (succeed) {
 			logger.info("Filetransfer succeed");
@@ -52,7 +60,7 @@ public class ServerController {
 	 * @param content
 	 *            zu schreibender Dateiinhalt
 	 */
-	public static void writeFile(File file, String content) {
+	public void writeFile(File file, String content) {
 		FileIO.write(file, content);
 	}
 }

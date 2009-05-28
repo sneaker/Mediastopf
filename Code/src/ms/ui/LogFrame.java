@@ -153,7 +153,7 @@ public class LogFrame extends Frame implements Observer {
 			String filename = fileChooser.getSelectedFile().getName();
 			String path = fileChooser.getCurrentDirectory().toString();
 			String file = addTXTPostfix(filename, path);
-			ServerController.writeFile(new File(file), textArea.getText().trim());
+			ServerController.getInstance().writeFile(new File(file), textArea.getText().trim());
 		}
 	}
 

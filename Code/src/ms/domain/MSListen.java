@@ -1,6 +1,7 @@
 package ms.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -8,19 +9,19 @@ public abstract class MSListen extends Observable implements Observer {
 
 	protected ArrayList<Auftrag> list = new ArrayList<Auftrag>();
 
-	public void add(Auftrag auftrag) {
+	public synchronized void add(Auftrag auftrag) {
 		list.add(auftrag);
 		setChanged();
 		notifyObservers();
 	}
 
-	public void remove(Auftrag auftrag) {
+	public synchronized void remove(Auftrag auftrag) {
 		list.remove(auftrag);
 		setChanged();
 		notifyObservers();
 	}
 
-	public void remove(int index) {
+	public synchronized void remove(int index) {
 		list.remove(index);
 		setChanged();
 		notifyObservers();
@@ -32,22 +33,13 @@ public abstract class MSListen extends Observable implements Observer {
 	
 	public Auftrag getbyAuftragsNr(int nr)
 	{
-		for(Auftrag a : list){
-			if (a.id == nr)
-				return a;
+		Iterator<Auftrag> it = list.iterator();
+		while(it.hasNext()) {
+			Auftrag auftrag = it.next();
+			if (auftrag.id == nr)
+				return auftrag;
 		}
 		return null;
-	}
-	
-	public boolean removebyId(int id)
-	{
-		for(Auftrag a: list) {
-			if (a.id == id) {
-				list.remove(a);
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public int size() {

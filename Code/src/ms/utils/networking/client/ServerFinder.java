@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 
 public class ServerFinder {
 	
+	private String local_addr = null;
 	private String location = null;
 	private int port = 1337;
 	
@@ -24,11 +25,12 @@ public class ServerFinder {
 
 	private void findServerInSubnet() {
 		String subnet = getSubnet();
-		Socket socket = null;
+		Socket socket = new Socket();
 		
 		// first try localhost
 		try {
-			socket = new Socket("localhost", port);
+			InetSocketAddress inetaddress = new InetSocketAddress("localhost", port);
+			socket.connect(inetaddress, 10);
 			socket.close();
 			location = "localhost";
 			return;
@@ -39,6 +41,8 @@ public class ServerFinder {
 		// needs about 15 seconds for subnet scan
 		for(int i = 1; i < 255; ++i) {
 			String addr = subnet + i;
+			if (addr.equals(local_addr))
+				continue;
 			try {
 				socket = new Socket();
 				InetSocketAddress inetaddress = new InetSocketAddress(addr, port);
@@ -56,13 +60,16 @@ public class ServerFinder {
 	{
 		Socket socket = null;
 		try {
-			socket = new Socket("www.test.ch", 80);
+			if (local_addr == null) {
+				socket = new Socket("www.test.ch", 80);
+				local_addr = socket.getLocalAddress().toString().split("/")[1];
+				socket.close();
+			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String local_addr = socket.getLocalAddress().toString().split("/")[1];
 		String[] netparts = local_addr.split("\\.");
 		if (netparts[0].equals("0") )
 			return "";

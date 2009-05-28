@@ -38,7 +38,7 @@ public class InitClient {
 		while(finder.getLocation() == null) {
 			logger.info("No server found, waiting");
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

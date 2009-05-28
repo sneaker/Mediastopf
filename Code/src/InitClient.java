@@ -13,6 +13,7 @@ import ms.utils.AuftragslistenReceiver;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ClientAuftragslistenUpdater;
 import ms.utils.networking.client.ImportMediumSender;
+import ms.utils.networking.client.ServerFinder;
 
 import org.apache.log4j.Logger;
 
@@ -32,18 +33,29 @@ public class InitClient {
 
 	private void initNetwork() {
 		
-		String HOST = "localhost"; // set the host where the server is!
-		int PORT = 1337;
+		ServerFinder finder = new ServerFinder();
+		// stay in loop until a server is found
+		while(finder.getLocation() == null) {
+			logger.info("No server found, waiting");
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		String server_address = finder.getLocation();
+		int port = finder.getPort();
 		
 		try {
-			ClientAuftragslistenUpdater clientupdater = new ClientAuftragslistenUpdater(HOST, PORT);
+			ClientAuftragslistenUpdater clientupdater = new ClientAuftragslistenUpdater(server_address, port);
 			rec = new AuftragslistenReceiver(clientupdater);
 			liste = new AuftragsListe(rec);
 
 			Executor exec_rec = Executors.newSingleThreadExecutor();
 			exec_rec.execute(rec);
 			
-			send = new ImportMediumSender(HOST, PORT);
+			send = new ImportMediumSender(server_address, port);
 			send.connect();
 			
 			Executor exec_send = Executors.newSingleThreadExecutor();

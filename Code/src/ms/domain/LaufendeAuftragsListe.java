@@ -1,5 +1,6 @@
 package ms.domain;
 
+import java.util.Iterator;
 import java.util.Observable;
 
 public class LaufendeAuftragsListe extends MSListen {
@@ -22,12 +23,15 @@ public class LaufendeAuftragsListe extends MSListen {
 	
 	public void clean()
 	{
-		if (list.isEmpty())
-			return;
-			
-		for (Auftrag a : list) {
-			if (a.status == 3 || a.status == 4)
-				remove(a);
+		Iterator<Auftrag> it = list.iterator();
+		while(it.hasNext()) {
+			Auftrag a = it.next();
+			if (a.status == 3 || a.status == 4) {
+				it.remove();
+				// observers must know about the list change, otherwhise access to non-existing element
+				setChanged();
+				notifyObservers();
+			}
 		}
 	}
 }

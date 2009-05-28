@@ -56,11 +56,8 @@ import ms.utils.ui.TextField;
  * main window of mediastopf
  */
 public class MainView extends Frame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private AuftragsListe taskList;

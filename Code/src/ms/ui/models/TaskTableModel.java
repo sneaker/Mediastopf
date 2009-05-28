@@ -12,11 +12,7 @@ import ms.utils.I18NManager;
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
 	private static I18NManager manager = I18NManager.getManager();
 	private static final String[] columns = { manager.getString("Model.task"), manager.getString("Model.status") };
 	
@@ -54,7 +50,6 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 			return auftrag.getID();
 		case 1:
 			String status = auftrag.getStatusMessage();
-			
 			String text = "";
 			
 			//TODO: Can we get this updated regularly?
@@ -63,7 +58,6 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 			}
 			
 			return status + text;
-			
 		default:
 			return "";
 		}

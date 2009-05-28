@@ -18,14 +18,11 @@ import org.apache.log4j.Logger;
 
 public class InitClient {
 
-	public static final String HOST = "localhost"; //"152.96.235.146";
-	public static final int PORT = 1337;
-
 	private Logger logger = ClientLog.getLogger();
 	
-	AuftragslistenReceiver rec;
-	ImportMediumSender send;
-	AuftragsListe liste;
+	private AuftragslistenReceiver rec;
+	private ImportMediumSender send;
+	private AuftragsListe liste;
 
 	public InitClient() {
 		initNetwork();
@@ -34,17 +31,22 @@ public class InitClient {
 	}
 
 	private void initNetwork() {
+		
+		String HOST = "localhost"; // set the host where the server is!
+		int PORT = 1337;
+		
 		try {
 			ClientAuftragslistenUpdater clientupdater = new ClientAuftragslistenUpdater(HOST, PORT);
 			rec = new AuftragslistenReceiver(clientupdater);
 			liste = new AuftragsListe(rec);
+
+			Executor exec_rec = Executors.newSingleThreadExecutor();
+			exec_rec.execute(rec);
+			
 			send = new ImportMediumSender(HOST, PORT);
 			send.connect();
 			
-			Executor exec_rec = Executors.newSingleThreadExecutor();
 			Executor exec_send = Executors.newSingleThreadExecutor();
-			
-			exec_rec.execute(rec);
 			exec_send.execute(send);
 		} catch (UnknownHostException e) {
 			logger.fatal("Unknown host");

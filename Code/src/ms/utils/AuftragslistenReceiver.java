@@ -3,14 +3,14 @@ package ms.utils;
 import java.util.ArrayList;
 import java.util.Observable;
 
-
 public class AuftragslistenReceiver extends Observable implements Runnable{
 
-	public static final int TIMEOUT = 10000;
+	public static final int TIMEOUT = 30000; // set the timeout when to refresh the Auftragsliste
 	
 	@SuppressWarnings("unchecked")
+	// local cache of the list
 	private ArrayList list;
-	AuftragslistenUpdater updater;
+	private AuftragslistenUpdater updater;
 	
 	@SuppressWarnings("unchecked")
 	public AuftragslistenReceiver(AuftragslistenUpdater updater) {
@@ -35,7 +35,6 @@ public class AuftragslistenReceiver extends Observable implements Runnable{
 				notifyObservers();
 				Thread.sleep(TIMEOUT);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

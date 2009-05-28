@@ -1,7 +1,7 @@
 package ms.application.client;
 
-import ms.utils.client.directoryobserver.DirectoryObserverTest;
-import ms.utils.client.filter.ImageWhiteFilterTest;
+import ms.utils.ImageWhiteFilterTest;
+import ms.utils.client.directorypoller.DirectoryObserverTest;
 import ms.utils.networking.client.ServerConnectionTest;
 
 import org.junit.runner.RunWith;

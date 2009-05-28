@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ms.application.client.ClientController;
+import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
 import ms.domain.LaufendeAuftragsListe;
 import ms.ui.LogFrame;
@@ -61,11 +62,11 @@ public class MainView extends Frame {
 	private I18NManager manager = I18NManager.getManager();
 	private ConfigHandler config = ConfigHandler.getClientHandler();
 	private AuftragsListe taskList;
-	private LaufendeAuftragsListe runTaskList;
+	private LaufendeAuftragsListe sendTaskList;
 	private JComboBox taskComboBox;
 	private JScrollPane tableScrollPane;
 	private JPanel tablePanel;
-	private JTextField statusBarField;	
+	private JTextField statusBarField;
 	private TaskTable taskTable;
 	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
 	private HashMap<String, JPanel> panelMap = new HashMap<String, JPanel>();
@@ -94,6 +95,7 @@ public class MainView extends Frame {
 		while (it.hasNext()) {
 			add((JPanel) it.next());
 		}
+		setVisible(true);
 	}
 
 	private void initFrame() {
@@ -215,7 +217,7 @@ public class MainView extends Frame {
 						taskList.updateList();
 						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == run) {
-						runSelectedItem();
+						processAuftrag();
 					}
 				}
 			});
@@ -224,45 +226,66 @@ public class MainView extends Frame {
 		}
 	}
 
-	// TODO what to do??
-	private void runSelectedItem() {
+	private void processAuftrag() {
 		int taskID = (Integer) taskComboBox.getSelectedItem();
-		if(taskID == -1) {
+		if(taskID < 0) {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
 		
-		//TODO: Move this to ClientController or somewhere else
 		String folder = getValueOf(ClientConstants.DEFAULTFOLDERCFG);
 		if(!new File(folder).exists()) {
-			askFolder(manager.getString("Main.choosedefaultfoldertitle"),
-			manager.getString("Main.choosedefaultfolder"));
+			pathNotSet(manager.getString("Main.choosedefaultfoldertitle"), manager.getString("Main.choosedefaultfolder"));
 			return;
 		}
-		File task = new File(folder + File.separator + taskID);
-		task.mkdirs();
+		File taskFolder = new File(folder + File.separator + taskID);
+		taskFolder.mkdirs();
 		
-		//TODO: Move this too
+		startApplication();
+		ClientController.getClientController().pollDirForAuftrag(taskFolder, taskID);
+		updateStatusBar(StatusType.RUNMESSAGE);
+
+		taskList.removebyId(taskID);
+		Auftrag task = new Auftrag(Integer.valueOf(taskID), 2);
+		sendTaskList.add(task);
+		checkDirStatus(taskFolder, task.getID());
+	}
+
+	private void startApplication() {
 		String ripper = getValueOf(ClientConstants.AUDIORIPPERCFG);
 		if(!new File(ripper).exists()) {
-			askFolder(manager.getString("Main.chooseaudiorippertitle"),
-			manager.getString("Main.chooseaudioripper"));
+			pathNotSet(manager.getString("Main.chooseaudiorippertitle"), manager.getString("Main.chooseaudioripper"));
 			return;
 		}
 		clientcontroller.openApplication(ripper);
-
-		updateStatusBar(StatusType.RUNMESSAGE);
-		
-		clientcontroller.observeDirForAuftrag(task, taskID);
-		 
-		int id = Integer.valueOf(taskID);
-		runTaskList.add(taskList.getbyAuftragsNr(id));
-		//TODO: which one we need? at least one i think
-		taskComboBox.validate();
-		validate();
 	}
 
-	private void askFolder(String title, String message) {
+	private void checkDirStatus(final File taskFolder, final int  taskID) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				while(true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if(taskFolder.listFiles().length <= 0) {
+						sendTaskList.removebyId(taskID);
+						break;
+					}
+				}
+			}
+		});
+		t.start();
+	}
+
+	private void pathNotSet(String title, String message) {
 		MessageDialog.info(title, message + manager.getString("Config.defaultfolder"));
 		openConfigDialog();
 	}
@@ -311,9 +334,8 @@ public class MainView extends Frame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 250));
-		
-		runTaskList = new LaufendeAuftragsListe();
-		taskTable = new TaskTable(runTaskList);
+		sendTaskList = new LaufendeAuftragsListe();
+		taskTable = new TaskTable(sendTaskList);
 		tableScrollPane = new ScrollPane(taskTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}
@@ -330,9 +352,8 @@ public class MainView extends Frame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int idtoremove = taskTable.send();
-				taskList.add(runTaskList.getbyAuftragsNr(idtoremove));
-				if (idtoremove >= 0 && idtoremove < runTaskList.size() )
-					runTaskList.remove(idtoremove);
+				if(0 <= idtoremove && idtoremove < sendTaskList.size() )
+					sendTaskList.remove(idtoremove);
 				updateStatusBar(StatusType.SENDMESSAGE);
 			}
 		});
@@ -437,8 +458,14 @@ public class MainView extends Frame {
 	}
 
 	private void openLogFrame() {
-		LogFrame ld = new LogFrame(ClientConstants.class);
-		ld.setVisible(true);
-		ClientLog.log.addObserver(ld);
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				LogFrame ld = new LogFrame(ClientConstants.class);
+				ld.setVisible(true);
+				ClientLog.log.addObserver(ld);
+			}
+		});
+		t.start();
 	}
 }

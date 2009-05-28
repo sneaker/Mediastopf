@@ -214,7 +214,9 @@ public class ConfigDialog extends Dialog {
 	
 	private void openAudioRipperDirChooser() {
 		FileChooser fileChooser = new FileChooser();
-		fileFilter(fileChooser);
+		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+			fileChooser.setFileFilter("exe");
+		}
 		openDialog(fileChooser, ripperTextField);
 	}
 	
@@ -243,12 +245,6 @@ public class ConfigDialog extends Dialog {
 		return label;
 	}
 
-	private void fileFilter(FileChooser fileChooser) {
-		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-			fileChooser.setFileFilter("exe");
-		}
-	}
-	
 	/**
 	 * esc = close dialog
 	 */

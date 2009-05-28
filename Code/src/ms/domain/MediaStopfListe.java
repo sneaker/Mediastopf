@@ -45,4 +45,9 @@ public abstract class MediaStopfListe extends Observable implements Observer {
 	public int size() {
 		return list.size();
 	}
+
+	public void removebyId(int taskID) {
+		Auftrag auftrag = getbyAuftragsNr(taskID);
+		remove(auftrag);
+	}
 }

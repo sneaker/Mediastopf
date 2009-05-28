@@ -9,6 +9,7 @@ import ms.application.client.ClientController;
 import ms.domain.Auftrag;
 import ms.domain.MediaStopfListe;
 import ms.utils.I18NManager;
+import ms.utils.client.directorypoller.DirectoryPoller;
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
 
@@ -43,21 +44,17 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Auftrag auftrag = list.get(rowIndex);
-		ClientController clientcontroller = ClientController.getClientController();
 		
 		switch (columnIndex) {
 		case 0:
 			return auftrag.getID();
 		case 1:
-			String status = auftrag.getStatusMessage();
-			String text = "";
-			
-			//TODO: Can we get this updated regularly?
-			if (clientcontroller.dirPollers != null && clientcontroller.dirPollers.get(auftrag.getID()) != null) {
-				text = ", in Bearbeitung (" + clientcontroller.dirPollers.get(auftrag.getID()).getRemainingTime() + " Seconds)";
+			String text = auftrag.getStatusText();
+			DirectoryPoller poller = ClientController.getClientController().dirPollers.get(auftrag.getID());
+			if (poller != null) {
+				text += ", in Bearbeitung ("	+ poller.getRemainingTime() + " Sekunden)";
 			}
-			
-			return status + text;
+			return text;
 		default:
 			return "";
 		}

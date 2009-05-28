@@ -1,6 +1,6 @@
 package ms.application.server;
 
-import ms.utils.filesys.server.FileIOTest;
+import ms.utils.FileIOTest;
 import ms.utils.server.database.CreateDeleteDomainObjectsTest;
 import ms.utils.server.database.DbAdapterTest;
 

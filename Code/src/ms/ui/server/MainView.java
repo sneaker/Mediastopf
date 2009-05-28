@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
@@ -33,7 +31,6 @@ import javax.swing.KeyStroke;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
 import ms.application.server.ServerController;
-import ms.domain.Auftrag;
 import ms.domain.AuftragsListe;
 import ms.domain.LaufendeAuftragsListe;
 import ms.ui.Constants;
@@ -67,7 +64,7 @@ public class MainView extends Frame {
 
 	private I18NManager manager = I18NManager.getManager();
 	private AuftragsListe taskList;
-	private LaufendeAuftragsListe runTaskList;
+	private LaufendeAuftragsListe exportTaskList;
 	private JComboBox taskComboBox;
 	private JPanel tablePanel;
 	private Table exportTable;
@@ -101,24 +98,15 @@ public class MainView extends Frame {
 		while (it.hasNext()) {
 			add((JPanel) it.next());
 		}
+		setVisible(true);
 	}
 
 	private void initFrame() {
-		super.initFrame(ServerConstants.PROGRAM, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(600, 550), JFrame.DO_NOTHING_ON_CLOSE);
+		super.initFrame(ServerConstants.PROGRAM, getClass().getResource(Constants.UIIMAGE + Constants.ICON), new Dimension(600, 550), JFrame.HIDE_ON_CLOSE);
 		setMinimumSize(new Dimension(400, 450));
 		setJMenuBar(createMenuBar());
-		
-		componentListener();
-		windowListener();
-	}
 
-	private void windowListener() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-			}
-		});
+		componentListener();
 	}
 
 	private void componentListener() {
@@ -247,8 +235,8 @@ public class MainView extends Frame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
 						taskList.updateList();
-						runTaskList.clean();
-						exportTable.revalidate();
+		//				runTaskList.clean();
+		//				exportTable.revalidate();
 						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == export) {
 						exportSelectedItem();
@@ -262,22 +250,17 @@ public class MainView extends Frame {
 	
 	private void exportSelectedItem() {
 		int taskID = (Integer)taskComboBox.getSelectedItem();
-		if(taskID == -1) {
+		if(taskID < 0) {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
 		File file = new File(Integer.toString(taskID));
-		System.out.println(file);
 		if(!file.isDirectory()) {
 			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
 			return;
 		}
-		Auftrag auftrag = taskList.getbyAuftragsNr(taskID);
-		auftrag.setStatus(4);
-		ExportDialog ed = new ExportDialog(auftrag);
-		runTaskList.add(auftrag);
+		ExportDialog ed = new ExportDialog(taskID, taskList, exportTaskList);
 		ed.setVisible(true);
-		validate();
 	}
 
 	/**
@@ -287,9 +270,8 @@ public class MainView extends Frame {
 	 */
 	private void addTaskTable() {
 		tablePanel = new Panel(new Rectangle(5, 15, getWidth() - 20, getHeight() - 200));
-		
-		runTaskList = new LaufendeAuftragsListe();
-		exportTable = new Table(runTaskList);
+		exportTaskList = new LaufendeAuftragsListe();
+		exportTable = new Table(exportTaskList);
 		tableScrollPane = new ScrollPane(exportTable, new Rectangle(0, 0, tablePanel.getWidth(), tablePanel.getHeight()));
 		tablePanel.add(tableScrollPane);
 	}
@@ -311,7 +293,7 @@ public class MainView extends Frame {
 		t.start();
 	}
 
-	void exit() {
+	protected void exit() {
 		int result = MessageDialog.yesNoDialog(manager.getString("Main.exittitle"), manager.getString("Main.exitmessage"));
 		switch(result) {
 		case JOptionPane.YES_OPTION:
@@ -396,8 +378,14 @@ public class MainView extends Frame {
 	}
 
 	private void openLogFrame() {
-		LogFrame ld = new LogFrame(ServerConstants.class);
-		ld.setVisible(true);
-		ServerLog.log.addObserver(ld);
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				LogFrame ld = new LogFrame(ServerConstants.class);
+				ld.setVisible(true);
+				ServerLog.log.addObserver(ld);
+			}
+		});
+		t.start();
 	}
 }

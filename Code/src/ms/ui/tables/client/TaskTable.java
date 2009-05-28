@@ -61,11 +61,10 @@ public class TaskTable extends Table {
 			MessageDialog.noneSelectedDialog();
 			return -1;
 		}
-		int tasknum = (Integer) getValueAt(row, 0);
+		int auftragsID = (Integer) getValueAt(row, 0);
 		
-		ClientController.getClientController().addForSending(tasknum);
+		ClientController.getClientController().addForSending(auftragsID);
 		
-		return row;
-		//TODO: dont forget to remove the files
+		return convertRowIndexToModel(row);
 	}
 }

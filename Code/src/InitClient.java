@@ -71,20 +71,15 @@ public class InitClient {
 		}
 	}
 
-	private void setLookAndFeel() {
+	private void initUI() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	private void initUI() {
-		setLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MainView mediastopf = new MainView();
-				mediastopf.setVisible(true);
+				new MainView();
 			}
 		});
 	}

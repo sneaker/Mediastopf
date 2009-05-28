@@ -13,6 +13,10 @@ public class AuftragsListe extends MediaStopfListe {
 		this.rec = rec;
 		updateList();
 	}
+	
+	public AuftragsListe() {
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public void updateList() {

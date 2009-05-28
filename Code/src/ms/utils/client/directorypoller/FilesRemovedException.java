@@ -1,4 +1,4 @@
-package ms.utils.client.directoryobserver;
+package ms.utils.client.directorypoller;
 
 import java.io.File;
 

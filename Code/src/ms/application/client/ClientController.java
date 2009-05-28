@@ -11,7 +11,7 @@ import ms.domain.ImportMedium;
 import ms.domain.MediaStopfListe;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
-import ms.utils.client.directoryobserver.DirectoryObserver;
+import ms.utils.client.directorypoller.DirectoryPoller;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ImportMediumSender;
 
@@ -38,7 +38,7 @@ public class ClientController {
 
 	public AuftragsListe auftragliste;
 
-	public Hashtable<Integer, DirectoryObserver> dirPollers;
+	public Hashtable<Integer, DirectoryPoller> dirPollers;
 	
 	private HashMap<Integer, ImportMedium> readylist;
 	
@@ -58,7 +58,7 @@ public class ClientController {
 		mediumsender = send;
 		auftragliste = aliste;
 		readylist = new HashMap<Integer, ImportMedium>();
-		dirPollers = new Hashtable<Integer, DirectoryObserver>();
+		dirPollers = new Hashtable<Integer, DirectoryPoller>();
 		instance = this;
 	}
 
@@ -71,12 +71,12 @@ public class ClientController {
 	 *            welcher überwacht werden soll (Importverzeichnis plus die
 	 *            Nummer des Auftrages)
 	 */
-	public void observeDirForAuftrag(File folder, int auftrag_id) {
+	public void pollDirForAuftrag(File folder, int auftrag_id) {
 		//inner classes need final arguments
 		final File _folder = folder;
 		final int _auftrag_id = auftrag_id;
-		DirectoryObserver dirObserver = new DirectoryObserver(folder);
-		dirObserver.addObserver(new Observer() {
+		DirectoryPoller dirPoller = new DirectoryPoller(folder);
+		dirPoller.addObserver(new Observer() {
 			public void update(Observable o, Object arg) {
 				dirPollers.remove(_auftrag_id);
 				generateImportMedium(_folder, _auftrag_id);
@@ -84,13 +84,12 @@ public class ClientController {
 			}
 		});
 		
-		dirPollers.put(auftrag_id, dirObserver);
+		dirPollers.put(auftrag_id, dirPoller);
 		
-		new Thread(dirObserver).start();
+		new Thread(dirPoller).start();
 
-		ClientLog.getLogger().info("Directory Observer started in " + folder);
+		ClientLog.getLogger().info(DirectoryPoller.class.getSimpleName() + " started in " + folder);
 	}
-	
 	
 	private void generateImportMedium(File folder, final int auftrag_id)
 	{
@@ -111,6 +110,7 @@ public class ClientController {
 		ImportMedium m = readylist.get(auftrag_id);
 		mediumsender.addMediumForTransfer(m);
 		readylist.remove(auftrag_id);
+		deleteFiles(new File(Integer.toString(auftrag_id)));
 	}
 
 	/**
@@ -120,6 +120,25 @@ public class ClientController {
 	 */
 	public MediaStopfListe getTaskList() {
 		return auftragliste;
+	}
+	
+	private static void deleteFiles(final File file) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if (file.isDirectory()) {
+					File[] fileList = file.listFiles();
+					for (File f : fileList) {
+						if (f.isDirectory()) {
+							deleteFiles(f);
+						}
+						f.delete();
+					}
+				}
+				file.delete();
+			}
+		});
+		t.start();
 	}
 
 	public void openApplication(String app) {

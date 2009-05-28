@@ -25,8 +25,9 @@ import javax.swing.KeyStroke;
 
 import ms.application.server.ServerController;
 import ms.domain.Auftrag;
+import ms.domain.LaufendeAuftragsListe;
+import ms.domain.MediaStopfListe;
 import ms.ui.Constants;
-import ms.ui.dialogs.MessageDialog;
 import ms.ui.server.ServerConstants;
 import ms.utils.ConfigHandler;
 import ms.utils.I18NManager;
@@ -48,11 +49,14 @@ public class ExportDialog extends Dialog {
 	private final String export = manager.getString("export"), close = manager.getString("close");
 	private JLabel folderNotValidLabel = getNotValidLabel(140, 10);
 	private JTextField exportTextField;
-	private Auftrag auftrag;
-	
-	public ExportDialog(Auftrag auftrag)
-	{
-		this.auftrag = auftrag;
+	private int taskID;
+	private MediaStopfListe taskList; 
+	private LaufendeAuftragsListe exportTaskList;
+
+	public ExportDialog(int taskID, MediaStopfListe taskList, LaufendeAuftragsListe exportTaskList) {
+		this.taskID = taskID;
+		this.taskList = taskList;
+		this.exportTaskList = exportTaskList;
 		
 		initGUI();
 	}
@@ -159,15 +163,36 @@ public class ExportDialog extends Dialog {
 	}
 	
 	private void export() {
-		String exportFolder = exportTextField.getText().trim();
-		File file = new File(Integer.toString(auftrag.getID()));
-		boolean done = ServerController.getInstance().copyFiles(file.listFiles(), new File(exportFolder));
-		if(done) {
-			MessageDialog.info(manager.getString("Exporter.exportdone"), manager.getString("Exporter.exportfilesto") + exportFolder);
-			auftrag.setStatus(3);
-		} else {
-			MessageDialog.info(manager.getString("Exporter.exportfailedtitle"), manager.getString("Exporter.exportfailed"));
-		}
+		final File exportFolder = new File(exportTextField.getText().trim());
+		final File file = new File(Integer.toString(taskID));
+		final Auftrag task = new Auftrag(taskID, 3);
+		taskList.removebyId(taskID);
+		exportTaskList.add(task);
+		
+		Thread copyThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ServerController.getInstance().copyFiles(file.listFiles(), exportFolder);
+			}
+		});
+		copyThread.start();
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if(file.listFiles().length == exportFolder.listFiles().length) {
+						exportTaskList.remove(task);
+						break;
+					}
+				}
+			}
+		});
+		t.start();
 	}
 	
 	/**

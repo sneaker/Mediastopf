@@ -8,15 +8,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -25,10 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
-import ms.application.server.ServerController;
 import ms.utils.I18NManager;
 import ms.utils.ui.Button;
-import ms.utils.ui.FileChooser;
 import ms.utils.ui.Frame;
 import ms.utils.ui.ScrollPane;
 import ms.utils.ui.TextArea;
@@ -46,8 +41,8 @@ public class LogFrame extends Frame implements Observer {
 	private I18NManager manager = I18NManager.getManager();
 	private JTextArea textArea;
 	private JScrollPane scrollArea;
-	private HashMap<String, JButton> buttonMap = new HashMap<String, JButton>();
-	private final String save = manager.getString("save"), close = manager.getString("close");
+	private JButton cancelButton;
+	private String close = manager.getString("close");
 	private Class<? extends Constants> constants;
 
 	public LogFrame(Class<? extends Constants> constants) {
@@ -96,9 +91,7 @@ public class LogFrame extends Frame implements Observer {
 		int height = getHeight() - 65;
 		scrollArea.setSize(width , height - 15);
 		scrollArea.revalidate();
-		
-		buttonMap.get(save).setLocation(width - 250, height);
-		buttonMap.get(close).setLocation(width - 125, height);
+		cancelButton.setLocation(width - 125, height);
 	}
 
 	private void addTextArea() {
@@ -116,53 +109,16 @@ public class LogFrame extends Frame implements Observer {
 		int y = 365;
 		int width = 115;
 		int height = 25;
-		final String[] buttonText = { save, close };
-		final URL[] icons = { getClass().getResource(Constants.UIIMAGE + Constants.SAVE), getClass().getResource(Constants.UIIMAGE + Constants.CANCEL) };
-		final Rectangle sendBounds = new Rectangle(x, y, width, height);
 		final Rectangle cancelBounds = new Rectangle(x + width + 10, y, width, height);
-		final Rectangle[] bounds = { sendBounds, cancelBounds };
-		final int okMnemonic = KeyEvent.VK_S, cancelMnemonic = KeyEvent.VK_C;
-		final int[] mnemonic = { okMnemonic, cancelMnemonic };
-		for (int i = 0; i < buttonText.length; i++) {
-			JButton button = new Button(bounds[i], buttonText[i], mnemonic[i], icons[i]);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (e.getActionCommand() == save) {
-						saveAsTXT();
-					} else if (e.getActionCommand() == close) {
-						close();
-					}
-				}
-			});
-			add(button);
-			buttonMap.put(buttonText[i], button);
-		}
-	}
-
-	private void saveAsTXT() {
-		FileChooser fileChooser = new FileChooser();
-		try {
-			fileChooser.setSelectedFile(new File((String) constants.getField("LOGFILE").get(constants)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		fileChooser.setFileFilter("txt");
-
-		int returnVal = fileChooser.showSaveDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = fileChooser.getSelectedFile().getName();
-			String path = fileChooser.getCurrentDirectory().toString();
-			String file = addTXTPostfix(filename, path);
-			ServerController.getInstance().writeFile(new File(file), textArea.getText().trim());
-		}
-	}
-
-	private String addTXTPostfix(String filename, String path) {
-		String file = path + File.separator + filename;
-		if (!filename.endsWith("txt")) {
-			file += ".txt";
-		}
-		return file;
+		final int cancelMnemonic = KeyEvent.VK_C;
+		final URL icon = getClass().getResource(Constants.UIIMAGE + Constants.CANCEL); 
+		cancelButton = new Button(cancelBounds, close, cancelMnemonic, icon);
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		});
+		add(cancelButton);
 	}
 	
 	/**

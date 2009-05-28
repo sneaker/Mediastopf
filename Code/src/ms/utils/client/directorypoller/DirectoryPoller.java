@@ -1,9 +1,13 @@
-package ms.utils.client.directoryobserver;
+package ms.utils.client.directorypoller;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
+
+import ms.utils.log.Log;
+
+import org.apache.log4j.Logger;
 
 /**
  * Teilt seinen SubscriberInnen mit, falls im überwachten Datei-Verzeichnis neue
@@ -23,9 +27,10 @@ import java.util.Observable;
  * new Thread(o).start();
  * </code>
  */
-public class DirectoryObserver extends Observable implements Runnable {
+public class DirectoryPoller extends Observable implements Runnable {
 
 	private static final int POLLING_INTERVAL = 2000;
+	private Logger logger = Log.getLogger();
 	private File observedDirectory;
 	private ArrayList<File> lastDirectorySnapshot = new ArrayList<File>();
 	/**
@@ -40,7 +45,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * @param directory
 	 *            Pfad zum Verzeichnis, welches überwacht werden soll
 	 */
-	public DirectoryObserver(String directory) {
+	public DirectoryPoller(String directory) {
 		this(new File(directory));
 	}
 
@@ -51,7 +56,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * @param directory
 	 *            muss ein Verzeichnis sein, keine Datei
 	 */
-	public DirectoryObserver(File directory) {
+	public DirectoryPoller(File directory) {
 		assert (directory.isDirectory());
 		observedDirectory = directory;
 		takeDirectorySnapshot();
@@ -59,16 +64,16 @@ public class DirectoryObserver extends Observable implements Runnable {
 
 	public void run() {
 		try {
-			while (!isfinished()) {
+			while (!checkStatus()) {
 				Thread.sleep(POLLING_INTERVAL);
-				System.out.println("DObserver: still observing "
+				logger.info(getClass().getSimpleName() + ": still observing "
 						+ observedDirectory.getAbsolutePath());
 			}
 		} catch (InterruptedException e) {
-			System.err.println("Warning: DirectoryObserver for "
+			logger.warn("Warning: " + getClass().getSimpleName() + " for "
 					+ observedDirectory + " got interrupted");
 		} catch (FilesRemovedException e) {
-			System.err.println(e.getMessage() + "\nObserved directory was "
+			logger.warn(e.getMessage() + "\nObserved directory was "
 					+ observedDirectory);
 		}
 	}
@@ -88,25 +93,25 @@ public class DirectoryObserver extends Observable implements Runnable {
 	 * @return false wenn seit einem bestimmten Intervall keine Änderung
 	 *         aufgetreten ist.
 	 */
-	protected boolean isfinished() throws FilesRemovedException {
+	protected boolean checkStatus() throws FilesRemovedException {
 		if (getDeletedFiles() > 0)
 			throw new FilesRemovedException(getDeletedFiles(),
 					observedDirectory);
 
 		if (!recentChange() && observedDirectory.listFiles().length > 0) {
-			System.out.println("finished");
+			logger.info(getClass().getSimpleName() + ": finished");
 			setChanged();
 			notifyObservers();
 			return true;
 		}
 
 		takeDirectorySnapshot();
-		System.out.println("nothing changed");
+		logger.info(getClass().getSimpleName() + "nothing changed");
 		return false;
 	}
 
 	private boolean recentChange() {
-		System.out.println("DPoll: Autocommit in "
+		logger.info(getClass().getSimpleName() + ": Autocommit in "
 					    + getRemainingTime()
 					    + " seconds.");
 		return getLastModifyDate() > System.currentTimeMillis() - updateTimeout
@@ -152,7 +157,7 @@ public class DirectoryObserver extends Observable implements Runnable {
 				lastDirectorySnapshot);
 		copyOfLastSnapshot.removeAll(getSortedDirectorySnapshot());
 
-		System.out.println(copyOfLastSnapshot.size());
+		logger.info(getClass().getSimpleName() + ": " + copyOfLastSnapshot.size());
 		return 0;
 	}
 

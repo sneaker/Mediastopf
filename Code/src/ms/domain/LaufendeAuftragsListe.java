@@ -3,7 +3,7 @@ package ms.domain;
 import java.util.Iterator;
 import java.util.Observable;
 
-public class LaufendeAuftragsListe extends MSListen {
+public class LaufendeAuftragsListe extends MediaStopfListe {
 
 	@Override
 	public void add(Auftrag auftrag) {

@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import ms.application.client.ClientController;
 import ms.domain.Auftrag;
-import ms.domain.MSListen;
+import ms.domain.MediaStopfListe;
 import ms.utils.I18NManager;
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
@@ -16,9 +16,9 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	private static I18NManager manager = I18NManager.getManager();
 	private static final String[] columns = { manager.getString("Model.task"), manager.getString("Model.status") };
 	
-	private MSListen list;
+	private MediaStopfListe list;
 	
-	public TaskTableModel(MSListen list) {
+	public TaskTableModel(MediaStopfListe list) {
 		this.list = list;
 		list.addObserver(this);
 	}

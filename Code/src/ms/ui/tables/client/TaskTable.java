@@ -8,7 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import ms.application.client.ClientController;
-import ms.domain.MSListen;
+import ms.domain.MediaStopfListe;
 import ms.ui.client.ClientConstants;
 import ms.ui.dialogs.MessageDialog;
 import ms.ui.models.TaskTableModel;
@@ -22,7 +22,7 @@ public class TaskTable extends Table {
 	
 	private I18NManager manager = I18NManager.getManager();
 	
-	public TaskTable(MSListen list) {
+	public TaskTable(MediaStopfListe list) {
 		super(new TaskTableModel(list));
 		initTable();
 	}

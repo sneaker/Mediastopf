@@ -5,7 +5,7 @@ import java.util.Observable;
 
 import ms.utils.AuftragslistenReceiver;
 
-public class AuftragsListe extends MSListen {
+public class AuftragsListe extends MediaStopfListe {
 
 	private AuftragslistenReceiver rec;
 	

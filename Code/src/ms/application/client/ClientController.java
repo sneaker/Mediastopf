@@ -8,7 +8,7 @@ import java.util.Observer;
 
 import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
-import ms.domain.MSListen;
+import ms.domain.MediaStopfListe;
 import ms.utils.ApplicationLauncher;
 import ms.utils.AuftragslistenReceiver;
 import ms.utils.client.directoryobserver.DirectoryObserver;
@@ -118,7 +118,7 @@ public class ClientController {
 	 * Liste, welche noch abgerufen werden konnte, falls der Server nicht
 	 * erreichbar ist.
 	 */
-	public MSListen getTaskList() {
+	public MediaStopfListe getTaskList() {
 		return auftragliste;
 	}
 

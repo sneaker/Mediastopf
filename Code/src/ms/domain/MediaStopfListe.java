@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class MSListen extends Observable implements Observer {
+public abstract class MediaStopfListe extends Observable implements Observer {
 
 	protected ArrayList<Auftrag> list = new ArrayList<Auftrag>();
 

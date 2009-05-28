@@ -2,7 +2,7 @@ package ms.ui.tables;
 
 import javax.swing.ListSelectionModel;
 
-import ms.domain.MSListen;
+import ms.domain.MediaStopfListe;
 import ms.ui.models.TaskTableModel;
 
 import org.jdesktop.swingx.JXTable;
@@ -14,7 +14,7 @@ public class Table extends JXTable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Table(MSListen list) {
+	public Table(MediaStopfListe list) {
 		super(new TaskTableModel(list));
 		initTable();
 	}

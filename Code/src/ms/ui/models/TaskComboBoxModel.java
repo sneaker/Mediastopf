@@ -7,7 +7,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 
-import ms.domain.MSListen;
+import ms.domain.MediaStopfListe;
 
 
 public class TaskComboBoxModel extends AbstractListModel implements Observer, ComboBoxModel {
@@ -16,10 +16,10 @@ public class TaskComboBoxModel extends AbstractListModel implements Observer, Co
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private MSListen list;
+	private MediaStopfListe list;
 	private int taskID = -1;
 	
-	public TaskComboBoxModel(MSListen list) {
+	public TaskComboBoxModel(MediaStopfListe list) {
 		this.list = list;
 		list.addObserver(this);
 	}

@@ -14,10 +14,6 @@ public class AuftragsListe extends MSListen {
 		updateList();
 	}
 
-	public void add(ArrayList<Auftrag> al) {
-		list = al;
-	}
-
 	@SuppressWarnings("unchecked")
 	public void updateList() {
 		rec.updateTaskList();

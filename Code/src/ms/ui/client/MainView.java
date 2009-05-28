@@ -244,8 +244,7 @@ public class MainView extends Frame {
 		startApplication();
 		ClientController.getClientController().pollDirForAuftrag(taskFolder, taskID);
 		updateStatusBar(StatusType.RUNMESSAGE);
-
-		taskList.removebyId(taskID);
+		
 		Auftrag task = new Auftrag(Integer.valueOf(taskID), 2);
 		sendTaskList.add(task);
 		checkDirStatus(taskFolder, task.getID());

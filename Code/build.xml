@@ -2,7 +2,7 @@
 
 <project default="release" name="MediaStopf" basedir=".">
 	
-	<property name="version" value="0.3" />
+	<property name="version" value="0.4" />
 
 	<!-- One entry for each directory -->
 	<property name="src.dir" location="src" />

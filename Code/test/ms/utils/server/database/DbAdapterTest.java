@@ -34,16 +34,18 @@ public class DbAdapterTest {
 	@Test
 	public void testSaveGetDeleteAuftragList() {
 		Auftrag myAuftrag = new Auftrag(randomint1);
-				
-		int asserted_id = SqlDbAdapter.saveAuftrag(myAuftrag);
 		
-		Auftrag DbAuftrag = SqlDbAdapter.getAuftrag(myAuftrag.getID());
+		SqlDbAdapter sqldbadapter = new SqlDbAdapter();
+		
+		int asserted_id = sqldbadapter.saveAuftrag(myAuftrag);
+		
+		Auftrag DbAuftrag = sqldbadapter.getAuftrag(myAuftrag.getID());
 		assertEquals(asserted_id, DbAuftrag.getID());
 				
-		assertEquals(true, SqlDbAdapter.deleteAuftrag(myAuftrag));
-		assertEquals(false, SqlDbAdapter.deleteAuftrag(myAuftrag));
+		assertEquals(true, sqldbadapter.deleteAuftrag(myAuftrag));
+		assertEquals(false, sqldbadapter.deleteAuftrag(myAuftrag));
 		
-		DbAuftrag = SqlDbAdapter.getAuftrag(myAuftrag.getID());
+		DbAuftrag = sqldbadapter.getAuftrag(myAuftrag.getID());
 		assertEquals(null, DbAuftrag);
 	}
 }

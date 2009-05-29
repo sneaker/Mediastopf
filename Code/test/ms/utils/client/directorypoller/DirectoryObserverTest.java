@@ -10,6 +10,7 @@ import java.util.Observer;
 
 import ms.utils.client.directorypoller.DirectoryPoller;
 import ms.utils.client.directorypoller.FilesRemovedException;
+import ms.utils.log.client.ClientLog;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,32 +23,12 @@ public class DirectoryObserverTest {
 
 	@Before
 	public void setUp() {
+		org.apache.log4j.Logger logger = ClientLog.getLogger();
 		dir = new MockDirectory();
 		notifyTester = new UpdateDetector();
 		changeScanner = new DirectoryPoller(dir);
 		changeScanner.addObserver(notifyTester);
 	}
-
-	/*@Test(expected = FilesRemovedException.class)
-	public void testDeleteFileGivesWarning() throws Exception {
-		dir.addMockFiles(5);
-		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
-		dir.removeFile(3);
-		changeScanner.checkStatus();
-	}
-
-	@Test(expected = FilesRemovedException.class)
-	public void testRenameGivesWarning() throws Exception {
-		dir.addMockFiles(21);
-		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
-		dir.removeFiles(21);
-		dir.addMockFiles(21);
-		dir.makeAllFilesOlder(11);
-		changeScanner.checkStatus();
-	}
-	*/
 
 	@Test
 	public void testUpdate() throws Exception {

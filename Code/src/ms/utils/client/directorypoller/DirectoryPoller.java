@@ -94,10 +94,6 @@ public class DirectoryPoller extends Observable implements Runnable {
 	 *         aufgetreten ist.
 	 */
 	protected boolean checkStatus() throws FilesRemovedException {
-		if (getDeletedFiles() > 0)
-			throw new FilesRemovedException(getDeletedFiles(),
-					observedDirectory);
-
 		if (!recentChange() && observedDirectory.listFiles().length > 0) {
 			logger.info(getClass().getSimpleName() + ": finished");
 			setChanged();

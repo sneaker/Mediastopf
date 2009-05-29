@@ -150,21 +150,15 @@ public class LogFrame extends Frame implements Observer {
 	 */
 	private JPopupMenu getPopUpMenu(final JTextArea textArea) {
 		JPopupMenu popupMenu = new JPopupMenu();
-		final String copy = manager.getString("copy"), selectall = manager.getString("selectall");
-		final String[] menuItems = { copy, selectall };
-		for (int i = 0; i < menuItems.length; i++) {
-			JMenuItem copyMenuItem = new JMenuItem(menuItems[i]);
-			copyMenuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(e.getActionCommand() == copy) {
-						textArea.copy();
-					} else {
-						textArea.selectAll();
-					}
-				}
-			});
-			popupMenu.add(copyMenuItem);
-		}
+		String copy = manager.getString("copy");
+		JMenuItem copyMenuItem = new JMenuItem(copy);
+		copyMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textArea.selectAll();
+				textArea.copy();
+			}
+		});
+		popupMenu.add(copyMenuItem);
 		return popupMenu;
 	}
 

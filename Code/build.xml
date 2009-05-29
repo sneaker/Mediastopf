@@ -18,8 +18,8 @@
 	<property name="file.client" value="${filename}_client.jar" />
 	<property name="file.server" value="${filename}_server.jar" />
 	
-	<property name="main.class.client" value="ms.application.client.StartClient" />
-	<property name="main.class.server" value="ms.application.server.StartServer" />
+	<property name="main.class.client" value="StartClient" />
+	<property name="main.class.server" value="StartServer" />
 	<property name="test.suite" value="ms.MediaStopfTest" />
 	
 	<path id="project.classpath">
@@ -90,7 +90,7 @@
 
 	<target name="jar" depends="compile" description="create the JAR file">
 	  <mkdir dir="${release.dir}" />
-		<jar destfile="${release.dir}/${file.client}" basedir="${build.dir}" > <!-- excludes="**/server/*"> -->
+		<jar destfile="${file.client}" basedir="${build.dir}" >
 			<manifest>
 				<attribute name="Main-Class" value="${main.class.client}" />
 			</manifest>
@@ -98,7 +98,7 @@
 			<zipfileset excludes="META-INF/*.SF" src="lib/swingx-0.9.5.jar"/>
 			<zipfileset excludes="META-INF/*.SF" src="lib/log4j-1.2.15.jar"/>
 	  	</jar>
-		<jar destfile="${release.dir}/${file.server}" basedir="${build.dir}" > <!-- excludes="**/client/*"> -->
+		<jar destfile="${file.server}" basedir="${build.dir}" >
 			<manifest>
 				<attribute name="Main-Class" value="${main.class.server}" />
 			</manifest>
@@ -112,14 +112,18 @@
 		<zip file="${release.dir}/${filename}_${version}.zip" level="9">
 			<zipfileset dir=".">
 				<exclude name="**/.*" />
-				<include name="${release.dir}/${file.server}" />
-				<include name="${release.dir}/${file.client}" />
+				<include name="${file.server}" />
+				<include name="${file.client}" />
 				<include name="javadoc/**" />
 				<include name="lib/**" />
 				<include name="src/**" />
 				<include name="test/**" />
 				<include name="db/**" />
 				<include name="build.xml" />
+				<include name="mediastopf_client.bat" />
+				<include name="mediastopf_server.bat" />
+				<include name="mediastopf_client.sh" />
+				<include name="mediastopf_server.sh" />
 			</zipfileset>
 		</zip>
 	</target>

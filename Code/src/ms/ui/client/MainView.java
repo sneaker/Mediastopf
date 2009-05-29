@@ -159,7 +159,7 @@ public class MainView extends Frame {
 		tableScrollPane.setSize(tablePanel.getWidth(), tablePanel.getHeight());
 		tableScrollPane.revalidate();
 
-		buttonMap.get(send).setLocation(width - 250, height + 30);
+		buttonMap.get(send).setLocation(width - 135, height + 30);
 	}
 
 	private void addStatusBar() {

@@ -235,8 +235,8 @@ public class MainView extends Frame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand() == reload) {
 						taskList.updateList();
-		//				runTaskList.clean();
-		//				exportTable.revalidate();
+						exportTaskList.clean();
+						exportTable.revalidate();
 						updateStatusBar(StatusType.RELOADMESSAGE);
 					} else if (e.getActionCommand() == export) {
 						exportSelectedItem();
@@ -254,6 +254,7 @@ public class MainView extends Frame {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
+		exportTaskList.add(taskList.getbyAuftragsNr(taskID));
 		File file = new File(Integer.toString(taskID));
 		if(!file.isDirectory()) {
 			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);

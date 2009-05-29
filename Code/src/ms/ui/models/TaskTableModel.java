@@ -15,10 +15,11 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	private static I18NManager manager = I18NManager.getManager();
-	private static final String[] columns = { manager.getString("Model.task"), manager.getString("Model.status") };
-	
+	private static final String[] columns = { manager.getString("Model.task"),
+			manager.getString("Model.status") };
+
 	private MediaStopfListe list;
-	
+
 	public TaskTableModel(MediaStopfListe list) {
 		this.list = list;
 		list.addObserver(this);
@@ -36,7 +37,7 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	public int getRowCount() {
 		return list.size();
 	}
-	
+
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return false;
@@ -44,22 +45,27 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Auftrag auftrag = list.get(rowIndex);
-		
 		switch (columnIndex) {
 		case 0:
 			return auftrag.getID();
 		case 1:
-			String text = auftrag.getStatusText();
-			DirectoryPoller poller = ClientController.getClientController().dirPollers.get(auftrag.getID());
-			if (poller != null) {
-				text += ", in Bearbeitung ("	+ poller.getRemainingTime() + " Sekunden)";
+			String status = auftrag.getStatusMessage();
+			String updatetext = "";
+
+			if (ClientController.getClientController() != null) {
+				if (ClientController.getClientController().dirPollers != null
+						&& ClientController.getClientController().dirPollers.get(auftrag.getID()) != null) {
+					updatetext = ", in Bearbeitung ("
+							+ ClientController.getClientController().dirPollers.get(auftrag.getID())
+									.getRemainingTime() + " Seconds)";
+				}
 			}
-			return text;
+			return status + updatetext;
 		default:
 			return "";
 		}
 	}
-	
+
 	public void update(Observable arg0, Object arg1) {
 		fireTableDataChanged();
 	}

@@ -76,23 +76,6 @@ public class Auftrag implements Serializable {
 	public int getStatus() {
 		return status;
 	}
-	
-	public String getStatusText() {
-		switch (status) {
-		case 0:
-			return "Neu";
-		case 1:
-			return "Bereit fuer Import";
-		case 2:
-			return "Auftrag importiert, sendebereit";
-		case 3:
-			return "Auftrag abgeschlossen";
-		case 4:
-			return "Auftrag Exportbereit";
-		default:
-			return "Status nicht definiert";
-		}
-	}
 
 	public String getStatusMessage() {
 		String status;
@@ -105,13 +88,13 @@ public class Auftrag implements Serializable {
 			status = "Bereit für Import";
 			break;
 		case 2:
-			status = "Auftrag importiert, sendebereit";
+			status = "Medium importiert, sendebereit";
 			break;
 		case 3:
-			status = "Auftrag abgeschlossen";
+			status = "Auftrag Exportbereit";
 			break;
 		case 4:
-			status = "Auftrag Exportbereit";
+			status = "Auftrag Abgeschlossen";
 			break;
 		default:
 			status = "unknown " + getStatus();

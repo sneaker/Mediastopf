@@ -1,20 +1,17 @@
 package ms.domain;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import ms.utils.ImageWhiteFilter;
 
@@ -40,8 +37,8 @@ public class ImportMedium implements Serializable {
 		this.id = id;
 	}
 
-	protected ArrayList<String> names;
-	protected ArrayList<ByteBuffer> items;
+	public ArrayList<String> names;
+	public ArrayList<ByteBuffer> items;
 
 	/**
 	 * Vorbereitung, damit die einzelnen extrahierten Dateien hinzugefuegt werden
@@ -81,6 +78,30 @@ public class ImportMedium implements Serializable {
 			items.add(buffer);
 		}
 	}
+	
+	public ImportMedium(int auftrags_id, ArrayList<String> names, ArrayList<ByteBuffer> items)
+	{
+		setId(auftrags_id);
+		this.names =names;
+		this.items = items;
+		
+		Integer id = auftrags_id;
+		String _id = id.toString();
+		
+		File directory = new File(_id);
+		directory.mkdir();
+		
+		for (int i = 0; i < items.size(); ++i) {
+			try {
+				FileOutputStream writer = new FileOutputStream(directory + File.separator + names.get(i));
+				writer.write(items.get(i).array());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public boolean isInDB() {
 		return id > -1;
@@ -113,91 +134,7 @@ public class ImportMedium implements Serializable {
 	public ArrayList<ByteBuffer> getItemsbyFile() {
 		return items;
 	}
-	
-	/**
-	 * Serialisiert ein ImportMedium Objekt
-	 * 
-	 * @param stream
-	 * @throws IOException
-	 */
-	private void writeObject(ObjectOutputStream stream) throws IOException
-	{
-		//auftrags id
-		stream.writeInt(id);
-		//names
-		stream.writeInt(names.size());
-		Iterator<String> name_it = names.iterator();
-		while(name_it.hasNext()) {
-			String itemname = name_it.next();
-			stream.writeInt(itemname.length());
-			stream.writeBytes(itemname);
-		}
-		//items
-		stream.writeInt(items.size());
-		Iterator<ByteBuffer> item_it = items.iterator();
-		while(item_it.hasNext()) {
-			ByteBuffer b = item_it.next();
-			stream.writeInt(b.capacity());
-			System.out.println(b.array().length);
-			stream.write(b.array());
-		}
-	}
-	
-	/**
-	 * Deserialisiert ein ImportMedium
-	 * 
-	 * @param stream
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException
-	{
-		//auftragsid
-		id = stream.readInt();
-		int length = stream.readInt();
-		//filenames
-		names = new ArrayList<String>(length);
-		for (int i = 0; i < length; ++i) {
-			int namelength = stream.readInt();
-			byte[] b = new byte[namelength	];
-			stream.read(b, 0, namelength);
-			String s = new String(b);
-			names.add(s);
-		}
 
-		File directory = new File(Integer.toString(id));
-		directory.mkdir();
-
-		//files
-		length = stream.readInt();
-		items = new ArrayList<ByteBuffer>(length);
-		for (int i = 0; i < length; ++i){
-			int filesize = stream.readInt();
-			
-			int newbytes = 0;
-			int totalbytes = 0;
-			int maxtoread = 0;
-			if (filesize > 1024)
-				maxtoread = 1024;
-			else
-				maxtoread = filesize;
-			byte[] tmpbuffer = new byte[1024];
-			FileOutputStream writer = new FileOutputStream(directory + File.separator + names.get(i));		
-			
-			while ((newbytes= stream.read(tmpbuffer, 0, maxtoread)) != -1) {
-				writer.write(tmpbuffer, 0, newbytes);
-				totalbytes += newbytes;
-				if (totalbytes >= filesize)
-					break;
-				if ((totalbytes + 1024) > filesize)
-					maxtoread = filesize - totalbytes;
-				else
-					maxtoread = 1024;
-			}
-			writer.close();
-		}
-	}
-	
 	private static boolean isImage(File file) {
 		String[] extensions = { "jpg", "jpeg", "gif", "png" };
 		for (int i = 0; i < extensions.length; i++) {

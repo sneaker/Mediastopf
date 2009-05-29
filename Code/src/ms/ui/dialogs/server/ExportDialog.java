@@ -165,9 +165,11 @@ public class ExportDialog extends Dialog {
 	private void export() {
 		final File exportFolder = new File(exportTextField.getText().trim());
 		final File file = new File(Integer.toString(taskID));
-		final Auftrag task = new Auftrag(taskID, 3);
+		final int _auftragsid = taskID;
+		Auftrag auftrag = taskList.getbyAuftragsNr(taskID);
+		auftrag.setStatus(4);
+		final Auftrag _auftrag = auftrag;
 		taskList.removebyId(taskID);
-		exportTaskList.add(task);
 		
 		Thread copyThread = new Thread(new Runnable() {
 			@Override
@@ -186,7 +188,8 @@ public class ExportDialog extends Dialog {
 						e.printStackTrace();
 					}
 					if(file.listFiles().length == exportFolder.listFiles().length) {
-						exportTaskList.remove(task);
+						exportTaskList.clean();
+						_auftrag.setStatus(4);
 						break;
 					}
 				}

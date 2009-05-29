@@ -5,7 +5,7 @@ import java.util.Observable;
 
 public class AuftragslistenReceiver extends Observable implements Runnable{
 
-	public static final int TIMEOUT = 30000; // set the timeout when to refresh the Auftragsliste
+	public static final int TIMEOUT = 60000; // set the timeout when to refresh the Auftragsliste
 	
 	@SuppressWarnings("unchecked")
 	// local cache of the list

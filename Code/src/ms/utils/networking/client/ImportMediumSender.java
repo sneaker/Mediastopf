@@ -1,8 +1,15 @@
 package ms.utils.networking.client;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.Iterator;
+
+import com.sun.corba.se.impl.naming.pcosnaming.NameServer;
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 
 import ms.domain.ImportMedium;
 import ms.domain.SendeListe;
@@ -67,7 +74,6 @@ public class ImportMediumSender extends AbstractServerConnection implements
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -81,6 +87,69 @@ public class ImportMediumSender extends AbstractServerConnection implements
 	 */
 	private void sendImportMedium(ImportMedium m) throws IOException {
 		sendMessage("TRANSFER");
-		sendObject(m);
+		sendMedium(m);
+	}
+
+	private void sendMedium(ImportMedium m) {
+		String reply;
+		try {
+			reply = receiveMessage();
+			if (!reply.equals("TRANSFER READY"))
+				return;
+
+			Integer id = m.getID();
+			String _id = id.toString();
+			sendMessage(_id);
+			if (!receiveMessage().equals("ID OK"))
+				return;
+
+			Iterator<String> name_it = m.names.iterator();
+			Iterator<ByteBuffer> file_it = m.items.iterator();
+
+			Integer element_count = m.names.size();
+			String _element_count = element_count.toString();
+			sendMessage(_element_count);
+			if (!receiveMessage().equals("ELEMENTCOUNT OK"))
+				return;
+
+			while (name_it.hasNext()) {
+				String name = name_it.next();
+				ByteBuffer buf = file_it.next();
+
+				sendMessage(name);
+				if (!receiveMessage().equals("NAME OK"))
+					return;
+
+				sendByteBuffer(buf);
+			}
+
+			sendMessage("END TRANSFER");
+			if (!receiveMessage().equals("END OK"))
+				return;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void sendByteBuffer(ByteBuffer buf) {
+		Integer size = buf.capacity();
+		String _size = size.toString();
+		try {
+			sendMessage(_size);
+
+			if (!receiveMessage().equals("SIZE OK"))
+				return;
+
+			OutputStream sender = commSocket.getOutputStream();
+			sender.write(buf.array(), 0, buf.capacity());
+			sender.flush();
+
+			if (!receiveMessage().equals("ELEMENT OK"))
+				return;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

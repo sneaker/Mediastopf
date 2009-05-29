@@ -165,7 +165,6 @@ public class ExportDialog extends Dialog {
 	private void export() {
 		final File exportFolder = new File(exportTextField.getText().trim());
 		final File file = new File(Integer.toString(taskID));
-		final int _auftragsid = taskID;
 		Auftrag auftrag = taskList.getbyAuftragsNr(taskID);
 		auftrag.setStatus(4);
 		final Auftrag _auftrag = auftrag;

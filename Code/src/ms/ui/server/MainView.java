@@ -254,12 +254,12 @@ public class MainView extends Frame {
 			MessageDialog.noneSelectedDialog();
 			return;
 		}
-		exportTaskList.add(taskList.getbyAuftragsNr(taskID));
 		File file = new File(Integer.toString(taskID));
 		if(!file.isDirectory()) {
 			MessageDialog.info(manager.getString("Main.dirnotfoundtitle"), manager.getString("Main.dirnotfoundmessage") + taskID);
 			return;
 		}
+		exportTaskList.add(taskList.getbyAuftragsNr(taskID));
 		ExportDialog ed = new ExportDialog(taskID, taskList, exportTaskList);
 		ed.setVisible(true);
 	}

@@ -1,19 +1,15 @@
 package ms.domain;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.Writer;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import ms.utils.ImageWhiteFilter;
+import ms.utils.networking.server.NoDestinationSpecifiedExecpetion;
 
 /**
  * Repraesentiert ein digitalisiertes Medium eines Kunden, welches nach dem
@@ -21,10 +17,12 @@ import ms.utils.ImageWhiteFilter;
  */
 public class ImportMedium implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	protected String Name;
-	protected int id = -1;
-	protected int status = -1;
+	private static final long serialVersionUID = -6136660202504695049L;
+	private String name;
+	private int parentid = -1;
+	private int status = -1;
+	private ArrayList<ImportItem> items;
+	
 	public int getStatus() {
 		return status;
 	}
@@ -34,114 +32,77 @@ public class ImportMedium implements Serializable {
 	}
 	
 	public void setId(int id) {
-		this.id = id;
+		this.parentid = id;
 	}
 
-	public ArrayList<String> names;
-	public ArrayList<ByteBuffer> items;
-
-	/**
-	 * Vorbereitung, damit die einzelnen extrahierten Dateien hinzugefuegt werden
-	 * koennen.
-	 */
 	public ImportMedium(ResultSet row) throws SQLException {
-		this.Name = row.getString("Name");
-		this.id = row.getInt("id");
+		this.name = row.getString("Name");
+		this.parentid = row.getInt("id");
 		this.status = row.getInt("status");
 	}
+	
+	public ImportMedium(File folder) throws FileNotFoundException {
+		this(folder.getAbsolutePath());
+	}
 
-	public ImportMedium(File folder) {
-		items = new ArrayList<ByteBuffer>();
-		names = new ArrayList<String>();
-		for (String filename : folder.list()) {
-			names.add(filename);
-			FileInputStream fis;
-			File f = new File(folder + File.separator + filename);
-			if (isImage(f)) {
+	public ImportMedium(String folder) throws FileNotFoundException {
+		File _folder = new File(folder);
+		if (!_folder.exists())
+			throw new FileNotFoundException("Cannot find folders to read import medias");
+		items = new ArrayList<ImportItem>();
+		for (String filename : _folder.list()) {
+			String filepath = folder + File.separator + filename;
+			File f = new File(filepath);
+			if (ImageWhiteFilter.isImage(f)) {
 				if(ImageWhiteFilter.analyzeImageFile(f)) {
 					continue;
 				}
 			}
-			Integer length = (int) f.length();
-			ByteBuffer buffer = ByteBuffer.allocate(length);
-			try {
-				fis = new FileInputStream(f);
-				FileChannel fc = fis.getChannel();
-				fc.read(buffer);
-				buffer.flip();
-				fc.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			items.add(buffer);
+			items.add(new ImportItem(filepath));			
 		}
-	}
-	
-	public ImportMedium(int auftrags_id, ArrayList<String> names, ArrayList<ByteBuffer> items)
-	{
-		setId(auftrags_id);
-		this.names =names;
-		this.items = items;
-		
-		Integer id = auftrags_id;
-		String _id = id.toString();
-		
-		File directory = new File(_id);
-		directory.mkdir();
-		
-		for (int i = 0; i < items.size(); ++i) {
-			try {
-				FileOutputStream writer = new FileOutputStream(directory + File.separator + names.get(i));
-				writer.write(items.get(i).array());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public boolean isInDB() {
-		return id > -1;
 	}
 
 	/**
 	 * @return ID, mit welcher das reale Import-Medium gekennzeichnet ist, damit
 	 *         es eindeutig einem Auftrag zugeordnet werden kann.
 	 */
-	public int getID() {
-		return id;
+	public int getParentId() {
+		return parentid;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	/**
 	 * @return Nicht zwingend eindeutiger Name des importierten Mediums.
 	 */
 	public String getName() {
-		return Name;
+		return name;
 	}
-
-	/**
-	 * Liefert alle bis zum aktuellen Zeitpunkt importierten Dateien zurÃ¼ck.
-	 * 
-	 * @return Liste mit allen bisher importierten Dateien dieses Mediums
-	 */
-	public ArrayList<ByteBuffer> getItemsbyFile() {
-		return items;
+	
+	public void setLocation(String location) throws FileNotFoundException {
+		File destination = new File(location);
+		if (!destination.exists())
+			throw new FileNotFoundException();
+		this.destination = location;
 	}
+	
+	private String destination = null;
 
-	private static boolean isImage(File file) {
-		String[] extensions = { "jpg", "jpeg", "gif", "png" };
-		for (int i = 0; i < extensions.length; i++) {
-			if (file.getName().endsWith(extensions[i])) {
-				return true;
+	public void saveContent() throws NoDestinationSpecifiedExecpetion {
+		if (destination == null)
+			throw new NoDestinationSpecifiedExecpetion();
+		for(ImportItem item : items) {
+			try {
+				item.saveFileTo(destination);
+			} catch (FileNotFoundException e) {
+				System.err.println("Problem with file/directory creation");
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.err.println("Could not save " + item.getName() + " to location " + destination);
+				e.printStackTrace();
 			}
 		}
-		return false;
 	}
 }

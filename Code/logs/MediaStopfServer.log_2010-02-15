@@ -1,0 +1,47 @@
+2010-02-15 00:00:09,895: SERVER: Client message: null 
+2010-02-15 00:00:09,897: Client /127.0.0.1:60971 has disconnected 
+2010-02-15 00:00:19,897: SERVER: Client message: null 
+2010-02-15 00:00:19,897: Client /127.0.0.1:60972 has disconnected 
+2010-02-15 00:00:29,898: SERVER: Client message: null 
+2010-02-15 00:00:29,898: Client /127.0.0.1:60973 has disconnected 
+2010-02-15 00:00:39,899: SERVER: Client message: null 
+2010-02-15 00:00:39,899: Client /127.0.0.1:60974 has disconnected 
+2010-02-15 00:00:39,952: SERVER: Client message: INFO 
+2010-02-15 00:00:49,900: SERVER: Client message: null 
+2010-02-15 00:00:49,900: Client /127.0.0.1:60975 has disconnected 
+2010-02-15 00:00:59,901: SERVER: Client message: null 
+2010-02-15 00:00:59,901: Client /127.0.0.1:60976 has disconnected 
+2010-02-15 00:01:09,902: SERVER: Client message: null 
+2010-02-15 00:01:09,902: Client /127.0.0.1:60977 has disconnected 
+2010-02-15 00:01:19,903: SERVER: Client message: null 
+2010-02-15 00:01:19,903: Client /127.0.0.1:58968 has disconnected 
+2010-02-15 00:01:29,904: SERVER: Client message: null 
+2010-02-15 00:01:29,904: Client /127.0.0.1:58969 has disconnected 
+2010-02-15 00:01:39,906: SERVER: Client message: null 
+2010-02-15 00:01:39,907: Client /127.0.0.1:58970 has disconnected 
+2010-02-15 00:01:39,967: SERVER: Client message: INFO 
+2010-02-15 00:01:49,907: SERVER: Client message: null 
+2010-02-15 00:01:49,908: Client /127.0.0.1:58971 has disconnected 
+2010-02-15 00:01:59,908: SERVER: Client message: null 
+2010-02-15 00:01:59,909: Client /127.0.0.1:58972 has disconnected 
+2010-02-15 00:02:09,910: SERVER: Client message: null 
+2010-02-15 00:02:09,911: Client /127.0.0.1:58973 has disconnected 
+2010-02-15 00:02:19,911: SERVER: Client message: null 
+2010-02-15 00:02:19,912: Client /127.0.0.1:58974 has disconnected 
+2010-02-15 00:02:29,912: SERVER: Client message: null 
+2010-02-15 00:02:29,913: Client /127.0.0.1:58975 has disconnected 
+2010-02-15 00:02:39,914: SERVER: Client message: null 
+2010-02-15 00:02:39,914: Client /127.0.0.1:58976 has disconnected 
+2010-02-15 00:02:39,979: SERVER: Client message: INFO 
+2010-02-15 00:02:49,915: SERVER: Client message: null 
+2010-02-15 00:02:49,915: Client /127.0.0.1:58977 has disconnected 
+2010-02-15 00:30:52,455: ======================================================= 
+2010-02-15 00:30:52,457: MediaStopf - Ein Softwaresystem zum Medien Einlesen 
+2010-02-15 00:30:52,457: ======================================================= 
+2010-02-15 00:30:52,457: Copyright (C)2009 
+2010-02-15 00:30:52,457: Powered by NoMoreSecrets 
+2010-02-15 00:30:52,457: www.no-more-secrets.ch 
+2010-02-15 00:30:52,457: University of Applied Science Rapperswil 
+2010-02-15 00:30:52,457: www.hsr.ch 
+2010-02-15 00:30:52,458: ======================================================= 
+2010-02-15 00:30:52,507: Starting network server... 

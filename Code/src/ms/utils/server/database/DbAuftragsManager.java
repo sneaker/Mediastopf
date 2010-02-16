@@ -1,5 +1,6 @@
 package ms.utils.server.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ms.domain.Auftrag;
@@ -9,7 +10,7 @@ public class DbAuftragsManager {
 	
 	private static DbAuftragsManager instance;
 	
-	private DbAdapter dbadapter ;
+	private DbAdapter dbadapter;
 	
 	private DbAuftragsManager(DbAdapter dbAdapter) {
 		instance = this;
@@ -24,7 +25,7 @@ public class DbAuftragsManager {
 		return instance;
 	}
 	
-	public List<Auftrag> getAuftragList() {
+	public ArrayList<Auftrag> getAuftragList() {
 		return dbadapter.getAuftragsListe();
 	}
 	

@@ -9,7 +9,6 @@ import ms.application.client.ClientController;
 import ms.domain.Auftrag;
 import ms.domain.MediaStopfListe;
 import ms.utils.I18NManager;
-import ms.utils.client.directorypoller.DirectoryPoller;
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
 
@@ -18,10 +17,10 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	private static final String[] columns = { manager.getString("Model.task"),
 			manager.getString("Model.status") };
 
-	private MediaStopfListe list;
+	private MediaStopfListe liste;
 
 	public TaskTableModel(MediaStopfListe list) {
-		this.list = list;
+		this.liste = list;
 		list.addObserver(this);
 	}
 
@@ -35,7 +34,7 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	}
 
 	public int getRowCount() {
-		return list.size();
+		return liste.size();
 	}
 
 	@Override
@@ -44,7 +43,7 @@ public class TaskTableModel extends AbstractTableModel implements Observer {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Auftrag auftrag = list.get(rowIndex);
+		Auftrag auftrag = liste.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return auftrag.getID();

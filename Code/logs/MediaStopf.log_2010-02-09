@@ -1,0 +1,39 @@
+2010-02-09 22:18:28,900: No server found, waiting 
+2010-02-09 22:18:32,573: No server found, waiting 
+2010-02-09 22:18:36,279: No server found, waiting 
+2010-02-09 22:18:39,968: No server found, waiting 
+2010-02-09 22:18:43,630: No server found, waiting 
+2010-02-09 22:18:47,298: No server found, waiting 
+2010-02-09 22:18:50,985: No server found, waiting 
+2010-02-09 22:18:54,663: No server found, waiting 
+2010-02-09 22:18:58,305: No server found, waiting 
+2010-02-09 22:19:02,000: No server found, waiting 
+2010-02-09 22:19:05,639: No server found, waiting 
+2010-02-09 22:19:09,284: No server found, waiting 
+2010-02-09 22:19:12,938: No server found, waiting 
+2010-02-09 22:19:16,590: No server found, waiting 
+2010-02-09 22:19:20,241: No server found, waiting 
+2010-02-09 22:19:23,870: No server found, waiting 
+2010-02-09 22:19:24,881: Network message: INFO 
+2010-02-09 22:19:24,882: Receiving INFO data... 
+2010-02-09 22:19:24,906: INFO transfer finished 
+2010-02-09 22:19:24,911: Network message: INFO 
+2010-02-09 22:19:24,916: Receiving INFO data... 
+2010-02-09 22:19:24,957: INFO transfer finished 
+2010-02-09 22:19:53,484: Network message: INFO 
+2010-02-09 22:19:53,494: Receiving INFO data... 
+2010-02-09 22:19:53,500: INFO transfer finished 
+2010-02-09 22:19:54,882: Network message: INFO 
+2010-02-09 22:19:54,893: Receiving INFO data... 
+2010-02-09 22:19:54,897: INFO transfer finished 
+2010-02-09 22:20:24,958: Error: Cannot get OutputStream 
+2010-02-09 23:00:48,160: DirectoryPoller: Autocommit in 0 seconds. 
+2010-02-09 23:00:48,162: DirectoryPoller: finished 
+2010-02-09 23:00:48,163: DirectoryPoller: Autocommit in 0 seconds. 
+2010-02-09 23:00:48,163: DirectoryPollernothing changed 
+2010-02-09 23:00:48,165: DirectoryPoller: Autocommit in 120 seconds. 
+2010-02-09 23:00:48,165: DirectoryPollernothing changed 
+2010-02-09 23:00:48,166: DirectoryPoller: Autocommit in 0 seconds. 
+2010-02-09 23:00:48,166: DirectoryPoller: finished 
+2010-02-09 23:00:48,166: DirectoryPoller: Autocommit in 120 seconds. 
+2010-02-09 23:00:48,166: DirectoryPollernothing changed 

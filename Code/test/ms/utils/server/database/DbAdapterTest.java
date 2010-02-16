@@ -7,28 +7,19 @@ import java.util.Random;
 import ms.domain.Auftrag;
 import ms.utils.server.database.SqlDbAdapter;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class DbAdapterTest {
 	
-	private static int randomint1, randomint2, randomint3;
+	private static int randomint1;
 
 	@Before
 	public void setUp() throws Exception {
 		Random generator = new Random();
 		randomint1 = generator.nextInt();
-		randomint2 = generator.nextInt();
-		randomint3 = generator.nextInt();
 				
 	}
-
-	@After
-	public void tearDown() throws Exception {
-		
-	}
-
 	
 	//TODO: Fix this test
 	@Test

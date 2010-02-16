@@ -26,7 +26,7 @@ public class LaufendeAuftragsListe extends MediaStopfListe {
 		Iterator<Auftrag> it = list.iterator();
 		while(it.hasNext()) {
 			Auftrag a = it.next();
-			if (a.status == 3 || a.status == 4) {
+			if (a.getStatus() == 3 || a.getStatus() == 4) {
 				it.remove();
 				// observers must know about the list change, otherwhise access to non-existing element
 				setChanged();
@@ -34,4 +34,5 @@ public class LaufendeAuftragsListe extends MediaStopfListe {
 			}
 		}
 	}
+	
 }

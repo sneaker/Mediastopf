@@ -2,7 +2,6 @@ package ms.utils.server.database;
 
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,11 +24,6 @@ public class SqlDbConnection {
 			if (connection == null || connection.isClosed()) {
 				Class.forName("org.sqlite.JDBC");
 				connection = DriverManager.getConnection(database);
-				DatabaseMetaData metaData = connection.getMetaData();
-				System.out.println("sqlite driver mode: "
-						+ metaData.getDriverVersion());
-				System.out.println("database driver: "
-						+ metaData.getDriverName());
 			}
 		} catch (ClassNotFoundException e) {
 			System.err.println("JDBC Driver nof found");
@@ -87,7 +81,7 @@ public class SqlDbConnection {
 	 *            : <b>MUST</b> implement a constructor with a {@link ResultSet}
 	 *            as the only parameter.
 	 */
-	public <T> List<T> getObjectList(String sql, Class<T> returnedClass) {
+	public <T> ArrayList<T> getObjectList(String sql, Class<T> returnedClass) {
 		ArrayList<T> list = new ArrayList<T>();
 		try {
 			Connection conn = getConnection();
@@ -112,8 +106,8 @@ public class SqlDbConnection {
 		return list;
 	}
 
-	public List<String> getStringList(String sql) {
-		List<String> resultlist = new ArrayList<String>();
+	public ArrayList<String> getStringList(String sql) {
+		ArrayList<String> resultlist = new ArrayList<String>();
 		Connection conn;
 		try {
 			conn = getConnection();
@@ -138,7 +132,7 @@ public class SqlDbConnection {
 		return newId;
 	}
 
-	private  PreparedStatement createStatementWithArguments(
+	private PreparedStatement createStatementWithArguments(
 			String prepStmt, Connection conn, String... arguments)
 			throws SQLException {
 		PreparedStatement prep = conn.prepareStatement(prepStmt);

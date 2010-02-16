@@ -1,0 +1,123 @@
+2010-02-15 00:00:01,643: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:01,646: DirectoryPoller: Autocommit in 73 seconds. 
+2010-02-15 00:00:01,648: DirectoryPollernothing changed 
+2010-02-15 00:00:03,648: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:03,650: DirectoryPoller: Autocommit in 71 seconds. 
+2010-02-15 00:00:03,652: DirectoryPollernothing changed 
+2010-02-15 00:00:05,653: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:05,655: DirectoryPoller: Autocommit in 69 seconds. 
+2010-02-15 00:00:05,657: DirectoryPollernothing changed 
+2010-02-15 00:00:07,657: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:07,658: DirectoryPoller: Autocommit in 67 seconds. 
+2010-02-15 00:00:07,659: DirectoryPollernothing changed 
+2010-02-15 00:00:09,659: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:09,661: DirectoryPoller: Autocommit in 65 seconds. 
+2010-02-15 00:00:09,663: DirectoryPollernothing changed 
+2010-02-15 00:00:11,663: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:11,665: DirectoryPoller: Autocommit in 63 seconds. 
+2010-02-15 00:00:11,667: DirectoryPollernothing changed 
+2010-02-15 00:00:13,668: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:13,670: DirectoryPoller: Autocommit in 61 seconds. 
+2010-02-15 00:00:13,673: DirectoryPollernothing changed 
+2010-02-15 00:00:15,673: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:15,675: DirectoryPoller: Autocommit in 59 seconds. 
+2010-02-15 00:00:15,677: DirectoryPollernothing changed 
+2010-02-15 00:00:17,677: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:17,679: DirectoryPoller: Autocommit in 57 seconds. 
+2010-02-15 00:00:17,681: DirectoryPollernothing changed 
+2010-02-15 00:00:19,682: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:19,683: DirectoryPoller: Autocommit in 55 seconds. 
+2010-02-15 00:00:19,686: DirectoryPollernothing changed 
+2010-02-15 00:00:21,687: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:21,689: DirectoryPoller: Autocommit in 53 seconds. 
+2010-02-15 00:00:21,691: DirectoryPollernothing changed 
+2010-02-15 00:00:23,691: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:23,693: DirectoryPoller: Autocommit in 51 seconds. 
+2010-02-15 00:00:23,695: DirectoryPollernothing changed 
+2010-02-15 00:00:25,695: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:25,697: DirectoryPoller: Autocommit in 49 seconds. 
+2010-02-15 00:00:25,699: DirectoryPollernothing changed 
+2010-02-15 00:00:27,699: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:27,701: DirectoryPoller: Autocommit in 47 seconds. 
+2010-02-15 00:00:27,703: DirectoryPollernothing changed 
+2010-02-15 00:00:29,704: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:29,705: DirectoryPoller: Autocommit in 45 seconds. 
+2010-02-15 00:00:29,708: DirectoryPollernothing changed 
+2010-02-15 00:00:31,708: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:31,710: DirectoryPoller: Autocommit in 43 seconds. 
+2010-02-15 00:00:31,712: DirectoryPollernothing changed 
+2010-02-15 00:00:33,713: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:33,714: DirectoryPoller: Autocommit in 41 seconds. 
+2010-02-15 00:00:33,715: DirectoryPollernothing changed 
+2010-02-15 00:00:35,715: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:35,716: DirectoryPoller: Autocommit in 39 seconds. 
+2010-02-15 00:00:35,717: DirectoryPollernothing changed 
+2010-02-15 00:00:37,717: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:37,719: DirectoryPoller: Autocommit in 37 seconds. 
+2010-02-15 00:00:37,721: DirectoryPollernothing changed 
+2010-02-15 00:00:39,722: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:39,723: DirectoryPoller: Autocommit in 35 seconds. 
+2010-02-15 00:00:39,727: DirectoryPollernothing changed 
+2010-02-15 00:00:39,950: Network message: INFO 
+2010-02-15 00:00:39,951: Receiving INFO data... 
+2010-02-15 00:00:39,966: INFO transfer finished 
+2010-02-15 00:00:41,727: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:41,729: DirectoryPoller: Autocommit in 33 seconds. 
+2010-02-15 00:00:41,732: DirectoryPollernothing changed 
+2010-02-15 00:00:43,732: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:43,734: DirectoryPoller: Autocommit in 31 seconds. 
+2010-02-15 00:00:43,736: DirectoryPollernothing changed 
+2010-02-15 00:00:45,736: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:45,738: DirectoryPoller: Autocommit in 29 seconds. 
+2010-02-15 00:00:45,740: DirectoryPollernothing changed 
+2010-02-15 00:00:47,740: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:47,742: DirectoryPoller: Autocommit in 27 seconds. 
+2010-02-15 00:00:47,744: DirectoryPollernothing changed 
+2010-02-15 00:00:49,744: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:49,746: DirectoryPoller: Autocommit in 25 seconds. 
+2010-02-15 00:00:49,752: DirectoryPollernothing changed 
+2010-02-15 00:00:51,752: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:51,754: DirectoryPoller: Autocommit in 23 seconds. 
+2010-02-15 00:00:51,755: DirectoryPollernothing changed 
+2010-02-15 00:00:53,755: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:53,756: DirectoryPoller: Autocommit in 21 seconds. 
+2010-02-15 00:00:53,759: DirectoryPollernothing changed 
+2010-02-15 00:00:55,759: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:55,760: DirectoryPoller: Autocommit in 19 seconds. 
+2010-02-15 00:00:55,763: DirectoryPollernothing changed 
+2010-02-15 00:00:57,763: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:57,765: DirectoryPoller: Autocommit in 17 seconds. 
+2010-02-15 00:00:57,767: DirectoryPollernothing changed 
+2010-02-15 00:00:59,767: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:00:59,769: DirectoryPoller: Autocommit in 15 seconds. 
+2010-02-15 00:00:59,770: DirectoryPollernothing changed 
+2010-02-15 00:01:01,771: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:01,772: DirectoryPoller: Autocommit in 13 seconds. 
+2010-02-15 00:01:01,774: DirectoryPollernothing changed 
+2010-02-15 00:01:03,775: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:03,776: DirectoryPoller: Autocommit in 11 seconds. 
+2010-02-15 00:01:03,776: DirectoryPollernothing changed 
+2010-02-15 00:01:05,777: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:05,778: DirectoryPoller: Autocommit in 9 seconds. 
+2010-02-15 00:01:05,780: DirectoryPollernothing changed 
+2010-02-15 00:01:07,781: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:07,781: DirectoryPoller: Autocommit in 7 seconds. 
+2010-02-15 00:01:07,782: DirectoryPollernothing changed 
+2010-02-15 00:01:09,782: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:09,784: DirectoryPoller: Autocommit in 5 seconds. 
+2010-02-15 00:01:09,785: DirectoryPollernothing changed 
+2010-02-15 00:01:11,786: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:11,786: DirectoryPoller: Autocommit in 3 seconds. 
+2010-02-15 00:01:11,787: DirectoryPollernothing changed 
+2010-02-15 00:01:13,787: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:13,789: DirectoryPoller: Autocommit in 1 seconds. 
+2010-02-15 00:01:13,791: DirectoryPollernothing changed 
+2010-02-15 00:01:15,791: DirectoryPoller: still observing /home/thomas/movies/1 
+2010-02-15 00:01:15,793: DirectoryPoller: Autocommit in 0 seconds. 
+2010-02-15 00:01:15,794: DirectoryPoller: finished 
+2010-02-15 00:01:39,966: Network message: INFO 
+2010-02-15 00:01:39,967: Receiving INFO data... 
+2010-02-15 00:01:39,977: INFO transfer finished 
+2010-02-15 00:02:39,978: Network message: INFO 
+2010-02-15 00:02:39,978: Receiving INFO data... 
+2010-02-15 00:02:40,000: INFO transfer finished 

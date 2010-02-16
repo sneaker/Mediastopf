@@ -148,5 +148,16 @@ public class ImageWhiteFilter {
 				}
 			}
 		}
+		
+	}
+
+	public static boolean isImage(File file) {
+		String[] extensions = { "jpg", "jpeg", "gif", "png" };
+		for (int i = 0; i < extensions.length; i++) {
+			if (file.getName().endsWith(extensions[i])) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

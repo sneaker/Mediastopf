@@ -15,10 +15,8 @@ public abstract class MediaStopfListe extends Observable implements Observer {
 		notifyObservers();
 	}
 
-	public synchronized void remove(Auftrag auftrag) {
-		list.remove(auftrag);
-		setChanged();
-		notifyObservers();
+	public void remove(Auftrag auftrag) {
+		remove(auftrag.getID());
 	}
 
 	public synchronized void remove(int index) {
@@ -36,7 +34,7 @@ public abstract class MediaStopfListe extends Observable implements Observer {
 		Iterator<Auftrag> it = list.iterator();
 		while(it.hasNext()) {
 			Auftrag auftrag = it.next();
-			if (auftrag.id == nr)
+			if (auftrag.getID() == nr)
 				return auftrag;
 		}
 		return null;

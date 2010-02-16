@@ -6,22 +6,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Repraesentiert einen Kunden-Auftrag, welcher aus einzelnen ImportMedien
- * besteht.
- * 
+ * Repraesentiert einen Kunden-Auftrag, welcher aus ImportMedien besteht.
  */
 public class Auftrag implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	protected int status = -1;
-	protected int id = -1;
-	protected ArrayList<ImportMedium> ListImportMedium;
-	protected ArrayList<ExportMedium> ListExportMedium;
+	private static final long serialVersionUID = -3877325340298178575L;
+
+	private int id = -1;
+	
+	private ArrayList<ImportMedium> importmedia;
+	private ArrayList<ExportMedium> exportmedia;
 
 	public Auftrag(int id) {
 		this.id = id;
-		ListImportMedium = new ArrayList<ImportMedium>();
-		ListExportMedium = new ArrayList<ExportMedium>();
+		importmedia = new ArrayList<ImportMedium>();
+		exportmedia = new ArrayList<ExportMedium>();
 	}
 
 	public Auftrag(ResultSet row) throws SQLException {
@@ -34,6 +33,31 @@ public class Auftrag implements Serializable {
 		this.status = status;
 	}
 
+	private int status = -1; 
+	
+	public static enum _state { NEU, IMPORTBEREIT, SENDEBEREIT, EXPORTBEREIT, ABGESCHLOSSEN, UNBEKANNT };
+	
+	private static String[] statusmsg = { 
+		"Neu", 
+		"Bereit für Import", 
+		"Medium wird importiert",
+		"Medium sendebereit", 
+		"Auftrag Exportbereit", 
+		"Auftrag Abgeschlossen", 
+		"Unbekannt" 
+	};
+	
+	public String getStatusMessage() {
+		if (status < 0 || status > statusmsg.length)
+			return statusmsg[5];
+		
+		return statusmsg[status];
+	}
+	
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
 	/**
 	 * Neues Importmedium hinzufügen, welches für diesen Auftrag verarbeitet
 	 * werden soll.
@@ -43,72 +67,40 @@ public class Auftrag implements Serializable {
 	 * @return true, falls die Datenbank das neue Medium aufnehmen konnte.
 	 */
 	public boolean addImportMedium(ImportMedium newSammlung) {
-		return ListImportMedium.add(newSammlung);
+		return importmedia.add(newSammlung);
 	}
 
 	public ImportMedium getImportMedium(int Index) {
-		return ListImportMedium.get(Index);
+		return importmedia.get(Index);
 	}
 
 	public ImportMedium removeImportMedium(int Index) {
-		return ListImportMedium.remove(Index);
+		return importmedia.remove(Index);
 	}
 
 	public boolean addExportMedium(ExportMedium newMedium) {
-		return ListExportMedium.add(newMedium);
+		return exportmedia.add(newMedium);
 	}
 
 	public ExportMedium getExportMedium(int Index) {
-		return ListExportMedium.get(Index);
+		return exportmedia.get(Index);
 	}
 
 	public ExportMedium removeExportMedium(int Index) {
-		return ListExportMedium.remove(Index);
-	}
-
-	public Auftrag(int newstatus, ArrayList<ImportMedium> newIMList,
-			ArrayList<ExportMedium> newEMList) {
-		status = newstatus;
-		ListImportMedium = newIMList;
-		ListExportMedium = newEMList;
+		return exportmedia.remove(Index);
 	}
 
 	public int getStatus() {
 		return status;
 	}
-
-	public String getStatusMessage() {
-		String status;
-		switch (getStatus()) {
-		case -1:
-		case 0:
-			status = "Neu";
-			break;
-		case 1:
-			status = "Bereit für Import";
-			break;
-		case 2:
-			status = "Medium importiert, sendebereit";
-			break;
-		case 3:
-			status = "Auftrag Exportbereit";
-			break;
-		case 4:
-			status = "Auftrag Abgeschlossen";
-			break;
-		default:
-			status = "unknown " + getStatus();
-			break;
-		}
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
+	
 
 	public int getID() {
 		return id;
+	}
+
+	public void setID(int id) {
+		this.id = id;
 	}
 
 	@Override
@@ -121,9 +113,4 @@ public class Auftrag implements Serializable {
 		}
 		return false;
 	}
-
-	public void setID(int id) {
-		this.id = id;
-	}
-
 }

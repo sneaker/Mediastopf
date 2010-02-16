@@ -1,6 +1,7 @@
 package ms.application.client;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Observable;
@@ -93,7 +94,12 @@ public class ClientController {
 	
 	private void generateImportMedium(File folder, final int auftrag_id)
 	{
-		ImportMedium medium = new ImportMedium(folder);
+		ImportMedium medium = null;
+		try {
+			medium = new ImportMedium(folder);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		medium.setId(auftrag_id);
 		readylist.put(auftrag_id, medium);
 	}

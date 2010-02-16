@@ -23,29 +23,26 @@ abstract public class BasicNetIO {
 		
 		try {
 			if (commSocket.isConnected())
-				receiver = new BufferedReader(new InputStreamReader(commSocket
-					.getInputStream()));
+				receiver = new BufferedReader(new InputStreamReader(commSocket.getInputStream()));
 		} catch (IOException e) {
 			logger.error("Error: Cannot get InputStream");
 			e.printStackTrace();
 		}
 	
-		String rec = "";
+		String rec;
 		rec = receiver.readLine();
-		logger.info("SERVER: Client message: " + rec);
+		if (rec != null)
+			logger.info("SERVER: Client message: " + rec);
+		else
+			rec = "";
+		
 		return rec;
 	}
  
 	protected void sendMessage(String message) throws IOException {
 		PrintWriter sender = null;
+		sender = new PrintWriter(new OutputStreamWriter(commSocket.getOutputStream()), false);
 		
-		try {
-			sender = new PrintWriter(new OutputStreamWriter(commSocket.getOutputStream()), false);
-			logger.info("Network message: " + message);
-		} catch (IOException e) {
-			logger.error("Error: Cannot get OutputStream");
-		}
-	
 		sender.println(message);
 		sender.flush();
 	}

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 // TODO: Wäre hier eine Methode schreiben() sinvoll, welche alle Daten dieses 
 // 		 Mediums auf das ExportMedium schreibt? (MS, 5.5.09)
+//	Hier wäre eine Methode alles löschen und richtig implementieren richtig!!!!!! TK, 13.2.10
 
 /**
  * Repräsentiert einen Datenträger, auf welchem die gesammelten Kundenmedien für
@@ -43,9 +44,7 @@ public class ExportMedium {
 	public ExportMedium(String name, int Speicherkapazitaet, int fk_Auftrag, int fk_Container) {
 		this.name = name;
 		this.Speicherkapazitaet = Speicherkapazitaet;
-		this.fk_Auftrag = fk_Auftrag;
-
-		
+		this.fk_Auftrag = fk_Auftrag;	
 	}
 
 	public ExportMedium(ResultSet row) throws SQLException {
@@ -53,11 +52,8 @@ public class ExportMedium {
 		this.name = row.getString("name");
 		this.Speicherkapazitaet = row.getInt("Speicherkapazitaet");
 	}
-
-	
 	
 	public boolean isInDB() {
 		return id > -1;
 	}
-
 }

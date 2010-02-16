@@ -1,5 +1,6 @@
 package ms.utils.server.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ms.domain.Auftrag;
@@ -22,5 +23,5 @@ public interface DbAdapter {
 
 	Auftrag getAuftrag(int AuftragId);
 
-	List<Auftrag> getAuftragsListe();
+	ArrayList<Auftrag> getAuftragsListe();
 }

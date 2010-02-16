@@ -21,7 +21,6 @@ public class ClientAuftragslistenUpdater extends AbstractServerConnection implem
 		try {
 			sendMessage("INFO");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		logger.info("Receiving INFO data...");

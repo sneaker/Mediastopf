@@ -1,5 +1,6 @@
 package ms.utils.server.database;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
 
@@ -15,9 +16,9 @@ public class SqlDbAdapter implements DbAdapter {
 	}
 
 	@Override
-	public List<Auftrag> getAuftragsListe() {
+	public ArrayList<Auftrag> getAuftragsListe() {
 		String sql = "select * from Auftrag";
-		List<Auftrag> myList = sqldbconnection
+		ArrayList<Auftrag> myList = sqldbconnection
 				.getObjectList(sql, Auftrag.class);
 		if (myList.isEmpty())
 			return null;
@@ -37,6 +38,7 @@ public class SqlDbAdapter implements DbAdapter {
 	}
 
 	// TODO: Fix this test!
+	// this is no test! so what sould be fixed?
 	@Override
 	public int saveAuftrag(Auftrag myAuftrag) {
 		int id;
@@ -80,9 +82,9 @@ public class SqlDbAdapter implements DbAdapter {
 	}
 
 	@Override
-	public List<ImportMedium> getImportMediumList() {
+	public ArrayList<ImportMedium> getImportMediumList() {
 		String sql = "select * from ImportMedium";
-		List<ImportMedium> myList = sqldbconnection.getObjectList(sql,
+		ArrayList<ImportMedium> myList = sqldbconnection.getObjectList(sql,
 				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
@@ -93,7 +95,7 @@ public class SqlDbAdapter implements DbAdapter {
 	@Override
 	public ImportMedium getImportMedium(int ImportMediumId) {
 		String sql = "select * from ImportMedium where id = " + ImportMediumId;
-		List<ImportMedium> myList = sqldbconnection.getObjectList(sql,
+		ArrayList<ImportMedium> myList = sqldbconnection.getObjectList(sql,
 				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
@@ -102,10 +104,10 @@ public class SqlDbAdapter implements DbAdapter {
 	}
 
 	@Override
-	public List<ImportMedium> getImportMediumList(ImportMedium myMediensammlung) {
+	public ArrayList<ImportMedium> getImportMediumList(ImportMedium myMediensammlung) {
 		String sql = "select * from ImportMedium where fk_Mediensammlung = "
-				+ myMediensammlung.getID();
-		List<ImportMedium> myList = sqldbconnection.getObjectList(sql,
+				+ myMediensammlung.getParentId();
+		ArrayList<ImportMedium> myList = sqldbconnection.getObjectList(sql,
 				ImportMedium.class);
 		if (myList.isEmpty())
 			return null;
@@ -118,12 +120,12 @@ public class SqlDbAdapter implements DbAdapter {
 		int id;
 		try {
 			String sql = "select * from ImportMedium where id = "
-					+ myMedium.getID();
+					+ myMedium.getParentId();
 			if (sqldbconnection.getObjectList(sql, Auftrag.class).isEmpty()) {
 				id = sqldbconnection
 						.executeInsert(
 								"insert into ImportMedium (status, name) values (?, ?)",
-								Integer.toString(myMedium.getID()), myMedium
+								Integer.toString(myMedium.getParentId()), myMedium
 										.getName());
 				myMedium.setId(id);
 				return id;
@@ -133,7 +135,7 @@ public class SqlDbAdapter implements DbAdapter {
 								"UPDATE ImportMedium SET status = ?, name = ? WHERE id = ?",
 								Integer.toString(myMedium.getStatus()),
 								myMedium.getName(), Integer.toString(myMedium
-										.getID()));
+										.getParentId()));
 			}
 		} catch (SQLException e) {
 			System.err.println(e);

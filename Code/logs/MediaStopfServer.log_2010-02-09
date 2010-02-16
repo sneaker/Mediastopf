@@ -1,0 +1,21 @@
+2010-02-09 22:19:22,099: ======================================================= 
+2010-02-09 22:19:22,099: MediaStopf - Ein Softwaresystem zum Medien Einlesen 
+2010-02-09 22:19:22,100: ======================================================= 
+2010-02-09 22:19:22,100: Copyright (C)2009 
+2010-02-09 22:19:22,100: Powered by NoMoreSecrets 
+2010-02-09 22:19:22,100: www.no-more-secrets.ch 
+2010-02-09 22:19:22,100: University of Applied Science Rapperswil 
+2010-02-09 22:19:22,100: www.hsr.ch 
+2010-02-09 22:19:22,101: ======================================================= 
+2010-02-09 22:19:22,156: Starting network server... 
+2010-02-09 22:19:24,878: SERVER: Client message: null 
+2010-02-09 22:19:24,883: Client /127.0.0.1:41899 has disconnected 
+2010-02-09 22:19:24,883: SERVER: Client message: INFO 
+2010-02-09 22:19:24,911: SERVER: Client message: INFO 
+2010-02-09 22:19:53,485: SERVER: Client message: INFO 
+2010-02-09 22:19:54,883: SERVER: Client message: INFO 
+2010-02-09 22:20:18,432: SERVER: Client message: null 
+2010-02-09 22:20:18,432: Client /127.0.0.1:41901 has disconnected 
+2010-02-09 22:20:18,432: SERVER: Client message: null 
+2010-02-09 22:20:18,432: Client /127.0.0.1:41900 has disconnected 
+2010-02-09 23:00:48,973: Starting network server... 

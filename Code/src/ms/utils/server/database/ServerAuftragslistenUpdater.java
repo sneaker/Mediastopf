@@ -20,6 +20,4 @@ public class ServerAuftragslistenUpdater implements AuftragslistenUpdater{
 	public void stop() {
 		//disconnect from datanase
 	}
-
-	
 }

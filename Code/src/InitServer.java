@@ -9,7 +9,7 @@ import javax.swing.UIManager;
 import ms.application.server.ServerController;
 import ms.domain.AuftragsListe;
 import ms.domain.ImportMedium;
-import ms.ui.server.MainView;
+import ms.ui.server.ServerMainView;
 import ms.utils.AuftragslistenReceiver;
 import ms.utils.log.server.ServerLog;
 import ms.utils.networking.server.PortListener;
@@ -68,7 +68,7 @@ public class InitServer {
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new MainView();
+				new ServerMainView();
 			}
 		});
 	}

@@ -56,7 +56,7 @@ import ms.utils.ui.TextField;
 /**
  * main window of mediastopf
  */
-public class MainView extends Frame {
+public class ClientMainView extends Frame {
 
 	private static final long serialVersionUID = 1L;
 	private I18NManager manager = I18NManager.getManager();
@@ -74,7 +74,7 @@ public class MainView extends Frame {
 	send = manager.getString("send"), runningTask = manager.getString("Main.runtask"), tasks = manager.getString("Main.task"), statusbar = manager.getString("Main.statusbar");
 	private ClientController clientcontroller;
 
-	public MainView() {
+	public ClientMainView() {
 		new SplashScreen(ClientConstants.SPLASH);
 		clientcontroller = ClientController.getClientController();
 

@@ -56,7 +56,7 @@ import ms.utils.ui.TextField;
 /**
  * main window of mediastopf server
  */
-public class MainView extends Frame {
+public class ServerMainView extends Frame {
 	/**
 	 * 
 	 */
@@ -77,7 +77,7 @@ public class MainView extends Frame {
 	statusbar = manager.getString("Main.statusbar");
 	private ServerController servercontroller;
 	
-	public MainView() {
+	public ServerMainView() {
 		new SplashScreen(Constants.SPLASH);
 		servercontroller = ServerController.getInstance();
 		

@@ -8,7 +8,7 @@ import javax.swing.UIManager;
 
 import ms.application.client.ClientController;
 import ms.domain.AuftragsListe;
-import ms.ui.client.MainView;
+import ms.ui.client.ClientMainView;
 import ms.utils.AuftragslistenReceiver;
 import ms.utils.log.client.ClientLog;
 import ms.utils.networking.client.ClientAuftragslistenUpdater;
@@ -79,7 +79,7 @@ public class InitClient {
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new MainView();
+				new ClientMainView();
 			}
 		});
 	}

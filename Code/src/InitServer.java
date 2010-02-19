@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -7,6 +8,7 @@ import javax.swing.UIManager;
 
 import ms.application.server.ServerController;
 import ms.domain.AuftragsListe;
+import ms.domain.ImportMedium;
 import ms.ui.server.MainView;
 import ms.utils.AuftragslistenReceiver;
 import ms.utils.log.server.ServerLog;
@@ -43,7 +45,7 @@ public class InitServer {
 	private void initNetwork(int port) {
 		logger.info("Starting network server...");
 		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(new PortListener(port, MAX_SERVER_THREADS));
+		exec.execute(new PortListener(port, MAX_SERVER_THREADS, new ArrayList<ImportMedium>()));
 	}
 	
 	private void serverStartInfo() {

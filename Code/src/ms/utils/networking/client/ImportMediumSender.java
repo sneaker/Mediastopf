@@ -5,9 +5,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.Vector;
 
 import ms.domain.ImportMedium;
-import ms.domain.SendeListe;
 
 /**
  * 
@@ -26,12 +26,12 @@ import ms.domain.SendeListe;
 public class ImportMediumSender extends AbstractServerConnection implements
 		Runnable {
 
-	private SendeListe mediumlist;
+	private Vector<ImportMedium> mediumlist;
 
 	public ImportMediumSender(String host, int port)
 			throws UnknownHostException, IOException {
 		super(host, port);
-		mediumlist = new SendeListe();
+		mediumlist = new Vector<ImportMedium>();
 	}
 
 	/**
@@ -45,8 +45,7 @@ public class ImportMediumSender extends AbstractServerConnection implements
 
 	public void run() {
 		while (true) {
-			synchronized (mediumlist) {
-				Iterator<ImportMedium> it = mediumlist.getList().iterator();
+			Iterator<ImportMedium> it = mediumlist.iterator();
 				while (it.hasNext()) {
 					ImportMedium m = it.next();
 					try {
@@ -56,7 +55,6 @@ public class ImportMediumSender extends AbstractServerConnection implements
 					}
 					it.remove();
 				}
-			}
 			Thread.yield();
 			try {
 				Thread.sleep(10000);

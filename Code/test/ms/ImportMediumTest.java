@@ -21,8 +21,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.xml.internal.ws.util.ByteArrayBuffer;
-
 public class ImportMediumTest {
 
 	ImportMedium m;
@@ -35,9 +33,9 @@ public class ImportMediumTest {
 		File _from = new File(from);
 		if (!_from.exists())
 			_from.mkdirs();
-		
+
 		createFiles(_from);
-		
+
 		File _to = new File(to);
 		if (!_to.exists())
 			_to.mkdirs();
@@ -47,7 +45,7 @@ public class ImportMediumTest {
 
 	private void createFiles(File from2) {
 		for (int i = 1; i < 10; i++) {
-			File f = new File(from2 + File.separator + "randomfile"+ i);
+			File f = new File(from2 + File.separator + "randomfile" + i);
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
@@ -67,23 +65,24 @@ public class ImportMediumTest {
 	}
 
 	private byte[] getRandomFileContent() {
-		Integer i = new Random().nextInt(Integer.MAX_VALUE / 1000);
-		ByteArrayBuffer b = new ByteArrayBuffer(i);
-		return b.getRawData();
+		Integer length = new Random().nextInt(Integer.MAX_VALUE / 1000);
+		byte[] result = new byte[length];
+		new Random().nextBytes(result);
+		return result;
 	}
 
 	@After
 	public void tearDown() {
-		for(File f: new File(from).listFiles()) {
+		for (File f : new File(from).listFiles()) {
 			f.delete();
 		}
 		new File(from).delete();
-		for(File t: new File(to).listFiles()) {
+		for (File t : new File(to).listFiles()) {
 			t.delete();
 		}
 		new File(to).delete();
 	}
-	
+
 	@Test
 	public void nomediumtest() {
 		try {
@@ -92,7 +91,7 @@ public class ImportMediumTest {
 			fail();
 		} catch (FileNotFoundException e) {
 		}
-		
+
 	}
 
 	@Test
@@ -123,8 +122,8 @@ public class ImportMediumTest {
 			while (cache.isEmpty())
 				;
 			assertTrue(!cache.isEmpty());
-			
-			for(ImportMedium m: cache) {
+
+			for (ImportMedium m : cache) {
 				m.setLocation(to);
 				try {
 					m.saveContent();
@@ -145,12 +144,12 @@ public class ImportMediumTest {
 		ArrayList<Long> fromhash = new ArrayList<Long>();
 		File todir = new File(to);
 		ArrayList<Long> tohash = new ArrayList<Long>();
-		
-		for(File fromfile : fromdir.listFiles()) {
+
+		for (File fromfile : fromdir.listFiles()) {
 			fromhash.add(fromfile.length());
 		}
-		
-		for(File tofile : todir.listFiles()) {
+
+		for (File tofile : todir.listFiles()) {
 			tohash.add(tofile.length());
 		}
 		assertArrayEquals(fromhash.toArray(), tohash.toArray());

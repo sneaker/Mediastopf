@@ -22,9 +22,9 @@ import ms.utils.log.server.ServerLog;
 public class SystemTrayIcon {
 	
 	private I18NManager manager = I18NManager.getManager();
-	private MainView view;
+	private ServerMainView view;
 
-	public SystemTrayIcon(MainView view) {
+	public SystemTrayIcon(ServerMainView view) {
 		this.view = view;
 
 		SystemTray tray = SystemTray.getSystemTray();
